@@ -340,9 +340,8 @@ function kaltura_shortcode($attrs) {
 		
 	return $html;
 }
-
 function kaltura_get_version() {
-	$plugin_data = implode( '', file( __FILE__ ));
+	$plugin_data = implode( '', file( str_replace('all_in_one_video_pack.php', 'interactive_video.php', __FILE__)));
 	if ( preg_match( "|Version:(.*)|i", $plugin_data, $version ))
 		$version = trim( $version[1] );
 	else
