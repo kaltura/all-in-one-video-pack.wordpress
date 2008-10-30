@@ -57,6 +57,8 @@
 		{
 			$viewData["error"] = "You must agree to the Kaltura Terms of Use";
 		}
+		
+		$viewData["pingOk"] = true;
 	}
 	else
 	{
