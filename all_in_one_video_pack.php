@@ -51,7 +51,7 @@ if (KalturaHelpers::compareWPVersion("2.6", "<")) {
 add_filter('mce_external_plugins', 'kaltura_add_mce_plugin'); // add the kaltura mce plugin
 add_filter('tiny_mce_version', 'kaltura_mce_version');
 
-add_action('activate_kaltura-interactive-video/interactive_video.php', 'kaltura_activate');
+add_action('activate_all-in-one-video-pack/interactive_video.php', 'kaltura_activate');
 
 function kaltura_activate()
 {
