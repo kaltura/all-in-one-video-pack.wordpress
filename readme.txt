@@ -4,7 +4,7 @@ Donate link: http://community.kaltura.org/
 Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, youtube, video responses, video blog, audio, media, myspace, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
 Requires at least: 2.5
 Tested up to: 2.6.3
-Stable tag: 1.0
+Stable tag: 2.0
 
 Easily add full video capabilities to your blog.
 
@@ -30,7 +30,7 @@ Highlights:
 Additional capabilities to be launched in our next version, coming very soon:
 
 * A widget for the blog sidebar showing all recent videos
-* The ability to create and display video playlists 
+* The ability to create, manage and display video playlists 
 * Podcast recorder and player 
 * The ability to create video galleries
 * Advanced playing features such as:  subtitles, download button, credits, content discovery, etc.
@@ -48,7 +48,7 @@ If you are installing this plugin for the first time:
 3. Activate the plugin through the 'Plugins' menu in the WordPress admin application
 4. Go to Settings > All in One Video Pack to setup the plugin
 
-If you are upgrading your current version of the plugin:  
+If you are upgrading your current version of the plugin, or if you're upgrading from the Interactive Video plugin: 
 
 1. Deactivate the plugin through the 'Plugins' menu in the WordPress admin application
 2. Download the latest version
