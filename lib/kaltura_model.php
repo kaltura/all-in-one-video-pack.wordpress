@@ -4,7 +4,6 @@ class KalturaModel
 	function getKshow($kalturaClient, $kshowId) 
 	{
 		$sessionUser = kalturaGetSessionUser();
-		$ks = $kalturaClient->getKs();
 		$result = $kalturaClient->getKShow($sessionUser, $kshowId, true);
 		return @$result["result"]["kshow"];
 	}
@@ -52,6 +51,23 @@ class KalturaModel
 	{
 		$sessionUser = kalturaGetSessionUser();
 		return $kalturaAdminClient->deleteKShow($sessionUser, $kshowId);
+	}
+	
+	function addWidget($kalturaClient, $kshowId, $uiConfId) 
+	{
+		$sessionUser = kalturaGetSessionUser();
+		$widget = new KalturaWidget();
+		$widget->kshowId = $kshowId;
+		$widget->uiConfId = $uiConfId;
+		$result = $kalturaClient->addwidget($sessionUser, $widget);
+		return @$result["result"]["widget"]["id"];
+	}
+	
+	function getWidget($kalturaClient, $widgetId) 
+	{
+		$sessionUser = kalturaGetSessionUser();
+		$result = $kalturaClient->getWidget($sessionUser, $widgetId);
+		return @$result["result"]["widget"];
 	}
 	
 	function pingTest($kalturaClient)

@@ -8,6 +8,14 @@ Author: Kaltura
 Author URI: http://corp.kaltura.com
 */
 
+define("KALTURA_PLUGIN_FILE", __FILE__);
+define("KALTURA_WIDGET_TABLE", "kaltura_widgets");
+
+define("KALTURA_WIDGET_STATUS_UNPUBLISHED", 0);
+define("KALTURA_WIDGET_STATUS_PUBLISHED", 1);
+
+define("KALTURA_WIDGET_TYPE_COMMENT", "comment");
+define("KALTURA_WIDGET_TYPE_POST", "post");
 
 // backward compatibility for user who have the kalture-interactive-video installed and now trying to activate the new all-in-one-video-pack
 if (WP_ADMIN) { // this check should run on admin pages only

@@ -1,7 +1,7 @@
 <?php
 	if (!defined("WP_ADMIN"))
 		die();
-		
+	
 	$action = @$_GET['kaction'];
 	if (!get_option('kaltura_partner_id'))
 	{
@@ -15,6 +15,7 @@
 	{
 		require_once("kaltura_model.php");
 		require_once("kaltura_helpers.php");
+		require_once("kaltura_wp_model.php");
 		
 		if ($_GET["page"] == "interactive_video_library")
 			$isLibrary = true;
@@ -65,14 +66,11 @@
 					$addPermission = $_POST["addPermission"];
 					$editPermission = $_POST["editPermission"];
 					
-					// add widget
+					// get player info by its type 
 					$player = KalturaHelpers::getPlayerByType($type);
-					$sessionUser = kalturaGetSessionUser();
-					$widget = new KalturaWidget();
-					$widget->kshowId = $kshowId;
-					$widget->uiConfId = $player["uiConfId"];
-					$result = $kalturaClient->addwidget($sessionUser, $widget);
-					$widgetId = $result["result"]["widget"]["id"];
+					
+					// add widget
+					$widgetId = KalturaModel::addWidget($kalturaClient, $kshowId, $player["uiConfId"]);
 					
 					$viewData["playerWidth"] = $width;
 					$viewData["playerHeight"] = KalturaHelpers::calculatePlayerHeight($type, $width);

@@ -24,6 +24,16 @@ function kalturaGetServerUrl() {
 	return $url;
 }
 
+function kalturaGetCdnUrl() {
+	$url = KALTURA_CDN_URL;
+	
+	// remove the last slash from the url
+	if (substr($url, strlen($url) - 1, 1) == '/')
+		$url = substr($url, 0, strlen($url) - 1);
+		
+	return $url;
+}
+
 function kalturaGetSessionUser() {
 	global $user_ID, $user_identity;
 	$kaltura_user = new KalturaSessionUser();
@@ -39,7 +49,10 @@ function kalturaGetSessionUser() {
 }
 
 function kalturaGetPluginUrl() {
-	$plugin_url = get_settings('siteurl') . '/wp-content/plugins/all-in-one-video-pack';   
+	$plugin_name = plugin_basename(__FILE__);   
+	$indx = strpos($plugin_name, "/");
+	$plugin_dir = substr($plugin_name, 0, $indx);
+	$plugin_url = get_settings('siteurl') . '/wp-content/plugins/' . $plugin_dir;
 	return $plugin_url;
 }
 

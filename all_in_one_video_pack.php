@@ -51,13 +51,156 @@ if (KalturaHelpers::compareWPVersion("2.6", "<")) {
 add_filter('mce_external_plugins', 'kaltura_add_mce_plugin'); // add the kaltura mce plugin
 add_filter('tiny_mce_version', 'kaltura_mce_version');
 
-add_action('activate_all-in-one-video-pack/interactive_video.php', 'kaltura_activate');
+/*
+ * Occures when publishing the post, and on every save while the post is published
+ * 
+ * @param $postId
+ * @param $post
+ * @return unknown_type
+ */
+function kaltura_publish_post($post_id, $post)
+{
+	require_once("lib/kaltura_wp_model.php");
 
+	$content = $post->post_content;
+
+	$shortcode_tags = array();
+	
+	global $kaltura_post_id, $kaltura_widgets_in_post;
+	$kaltura_post_id = $post_id;
+	$kaltura_widgets_in_post = array();
+	
+	function kaltura_find_post_widgets($args) {
+		$wid = @$args["wid"];
+		if (!$wid)
+			return;
+		global $kaltura_post_id;
+		global $kaltura_widgets_in_post;
+		$kaltura_widgets_in_post[] = $wid; // later will use it to delete the widgets that are not in the post 
+		
+		$widget = array();
+		$widget["id"] = $wid;
+		$widget["type"] = KALTURA_WIDGET_TYPE_POST;
+		$widget["add_permissions"] = $args["addpermission"];
+		$widget["edit_permissions"] = $args["editpermission"];
+		$widget["post_id"] = $kaltura_post_id;
+		$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
+
+		$widget = KalturaWPModel::insertOrUpdateWidget($widget);
+	}
+	
+	KalturaHelpers::runKalturaShortcode($content, "kaltura_find_post_widgets");
+
+	
+	// delete all widgets that doesn't exists in the post anymore
+	KalturaWPModel::deleteUnusedWidgetsByPost($kaltura_post_id, $kaltura_widgets_in_post);
+}
+
+add_action("publish_post", "kaltura_publish_post", 10, 2);
+
+
+/*
+ * Occures on evey status change, we need to mark our widgets as unpublished when status of the post is not publish
+ * 
+ * @param $oldStatus
+ * @param $newStatus
+ * @param $post
+ * @return unknown_type
+ */
+function kaltura_post_status_change($new_status, $old_status, $post)
+{
+	// get all widgets linked to this post and mark them as not published
+	$statuses = array("inherit", "publish");
+	// we don't handle "inherit" status because it not the real post, but the revision
+	// we don't handle "publish" status because it's handled in: "kaltura_publish_post"
+	if (!in_array($new_status, $statuses))
+	{
+		require_once("lib/kaltura_wp_model.php");
+		$widgets = KalturaWPModel::getWidgetsByPost($post->ID);
+		KalturaWPModel::unpublishWidgets($widgets);
+	}
+}
+
+add_action("transition_post_status", "kaltura_post_status_change", 10, 3); 
+
+
+/*
+ * Occures when comment status is changed
+ * @param $comment_id
+ * @param $status
+ * @return unknown_type
+ */
+function kaltura_set_comment_status($comment_id, $status)
+{
+	require_once("lib/kaltura_wp_model.php");
+
+	switch ($status)
+	{
+		case "approve":
+			kaltura_comment_post($comment_id, 1);
+			break;
+		default:
+			KalturaWPModel::deleteWidgetsByComment($comment_id);
+	}
+}
+
+add_action("wp_set_comment_status", "kaltura_set_comment_status", 10, 2);
+
+
+/*
+ * Occured when posting a comment
+ * @param $comment_id
+ * @param $approved
+ * @return unknown_type
+ */
+function kaltura_comment_post($comment_id, $approved)
+{
+	if ($approved) 
+	{
+		require_once("lib/kaltura_wp_model.php");
+		
+
+		global $kaltura_comment_id;
+		$kaltura_comment_id = $comment_id;
+		function kaltura_find_comment_widgets($args)
+		{
+			$wid = @$args["wid"];
+			if (!$wid)
+				return;
+			
+			global $kaltura_comment_id;
+			// add new widget
+			$widget = array();
+			$widget["id"] = $wid;
+			$widget["type"] = KALTURA_WIDGET_TYPE_COMMENT;
+			$widget["comment_id"] = $kaltura_comment_id;
+			$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
+			
+			$widget = KalturaWPModel::insertOrUpdateWidget($widget);
+		}
+		
+		$comment = get_comment($comment_id);
+		KalturaHelpers::runKalturaShortcode($comment->comment_content, "kaltura_find_comment_widgets");
+	}
+}
+
+add_action("comment_post", "kaltura_comment_post", 10, 2);
+
+/*
+ * Occures when the plugin is activated 
+ * @return unknown_type
+ */
 function kaltura_activate()
 {
 	update_option("kaltura_default_player_type", "whiteblue");
 	update_option("kaltura_comments_player_type", "whiteblue");
+
+	require_once("kaltura_db.php");
+	kaltura_install_db();
 }
+
+register_activation_hook(KALTURA_PLUGIN_FILE, 'kaltura_activate');
+
 
 function kaltura_admin_page()
 {
@@ -91,8 +234,10 @@ function kaltura_the_content($content) {
 
 function kaltura_the_comment($content) {
 	global $shortcode_tags;
-	// we only what to run our shortcode and not all
+	
+	// we want to run our shortcode and not all
 	$shortcode_tags_backup = $shortcode_tags;
+	$shortcode_tags = array();
 	
 	add_shortcode('kaltura-widget', 'kaltura_shortcode');
 	$content = do_shortcode($content);
@@ -128,13 +273,13 @@ function kaltura_footer() {
 	$plugin_url = kalturaGetPluginUrl();
 	echo ' 
 	<script type="text/javascript">
-		function handleGotoContribWizard (kshowId, pd_extraData) {
-			KalturaModal.openModal("contribution_wizard", "' . $plugin_url . '/page_contribution_wizard_front_end.php?kshowid=" + kshowId, { width: 680, height: 360 } );
+		function handleGotoContribWizard (widgetId) {
+			KalturaModal.openModal("contribution_wizard", "' . $plugin_url . '/page_contribution_wizard_front_end.php?wid=" + widgetId, { width: 680, height: 360 } );
 			jQuery("#contribution_wizard").addClass("modalContributionWizard");
 		}
 	
-		function handleGotoEditorWindow (kshowId, pd_extraData) {
-			KalturaModal.openModal("simple_editor", "' . $plugin_url . '/page_simple_editor_front_end.php?kshowid=" + kshowId, { width: 890, height: 546 } );
+		function handleGotoEditorWindow (widgetId) {
+			KalturaModal.openModal("simple_editor", "' . $plugin_url . '/page_simple_editor_front_end.php?wid=" + widgetId, { width: 890, height: 546 } );
 			jQuery("#simple_editor").addClass("modalSimpleEditor");
 		}
 	</script>

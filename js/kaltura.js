@@ -216,7 +216,11 @@ Kaltura = {
 	compareWPVersion: function (compareVersion, operator) {
 		// split to arrays
 		var compareVersionArray = compareVersion.split(".");
-		var wordpressVersionArray = Kaltura_WPVersion.split(".");
+		
+		// remove all character except for "0-9" and "." (and hope that we won't have to add special support for beta and rc versions)
+		var wpVersion = Kaltura_WPVersion.replace(/[^0-9.]/g,"");
+		var wordpressVersionArray = wpVersion.split(".");
+		
 		
 		var maxLen = 0; 
 		
@@ -290,5 +294,39 @@ Kaltura = {
 		}
 		
 		return false;
+	},
+	
+	switchSidebarTab: function (sender, type, page) {
+		var menu = jQuery("#kaltura-sidebar-menu");
+		if  (menu.find("li[@class=selected]").get(0) == jQuery(sender).parent(0).get(0))
+			return; // so we won't load the selected tab
+		
+		var pageToLoad = "";
+		if (type == "comments") 
+			pageToLoad = "ajax_get_video_comments.php";
+		else if (type == "posts")
+			pageToLoad = "ajax_get_video_posts.php";
+		else
+			return
+		
+		if (page)
+			pageToLoad = pageToLoad + "?page=" + page;
+			
+		menu.find("li").removeClass("selected"); // unselect all
+		jQuery(sender).parent().addClass("selected"); // select the current
+		
+		
+		jQuery("#kaltura-sidebar-container").empty();
+		jQuery("#kaltura-loader").show();
+		
+		jQuery.get(
+				Kaltura_PluginUrl + "/" + pageToLoad,
+				null,
+				function (data, status) {
+					jQuery("#kaltura-loader").hide();
+					jQuery("#kaltura-sidebar-container").append(data);
+				},
+				"html"
+			);
 	}
 }

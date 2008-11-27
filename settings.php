@@ -1,5 +1,6 @@
 <?php
 	define("KALTURA_SERVER_URL", "http://www.kaltura.com");
+	define("KALTURA_CDN_URL", "http://cdn.kaltura.com");
 	define("KALTURA_ANONYMOUS_USER_ID", "Anonymous");
 	define("KALTURA_KSE_UICONF", 502);
 	define("KALTURA_KCW_UICONF", 501);

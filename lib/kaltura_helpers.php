@@ -181,7 +181,7 @@ class KalturaHelpers
 	function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height= 180, $version = 100000)
 	{
 		$config = kalturaGetServiceConfiguration();
-		$url = kalturaGetServerUrl();
+		$url = kalturaGetCdnUrl();
 		$url .= "/p/" . $config->partnerId;
 		$url .= "/sp/" . $config->subPartnerId;
 		$url .= "/thumbnail";
@@ -214,9 +214,10 @@ class KalturaHelpers
 	function addWPVersionJS()
 	{
 		global $wp_version;
-		echo("<script type='text/javascript'>");
-		echo('var Kaltura_WPVersion = "' . $wp_version . '";');
-		echo("</script>");
+		echo("<script type='text/javascript'>\n");
+		echo('var Kaltura_WPVersion = "' . $wp_version . '";'."\n");
+		echo('var Kaltura_PluginUrl = "' . kalturaGetPluginUrl() . '";'."\n");
+		echo("</script>\n");
 	}
 	
 	function getPlayers() 
@@ -261,6 +262,21 @@ class KalturaHelpers
 		}
 		
 		return round($height);
+	}
+	
+	function runKalturaShortcode($content, $callback)
+	{
+		global $shortcode_tags;
+		
+		// we will backup the shortcode array, and run only our shortcode
+		$shortcode_tags_backup = $shortcode_tags;
+		
+		add_shortcode('kaltura-widget', $callback);
+			
+		$content = do_shortcode($content);
+		
+		// now we can restore the original shortcode list
+		$shortcode_tags = $shortcode_tags_backup;
 	}
 }
 ?>

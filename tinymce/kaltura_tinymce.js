@@ -132,11 +132,10 @@
 
 				// build the image tag
 				contentData += '<img ';
-				contentData += 'id="wid' + attribs["wid"] + '" ';
 				contentData += 'src="' + (this._url + '/../thumbnails/placeholder.gif') + '" ';
 				contentData += 'title="Kaltura" ';
 				contentData += 'alt="Kaltura" ';
-				contentData += 'class="kaltura_item align' + attribs['align'] + ' kaltura_add_' + attribs['addpermission'] + ' kaltura_edit_' + attribs['editpermission'] + '" '; 
+				contentData += 'class="kaltura_item align' + attribs['align'] + ' kaltura_add_' + attribs['addpermission'] + ' kaltura_edit_' + attribs['editpermission'] + ' kaltura_id_' + attribs["wid"] + '" '; 
 				contentData += 'name="mce_plugin_kaltura_desc" ';
 				contentData += 'width="' + attribs['width'] + '" ';
 				contentData += 'height="' + attribs['height'] + '" ';
@@ -169,20 +168,9 @@
 						continue;
 					}
 					
-					endPos += this._replaceTagEnd.length;
-					var contentDataEnd = contentData.substr(endPos);
-					contentData = contentData.substr(0, startPos);
-					
-					var wid = attribs['id'].replace('wid', '');
-
-					contentData += this._tagStart + ' ';
-					contentData += 'wid="' + wid + '" '; // widget id
-					
-					contentData += 'width="' + attribs['width'] + '" ';
-					contentData += 'height="' + attribs['height'] + '" ';
-					
-					if (attribs['style'])
-						contentData += 'style="' + attribs['style'] + '" ';
+					var wid = "";
+					var addpermission = "";
+					var editpermission = "";
 					
 					// get the attribs that we saved in the class name
 					var classAttribs = className.split(" "); 
@@ -202,19 +190,40 @@
 								classAttrArr = classAttribs[j].match(/kaltura_(\w*)_(\w*)/);
 								if (classAttrArr && classAttrArr.length == 3) {
 									switch(classAttrArr[1]) {
+										case 'id':
+											if (classAttrArr[2] != "")
+												wid = classAttrArr[2];
+											break;
 										case 'add': 
 											if (classAttrArr[2] != "")
-												contentData += 'addpermission="' + classAttrArr[2] + '" ';
+												addpermission = classAttrArr[2];
 											break;
 										case 'edit':
 											if (classAttrArr[2] != "")
-												contentData += 'editpermission="' + classAttrArr[2] + '" ';
+												editpermission = classAttrArr[2];
 											break;
 									}
 								}
 								break;
 						}
 					}
+					
+					endPos += this._replaceTagEnd.length;
+					var contentDataEnd = contentData.substr(endPos);
+					contentData = contentData.substr(0, startPos);
+					
+
+					contentData += this._tagStart + ' ';
+					contentData += 'wid="' + wid + '" '; // widget id
+					
+					contentData += 'width="' + attribs['width'] + '" ';
+					contentData += 'height="' + attribs['height'] + '" ';
+					
+					if (attribs['style'])
+						contentData += 'style="' + attribs['style'] + '" ';
+					
+					contentData += 'addpermission="' +  addpermission + '" ';
+					contentData += 'editpermission="' +  editpermission + '" ';
 					
 					if (attribs['align'])
 						contentData += 'align="' + attribs['align'] + '" '; // align
