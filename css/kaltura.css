@@ -7,7 +7,8 @@ html, body{ height:100%; }
 .kalturaPager{ text-align: center; }
 input#kaltura_video_comment{ margin-top: 0; }
 
-.poweredByKaltura { font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; font-size: 9px; height: 12px; text-align: center; overflow: hidden; line-height: 10px; }
+.poweredByKaltura { font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; font-size: 9px; height: 12px; text-align: right; overflow: hidden; line-height: 11px; }
+.poweredByKaltura div { padding-right: 5px; }
 
 /*-------------------------------- 
 	Admin
@@ -108,7 +109,7 @@ table.kalturaFormTable td{ border: 0; }
 	#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li { margin: 0; padding: 10px 0; background: none; }
 	#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li:before { content: ""; }
 		#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li a { cursor: pointer; white-space: nowrap; }
-		#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li.selected a { text-decoration: underline; }
+		#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li a.selected { font-weight: bold; }
 	
 #all-in-one-video-pack-widget ul#kaltura-items { margin: 0; }  
 	#all-in-one-video-pack-widget ul#kaltura-items li { background: none; text-align: center; margin: 0; margin-bottom: 10px; }

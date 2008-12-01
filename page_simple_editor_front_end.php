@@ -15,7 +15,7 @@
 	// check widget permissions at wordpress db
 	$widgetDb = KalturaWPModel::getWidget($widgetId);
 	if (!$widgetDb)
-		wp_die(__('The interactive video was not found.'));
+		wp_die(__('The interactive video was not found (Maybe the post was not published yet?).'));
 	
 	if (!KalturaHelpers::userCanEdit((string)$widgetDb["edit_permissions"]))
 		wp_die(__('You do not have sufficient permissions to access this page.'));

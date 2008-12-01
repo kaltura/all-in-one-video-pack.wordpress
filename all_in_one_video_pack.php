@@ -91,7 +91,6 @@ function kaltura_publish_post($post_id, $post)
 	
 	KalturaHelpers::runKalturaShortcode($content, "kaltura_find_post_widgets");
 
-	
 	// delete all widgets that doesn't exists in the post anymore
 	KalturaWPModel::deleteUnusedWidgetsByPost($kaltura_post_id, $kaltura_widgets_in_post);
 }
@@ -429,7 +428,7 @@ function kaltura_shortcode($attrs) {
 	$link .= '<a href="http://corp.kaltura.com/solutions/overview">flv player - video editor - video plugin</a>';
 	$link .= '<a href="http://corp.kaltura.com/download">video blog + wordpress plugin + video remix</a>';
 	
-	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><a href="http://corp.kaltura.com/wordpress_video_plugin?general&campaign=wordpress_plugin_HTML_link" target="_blank">All in One Video Pack</a> powered by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div>';
+	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/wordpress_video_plugin?general&campaign=wordpress_plugin_HTML_link" target="_blank">Video player</a> by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div></div>';
 	
 	if ($isComment)
 	{
@@ -532,11 +531,17 @@ function _kaltura_get_embed_options($params) {
 			
 		// check the permissions
 		if (KalturaHelpers::userCanEdit(@$params["editpermission"]))
+		{
 			$layoutId = "full";
+		}
 		else if (KalturaHelpers::userCanAdd(@$params["addpermission"]))
+		{
 			$layoutId = "addOnly";
-		else 
+		}
+		else
+		{ 
 			$layoutId = "playerOnly";
+		}
 			
 		if ($params["size"] == "large_wide_screen")  // FIXME: temp hack
 			$layoutId .= "&wideScreen=1";

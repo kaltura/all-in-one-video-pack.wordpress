@@ -11,8 +11,7 @@
 		"whiteblue" => 
 			array(
 				"name" => "White/Blue", 
-				"uiConfId" => 510,
-				"previewWidgetId" => 511,
+				"uiConfId" => 520,
 				"horizontalSpacer" => 10,
 				"verticalSpacer" => 64,
 				"videoAspectRatio" => "4:3",
@@ -21,8 +20,7 @@
 		"dark" => 
 			array(
 				"name" => "Dark", 
-				"uiConfId" => 512,
-				"previewWidgetId" => 513,
+				"uiConfId" => 521,
 				"horizontalSpacer" => 10,
 				"verticalSpacer" => 64,
 				"videoAspectRatio" => "4:3",
@@ -31,8 +29,7 @@
 		"grey" => 
 			array(
 				"name" => "Grey", 
-				"uiConfId" => 514,
-				"previewWidgetId" => 515,
+				"uiConfId" => 522,
 				"horizontalSpacer" => 10,
 				"verticalSpacer" => 64,
 				"videoAspectRatio" => "4:3",

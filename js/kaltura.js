@@ -298,7 +298,7 @@ Kaltura = {
 	
 	switchSidebarTab: function (sender, type, page) {
 		var menu = jQuery("#kaltura-sidebar-menu");
-		if  (menu.find("li[@class=selected]").get(0) == jQuery(sender).parent(0).get(0))
+		if  (menu.find("a[@class=selected]").get(0) == sender)
 			return; // so we won't load the selected tab
 		
 		var pageToLoad = "";
@@ -312,8 +312,8 @@ Kaltura = {
 		if (page)
 			pageToLoad = pageToLoad + "?page=" + page;
 			
-		menu.find("li").removeClass("selected"); // unselect all
-		jQuery(sender).parent().addClass("selected"); // select the current
+		menu.find("a").removeClass("selected"); // unselect all
+		jQuery(sender).addClass("selected"); // select the current
 		
 		
 		jQuery("#kaltura-sidebar-container").empty();

@@ -40,8 +40,7 @@
 			echo '</a>';
 			echo '</div>';
 			echo 'Reply to <a href="'.get_permalink($post_id).'">'.$post->post_title.'</a><br />';
-			echo $comment->comment_author . "<br />";
-			echo mysql2date("F jS, Y", $comment->comment_date);
+			echo $comment->comment_author . ", " . mysql2date("M j", $comment->comment_date);
 			echo '</li>';
 		}
 		echo '</ul>';
@@ -49,13 +48,13 @@
 		echo '<ul class="kaltura-sidebar-pager">';
 		echo '	<li>';
 		if (!$first_page)
-			echo '<a onclick="Kaltura.switchSidebarTab(this, \'comments\','.($page - 1).');">Previous</a>';
+			echo '<a onclick="Kaltura.switchSidebarTab(this, \'comments\','.($page - 1).');">Newer</a>';
 		else
 			echo '&nbsp;';
 		echo '	</li>';
 		echo '	<li>';
 		if (!$last_page)
-			echo '<a onclick="Kaltura.switchSidebarTab(this, \'comments\','.($page + 1).');">Next</a>';
+			echo '<a onclick="Kaltura.switchSidebarTab(this, \'comments\','.($page + 1).');">Older</a>';
 		else
 			echo '&nbsp;';
 		echo '	</li>';
@@ -63,7 +62,7 @@
 	}
 	else
 	{
-		echo 'No Video Posts';
+		echo 'No video comments yet';
 	}
 	echo '</div>';
 ?>

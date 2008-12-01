@@ -113,7 +113,8 @@ class KalturaWPModel
 		}
 		
 		$query = $wpdb->prepare("DELETE FROM " . $table . " WHERE post_id = %d", $post_id);
-		$query .= " AND id NOT IN (".implode(", ", $wid_ids).")";
+		if (count($wid_ids) > 0) 
+			$query .= " AND id NOT IN (".implode(", ", $wid_ids).")";
 
 		$wpdb->query($query);
 	}

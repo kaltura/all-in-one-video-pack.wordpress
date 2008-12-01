@@ -42,11 +42,13 @@ class AllInOneVideoWidget
 
         echo $before_widget;
         echo $before_title;
-        echo 'Title';
+        echo 'Recent Videos';
         echo $after_title;
         echo '<ul id="kaltura-sidebar-menu">' . "\n";
-	    echo '    <li style="float:right;"><a id="kaltura-comments-button" onclick="Kaltura.switchSidebarTab(this, \'comments\');">'.__("Video Comments").'</a></li>' . "\n";
-	    echo '    <li><a id="kaltura-posts-button" onclick="Kaltura.switchSidebarTab(this, \'posts\');">'.__("Video Posts").'</a></li>' . "\n";
+	    echo '<li>';
+	    echo '<a id="kaltura-posts-button" onclick="Kaltura.switchSidebarTab(this, \'posts\');">'.__("Posted Videos").'</a> | ' . "\n";
+	    echo '<a id="kaltura-comments-button" onclick="Kaltura.switchSidebarTab(this, \'comments\');">'.__("Video Comments").'</a>';
+	    echo '</li>' . "\n";
         echo '</ul>' . "\n";
         
         echo '<div id="kaltura-loader"><img src="'.kalturaGetPluginUrl().'/images/loader.gif" alt="Loading..." /></div>';

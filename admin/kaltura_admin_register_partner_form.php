@@ -4,11 +4,12 @@
 		
 	if (@$_POST['is_postback'] == "postback")
 	{
-		$blogName 		= $_POST['blog_name'];
-		$adminName 		= $_POST['admin_name'];
-		$adminEmail 	= $_POST['admin_email'];
-		$webSiteUrl 	= $_POST['web_site_url'];
-		$agreeToTerms 	= $_POST['agree_to_terms'];
+		$blogName 			= $_POST['blog_name'];
+		$adminName 			= $_POST['admin_name'];
+		$adminEmail 		= $_POST['admin_email'];
+		$webSiteUrl 		= $_POST['web_site_url'];
+		$agreeToTerms 		= $_POST['agree_to_terms'];
+		$contentCategory 	= $_POST['content_category'];
 	
 		if ($agreeToTerms)
 		{
@@ -19,6 +20,8 @@
 			$partner->adminEmail = $adminEmail;
 			global $wp_version;
 			$partner->description = "Wordpress all-in-one plugin|".$wp_version;
+			$partner->type = "101";
+			$partner->contentCategory = $contentCategory;
 	
 			$sessionUser = kalturaGetSessionUser();
 			$config = kalturaGetServiceConfiguration();
@@ -152,6 +155,34 @@
 			<tr valign="top">
 				<th scope="row"><?php _e("Website URL"); ?>:</th>
 				<td><input type="text" id="web_site_url" name="web_site_url" value="<?php echo form_option('home'); ?>" size="40"" /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php _e("Content Category"); ?>:</th>
+				<td>
+					<select id="content_category" name="content_category" value="">
+						<option selected="selected" value="unknown">What is the topic of your blog?</option>
+						<option value="Arts &amp; Literature">Arts &amp; Literature</option>
+						<option value="Automotive">Automotive</option>
+						<option value="Business">Business</option>
+						<option value="Comedy">Comedy</option>
+						<option value="Education">Education</option>
+						<option value="Entertainment">Entertainment</option>
+						<option value="Film &amp; Animation">Film &amp; Animation</option>
+						<option value="Gaming">Gaming</option>
+						<option value="Howto &amp; Style">Howto &amp; Style</option>
+						<option value="Lifestyle">Lifestyle</option>
+						<option value="Men">Men</option>
+						<option value="Music">Music</option>
+						<option value="News &amp; Politics">News &amp; Politics</option>
+						<option value="Nonprofits &amp; Activism">Nonprofits &amp; Activism</option>
+						<option value="People &amp; Blogs">People &amp; Blogs</option>
+						<option value="Pets &amp; Animals">Pets &amp; Animals</option>
+						<option value="Science &amp; Technology">Science &amp; Technology</option>
+						<option value="Sports">Sports</option>
+						<option value="Travel &amp; Events">Travel &amp; Events</option>
+						<option value="Women">Women</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<th></th>
