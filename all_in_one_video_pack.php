@@ -423,10 +423,13 @@ function kaltura_shortcode($attrs) {
 	$playerId 		= "kaltura_player_" . $wid;
 	
 	$link = '';
-	$link .= '<a href="http://corp.kaltura.com/technology/video_player">free video player & free video platform</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/">video player, online video, video tools</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/solutions/overview">flv player - video editor - video plugin</a>';
-	$link .= '<a href="http://corp.kaltura.com/download">video blog + wordpress plugin + video remix</a>';
+	$link .= '<a href="http://corp.kaltura.com/">open source video</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/technology/video_player">free video player</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/technology/video_editor">open source editor</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/technology/video_management">video management</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/solutions/overview">online video</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/technology/premium_video_editor">video editor</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/download">video plugin</a><br />';
 	
 	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/wordpress_video_plugin?general&campaign=wordpress_plugin_HTML_link" target="_blank">Video player</a> by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div></div>';
 	

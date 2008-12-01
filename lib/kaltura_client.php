@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /**
-Generated at 30/11 16:12:07
+Generated at 01/12 14:34:13
 **/
 
 require_once("kaltura_client_base.php");
@@ -350,6 +350,8 @@ class KalturaPartner
 	var $notificationsConfig;
 	var $notify;
 	var $allowMultiNotification;
+	var $contentCategories;
+	var $type;
 }
 
 define("KalturaEntryMediaType_ANY","0");
@@ -1474,6 +1476,8 @@ class KalturaClient extends KalturaClientBase
 		$this->addOptionalParam($params, "partner_notificationsConfig", $partner->notificationsConfig);
 		$this->addOptionalParam($params, "partner_notify", $partner->notify);
 		$this->addOptionalParam($params, "partner_allowMultiNotification", $partner->allowMultiNotification);
+		$this->addOptionalParam($params, "partner_contentCategories", $partner->contentCategories);
+		$this->addOptionalParam($params, "partner_type", $partner->type);
 		$this->addOptionalParam($params, "cms_password", $cmsPassword);
 
 		$result = $this->hit("registerpartner", $kalturaSessionUser, $params);
@@ -1822,6 +1826,8 @@ class KalturaClient extends KalturaClientBase
 		$this->addOptionalParam($params, "partner_notificationsConfig", $partner->notificationsConfig);
 		$this->addOptionalParam($params, "partner_notify", $partner->notify);
 		$this->addOptionalParam($params, "partner_allowMultiNotification", $partner->allowMultiNotification);
+		$this->addOptionalParam($params, "partner_contentCategories", $partner->contentCategories);
+		$this->addOptionalParam($params, "partner_type", $partner->type);
 
 		$result = $this->hit("updatepartner", $kalturaSessionUser, $params);
 		return $result;

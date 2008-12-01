@@ -21,7 +21,7 @@
 			global $wp_version;
 			$partner->description = "Wordpress all-in-one plugin|".$wp_version;
 			$partner->type = "101";
-			$partner->contentCategory = $contentCategory;
+			$partner->contentCategories = $contentCategory;
 	
 			$sessionUser = kalturaGetSessionUser();
 			$config = kalturaGetServiceConfiguration();
