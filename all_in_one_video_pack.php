@@ -431,11 +431,11 @@ function kaltura_shortcode($attrs) {
 	$link .= '<a href="http://corp.kaltura.com/technology/premium_video_editor">video editor</a><br />';
 	$link .= '<a href="http://corp.kaltura.com/download">video plugin</a><br />';
 	
-	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/wordpress_video_plugin?general&campaign=wordpress_plugin_HTML_link" target="_blank">Video player</a> by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div></div>';
+	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/technology/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div></div>';
 	
 	if ($isComment)
 	{
-		$thumbnailPlaceHolderUrl = KalturaHelpers::getCommentPlaceholderThumbnailUrl($wid);
+		$thumbnailPlaceHolderUrl = KalturaHelpers::getCommentPlaceholderThumbnailUrl($wid, null, 240, 180, null);
 
 		$embedOptions["flashVars"] .= "&autoPlay=true";
 		$html = '
