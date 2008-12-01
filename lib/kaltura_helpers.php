@@ -193,7 +193,8 @@ class KalturaHelpers
 		$url .= "/height/" . $height;
 		$url .= "/type/2";
 		$url .= "/bgcolor/000000"; 
-		$url .= "/version/" . $version;
+		if ($version !== null)
+			$url .= "/version/" . $version;
 		return $url;
 	}
 	

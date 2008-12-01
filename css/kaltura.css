@@ -105,11 +105,10 @@ table.kalturaFormTable td{ border: 0; }
 ---------------------------------*/
 
 #all-in-one-video-pack-widget #kaltura-loader { display: none; width: 35px; height: 35px; padding: 20px 0; margin: auto; }
-#all-in-one-video-pack-widget ul#kaltura-sidebar-menu { width:100%; margin: 0; padding: 0; }
-	#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li { margin: 0; padding: 10px 0; background: none; }
-	#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li:before { content: ""; }
-		#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li a { cursor: pointer; white-space: nowrap; }
-		#all-in-one-video-pack-widget ul#kaltura-sidebar-menu li a.selected { font-weight: bold; }
+#all-in-one-video-pack-widget #kaltura-sidebar-menu { width:100%; margin: 0; padding: 10px 0; text-align: center; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a { cursor: pointer; white-space: nowrap; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected { font-weight: bold; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected:hover { text-decoration: none; cursor: default; }
 	
 #all-in-one-video-pack-widget ul#kaltura-items { margin: 0; }  
 	#all-in-one-video-pack-widget ul#kaltura-items li { background: none; text-align: center; margin: 0; margin-bottom: 10px; }

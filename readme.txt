@@ -4,7 +4,7 @@ Donate link: http://community.kaltura.org/
 Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, youtube, video responses, video blog, audio, media, myspace, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
 Requires at least: 2.5
 Tested up to: 2.6.3
-Stable tag: 2.0
+Stable tag: 2.1
 
 Easily add full video capabilities to your blog.
 
@@ -19,6 +19,7 @@ Highlights:
 * Easily import all rich media (video, audio, pictures...) from other sites and social networks, such as YouTube, MySpace, Flickr, CCMixter, Jamendo, New York Public Library, any URL on the web etc.; 
 * Allow readers and subscribers to add video and audio comments, and to participate in collaborative videos; 
 * Manage and track interactive videos through the management console; 
+* Sidebar widget displaying thumbnails of recent videos and video comments
 * Complete administrative capabilities. You decide who can add and edit each video; 
 * Supports more than 150 video, audio and image file formats and codecs 
 * Three different video player styles to choose from 
@@ -26,15 +27,13 @@ Highlights:
 * Advanced sharing options for videos 
 * Easy installation that takes just 4 steps and a few minutes. 
 
+This new Version 2.1 includes several fixes and tweaks as well as a cool new widget for the blog sidebar showing all recent videos posted and video comments.
 
-Additional capabilities to be launched in our next version, coming very soon:
-
-* A widget for the blog sidebar showing all recent videos
+Additional capabilities coming soon:
 * The ability to create, manage and display video playlists 
 * Podcast recorder and player 
 * The ability to create video galleries
 * Advanced playing features such as:  subtitles, download button, credits, content discovery, etc.
-
 
 Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://community.kaltura.org/viewforum.php?f=4 
 
@@ -54,13 +53,18 @@ If you are upgrading your current version of the plugin, or if you're upgrading 
 2. Download the latest version
 3. Follow the installation steps above
 
+Installing the Recent Videos Sidebar Widget
+
+1. Activate the All in One Video Pack Sidebar Widget through the ‘Plugins’ menu in the WordPress admin application
+2. Go to Design > Widgets in the WordPress admin application, then click Add to add the Recent Videos Widget to your sidebar 
+Note that videos from earlier versions of the plugin will not show up on the sidebar unless they are reposted, or you can edit them with the Kaltura video editor, resave them, and they will appear in the sidebar.
 
 == Frequently Asked Questions ==
 
 = I installed the plugin, but installation failed after pressing Complete Installation, showing me a text in a red rectangle? =
 
 Cause: Either curl / curl functions is disabled on your server or your hosting blocks API calls to the Kaltura servers.
-Solution 1: Enable curl and it's functions on the server (or have the hosting company enable it for you).
+Solution 1: Enable curl and its functions on the server (or have the hosting company enable it for you).
 Solution 2: Remove any blocking of external calls from the server.
 
 = I can't activate the plugin, it presents an error message after clicking Activate on the plugin list =
@@ -72,12 +76,12 @@ Support for PHP4 was added on version 1.0
 
 == Screenshots ==
 
-1. Blog mainpage with video posts.
-2. Add a video comment.
-3. Management panel Kaltura integration (write a post).
-4. Gallery on management screen.
-5. Player with interactive options of adding assets (photo, video, audio..) to the video and edit.
-6. The plugin settings page.
+1. Blog main page with video posts
+2. Add a video comment
+3. Management panel Kaltura integration (write a post)
+4. Gallery on management screen
+5. Player with interactive options of adding assets (photo, video, audio) to the video and edit
+6. The plugin settings page
 
 == Join the Kaltura Community and Contribute to Open Source Video! ==
 
