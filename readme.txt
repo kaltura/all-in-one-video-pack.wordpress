@@ -30,6 +30,7 @@ Highlights:
 This new Version 2.1 includes several fixes and tweaks as well as a cool new widget for the blog sidebar showing all recent videos posted and video comments.
 
 Additional capabilities coming soon:
+
 * The ability to create, manage and display video playlists 
 * Podcast recorder and player 
 * The ability to create video galleries
@@ -57,6 +58,7 @@ Installing the Recent Videos Sidebar Widget
 
 1. Activate the All in One Video Pack Sidebar Widget through the ‘Plugins’ menu in the WordPress admin application
 2. Go to Design > Widgets in the WordPress admin application, then click Add to add the Recent Videos Widget to your sidebar 
+
 Note that videos from earlier versions of the plugin will not show up on the sidebar unless they are reposted, or you can edit them with the Kaltura video editor, resave them, and they will appear in the sidebar.
 
 == Frequently Asked Questions ==
@@ -64,13 +66,18 @@ Note that videos from earlier versions of the plugin will not show up on the sid
 = I installed the plugin, but installation failed after pressing Complete Installation, showing me a text in a red rectangle? =
 
 Cause: Either curl / curl functions is disabled on your server or your hosting blocks API calls to the Kaltura servers.
+
 Solution 1: Enable curl and its functions on the server (or have the hosting company enable it for you).
+
 Solution 2: Remove any blocking of external calls from the server.
 
 = I can't activate the plugin, it presents an error message after clicking Activate on the plugin list =
 It might be caused due to an old version of PHP.
+
 The Kaltura wp plugin is written for PHP4 and PHP5 with the use of classes and static members, these are not supported on earlier versions of PHP.
+
 Upgrade to PHP5 / later. If upgrading doesn't solve this issue or you already have PHP5 on your server, post the error information on the forum and we'll help you. (http://community.kaltura.org/viewforum.php?f=4).
+
 Support for PHP4 was added on version 1.0
 
 
