@@ -1,7 +1,7 @@
 <?php 
 	ob_start();
-	define('WP_USE_THEMES', false);
-	require('../../../wp-blog-header.php');
+	define('DOING_AJAX', true);
+	require_once('../../../wp-load.php');
 	require_once('settings.php');
 	require_once('lib/common.php');
 	require_once('lib/kaltura_helpers.php');
