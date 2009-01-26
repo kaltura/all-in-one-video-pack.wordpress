@@ -186,7 +186,7 @@
 			</tr>
 			<tr>
 				<th></th>
-				<td><input type="checkbox" name="agree_to_terms" id="agree_to_terms" /> <label for="agree_to_terms">I agree to comply with the <a href="http://www.kaltura.com/index.php/corp/tandc" target="_blank">Kaltura Terms of Use</a></label></td>
+				<td><input type="checkbox" name="agree_to_terms" id="agree_to_terms" /> <label for="agree_to_terms">I agree to comply with the <a href="http://corp.kaltura.com/tandc" target="_blank">Kaltura Terms of Use</a></label></td>
 			</tr>
 		</table>
 		
