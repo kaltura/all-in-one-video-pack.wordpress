@@ -10,7 +10,7 @@ Easily add full video capabilities to your blog.
 
 == Description ==
 
-This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos directly to your post, edit and remix content with an online video editor, enable video responses, manage and track your video content, create playlists and much more...
+This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos directly to your post, edit and remix content with an online video editor, enable video responses, manage and track your video content, create playlists and much more... And Kaltura covers all hosting and streaming costs for FREE up to 10GB.
 
 Highlights:
 
