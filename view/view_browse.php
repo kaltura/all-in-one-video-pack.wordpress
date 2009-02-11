@@ -77,6 +77,8 @@
 
 <script type="text/javascript">
 	jQuery(function () {
-		jQuery('#kalturaBrowse div.submit input').tTips();
+		if (jQuery.fn.tTips) { // in wp2.7, tTips was removed
+			jQuery('#kalturaBrowse div.submit input').tTips();
+		}
 	});
 </script>

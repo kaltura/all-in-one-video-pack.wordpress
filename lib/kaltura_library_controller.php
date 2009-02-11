@@ -85,6 +85,9 @@
 				break;
 			default: // "browse"
 				$kalturaAdminClient = getKalturaClient(true);
+				if (!$kalturaAdminClient)
+					KalturaHelpers::dieWithConnectionErrorMsg();
+					
 				if ($isLibrary)
 					$pageSize = 20;
 				else

@@ -1,11 +1,14 @@
 <?php
-class KalturaWordpressLogger {
-	function log($str) {
+class KalturaWordpressLogger 
+{
+	function log($str) 
+	{
 		//print ($str . "<br />\n");
 	}
 }
 
-function kalturaGetServiceConfiguration() {
+function kalturaGetServiceConfiguration() 
+{
 	$partnerId = get_option('kaltura_partner_id');
 	$subPartnerId = get_option('kaltura_subp_id');
 	$config = new KalturaConfiguration($partnerId, $subPartnerId);
@@ -14,7 +17,8 @@ function kalturaGetServiceConfiguration() {
 	return $config;
 }
 
-function kalturaGetServerUrl() {
+function kalturaGetServerUrl() 
+{
 	$url = KALTURA_SERVER_URL;
 
 	// remove the last slash from the url
@@ -24,7 +28,8 @@ function kalturaGetServerUrl() {
 	return $url;
 }
 
-function kalturaGetCdnUrl() {
+function kalturaGetCdnUrl() 
+{
 	$url = KALTURA_CDN_URL;
 	
 	// remove the last slash from the url
@@ -34,7 +39,8 @@ function kalturaGetCdnUrl() {
 	return $url;
 }
 
-function kalturaGetSessionUser() {
+function kalturaGetSessionUser() 
+{
 	global $user_ID, $user_identity;
 	$kaltura_user = new KalturaSessionUser();
 	
@@ -48,7 +54,8 @@ function kalturaGetSessionUser() {
 	return $kaltura_user;
 }
 
-function kalturaGetPluginUrl() {
+function kalturaGetPluginUrl() 
+{
 	$plugin_name = plugin_basename(__FILE__);   
 	$indx = strpos($plugin_name, "/");
 	$plugin_dir = substr($plugin_name, 0, $indx);

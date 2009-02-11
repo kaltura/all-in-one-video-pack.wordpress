@@ -279,5 +279,16 @@ class KalturaHelpers
 		// now we can restore the original shortcode list
 		$shortcode_tags = $shortcode_tags_backup;
 	}
+	
+	function dieWithConnectionErrorMsg()
+	{
+		echo '
+		<div class="error">
+			<p>
+				<strong>Your connection has failed to reach the Kaltura servers. Please check if your web host blocks outgoing connections and then retry.</strong>
+			</p>
+		</div>';
+		die();
+	}
 }
 ?>

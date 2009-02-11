@@ -69,33 +69,14 @@ function kaltura_publish_post($post_id, $post)
 	global $kaltura_post_id, $kaltura_widgets_in_post;
 	$kaltura_post_id = $post_id;
 	$kaltura_widgets_in_post = array();
-	
-	function kaltura_find_post_widgets($args) {
-		$wid = @$args["wid"];
-		if (!$wid)
-			return;
-		global $kaltura_post_id;
-		global $kaltura_widgets_in_post;
-		$kaltura_widgets_in_post[] = $wid; // later will use it to delete the widgets that are not in the post 
-		
-		$widget = array();
-		$widget["id"] = $wid;
-		$widget["type"] = KALTURA_WIDGET_TYPE_POST;
-		$widget["add_permissions"] = $args["addpermission"];
-		$widget["edit_permissions"] = $args["editpermission"];
-		$widget["post_id"] = $kaltura_post_id;
-		$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
-
-		$widget = KalturaWPModel::insertOrUpdateWidget($widget);
-	}
-	
-	KalturaHelpers::runKalturaShortcode($content, "kaltura_find_post_widgets");
+	KalturaHelpers::runKalturaShortcode($content, "_kaltura_find_post_widgets");
 
 	// delete all widgets that doesn't exists in the post anymore
 	KalturaWPModel::deleteUnusedWidgetsByPost($kaltura_post_id, $kaltura_widgets_in_post);
 }
 
 add_action("publish_post", "kaltura_publish_post", 10, 2);
+add_action("publish_page", "kaltura_publish_post", 10, 2);
 
 
 /*
@@ -157,29 +138,12 @@ function kaltura_comment_post($comment_id, $approved)
 	if ($approved) 
 	{
 		require_once("lib/kaltura_wp_model.php");
-		
 
 		global $kaltura_comment_id;
 		$kaltura_comment_id = $comment_id;
-		function kaltura_find_comment_widgets($args)
-		{
-			$wid = @$args["wid"];
-			if (!$wid)
-				return;
-			
-			global $kaltura_comment_id;
-			// add new widget
-			$widget = array();
-			$widget["id"] = $wid;
-			$widget["type"] = KALTURA_WIDGET_TYPE_COMMENT;
-			$widget["comment_id"] = $kaltura_comment_id;
-			$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
-			
-			$widget = KalturaWPModel::insertOrUpdateWidget($widget);
-		}
 		
 		$comment = get_comment($comment_id);
-		KalturaHelpers::runKalturaShortcode($comment->comment_content, "kaltura_find_comment_widgets");
+		KalturaHelpers::runKalturaShortcode($comment->comment_content, "_kaltura_find_comment_widgets");
 	}
 }
 
@@ -218,20 +182,30 @@ function kaltura_add_mce_plugin($content) {
 	return $content;
 }
 
-function kaltura_mce_version($content) {
+function kaltura_mce_version($content) 
+{
 	return $content . '_k'.kaltura_get_version();
 }
   
-function kaltura_add_admin_menu() {
+function kaltura_add_admin_menu() 
+{
 	add_options_page('All in One Video', 'All in One Video', 8, 'interactive_video', 'kaltura_admin_page');
-	add_management_page('All in One Video Library', 'All in One Video Library', 8, 'interactive_video_library', 'kaltura_library_page');
+	
+	$args = array('All in One Video Library', 'All in One Video Library', 8, 'interactive_video_library', 'kaltura_library_page');
+	// because of the change in wordpress 2.7 menu structure, we move the library page under "Media" tab
+	if (KalturaHelpers::compareWPVersion("2.7", ">=")) 
+		call_user_func_array("add_media_page", $args);
+	else
+		call_user_func_array("add_management_page", $args);
 }
 
-function kaltura_the_content($content) {
+function kaltura_the_content($content) 
+{
 	return _kaltura_replace_tags($content, false);
 }
 
-function kaltura_the_comment($content) {
+function kaltura_the_comment($content) 
+{
 	global $shortcode_tags;
 	
 	// we want to run our shortcode and not all
@@ -247,7 +221,8 @@ function kaltura_the_comment($content) {
 	return $content;
 }
 
-function kaltura_print_js($content) {
+function kaltura_print_js($content) 
+{
 	$content[] = 'kaltura';
 	$content[] = 'jquery';
 	$content[] = 'kaltura_swfobject_1.5';
@@ -257,18 +232,21 @@ function kaltura_print_js($content) {
 	return $content;
 }
 
-function kaltura_register_js() {
+function kaltura_register_js() 
+{
 	$plugin_url = kalturaGetPluginUrl();
 	wp_register_script('kaltura', $plugin_url . '/js/kaltura.js?v'.kaltura_get_version());
 	wp_register_script('kaltura_swfobject_1.5', $plugin_url . '/js/swfobject.js?v'.kaltura_get_version(), array(), '1.5');
 }
 
-function kaltura_head() {
+function kaltura_head() 
+{
 	$plugin_url = kalturaGetPluginUrl();
 	echo('<link rel="stylesheet" href="' . $plugin_url . '/css/kaltura.css?v'.kaltura_get_version().'" type="text/css" />');
 }
 
-function kaltura_footer() {
+function kaltura_footer() 
+{
 	$plugin_url = kalturaGetPluginUrl();
 	echo ' 
 	<script type="text/javascript">
@@ -286,7 +264,8 @@ function kaltura_footer() {
 	';
 }
 
-function kaltura_add_admin_css($content) {
+function kaltura_add_admin_css($content) 
+{
 	$plugin_url = kalturaGetPluginUrl();
 	$content .= '<link rel="stylesheet" href="' . $plugin_url . '/css/kaltura.css?v'.kaltura_get_version().'" type="text/css" />' . "\n";
 	echo $content;
@@ -357,9 +336,8 @@ function kaltura_tab_content()
 	
 		$kalturaClient = getKalturaClient();
 		if (!$kalturaClient)
-		{
-			wp_die(__('Failed to start new session.'));
-		}
+			KalturaHelpers::dieWithConnectionErrorMsg();
+		
 		$ks = $kalturaClient->getKs();
 		
 		$kshowId = "-2";
@@ -392,7 +370,8 @@ function kaltura_tab_browse_content()
 	require_once("lib/kaltura_library_controller.php");
 }
 
-function kaltura_comment_form($post_id) {
+function kaltura_comment_form($post_id) 
+{
 	$user = wp_get_current_user();
 	if (!$user->ID && !KalturaHelpers::anonymousCommentsAllowed())
 	{
@@ -406,7 +385,8 @@ function kaltura_comment_form($post_id) {
 	}
 }
 
-function kaltura_shortcode($attrs) {
+function kaltura_shortcode($attrs) 
+{
 	// for wordpress 2.5, in wordpress 2.6+ shortcodes are striped in rss feedds
 	if (is_feed())
 		return "";
@@ -487,7 +467,8 @@ function kaltura_shortcode($attrs) {
 		
 	return $html;
 }
-function kaltura_get_version() {
+function kaltura_get_version() 
+{
 	$plugin_data = implode( '', file( str_replace('all_in_one_video_pack.php', 'interactive_video.php', __FILE__)));
 	if ( preg_match( "|Version:(.*)|i", $plugin_data, $version ))
 		$version = trim( $version[1] );
@@ -497,7 +478,8 @@ function kaltura_get_version() {
 	return $version;
 }
 
-function _kaltura_get_embed_options($params) {
+function _kaltura_get_embed_options($params) 
+{
 	if (@$params["size"] == "comments") // comments player
 	{
 		if (get_option('kaltura_comments_player_type'))
@@ -592,6 +574,43 @@ function _kaltura_get_embed_options($params) {
 	);
 }
 
+function _kaltura_find_post_widgets($args) 
+{
+	$wid = @$args["wid"];
+	if (!$wid)
+		return;
+	global $kaltura_post_id;
+	global $kaltura_widgets_in_post;
+	$kaltura_widgets_in_post[] = $wid; // later will use it to delete the widgets that are not in the post 
+	
+	$widget = array();
+	$widget["id"] = $wid;
+	$widget["type"] = KALTURA_WIDGET_TYPE_POST;
+	$widget["add_permissions"] = $args["addpermission"];
+	$widget["edit_permissions"] = $args["editpermission"];
+	$widget["post_id"] = $kaltura_post_id;
+	$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
+	
+	$widget = KalturaWPModel::insertOrUpdateWidget($widget);
+}
+
+function _kaltura_find_comment_widgets($args)
+{
+	$wid = @$args["wid"];
+	if (!$wid)
+		return;
+	
+	global $kaltura_comment_id;
+	// add new widget
+	$widget = array();
+	$widget["id"] = $wid;
+	$widget["type"] = KALTURA_WIDGET_TYPE_COMMENT;
+	$widget["comment_id"] = $kaltura_comment_id;
+	$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
+	
+	$widget = KalturaWPModel::insertOrUpdateWidget($widget);
+}
+		
 if ( !get_option('kaltura_partner_id') && !isset($_POST['submit']) && !strpos($_SERVER["REQUEST_URI"], "page=interactive_video")) {
 	function kaltura_warning() {
 		echo "
