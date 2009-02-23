@@ -92,6 +92,7 @@
 					$pageSize = 20;
 				else
 					$pageSize = 18;
+				
 				$page = @$_GET["paged"] ? $_GET["paged"] : 1;
 				$result = KalturaModel::getKshows($kalturaAdminClient, $pageSize, $page);
 				$totalCount = $result["count"];

@@ -4,27 +4,34 @@
 		
 	if (@$_POST['is_postback'] == "postback")
 	{
-		$blogName 			= $_POST['blog_name'];
-		$adminName 			= $_POST['admin_name'];
-		$adminEmail 		= $_POST['admin_email'];
-		$webSiteUrl 		= $_POST['web_site_url'];
-		$agreeToTerms 		= $_POST['agree_to_terms'];
+		$name 						= $_POST['name'];
+		$email 						= $_POST['email'];
+		$webSiteUrl 			= $_POST['web_site_url'];
+		$phoneNumber 			= $_POST['phone_number'];
+		$description 			= $_POST['description'];
 		$contentCategory 	= $_POST['content_category'];
+		$adultContent 		= ($_POST['adult_content'] == "yes" ? "1" : null);
+		$agreeToTerms 		= $_POST['agree_to_terms'];
 	
 		if ($agreeToTerms)
 		{
 			$partner = new KalturaPartner();
-			$partner->name = $blogName;
-			$partner->adminName = $adminName;
+			$partner->name = $name;
+			$partner->adminName = $name;
+			$partner->adminEmail = $email;
 			$partner->url1 = $webSiteUrl;
-			$partner->adminEmail = $adminEmail;
+			$partner->phone = $phoneNumber;
 			global $wp_version;
-			$partner->description = "Wordpress all-in-one plugin|".$wp_version;
-			$partner->type = "101";
+			$partner->description = $description . "\nWordpress all-in-one plugin|" . $wp_version;
 			$partner->contentCategories = $contentCategory;
+			$partner->adultContent = $adultContent;
+			$partner->type = "101";
+			$partner->defConversionProfileType = "wp_default";
 	
 			$sessionUser = kalturaGetSessionUser();
 			$config = kalturaGetServiceConfiguration();
+			$config->partnerId = 0; // when we want to reregister, we should not pass partner id
+			$config->subPartnerId = 0;
 			$kalturaClient 	= new KalturaClient($config);
 			$result = $kalturaClient->registerPartner($sessionUser, $partner);
 
@@ -70,6 +77,8 @@
 		$viewData["profile"] = $profileuser;
 		
 		$config = kalturaGetServiceConfiguration();
+		$config->partnerId = 0; // no need to pass partner id for ping
+		$config->subPartnerId = 0;
 		$kalturaClient = new KalturaClient($config);
 		$viewData["pingOk"] = KalturaModel::pingTest($kalturaClient);
 	}
@@ -139,27 +148,34 @@
 	<h3><?php _e("Get a Partner ID"); ?></h3>
 	<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" />
 		<table class="form-table">
-			<!-- Step 1 -->
 			<tr valign="top">
-				<th scope="row"><?php _e("Blog Name"); ?>:</th>
-				<td><input type="text" id="blog_name" name="blog_name" value="<?php bloginfo('name'); ?>" size="30" readonly="readonly" /></td>
+				<th scope="row"><?php _e("Blog Name"); ?>: *</th>
+				<td><input type="text" id="blog_name" name="blog_name" value="<?php bloginfo('name'); ?>" size="30" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e("Administrator's Name"); ?>:</th>
-				<td><input type="text" id="admin_name" name="admin_name" value="<?php echo $viewData["profile"]->nickname; ?>" size="30" /></td>
+				<th scope="row"><?php _e("Enter Name"); ?>: *</th>
+				<td><input type="text" id="name" name="name" value="<?php echo $viewData["profile"]->nickname; ?>" size="30" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e("Administrator's Email Address"); ?>:</th>
-				<td><input type="text" id="admin_email" name="admin_email" value="<?php echo $viewData["profile"]->user_email; ?>" size="40" /></td>
+				<th scope="row"><?php _e("Enter Email"); ?>: *</th>
+				<td><input type="text" id="email" name="email" value="<?php echo $viewData["profile"]->user_email; ?>" size="50" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e("Website URL"); ?>:</th>
-				<td><input type="text" id="web_site_url" name="web_site_url" value="<?php echo form_option('home'); ?>" size="40"" /></td>
+				<th scope="row"><?php _e("Website URL"); ?>: *</th>
+				<td><input type="text" id="web_site_url" name="web_site_url" value="<?php echo form_option('home'); ?>" size="50" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e("Content Category"); ?>:</th>
+				<th scope="row"><?php _e("Description"); ?>: *</th>
+				<td><textarea id="description" name="description" rows="3" cols="30" onfocus="(!jQuery(this).hasClass('touched')) ? jQuery(this).val('') : null; jQuery(this).addClass('touched');"><?php _e("Please describe how you plan to use Kaltura's video platform"); ?></textarea></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php _e("Phone Number"); ?>:</th>
+				<td><input type="text" id="phone_number" name="phone_number" value="<?php _e("Enter phone number for contact"); ?>" size="30" onfocus="(!jQuery(this).hasClass('touched')) ? jQuery(this).val('') : null; jQuery(this).addClass('touched');" /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php _e("Content Type"); ?>:</th>
 				<td>
-					<select id="content_category" name="content_category" value="">
+					<select id="content_category" name="content_category" style="width: 250px;">
 						<option selected="selected" value="unknown">What is the topic of your blog?</option>
 						<option value="Arts &amp; Literature">Arts &amp; Literature</option>
 						<option value="Automotive">Automotive</option>
@@ -181,16 +197,29 @@
 						<option value="Sports">Sports</option>
 						<option value="Travel &amp; Events">Travel &amp; Events</option>
 						<option value="Women">Women</option>
+						<option value="N/A">N/A</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<th></th>
-				<td><input type="checkbox" name="agree_to_terms" id="agree_to_terms" /> <label for="agree_to_terms">I agree to comply with the <a href="http://corp.kaltura.com/tandc" target="_blank">Kaltura Terms of Use</a></label></td>
+				<th>Do you plan to display adult content?</th>
+				<td>
+					<label><input type="radio" name="adult_content" value="yes" /> Yes</label>
+					<label><input type="radio" name="adult_content" value="no" checked="checked" /> No</label>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2"><br /></th>
+			</tr>
+			<tr>
+				<th colspan="2"><input type="checkbox" name="agree_to_terms" id="agree_to_terms" /> <label for="agree_to_terms">I Accept </label><a href="http://corp.kaltura.com/tandc" target="_blank">Terms of Use</a> *</th>
+			</tr>
+			<tr>
+				<th colspan="2">* Required fields</th>
 			</tr>
 		</table>
 		
-		<p class="submit" style="text-align: left; "><input type="submit" name="Submit" value="<?php _e('Complete installation') ?>" /></p>
+		<p class="submit" style="text-align: left; "><input type="submit" name="Submit" value="<?php _e('Complete installation') ?>" onclick="return validateKalturaForm(); " /></p>
 					
 		<input type="hidden" name="is_postback" value="postback" />
 	</form>

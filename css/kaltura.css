@@ -38,9 +38,16 @@ ul#kalturaBrowse { list-style: none; padding: 0 0 0 5px; margin: 1em 0 0 0; }
 				ul#kalturaBrowse li .submit input.add{ background:url("../images/add_icon.gif") 0 0 no-repeat; }
 				ul#kalturaBrowse li .submit input.edit{ background:url("../images/edit_icon.gif") 0 0 no-repeat; }
 				ul#kalturaBrowse li .submit input.del{ background:url("../images/delete_icon.gif") 0 0 no-repeat; }
+				ul#kalturaBrowse li .submit input.thumb{ background:url("../images/capture_icon.gif") 0 0 no-repeat; }
 				ul#kalturaBrowse li .submit input.edit_video{ background:url("../images/edit_video_icon.gif") 0 0 no-repeat; }
 			ul#kalturaBrowse li .submit a{ color:#004265; }
 	ul#kalturaBrowse li input.sendButton{ width: 9em; }
+
+/* update thumbnail */
+#updateThumbnailFrame { overflow: hidden; }
+	#updateThumbnailFrame .playerWrapper { background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
+		#updateThumbnailFrame .playerWrapper #kplayer { width: 350px; height: 320px; margin: 20px auto 0 auto; }
+	#updateThumbnailFrame .submit { text-align: right; margin-right: 20px; }
 
 /* edit & send tabs */
 #kalturaEditTable{  }

@@ -51,6 +51,9 @@
 					<?php else: ?>
 						<input type="button" title="Edit video" class="edit_video" onclick="window.location = '<?php echo kalturaGetPluginUrl() ?>/page_simple_editor_admin.php?kshowid=<?php echo $kshow["id"]; ?>&backurl=<?php echo urlencode(kalturaGetRequestUrl()); ?>';" />
 					<?php endif; ?>
+					<?php if ($viewData["isLibrary"]): ?>
+						<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo kalturaGetPluginUrl() ?>/page_update_thumbnail.php?kshowid=<?php echo $kshow["id"]; ?>&TB_iframe=true&height=425&width=750"" />
+					<?php endif; ?>
 					<input type="button" title="Delete video" class="del" onclick="deleteKShow('<?php echo $kshow["id"]; ?>');" />
 					<br clear="all" />
 				</div>

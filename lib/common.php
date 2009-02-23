@@ -105,19 +105,19 @@ function kalturaGenerateTabUrl($params)
 {
 	$url = $_SERVER["REQUEST_URI"];
 	
-	if (!@$params["kaction"])
+	if (!isset($params["kaction"]))
 		$params["kaction"] = null;
 		
-	if (!@$params["sendtoeditor"])
+	if (!isset($params["sendtoeditor"]))
 		$params["sendtoeditor"] = null;
 		
-	if (!@$params["kshowid"])
+	if (!isset($params["kshowid"]))
 		$params["kshowid"] = null;
 
-	if (!@$params["paged"])
+	if (!isset($params["paged"]))
 		$params["paged"] = null;
 		
-	if (!@$params["firstedit"])
+	if (!isset($params["firstedit"]))
 		$params["firstedit"] = null;
 		
 	return add_query_arg($params, $url, null);

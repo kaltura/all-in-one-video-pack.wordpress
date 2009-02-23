@@ -33,6 +33,11 @@ add_action('wp_footer', 'kaltura_footer');
 // admin css
 add_filter('admin_head', 'kaltura_add_admin_css'); // print admin css
 
+if (KalturaHelpers::compareWPVersion("2.7", ">="))
+	add_action('load-media_page_interactive_video_library', 'kaltura_library_page_load'); // to enqueue scripts and css
+else
+	add_action('load-manage_page_interactive_video_library', 'kaltura_library_page_load'); // to enqueue scripts and css
+
 // admin menu & tabs
 add_action('admin_menu', 'kaltura_add_admin_menu'); // add kaltura admin menu
 
@@ -174,6 +179,14 @@ function kaltura_admin_page()
 function kaltura_library_page()
 {
 	require_once("lib/kaltura_library_controller.php");
+}
+
+function kaltura_library_page_load()
+{
+	if (KalturaHelpers::compareWPVersion("2.6", ">="))
+		add_thickbox();
+	else
+		wp_enqueue_script('thickbox');
 }
 
 function kaltura_add_mce_plugin($content) {
@@ -403,15 +416,11 @@ function kaltura_shortcode($attrs)
 	$playerId 		= "kaltura_player_" . $wid;
 	
 	$link = '';
-	$link .= '<a href="http://corp.kaltura.com/">open source video</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/technology/video_player">free video player</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/technology/video_editor">open source editor</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/technology/video_management">video management</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/solutions/overview">online video</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/technology/premium_video_editor">video editor</a><br />';
-	$link .= '<a href="http://corp.kaltura.com/download">video plugin</a><br />';
+	$link .= '<a href="http://corp.kaltura.com/technology/video_management">video management</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/solutions/video_solution">video solution</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/technology/video_streaming">video streaming</a>';
 	
-	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/technology/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com" target="_blank">Kaltura</a></div></div>';
+	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/technology/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
 	
 	if ($isComment)
 	{
@@ -450,7 +459,7 @@ function kaltura_shortcode($attrs)
 			$style .= $embedOptions["style"];
 			
 		$html = '
-				<span id="'.$divId.'" style="'.$style.'">'.$link.$powerdByBox.'</span>
+				<span id="'.$divId.'" style="'.$style.'">'.$link.'</span>
 				<script type="text/javascript">
 					var kaltura_swf = new SWFObject("' . $embedOptions["swfUrl"] . '", "' . $playerId . '", "' . $embedOptions["width"] . '", "' . $embedOptions["height"] . '", "9", "#000000");
 					kaltura_swf.addParam("wmode", "opaque");
