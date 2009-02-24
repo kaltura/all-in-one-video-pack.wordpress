@@ -1,3 +1,10 @@
+Version 2.2
+-------------
+* Added option to update video thumbnail via the Library/Browse view
+* Updated registration form
+* Several bug fixes
+* Enhanced default video quality to 800kbs
+
 Version 2.1
 -------------
 * Added sidebar widget displaying thumbnails of recent videos and video comments

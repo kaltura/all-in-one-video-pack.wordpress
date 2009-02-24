@@ -47,7 +47,9 @@ ul#kalturaBrowse { list-style: none; padding: 0 0 0 5px; margin: 1em 0 0 0; }
 #updateThumbnailFrame { overflow: hidden; }
 	#updateThumbnailFrame .playerWrapper { background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
 		#updateThumbnailFrame .playerWrapper #kplayer { width: 350px; height: 320px; margin: 20px auto 0 auto; }
-	#updateThumbnailFrame .submit { text-align: right; margin-right: 20px; }
+	#updateThumbnailFrame .submit { text-align: right; margin-right: 20px; height: 25px; }
+	#updateThumbnailFrame .submit input { float: left; margin-top: 15px; }
+	#updateThumbnailFrame .submit div { float: left; padding: 5px 10px 10px 10px; text-align: left; width: 660px; }
 
 /* edit & send tabs */
 #kalturaEditTable{  }

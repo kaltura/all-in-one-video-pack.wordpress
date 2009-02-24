@@ -24,10 +24,11 @@ Highlights:
 * Supports more than 150 video, audio and image file formats and codecs 
 * Three different video player styles to choose from 
 * Custom sizing of the video player 
+* Update thumbnail of video by selecting frame from video
 * Advanced sharing options for videos 
+* Sidebar widget showing all recent videos posted and video comments.
 * Easy installation that takes just 4 steps and a few minutes. 
 
-This new Version 2.1 includes several fixes and tweaks as well as a cool new widget for the blog sidebar showing all recent videos posted and video comments.
 
 Additional capabilities coming soon:
 

@@ -52,7 +52,11 @@ function update_thumbnail_frame()
 			kalturaSwf.write("kplayer");
 		</script>
 	</div>
+	<div class="text">
+		
+	</div>
 	<div class="submit">
+		<div>Play the video and you will see an "Update thumbnail" button on top of the video.  Click the button on the frame you want to capture, wait for a confirmation message and then click "Done".</div>
 		<input type="button" value="Done" onclick="window.parent.location.reload(); window.parent.tb_remove();" />
 	</div>
 	<?php 
