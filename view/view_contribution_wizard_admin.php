@@ -1,38 +1,40 @@
 <script type="text/javascript">
 
-	var kshowId = null;
+    <?php if ($viewData["entryId"]): ?>
+	var entryId = "<?php echo $viewData["entryId"]; ?>";
+	<?php else: ?>
+	var entryId = null;
+	<?php endif; ?>
+		
+	
 	var topWindow = Kaltura.getTopWindow();
+	
+	topWindow.Kaltura.unbindOverlayClick();
+	
 	function onContributionWizardAfterAddEntry(obj)
 	{
-		if (obj && obj.length > 0 && obj[0].kshowId)
-			kshowId = obj[0].kshowId;
+		if (!entryId)
+		{
+    		if (obj && obj.length > 0 && obj[0].kshowId)
+    			entryId = obj[0].entryId;
+		}
+
+		setTimeout("onContributionWizardAfterAddEntryTimeouted()", 0); // because we are going to remove the flash from the dom
 	}
-	
-	function onContributionWizardClose(modified)
-	{
-		setTimeout("onContributionWizardCloseTimeouted("+modified+");");
-	}
-	
-	function onContributionWizardCloseTimeouted(modified)
+
+	function onContributionWizardAfterAddEntryTimeouted()
 	{
 		jQuery("#kaltura_contribution_wizard_wrapper").empty();
 		
-		if (modified && kshowId)
-		{
-			// go to edit mode
-			var url = "<?php echo kalturaGenerateTabUrl(array("tab" => "kaltura_browse", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>&kshowid="+kshowId;
-			
-			topWindow.Kaltura.restoreModalSize(
-				function () {
-					window.location.href = url
-				}
-			);
-		}
-		else
-		{
-			// timeout needed because we are removing an iframe that is the current caller (this iframe) 
-			setTimeout("topWindow.tb_remove()", 0);
-		}
+		// go to edit mode
+		var url = "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_browse", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>&entryid="+entryId;
+		
+		topWindow.Kaltura.restoreModalSize(
+			function () {
+				topWindow.Kaltura.bindOverlayClick();
+				window.location.href = url
+			}
+		);
 	}
 	
 	// fix mac firefox opacity bug
@@ -62,6 +64,7 @@
 		var tabHref = this.href;
 		topWindow.Kaltura.restoreModalSize(
 			function () {
+				topWindow.Kaltura.bindOverlayClick();
 	      		window.location.href = tabHref;
       		}
       	); 

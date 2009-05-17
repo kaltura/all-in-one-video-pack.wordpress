@@ -5,7 +5,6 @@
 	define('WP_ADMIN', TRUE);
 	auth_redirect();
 	require_once('../settings.php');
-	require_once('../lib/common.php');
 	require_once('../lib/kaltura_helpers.php');
 	
 	if(!function_exists('imagecreatetruecolor') || !function_exists('imagecreatefrompng') || !function_exists('imagecopymerge')) 
@@ -40,7 +39,7 @@
 	imagecopy($im, $bg_image, 0, 0, 0, 0, $placeholder_width, $placeholder_height);
 	
 	// copy with opacity change
-	imagecopymerge($im, $thumbail_image, 5 + ($width - $sourcewidth) / 2, 30 + ($height - $sourceheight) / 2, 0, 0, $sourcewidth, $sourceheight, 50);
+	imagecopymerge($im, $thumbail_image, ($width - $sourcewidth) / 2, 30 + ($height - $sourceheight) / 2, 0, 0, $sourcewidth, $sourceheight, 50);
 	imagecopy($im, $overlay_image, ($placeholder_width - $overlay_width) / 2, ($placeholder_height - $overlay_height) / 2, 0, 0, $overlay_width, $overlay_height);
 	
 	imagedestroy($bg_image);

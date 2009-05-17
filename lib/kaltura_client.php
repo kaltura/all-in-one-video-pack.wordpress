@@ -1,2227 +1,4297 @@
 <?php
-/*
-This file is part of the Kaltura Collaborative Media Suite which allows users
-to do with audio, video, and animation what Wiki platfroms allow them to do with
-text.
-
-Copyright (C) 2006-2008 Kaltura Inc.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-/**
-Generated at 17/02 15:45:49
-**/
-
 require_once("kaltura_client_base.php");
 
-class KalturaEntry
+define("KalturaEntryStatus_ERROR_CONVERTING", -1);
+define("KalturaEntryStatus_IMPORT", 0);
+define("KalturaEntryStatus_PRECONVERT", 1);
+define("KalturaEntryStatus_READY", 2);
+define("KalturaEntryStatus_DELETED", 3);
+define("KalturaEntryStatus_PENDING", 4);
+define("KalturaEntryStatus_MODERATE", 5);
+define("KalturaEntryStatus_BLOCKED", 6);
+
+define("KalturaEntryType_MEDIA_CLIP", 1);
+define("KalturaEntryType_MIX", 2);
+define("KalturaEntryType_PLAYLIST", 5);
+
+define("KalturaLicenseType_UNKNOWN", -1);
+define("KalturaLicenseType_NONE", 0);
+define("KalturaLicenseType_CC25", 1);
+define("KalturaLicenseType_CC3", 2);
+
+define("KalturaMediaType_VIDEO", 1);
+define("KalturaMediaType_IMAGE", 2);
+define("KalturaMediaType_AUDIO", 5);
+
+define("KalturaSourceType_FILE", 1);
+define("KalturaSourceType_WEBCAM", 2);
+define("KalturaSourceType_URL", 5);
+define("KalturaSourceType_SEARCH_PROVIDER", 6);
+
+define("KalturaSearchProviderType_FLICKR", 3);
+define("KalturaSearchProviderType_YOUTUBE", 4);
+define("KalturaSearchProviderType_MYSPACE", 7);
+define("KalturaSearchProviderType_PHOTOBUCKET", 8);
+define("KalturaSearchProviderType_JAMENDO", 9);
+define("KalturaSearchProviderType_CCMIXTER", 10);
+define("KalturaSearchProviderType_NYPL", 11);
+define("KalturaSearchProviderType_CURRENT", 12);
+define("KalturaSearchProviderType_MEDIA_COMMONS", 13);
+define("KalturaSearchProviderType_KALTURA", 20);
+define("KalturaSearchProviderType_KALTURA_USER_CLIPS", 21);
+define("KalturaSearchProviderType_ARCHIVE_ORG", 22);
+define("KalturaSearchProviderType_KALTURA_PARTNER", 23);
+define("KalturaSearchProviderType_METACAFE", 24);
+define("KalturaSearchProviderType_SEARCH_PROXY", 28);
+
+class KalturaMediaEntry extends KalturaObjectBase
 {
-	var $name;
-	var $tags;
-	var $type;
-	var $mediaType;
-	var $source;
-	var $sourceId;
-	var $sourceLink;
-	var $licenseType;
-	var $credit;
-	var $groupId;
-	var $partnerData;
-	var $conversionQuality;
-	var $permissions;
-	var $dataContent;
-	var $desiredVersion;
-	var $url;
-	var $thumbUrl;
-	var $filename;
-	var $realFilename;
-	var $indexedCustomData1;
-	var $thumbOffset;
-	var $mediaId;
-	var $screenName;
-	var $siteUrl;
-	var $description;
-	var $mediaDate;
-	var $adminTags;
+	/**
+	 * Auto generated 10 characters alphanumeric string
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * Entry name
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * Entry description
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * The ID of the user who is the owner of this entry 
+	 *
+	 * @var string
+	 */
+	var $userId = null;
+
+	/**
+	 * Entry tags
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * Entry admin tags can be updated only by administrators and are not visible to the user
+	 *
+	 * @var string
+	 */
+	var $adminTags = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * The type of the entry, this is auto filled by the derived entry object
+	 *
+	 * @var KalturaEntryType
+	 * @readonly
+	 */
+	var $type = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Calculated rank
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $rank = null;
+
+	/**
+	 * The total (sum) of all votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalRank = null;
+
+	/**
+	 * Number of votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $votes = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupId = null;
+
+	/**
+	 * Can be used to store various partner related data as a string 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * Download URL for the entry
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $downloadUrl = null;
+
+	/**
+	 * License type used for this entry
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+	/**
+	 * Number of plays
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $plays = null;
+
+	/**
+	 * Number of views
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * The width in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $width = null;
+
+	/**
+	 * The height in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $height = null;
+
+	/**
+	 * Thumbnail URL
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $thumbnailUrl = null;
+
+	/**
+	 * The duration in seconds
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $duration = null;
+
+	/**
+	 * The media type of the entry
+	 *
+	 * @var KalturaMediaType
+	 * @insertonly
+	 */
+	var $mediaType = null;
+
+	/**
+	 * Override the default conversion quality  
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	var $conversionQuality = null;
+
+	/**
+	 * The source type of the entry 
+	 *
+	 * @var KalturaSourceType
+	 * @readonly
+	 */
+	var $sourceType = null;
+
+	/**
+	 * The search provider type used to import this entry
+	 *
+	 * @var KalturaSearchProviderType
+	 * @readonly
+	 */
+	var $searchProviderType = null;
+
+	/**
+	 * The ID of the media in the importing site
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $searchProviderId = null;
+
+	/**
+	 * The user name used for credits
+	 *
+	 * @var string
+	 */
+	var $creditUserName = null;
+
+	/**
+	 * The URL for credits
+	 *
+	 * @var string
+	 */
+	var $creditUrl = null;
+
+	/**
+	 * The media date extracted from EXIF data (For images) as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $mediaDate = null;
+
+	/**
+	 * The URL used for playback. This is not the download URL.
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $dataUrl = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "userId", $this->userId);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "type", $this->type);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "rank", $this->rank);
+		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
+		$this->addIfNotNull($kparams, "votes", $this->votes);
+		$this->addIfNotNull($kparams, "groupId", $this->groupId);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
+		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
+		$this->addIfNotNull($kparams, "plays", $this->plays);
+		$this->addIfNotNull($kparams, "views", $this->views);
+		$this->addIfNotNull($kparams, "width", $this->width);
+		$this->addIfNotNull($kparams, "height", $this->height);
+		$this->addIfNotNull($kparams, "thumbnailUrl", $this->thumbnailUrl);
+		$this->addIfNotNull($kparams, "duration", $this->duration);
+		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
+		$this->addIfNotNull($kparams, "conversionQuality", $this->conversionQuality);
+		$this->addIfNotNull($kparams, "sourceType", $this->sourceType);
+		$this->addIfNotNull($kparams, "searchProviderType", $this->searchProviderType);
+		$this->addIfNotNull($kparams, "searchProviderId", $this->searchProviderId);
+		$this->addIfNotNull($kparams, "creditUserName", $this->creditUserName);
+		$this->addIfNotNull($kparams, "creditUrl", $this->creditUrl);
+		$this->addIfNotNull($kparams, "mediaDate", $this->mediaDate);
+		$this->addIfNotNull($kparams, "dataUrl", $this->dataUrl);
+		return $kparams;
+	}
 }
 
-class KalturaBatchJob
+class KalturaSearchResult extends KalturaObjectBase
 {
-	var $data;
-	var $status;
-	var $abort;
-	var $checkAgainTimeout;
-	var $progress;
-	var $message;
-	var $description;
-	var $updatesCount;
-	var $processorExpiration;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $keyWords = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaSearchProviderType
+	 */
+	var $searchSource = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaType
+	 */
+	var $mediaType = null;
+
+	/**
+	 * Use this field to pass dynamic data for searching
+	 * For example - if you set this field to "mymovies_$partner_id"
+	 * The $partner_id will be automatically replcaed with your real partner Id
+	 *
+	 * @var string
+	 */
+	var $extraData = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $title = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $thumbUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $url = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $sourceLink = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $credit = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "keyWords", $this->keyWords);
+		$this->addIfNotNull($kparams, "searchSource", $this->searchSource);
+		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
+		$this->addIfNotNull($kparams, "extraData", $this->extraData);
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "title", $this->title);
+		$this->addIfNotNull($kparams, "thumbUrl", $this->thumbUrl);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "url", $this->url);
+		$this->addIfNotNull($kparams, "sourceLink", $this->sourceLink);
+		$this->addIfNotNull($kparams, "credit", $this->credit);
+		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
+		return $kparams;
+	}
 }
 
-class KalturaKShow
+class KalturaMediaEntryFilter extends KalturaObjectBase
 {
-	var $name;
-	var $description;
-	var $tags;
-	var $indexedCustomData3;
-	var $groupId;
-	var $permissions;
-	var $partnerData;
-	var $allowQuickEdit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $userIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $typeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 */
+	var $statusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $statusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $partnerIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $moderationStatusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $moderationStatusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaType
+	 */
+	var $mediaTypeEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $mediaTypeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $mediaDateGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $mediaDateLessThanEqual = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
+		$this->addIfNotNull($kparams, "idIn", $this->idIn);
+		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
+		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
+		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
+		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
+		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
+		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
+		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
+		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
+		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
+		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
+		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
+		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
+		$this->addIfNotNull($kparams, "mediaTypeEqual", $this->mediaTypeEqual);
+		$this->addIfNotNull($kparams, "mediaTypeIn", $this->mediaTypeIn);
+		$this->addIfNotNull($kparams, "mediaDateGreaterThanEqual", $this->mediaDateGreaterThanEqual);
+		$this->addIfNotNull($kparams, "mediaDateLessThanEqual", $this->mediaDateLessThanEqual);
+		return $kparams;
+	}
 }
 
-class KalturaModeration
+class KalturaFilterPager extends KalturaObjectBase
 {
-	var $comments;
-	var $objectType;
-	var $objectId;
-	var $reportCode;
-	var $status;
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $pageSize = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $pageIndex = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "pageSize", $this->pageSize);
+		$this->addIfNotNull($kparams, "pageIndex", $this->pageIndex);
+		return $kparams;
+	}
 }
 
-class KalturaUiConf
+class KalturaMediaListResponse extends KalturaObjectBase
 {
-	var $name;
-	var $objType;
-	var $width;
-	var $height;
-	var $htmlParams;
-	var $swfUrl;
-	var $creationMode;
-	var $swfUrlVersion;
-	var $confFile;
-	var $confVars;
-	var $useCdn;
-	var $tags;
-	var $autoplay;
-	var $automuted;
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaEntries
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
+		return $kparams;
+	}
 }
 
-class KalturaUser
+define("KalturaEditorType_SIMPLE", 1);
+define("KalturaEditorType_ADVANCED", 2);
+
+class KalturaMixEntry extends KalturaObjectBase
 {
-	var $screenName;
-	var $fullName;
-	var $email;
-	var $dateOfBirth;
-	var $aboutMe;
-	var $tags;
-	var $gender;
-	var $country;
-	var $state;
-	var $city;
-	var $zip;
-	var $urlList;
-	var $networkHighschool;
-	var $networkCollege;
-	var $partnerData;
+	/**
+	 * Auto generated 10 characters alphanumeric string
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * Entry name
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * Entry description
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * The ID of the user who is the owner of this entry 
+	 *
+	 * @var string
+	 */
+	var $userId = null;
+
+	/**
+	 * Entry tags
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * Entry admin tags can be updated only by administrators and are not visible to the user
+	 *
+	 * @var string
+	 */
+	var $adminTags = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * The type of the entry, this is auto filled by the derived entry object
+	 *
+	 * @var KalturaEntryType
+	 * @readonly
+	 */
+	var $type = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Calculated rank
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $rank = null;
+
+	/**
+	 * The total (sum) of all votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalRank = null;
+
+	/**
+	 * Number of votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $votes = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupId = null;
+
+	/**
+	 * Can be used to store various partner related data as a string 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * Download URL for the entry
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $downloadUrl = null;
+
+	/**
+	 * License type used for this entry
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+	/**
+	 * Number of plays
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $plays = null;
+
+	/**
+	 * Number of views
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * The width in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $width = null;
+
+	/**
+	 * The height in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $height = null;
+
+	/**
+	 * Thumbnail URL
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $thumbnailUrl = null;
+
+	/**
+	 * The duration in seconds
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $duration = null;
+
+	/**
+	 * Indicates whether the user has submited a real thumbnail to the mix (Not the one that was generated automaticaly)
+	 *
+	 * @var bool
+	 * @readonly
+	 */
+	var $hasRealThumbnail = null;
+
+	/**
+	 * The editor type used to edit the metadata
+	 *
+	 * @var KalturaEditorType
+	 */
+	var $editorType = null;
+
+	/**
+	 * The xml data of the mix
+	 *
+	 * @var string
+	 */
+	var $dataContent = null;
+
+	/**
+	 * The version of the mix
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $version = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "userId", $this->userId);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "type", $this->type);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "rank", $this->rank);
+		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
+		$this->addIfNotNull($kparams, "votes", $this->votes);
+		$this->addIfNotNull($kparams, "groupId", $this->groupId);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
+		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
+		$this->addIfNotNull($kparams, "plays", $this->plays);
+		$this->addIfNotNull($kparams, "views", $this->views);
+		$this->addIfNotNull($kparams, "width", $this->width);
+		$this->addIfNotNull($kparams, "height", $this->height);
+		$this->addIfNotNull($kparams, "thumbnailUrl", $this->thumbnailUrl);
+		$this->addIfNotNull($kparams, "duration", $this->duration);
+		$this->addIfNotNull($kparams, "hasRealThumbnail", $this->hasRealThumbnail);
+		$this->addIfNotNull($kparams, "editorType", $this->editorType);
+		$this->addIfNotNull($kparams, "dataContent", $this->dataContent);
+		$this->addIfNotNull($kparams, "version", $this->version);
+		return $kparams;
+	}
 }
 
-class KalturaWidget
+class KalturaMixEntryFilter extends KalturaObjectBase
 {
-	var $kshowId;
-	var $entryId;
-	var $sourceWidgetId;
-	var $uiConfId;
-	var $customData;
-	var $partnerData;
-	var $securityType;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $userIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $typeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 */
+	var $statusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $statusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $partnerIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $moderationStatusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $moderationStatusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchOr = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
+		$this->addIfNotNull($kparams, "idIn", $this->idIn);
+		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
+		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
+		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
+		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
+		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
+		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
+		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
+		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
+		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
+		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
+		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
+		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
+		return $kparams;
+	}
 }
 
-class KalturaPuserKuser
+class KalturaMixListResponse extends KalturaObjectBase
 {
+	/**
+	 * 
+	 *
+	 * @var KalturaMixEntries
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
+		return $kparams;
+	}
 }
 
-class KalturaPartner
+class KalturaBaseEntry extends KalturaObjectBase
 {
-	var $name;
-	var $url1;
-	var $url2;
-	var $appearInSearch;
-	var $adminName;
-	var $adminEmail;
-	var $description;
-	var $commercialUse;
-	var $landingPage;
-	var $userLandingPage;
-	var $notificationsConfig;
-	var $notify;
-	var $allowMultiNotification;
-	var $contentCategories;
-	var $type;
-	var $phone;
-	var $describeYourself;
-	var $adultContent;
-	var $defConversionProfileType;
+	/**
+	 * Auto generated 10 characters alphanumeric string
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * Entry name
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * Entry description
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * The ID of the user who is the owner of this entry 
+	 *
+	 * @var string
+	 */
+	var $userId = null;
+
+	/**
+	 * Entry tags
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * Entry admin tags can be updated only by administrators and are not visible to the user
+	 *
+	 * @var string
+	 */
+	var $adminTags = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * The type of the entry, this is auto filled by the derived entry object
+	 *
+	 * @var KalturaEntryType
+	 * @readonly
+	 */
+	var $type = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Calculated rank
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $rank = null;
+
+	/**
+	 * The total (sum) of all votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalRank = null;
+
+	/**
+	 * Number of votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $votes = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupId = null;
+
+	/**
+	 * Can be used to store various partner related data as a string 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * Download URL for the entry
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $downloadUrl = null;
+
+	/**
+	 * License type used for this entry
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "userId", $this->userId);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "type", $this->type);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "rank", $this->rank);
+		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
+		$this->addIfNotNull($kparams, "votes", $this->votes);
+		$this->addIfNotNull($kparams, "groupId", $this->groupId);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
+		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
+		return $kparams;
+	}
 }
 
-define("KalturaConvesionProfileFilter_ORDER_BY_CREATED_AT_ASC","+created_at");
-define("KalturaConvesionProfileFilter_ORDER_BY_CREATED_AT_DESC","-created_at");
-define("KalturaConvesionProfileFilter_ORDER_BY_PROFILE_TYPE_ASC","+profile_type");
-define("KalturaConvesionProfileFilter_ORDER_BY_PROFILE_TYPE_DESC","-profile_type");
-define("KalturaConvesionProfileFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaConvesionProfileFilter_ORDER_BY_ID_DESC","-id");
-
-class KalturaConvesionProfileFilter
+class KalturaBaseEntryFilter extends KalturaObjectBase
 {
-	var $equalId;
-	var $greaterThanOrEqualId;
-	var $equalStatus;
-	var $likeName;
-	var $equalProfileType;
-	var $inProfileType;
-	var $equalEnabled;
-	var $equalType;
-	var $equalUseWithBulk;
-	var $equalPartnerId;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $idIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $userIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $typeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 */
+	var $statusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $statusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $createdAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $updatedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $modifiedAtLessThenEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $partnerIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $moderationStatusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $moderationStatusIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsAndAdminTagsAndNameMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $searchTextMatchOr = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
+		$this->addIfNotNull($kparams, "idIn", $this->idIn);
+		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
+		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
+		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
+		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
+		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
+		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
+		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
+		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
+		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
+		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
+		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
+		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
+		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
+		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
+		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
+		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
+		return $kparams;
+	}
 }
 
-class KalturaConversionProfile
+class KalturaBaseEntryListResponse extends KalturaObjectBase
 {
-	var $name;
-	var $profileType;
-	var $width;
-	var $height;
-	var $aspectRatio;
-	var $bypassFlv;
-	var $commercialTranscoder;
-	var $useWithBulk;
-	var $profileTypeSuffix;
+	/**
+	 * 
+	 *
+	 * @var KalturaBaseEntries
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
+		return $kparams;
+	}
 }
 
-define("KalturaBatchJobFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaBatchJobFilter_ORDER_BY_ID_DESC","-id");
+define("KalturaSessionType_USER", 0);
+define("KalturaSessionType_ADMIN", 2);
 
-class KalturaBatchJobFilter
+define("KalturaUiConfObjType_PLAYER", 1);
+define("KalturaUiConfObjType_CONTRIBUTION_WIZARD", 2);
+define("KalturaUiConfObjType_SIMPLE_EDITOR", 3);
+define("KalturaUiConfObjType_ADVANCED_EDITOR", 4);
+define("KalturaUiConfObjType_PLAYLIST", 5);
+define("KalturaUiConfObjType_APP_STUDIO", 6);
+
+define("KalturaUiConfCreationMode_WIZARD", 2);
+define("KalturaUiConfCreationMode_ADVANCED", 3);
+
+class KalturaUiConf extends KalturaObjectBase
 {
-	var $equalId;
-	var $greaterThanOrEqualId;
-	var $equalStatus;
-	var $equalJobType;
-	var $inJobType;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * Name of the uiConf, this is not a primary key
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaUiConfObjType
+	 */
+	var $objType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $objTypeAsString = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $width = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $height = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $htmlParams = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $swfUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $confFilePath = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confFile = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confFileFeatures = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confVars = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	var $useCdn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $swfUrlVersion = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * Enter description here...
+	 *
+	 * @var KalturaUiConfCreationMode
+	 */
+	var $creationMode = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "objType", $this->objType);
+		$this->addIfNotNull($kparams, "objTypeAsString", $this->objTypeAsString);
+		$this->addIfNotNull($kparams, "width", $this->width);
+		$this->addIfNotNull($kparams, "height", $this->height);
+		$this->addIfNotNull($kparams, "htmlParams", $this->htmlParams);
+		$this->addIfNotNull($kparams, "swfUrl", $this->swfUrl);
+		$this->addIfNotNull($kparams, "confFilePath", $this->confFilePath);
+		$this->addIfNotNull($kparams, "confFile", $this->confFile);
+		$this->addIfNotNull($kparams, "confFileFeatures", $this->confFileFeatures);
+		$this->addIfNotNull($kparams, "confVars", $this->confVars);
+		$this->addIfNotNull($kparams, "useCdn", $this->useCdn);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "swfUrlVersion", $this->swfUrlVersion);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
+		$this->addIfNotNull($kparams, "creationMode", $this->creationMode);
+		return $kparams;
+	}
 }
 
-define("KalturaEntryFilter_ORDER_BY_CREATED_AT_ASC","+created_at");
-define("KalturaEntryFilter_ORDER_BY_CREATED_AT_DESC","-created_at");
-define("KalturaEntryFilter_ORDER_BY_VIEWS_ASC","+views");
-define("KalturaEntryFilter_ORDER_BY_VIEWS_DESC","-views");
-define("KalturaEntryFilter_ORDER_BY_NAME_ASC","+name");
-define("KalturaEntryFilter_ORDER_BY_NAME_DESC","-name");
-define("KalturaEntryFilter_ORDER_BY_MEDIA_DATE_ASC","+media_date");
-define("KalturaEntryFilter_ORDER_BY_MEDIA_DATE_DESC","-media_date");
-define("KalturaEntryFilter_ORDER_BY_TYPE_ASC","+type");
-define("KalturaEntryFilter_ORDER_BY_TYPE_DESC","-type");
-define("KalturaEntryFilter_ORDER_BY_MEDIA_TYPE_ASC","+media_type");
-define("KalturaEntryFilter_ORDER_BY_MEDIA_TYPE_DESC","-media_type");
-define("KalturaEntryFilter_ORDER_BY_PLAYS_ASC","+plays");
-define("KalturaEntryFilter_ORDER_BY_PLAYS_DESC","-plays");
-define("KalturaEntryFilter_ORDER_BY_RANK_ASC","+rank");
-define("KalturaEntryFilter_ORDER_BY_RANK_DESC","-rank");
-define("KalturaEntryFilter_ORDER_BY_MODERATION_COUNT_ASC","+moderation_count");
-define("KalturaEntryFilter_ORDER_BY_MODERATION_COUNT_DESC","-moderation_count");
-define("KalturaEntryFilter_ORDER_BY_MODERATION_STATUS_ASC","+moderation_status");
-define("KalturaEntryFilter_ORDER_BY_MODERATION_STATUS_DESC","-moderation_status");
-define("KalturaEntryFilter_ORDER_BY_MODIFIED_AT_ASC","+modified_at");
-define("KalturaEntryFilter_ORDER_BY_MODIFIED_AT_DESC","-modified_at");
-define("KalturaEntryFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaEntryFilter_ORDER_BY_ID_DESC","-id");
-
-class KalturaEntryFilter
+class KalturaUiConfFilter extends KalturaObjectBase
 {
-	var $equalUserId;
-	var $equalKshowId;
-	var $equalStatus;
-	var $inStatus;
-	var $equalType;
-	var $inType;
-	var $equalMediaType;
-	var $inMediaType;
-	var $equalIndexedCustomData1;
-	var $inIndexedCustomData1;
-	var $likeName;
-	var $equalName;
-	var $equalTags;
-	var $likeTags;
-	var $multiLikeOrTags;
-	var $multiLikeAndTags;
-	var $multiLikeOrAdminTags;
-	var $multiLikeAndAdminTags;
-	var $likeAdminTags;
-	var $multiLikeOrName;
-	var $multiLikeAndName;
-	var $multiLikeOrSearchText;
-	var $multiLikeAndSearchText;
-	var $equalGroupId;
-	var $greaterThanOrEqualViews;
-	var $greaterThanOrEqualCreatedAt;
-	var $lessThanOrEqualCreatedAt;
-	var $greaterThanOrEqualUpdatedAt;
-	var $lessThanOrEqualUpdatedAt;
-	var $greaterThanOrEqualModifiedAt;
-	var $lessThanOrEqualModifiedAt;
-	var $inPartnerId;
-	var $equalPartnerId;
-	var $equalSourceLink;
-	var $greaterThanOrEqualMediaDate;
-	var $lessThanOrEqualMediaDate;
-	var $equalModerationStatus;
-	var $inModerationStatus;
-	var $inDisplayInSearch;
-	var $multiLikeOrTagsOrName;
-	var $multiLikeOrTagsOrAdminTags;
-	var $multiLikeOrTagsOrAdminTagsOrName;
-	var $multiLikeAndTagsOrAdminTags;
-	var $multiLikeAndTagsOrAdminTagsOrName;
-	var $matchAndSearchText;
-	var $matchOrSearchText;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $idGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "idGreaterThanEqual", $this->idGreaterThanEqual);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
+		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
+		return $kparams;
+	}
 }
 
-define("KalturaKShowFilter_ORDER_BY_CREATED_AT_ASC","+created_at");
-define("KalturaKShowFilter_ORDER_BY_CREATED_AT_DESC","-created_at");
-define("KalturaKShowFilter_ORDER_BY_VIEWS_ASC","+views");
-define("KalturaKShowFilter_ORDER_BY_VIEWS_DESC","-views");
-define("KalturaKShowFilter_ORDER_BY_RANK_ASC","+rank");
-define("KalturaKShowFilter_ORDER_BY_RANK_DESC","-rank");
-define("KalturaKShowFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaKShowFilter_ORDER_BY_ID_DESC","-id");
+define("KalturaPlaylistType_DYNAMIC", 10);
+define("KalturaPlaylistType_STATIC_LIST", 3);
+define("KalturaPlaylistType_EXTERNAL", 101);
 
-class KalturaKShowFilter
+class KalturaPlaylist extends KalturaObjectBase
 {
-	var $likeName;
-	var $likeTags;
-	var $multiLikeOrTags;
-	var $multiLikeAndTags;
-	var $greaterThanOrEqualViews;
-	var $equalType;
-	var $equalProducerId;
-	var $greaterThanOrEqualCreatedAt;
-	var $lessThanOrEqualCreatedAt;
-	var $bitAndStatus;
-	var $equalIndexedCustomData3;
-	var $orderBy;
-	var $limit;
+	/**
+	 * Auto generated 10 characters alphanumeric string
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * Entry name
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * Entry description
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * The ID of the user who is the owner of this entry 
+	 *
+	 * @var string
+	 */
+	var $userId = null;
+
+	/**
+	 * Entry tags
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * Entry admin tags can be updated only by administrators and are not visible to the user
+	 *
+	 * @var string
+	 */
+	var $adminTags = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaEntryStatus
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * The type of the entry, this is auto filled by the derived entry object
+	 *
+	 * @var KalturaEntryType
+	 * @readonly
+	 */
+	var $type = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Calculated rank
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $rank = null;
+
+	/**
+	 * The total (sum) of all votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalRank = null;
+
+	/**
+	 * Number of votes
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $votes = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $groupId = null;
+
+	/**
+	 * Can be used to store various partner related data as a string 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * Download URL for the entry
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $downloadUrl = null;
+
+	/**
+	 * License type used for this entry
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+	/**
+	 * Content of the playlist - 
+	 *
+	 * @var string
+	 */
+	var $playlistContent = null;
+
+	/**
+	 * Type of playlist  
+	 *
+	 * @var KalturaPlaylistType
+	 */
+	var $playlistType = null;
+
+	/**
+	 * Number of plays
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $plays = null;
+
+	/**
+	 * Number of views
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * The duration in seconds
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $duration = null;
+
+	/**
+	 * The version of the file
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $version = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "userId", $this->userId);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "type", $this->type);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "rank", $this->rank);
+		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
+		$this->addIfNotNull($kparams, "votes", $this->votes);
+		$this->addIfNotNull($kparams, "groupId", $this->groupId);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
+		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
+		$this->addIfNotNull($kparams, "playlistContent", $this->playlistContent);
+		$this->addIfNotNull($kparams, "playlistType", $this->playlistType);
+		$this->addIfNotNull($kparams, "plays", $this->plays);
+		$this->addIfNotNull($kparams, "views", $this->views);
+		$this->addIfNotNull($kparams, "duration", $this->duration);
+		$this->addIfNotNull($kparams, "version", $this->version);
+		return $kparams;
+	}
 }
 
-define("KalturaModerationFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaModerationFilter_ORDER_BY_ID_DESC","-id");
-
-class KalturaModerationFilter
+class KalturaPlaylistFilter extends KalturaObjectBase
 {
-	var $equalId;
-	var $equalPuserId;
-	var $equalStatus;
-	var $inStatus;
-	var $likeComments;
-	var $equalObjectId;
-	var $equalObjectType;
-	var $equalGroupId;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $idGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $statusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "idGreaterThanEqual", $this->idGreaterThanEqual);
+		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
+		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
+		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
+		return $kparams;
+	}
 }
 
-define("KalturaNotificationFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaNotificationFilter_ORDER_BY_ID_DESC","-id");
-
-class KalturaNotificationFilter
+class KalturaUser extends KalturaObjectBase
 {
-	var $equalId;
-	var $greaterThanOrEqualId;
-	var $equalStatus;
-	var $equalType;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $screenName = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $fullName = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $email = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $dateOfBirth = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $country = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $state = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $city = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $zip = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $urlList = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $picture = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $icon = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $aboutMe = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $mobileNum = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $gender = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $fans = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $entries = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $producedKshows = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Entry update date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $displayInSearch = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $partnerData = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "screenName", $this->screenName);
+		$this->addIfNotNull($kparams, "fullName", $this->fullName);
+		$this->addIfNotNull($kparams, "email", $this->email);
+		$this->addIfNotNull($kparams, "dateOfBirth", $this->dateOfBirth);
+		$this->addIfNotNull($kparams, "country", $this->country);
+		$this->addIfNotNull($kparams, "state", $this->state);
+		$this->addIfNotNull($kparams, "city", $this->city);
+		$this->addIfNotNull($kparams, "zip", $this->zip);
+		$this->addIfNotNull($kparams, "urlList", $this->urlList);
+		$this->addIfNotNull($kparams, "picture", $this->picture);
+		$this->addIfNotNull($kparams, "icon", $this->icon);
+		$this->addIfNotNull($kparams, "aboutMe", $this->aboutMe);
+		$this->addIfNotNull($kparams, "tags", $this->tags);
+		$this->addIfNotNull($kparams, "mobileNum", $this->mobileNum);
+		$this->addIfNotNull($kparams, "gender", $this->gender);
+		$this->addIfNotNull($kparams, "views", $this->views);
+		$this->addIfNotNull($kparams, "fans", $this->fans);
+		$this->addIfNotNull($kparams, "entries", $this->entries);
+		$this->addIfNotNull($kparams, "producedKshows", $this->producedKshows);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "displayInSearch", $this->displayInSearch);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		return $kparams;
+	}
 }
 
-class KalturaNotification
+class KalturaUserFilter extends KalturaObjectBase
 {
-	var $id;
-	var $status;
-	var $notificationResult;
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $screenNameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $emailLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $countryLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $emailLikeRegexp = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "screenNameLike", $this->screenNameLike);
+		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
+		$this->addIfNotNull($kparams, "emailLike", $this->emailLike);
+		$this->addIfNotNull($kparams, "countryLike", $this->countryLike);
+		$this->addIfNotNull($kparams, "emailLikeRegexp", $this->emailLikeRegexp);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
+		return $kparams;
+	}
 }
 
-define("KalturaUiConfFilter_ORDER_BY_CREATED_AT_ASC","+created_at");
-define("KalturaUiConfFilter_ORDER_BY_CREATED_AT_DESC","-created_at");
-define("KalturaUiConfFilter_ORDER_BY_UPDATED_AT_ASC","+updated_at");
-define("KalturaUiConfFilter_ORDER_BY_UPDATED_AT_DESC","-updated_at");
-define("KalturaUiConfFilter_ORDER_BY_STATUS_ASC","+status");
-define("KalturaUiConfFilter_ORDER_BY_STATUS_DESC","-status");
-define("KalturaUiConfFilter_ORDER_BY_OBJ_TYPE_ASC","+obj_type");
-define("KalturaUiConfFilter_ORDER_BY_OBJ_TYPE_DESC","-obj_type");
-define("KalturaUiConfFilter_ORDER_BY_ID_ASC","+id");
-define("KalturaUiConfFilter_ORDER_BY_ID_DESC","-id");
+define("KalturaWidgetSecurityType_NONE", 1);
+define("KalturaWidgetSecurityType_TIMEHASH", 2);
 
-class KalturaUiConfFilter
+class KalturaWidget extends KalturaObjectBase
 {
-	var $equalId;
-	var $greaterThanOrEqualId;
-	var $equalStatus;
-	var $equalObjType;
-	var $likeName;
-	var $multiLikeOrTags;
-	var $greaterThanOrEqualCreatedAt;
-	var $lessThanOrEqualCreatedAt;
-	var $greaterThanOrEqualUpdatedAt;
-	var $lessThanOrEqualUpdatedAt;
-	var $orderBy;
-	var $limit;
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $sourceWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $rootWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $kshowId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $entryId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $uiConfId = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaWidgetSecurityType
+	 */
+	var $securityType = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $securityPolicy = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $widgetHTML = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "sourceWidgetId", $this->sourceWidgetId);
+		$this->addIfNotNull($kparams, "rootWidgetId", $this->rootWidgetId);
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "kshowId", $this->kshowId);
+		$this->addIfNotNull($kparams, "entryId", $this->entryId);
+		$this->addIfNotNull($kparams, "uiConfId", $this->uiConfId);
+		$this->addIfNotNull($kparams, "securityType", $this->securityType);
+		$this->addIfNotNull($kparams, "securityPolicy", $this->securityPolicy);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "widgetHTML", $this->widgetHTML);
+		return $kparams;
+	}
 }
 
-define("KalturaBatchjobType_CONVERT","0");
-define("KalturaBatchjobType_IMPORT","1");
-define("KalturaBatchjobType_DELETE","2");
-define("KalturaBatchjobType_FLATTEN","3");
-define("KalturaBatchjobType_BULKUPLOAD","4");
-define("KalturaBatchjobType_DVDCREATOR","5");
-define("KalturaBatchjobType_DOWNLOAD","6");
-
-class KalturaBatchjobType
+class KalturaWidgetFilter extends KalturaObjectBase
 {
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $orderBy = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $sourceWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $rootWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $entryId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $uiConfId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "sourceWidgetId", $this->sourceWidgetId);
+		$this->addIfNotNull($kparams, "rootWidgetId", $this->rootWidgetId);
+		$this->addIfNotNull($kparams, "entryId", $this->entryId);
+		$this->addIfNotNull($kparams, "uiConfId", $this->uiConfId);
+		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
+		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
+		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
+		return $kparams;
+	}
 }
 
-define("KalturaEntryMediaType_AUTOMATIC","-1");
-define("KalturaEntryMediaType_ANY","0");
-define("KalturaEntryMediaType_VIDEO","1");
-define("KalturaEntryMediaType_IMAGE","2");
-define("KalturaEntryMediaType_TEXT","3");
-define("KalturaEntryMediaType_HTML","4");
-define("KalturaEntryMediaType_AUDIO","5");
-define("KalturaEntryMediaType_SHOW","6");
-define("KalturaEntryMediaType_SHOW_XML","7");
-define("KalturaEntryMediaType_BUBBLES","9");
-define("KalturaEntryMediaType_XML","10");
-define("KalturaEntryMediaType_DOCUMENT","11");
-define("KalturaEntryMediaType_GENERIC_1","101");
-define("KalturaEntryMediaType_GENERIC_2","102");
-define("KalturaEntryMediaType_GENERIC_3","103");
-define("KalturaEntryMediaType_GENERIC_4","104");
-
-class KalturaEntryMediaType
+class KalturaSearch extends KalturaObjectBase
 {
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $keyWords = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaSearchProviderType
+	 */
+	var $searchSource = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaType
+	 */
+	var $mediaType = null;
+
+	/**
+	 * Use this field to pass dynamic data for searching
+	 * For example - if you set this field to "mymovies_$partner_id"
+	 * The $partner_id will be automatically replcaed with your real partner Id
+	 *
+	 * @var string
+	 */
+	var $extraData = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "keyWords", $this->keyWords);
+		$this->addIfNotNull($kparams, "searchSource", $this->searchSource);
+		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
+		$this->addIfNotNull($kparams, "extraData", $this->extraData);
+		return $kparams;
+	}
 }
 
-define("KalturaEntryMediaSource_FILE","1");
-define("KalturaEntryMediaSource_WEBCAM","2");
-define("KalturaEntryMediaSource_FLICKR","3");
-define("KalturaEntryMediaSource_YOUTUBE","4");
-define("KalturaEntryMediaSource_URL","5");
-define("KalturaEntryMediaSource_TEXT","6");
-define("KalturaEntryMediaSource_MYSPACE","7");
-define("KalturaEntryMediaSource_PHOTOBUCKET","8");
-define("KalturaEntryMediaSource_JAMENDO","9");
-define("KalturaEntryMediaSource_CCMIXTER","10");
-define("KalturaEntryMediaSource_NYPL","11");
-define("KalturaEntryMediaSource_CURRENT","12");
-define("KalturaEntryMediaSource_MEDIA_COMMONS","13");
-define("KalturaEntryMediaSource_KALTURA","20");
-define("KalturaEntryMediaSource_KALTURA_USER_CLIPS","21");
-define("KalturaEntryMediaSource_ARCHIVE_ORG","22");
-define("KalturaEntryMediaSource_KALTURA_PARTNER","23");
-define("KalturaEntryMediaSource_METACAFE","24");
-define("KalturaEntryMediaSource_KALTURA_QA","25");
-define("KalturaEntryMediaSource_KALTURA_KSHOW","26");
-define("KalturaEntryMediaSource_KALTURA_PARTNER_KSHOW","27");
-define("KalturaEntryMediaSource_SEARCH_PROXY","28");
-
-class KalturaEntryMediaSource
+class KalturaPartner extends KalturaObjectBase
 {
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $website = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $notificationUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $appearInSearch = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminName = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $adminEmail = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $commercialUse = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $landingPage = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $userLandingPage = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $contentCategories = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $type = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $phone = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $describeYourself = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	var $adultContent = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $defConversionProfileType = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $notify = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $allowQuickEdit = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $mergeEntryLists = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $notificationsConfig = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $maxUploadSize = null;
+
+	/**
+	 * readonly
+	 *
+	 * @var int
+	 */
+	var $partnerPackage = null;
+
+	/**
+	 * readonly
+	 *
+	 * @var string
+	 */
+	var $secret = null;
+
+	/**
+	 * readonly
+	 *
+	 * @var string
+	 */
+	var $adminSecret = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $cmsPassword = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "id", $this->id);
+		$this->addIfNotNull($kparams, "name", $this->name);
+		$this->addIfNotNull($kparams, "website", $this->website);
+		$this->addIfNotNull($kparams, "notificationUrl", $this->notificationUrl);
+		$this->addIfNotNull($kparams, "appearInSearch", $this->appearInSearch);
+		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
+		$this->addIfNotNull($kparams, "adminName", $this->adminName);
+		$this->addIfNotNull($kparams, "adminEmail", $this->adminEmail);
+		$this->addIfNotNull($kparams, "description", $this->description);
+		$this->addIfNotNull($kparams, "commercialUse", $this->commercialUse);
+		$this->addIfNotNull($kparams, "landingPage", $this->landingPage);
+		$this->addIfNotNull($kparams, "userLandingPage", $this->userLandingPage);
+		$this->addIfNotNull($kparams, "contentCategories", $this->contentCategories);
+		$this->addIfNotNull($kparams, "type", $this->type);
+		$this->addIfNotNull($kparams, "phone", $this->phone);
+		$this->addIfNotNull($kparams, "describeYourself", $this->describeYourself);
+		$this->addIfNotNull($kparams, "adultContent", $this->adultContent);
+		$this->addIfNotNull($kparams, "defConversionProfileType", $this->defConversionProfileType);
+		$this->addIfNotNull($kparams, "notify", $this->notify);
+		$this->addIfNotNull($kparams, "status", $this->status);
+		$this->addIfNotNull($kparams, "allowQuickEdit", $this->allowQuickEdit);
+		$this->addIfNotNull($kparams, "mergeEntryLists", $this->mergeEntryLists);
+		$this->addIfNotNull($kparams, "notificationsConfig", $this->notificationsConfig);
+		$this->addIfNotNull($kparams, "maxUploadSize", $this->maxUploadSize);
+		$this->addIfNotNull($kparams, "partnerPackage", $this->partnerPackage);
+		$this->addIfNotNull($kparams, "secret", $this->secret);
+		$this->addIfNotNull($kparams, "adminSecret", $this->adminSecret);
+		$this->addIfNotNull($kparams, "cmsPassword", $this->cmsPassword);
+		return $kparams;
+	}
 }
 
-define("KalturaEntryType_AUTOMATIC","-1");
-define("KalturaEntryType_BACKGROUND","0");
-define("KalturaEntryType_MEDIACLIP","1");
-define("KalturaEntryType_SHOW","2");
-define("KalturaEntryType_BUBBLES","4");
-define("KalturaEntryType_PLAYLIST","5");
-define("KalturaEntryType_DOCUMENT","10");
-define("KalturaEntryType_DVD","300");
-
-class KalturaEntryType
+class KalturaPartnerUsage extends KalturaObjectBase
 {
+	/**
+	 * 
+	 *
+	 * @var float
+	 * @readonly
+	 */
+	var $hostingGB = null;
+
+	/**
+	 * 
+	 *
+	 * @var float
+	 * @readonly
+	 */
+	var $Percent = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $packageBW = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $usageGB = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $reachedLimitDate = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $usageGraph = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "hostingGB", $this->hostingGB);
+		$this->addIfNotNull($kparams, "Percent", $this->Percent);
+		$this->addIfNotNull($kparams, "packageBW", $this->packageBW);
+		$this->addIfNotNull($kparams, "usageGB", $this->usageGB);
+		$this->addIfNotNull($kparams, "reachedLimitDate", $this->reachedLimitDate);
+		$this->addIfNotNull($kparams, "usageGraph", $this->usageGraph);
+		return $kparams;
+	}
+}
+
+class KalturaAdminUser extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $password = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $email = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $screenName = null;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "password", $this->password);
+		$this->addIfNotNull($kparams, "email", $this->email);
+		$this->addIfNotNull($kparams, "screenName", $this->screenName);
+		return $kparams;
+	}
+}
+
+class KalturaAdminLoginResponse extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $subpId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $ks = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $uid = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaAdminUser
+	 * @readonly
+	 */
+	var $adminUser;
+
+
+	function toParams()
+	{
+		$kparams = array();
+		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
+		$this->addIfNotNull($kparams, "subpId", $this->subpId);
+		$this->addIfNotNull($kparams, "ks", $this->ks);
+		$this->addIfNotNull($kparams, "uid", $this->uid);
+		return $kparams;
+	}
+}
+
+
+class KalturaMediaService extends KalturaServiceBase
+{
+	function KalturaMediaService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function addFromUrl($mediaEntry, $url)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "mediaEntry", $mediaEntry->toParams());
+		$this->client->addParam($kparams, "url", $url);
+		$resultObject = $this->client->callService("media", "addFromUrl", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function addFromSearchResult($mediaEntry = null, $searchResult)
+	{
+		$kparams = array();
+		if ($mediaEntry !== null)
+			$this->client->addParam($kparams, "mediaEntry", $mediaEntry->toParams());
+		$this->client->addParam($kparams, "searchResult", $searchResult->toParams());
+		$resultObject = $this->client->callService("media", "addFromSearchResult", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function addFromUploadedFile($mediaEntry, $uploadTokenId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "mediaEntry", $mediaEntry->toParams());
+		$this->client->addParam($kparams, "uploadTokenId", $uploadTokenId);
+		$resultObject = $this->client->callService("media", "addFromUploadedFile", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function get($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("media", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function update($entryId, $mediaEntry)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "mediaEntry", $mediaEntry->toParams());
+		$resultObject = $this->client->callService("media", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function delete($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("media", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "null");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("media", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaListResponse");
+		return $resultObject;
+	}
+
+	function updateThumbnail($entryId, $timeOffset)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "timeOffset", $timeOffset);
+		$resultObject = $this->client->callService("media", "updateThumbnail", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMediaEntry");
+		return $resultObject;
+	}
+
+	function requestConversion($entryId, $fileFormat)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "fileFormat", $fileFormat);
+		$resultObject = $this->client->callService("media", "requestConversion", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "int");
+		return $resultObject;
+	}
+}
+
+class KalturaMixingService extends KalturaServiceBase
+{
+	function KalturaMixingService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function add($mixEntry)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "mixEntry", $mixEntry->toParams());
+		$resultObject = $this->client->callService("mixing", "add", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixEntry");
+		return $resultObject;
+	}
+
+	function get($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("mixing", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixEntry");
+		return $resultObject;
+	}
+
+	function update($entryId, $mixEntry)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "mixEntry", $mixEntry->toParams());
+		$resultObject = $this->client->callService("mixing", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixEntry");
+		return $resultObject;
+	}
+
+	function delete($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("mixing", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "null");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("mixing", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixListResponse");
+		return $resultObject;
+	}
+
+	function cloneAction($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("mixing", "clone", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixEntry");
+		return $resultObject;
+	}
+
+	function appendMediaEntry($mixEntryId, $mediaEntryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "mixEntryId", $mixEntryId);
+		$this->client->addParam($kparams, "mediaEntryId", $mediaEntryId);
+		$resultObject = $this->client->callService("mixing", "appendMediaEntry", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaMixEntry");
+		return $resultObject;
+	}
+
+	function requestFlattening($entryId, $fileFormat, $version = -1)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "fileFormat", $fileFormat);
+		$this->client->addParam($kparams, "version", $version);
+		$resultObject = $this->client->callService("mixing", "requestFlattening", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "int");
+		return $resultObject;
+	}
+}
+
+class KalturaBaseEntryService extends KalturaServiceBase
+{
+	function KalturaBaseEntryService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function get($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("baseentry", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaBaseEntry");
+		return $resultObject;
+	}
+
+	function delete($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$resultObject = $this->client->callService("baseentry", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "null");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("baseentry", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaBaseEntryListResponse");
+		return $resultObject;
+	}
+}
+
+class KalturaSessionService extends KalturaServiceBase
+{
+	function KalturaSessionService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function start($partnerId, $secret, $userId, $type = 0, $expiry = 86400, $privileges = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "secret", $secret);
+		$this->client->addParam($kparams, "userId", $userId);
+		$this->client->addParam($kparams, "type", $type);
+		$this->client->addParam($kparams, "expiry", $expiry);
+		$this->client->addParam($kparams, "privileges", $privileges);
+		$resultObject = $this->client->callService("session", "start", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+
+	function startWidgetSession($widgetId, $expiry = 86400)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "widgetId", $widgetId);
+		$this->client->addParam($kparams, "expiry", $expiry);
+		$resultObject = $this->client->callService("session", "startWidgetSession", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+}
+
+class KalturaUiConfService extends KalturaServiceBase
+{
+	function KalturaUiConfService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function add($uiConf)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "uiConf", $uiConf->toParams());
+		$resultObject = $this->client->callService("uiconf", "add", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUiConf");
+		return $resultObject;
+	}
+
+	function update($id, $uiConf)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "uiConf", $uiConf->toParams());
+		$resultObject = $this->client->callService("uiconf", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUiConf");
+		return $resultObject;
+	}
+
+	function get($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("uiconf", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUiConf");
+		return $resultObject;
+	}
+
+	function delete($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("uiconf", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "null");
+		return $resultObject;
+	}
+
+	function cloneAction($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("uiconf", "clone", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUiConf");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("uiconf", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+}
+
+class KalturaPlaylistService extends KalturaServiceBase
+{
+	function KalturaPlaylistService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function add($playlist, $updateStats = false)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "playlist", $playlist->toParams());
+		$this->client->addParam($kparams, "updateStats", $updateStats);
+		$resultObject = $this->client->callService("playlist", "add", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPlaylist");
+		return $resultObject;
+	}
+
+	function get($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("playlist", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPlaylist");
+		return $resultObject;
+	}
+
+	function update($id, $playlist, $updateStats = false)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "playlist", $playlist->toParams());
+		$this->client->addParam($kparams, "updateStats", $updateStats);
+		$resultObject = $this->client->callService("playlist", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUiConf");
+		return $resultObject;
+	}
+
+	function delete($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("playlist", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPlaylist");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("playlist", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+
+	function execute($id, $detailed = false)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "detailed", $detailed);
+		$resultObject = $this->client->callService("playlist", "execute", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+
+	function executeFromContent($playlistType, $playlistContent, $detailed = false)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "playlistType", $playlistType);
+		$this->client->addParam($kparams, "playlistContent", $playlistContent);
+		$this->client->addParam($kparams, "detailed", $detailed);
+		$resultObject = $this->client->callService("playlist", "executeFromContent", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+
+	function getStatsFromContent($playlistType, $playlistContent)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "playlistType", $playlistType);
+		$this->client->addParam($kparams, "playlistContent", $playlistContent);
+		$resultObject = $this->client->callService("playlist", "getStatsFromContent", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+}
+
+class KalturaUserService extends KalturaServiceBase
+{
+	function KalturaUserService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function add($id, $user)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "user", $user->toParams());
+		$resultObject = $this->client->callService("user", "add", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUser");
+		return $resultObject;
+	}
+
+	function update($id, $user)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "user", $user->toParams());
+		$resultObject = $this->client->callService("user", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUser");
+		return $resultObject;
+	}
+
+	function updateid($id, $newId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "newId", $newId);
+		$resultObject = $this->client->callService("user", "updateid", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUser");
+		return $resultObject;
+	}
+
+	function get($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("user", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUser");
+		return $resultObject;
+	}
+
+	function delete($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("user", "delete", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaUser");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("user", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+}
+
+class KalturaWidgetService extends KalturaServiceBase
+{
+	function KalturaWidgetService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function add($widget)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "widget", $widget->toParams());
+		$resultObject = $this->client->callService("widget", "add", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaWidget");
+		return $resultObject;
+	}
+
+	function update($id, $widget)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "widget", $widget->toParams());
+		$resultObject = $this->client->callService("widget", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaWidget");
+		return $resultObject;
+	}
+
+	function get($id)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$resultObject = $this->client->callService("widget", "get", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaWidget");
+		return $resultObject;
+	}
+
+	function cloneAction($widget)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "widget", $widget->toParams());
+		$resultObject = $this->client->callService("widget", "clone", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaWidget");
+		return $resultObject;
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("widget", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+}
+
+class KalturaSearchService extends KalturaServiceBase
+{
+	function KalturaSearchService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function search($partnerId, $search, $pager = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "search", $search->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("search", "search", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "array");
+		return $resultObject;
+	}
+
+	function getmediainfo($partnerId, $searchResult)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "searchResult", $searchResult->toParams());
+		$resultObject = $this->client->callService("search", "getmediainfo", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaSearchResult");
+		return $resultObject;
+	}
+
+	function searchurl($partnerId, $mediaType, $url)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "mediaType", $mediaType);
+		$this->client->addParam($kparams, "url", $url);
+		$resultObject = $this->client->callService("search", "searchurl", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaSearchResult");
+		return $resultObject;
+	}
+}
+
+class KalturaPartnerService extends KalturaServiceBase
+{
+	function KalturaPartnerService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function register($partner, $cmsPassword = "")
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partner", $partner->toParams());
+		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
+		$resultObject = $this->client->callService("partner", "register", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPartner");
+		return $resultObject;
+	}
+
+	function update($partner, $allowEmpty = false)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partner", $partner->toParams());
+		$this->client->addParam($kparams, "allowEmpty", $allowEmpty);
+		$resultObject = $this->client->callService("partner", "update", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPartner");
+		return $resultObject;
+	}
+
+	function getsecrets($partnerId, $adminEmail, $cmsPassword)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "adminEmail", $adminEmail);
+		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
+		$resultObject = $this->client->callService("partner", "getsecrets", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPartner");
+		return $resultObject;
+	}
+
+	function getinfo()
+	{
+		$kparams = array();
+		$resultObject = $this->client->callService("partner", "getinfo", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPartner");
+		return $resultObject;
+	}
+
+	function getusage($year, $month = 1, $resolution = "days")
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "year", $year);
+		$this->client->addParam($kparams, "month", $month);
+		$this->client->addParam($kparams, "resolution", $resolution);
+		$resultObject = $this->client->callService("partner", "getusage", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaPartnerUsage");
+		return $resultObject;
+	}
+}
+
+class KalturaAdminuserService extends KalturaServiceBase
+{
+	function KalturaAdminuserService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function updatepassword($email, $password, $newEmail = "", $newPassword = "")
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "email", $email);
+		$this->client->addParam($kparams, "password", $password);
+		$this->client->addParam($kparams, "newEmail", $newEmail);
+		$this->client->addParam($kparams, "newPassword", $newPassword);
+		$resultObject = $this->client->callService("adminuser", "updatepassword", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaAdminUser");
+		return $resultObject;
+	}
+
+	function resetpassword($email)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "email", $email);
+		$resultObject = $this->client->callService("adminuser", "resetpassword", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "string");
+		return $resultObject;
+	}
+
+	function login($email, $password)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "email", $email);
+		$this->client->addParam($kparams, "password", $password);
+		$resultObject = $this->client->callService("adminuser", "login", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaAdminLoginResponse");
+		return $resultObject;
+	}
+}
+
+class KalturaSystemService extends KalturaServiceBase
+{
+	function KalturaSystemService($client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function ping()
+	{
+		$kparams = array();
+		$resultObject = $this->client->callService("system", "ping", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "bool");
+		return $resultObject;
+	}
 }
 
 class KalturaClient extends KalturaClientBase
 {
-	function KalturaClient($conf)
-	{
-		KalturaClientBase::KalturaClientBase($conf);
-	}
-
-	function addDownload($kalturaSessionUser, $entryId, $fileFormat, $entryVersion = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["file_format"] = $fileFormat;
-		$this->addOptionalParam($params, "entry_version", $entryVersion);
-
-		$result = $this->hit("adddownload", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addDvdEntry($kalturaSessionUser, $dvdEntry)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "dvdEntry_name", $dvdEntry->name);
-		$this->addOptionalParam($params, "dvdEntry_tags", $dvdEntry->tags);
-		$this->addOptionalParam($params, "dvdEntry_type", $dvdEntry->type);
-		$this->addOptionalParam($params, "dvdEntry_mediaType", $dvdEntry->mediaType);
-		$this->addOptionalParam($params, "dvdEntry_source", $dvdEntry->source);
-		$this->addOptionalParam($params, "dvdEntry_sourceId", $dvdEntry->sourceId);
-		$this->addOptionalParam($params, "dvdEntry_sourceLink", $dvdEntry->sourceLink);
-		$this->addOptionalParam($params, "dvdEntry_licenseType", $dvdEntry->licenseType);
-		$this->addOptionalParam($params, "dvdEntry_credit", $dvdEntry->credit);
-		$this->addOptionalParam($params, "dvdEntry_groupId", $dvdEntry->groupId);
-		$this->addOptionalParam($params, "dvdEntry_partnerData", $dvdEntry->partnerData);
-		$this->addOptionalParam($params, "dvdEntry_conversionQuality", $dvdEntry->conversionQuality);
-		$this->addOptionalParam($params, "dvdEntry_permissions", $dvdEntry->permissions);
-		$this->addOptionalParam($params, "dvdEntry_dataContent", $dvdEntry->dataContent);
-		$this->addOptionalParam($params, "dvdEntry_desiredVersion", $dvdEntry->desiredVersion);
-		$this->addOptionalParam($params, "dvdEntry_url", $dvdEntry->url);
-		$this->addOptionalParam($params, "dvdEntry_thumbUrl", $dvdEntry->thumbUrl);
-		$this->addOptionalParam($params, "dvdEntry_filename", $dvdEntry->filename);
-		$this->addOptionalParam($params, "dvdEntry_realFilename", $dvdEntry->realFilename);
-		$this->addOptionalParam($params, "dvdEntry_indexedCustomData1", $dvdEntry->indexedCustomData1);
-		$this->addOptionalParam($params, "dvdEntry_thumbOffset", $dvdEntry->thumbOffset);
-		$this->addOptionalParam($params, "dvdEntry_mediaId", $dvdEntry->mediaId);
-		$this->addOptionalParam($params, "dvdEntry_screenName", $dvdEntry->screenName);
-		$this->addOptionalParam($params, "dvdEntry_siteUrl", $dvdEntry->siteUrl);
-		$this->addOptionalParam($params, "dvdEntry_description", $dvdEntry->description);
-		$this->addOptionalParam($params, "dvdEntry_mediaDate", $dvdEntry->mediaDate);
-		$this->addOptionalParam($params, "dvdEntry_adminTags", $dvdEntry->adminTags);
-
-		$result = $this->hit("adddvdentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addDvdJob($kalturaSessionUser, $entryId)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-
-		$result = $this->hit("adddvdjob", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addEntry($kalturaSessionUser, $kshowId, $entry, $uid = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-		$this->addOptionalParam($params, "uid", $uid);
-
-		$result = $this->hit("addentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addKShow($kalturaSessionUser, $kshow, $detailed = null, $allowDuplicateNames = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "kshow_name", $kshow->name);
-		$this->addOptionalParam($params, "kshow_description", $kshow->description);
-		$this->addOptionalParam($params, "kshow_tags", $kshow->tags);
-		$this->addOptionalParam($params, "kshow_indexedCustomData3", $kshow->indexedCustomData3);
-		$this->addOptionalParam($params, "kshow_groupId", $kshow->groupId);
-		$this->addOptionalParam($params, "kshow_permissions", $kshow->permissions);
-		$this->addOptionalParam($params, "kshow_partnerData", $kshow->partnerData);
-		$this->addOptionalParam($params, "kshow_allowQuickEdit", $kshow->allowQuickEdit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "allow_duplicate_names", $allowDuplicateNames);
-
-		$result = $this->hit("addkshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addModeration($kalturaSessionUser, $moderation)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "moderation_comments", $moderation->comments);
-		$this->addOptionalParam($params, "moderation_objectType", $moderation->objectType);
-		$this->addOptionalParam($params, "moderation_objectId", $moderation->objectId);
-		$this->addOptionalParam($params, "moderation_reportCode", $moderation->reportCode);
-		$this->addOptionalParam($params, "moderation_status", $moderation->status);
-
-		$result = $this->hit("addmoderation", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addPartnerEntry($kalturaSessionUser, $kshowId, $entry, $uid = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-		$this->addOptionalParam($params, "uid", $uid);
-
-		$result = $this->hit("addpartnerentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addPlaylist($kalturaSessionUser, $playlist)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "playlist_name", $playlist->name);
-		$this->addOptionalParam($params, "playlist_tags", $playlist->tags);
-		$this->addOptionalParam($params, "playlist_type", $playlist->type);
-		$this->addOptionalParam($params, "playlist_mediaType", $playlist->mediaType);
-		$this->addOptionalParam($params, "playlist_source", $playlist->source);
-		$this->addOptionalParam($params, "playlist_sourceId", $playlist->sourceId);
-		$this->addOptionalParam($params, "playlist_sourceLink", $playlist->sourceLink);
-		$this->addOptionalParam($params, "playlist_licenseType", $playlist->licenseType);
-		$this->addOptionalParam($params, "playlist_credit", $playlist->credit);
-		$this->addOptionalParam($params, "playlist_groupId", $playlist->groupId);
-		$this->addOptionalParam($params, "playlist_partnerData", $playlist->partnerData);
-		$this->addOptionalParam($params, "playlist_conversionQuality", $playlist->conversionQuality);
-		$this->addOptionalParam($params, "playlist_permissions", $playlist->permissions);
-		$this->addOptionalParam($params, "playlist_dataContent", $playlist->dataContent);
-		$this->addOptionalParam($params, "playlist_desiredVersion", $playlist->desiredVersion);
-		$this->addOptionalParam($params, "playlist_url", $playlist->url);
-		$this->addOptionalParam($params, "playlist_thumbUrl", $playlist->thumbUrl);
-		$this->addOptionalParam($params, "playlist_filename", $playlist->filename);
-		$this->addOptionalParam($params, "playlist_realFilename", $playlist->realFilename);
-		$this->addOptionalParam($params, "playlist_indexedCustomData1", $playlist->indexedCustomData1);
-		$this->addOptionalParam($params, "playlist_thumbOffset", $playlist->thumbOffset);
-		$this->addOptionalParam($params, "playlist_mediaId", $playlist->mediaId);
-		$this->addOptionalParam($params, "playlist_screenName", $playlist->screenName);
-		$this->addOptionalParam($params, "playlist_siteUrl", $playlist->siteUrl);
-		$this->addOptionalParam($params, "playlist_description", $playlist->description);
-		$this->addOptionalParam($params, "playlist_mediaDate", $playlist->mediaDate);
-		$this->addOptionalParam($params, "playlist_adminTags", $playlist->adminTags);
-
-		$result = $this->hit("addplaylist", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addRoughcutEntry($kalturaSessionUser, $kshowId, $entry)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-
-		$result = $this->hit("addroughcutentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addUiConf($kalturaSessionUser, $uiconf)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "uiconf_name", $uiconf->name);
-		$this->addOptionalParam($params, "uiconf_objType", $uiconf->objType);
-		$this->addOptionalParam($params, "uiconf_width", $uiconf->width);
-		$this->addOptionalParam($params, "uiconf_height", $uiconf->height);
-		$this->addOptionalParam($params, "uiconf_htmlParams", $uiconf->htmlParams);
-		$this->addOptionalParam($params, "uiconf_swfUrl", $uiconf->swfUrl);
-		$this->addOptionalParam($params, "uiconf_creationMode", $uiconf->creationMode);
-		$this->addOptionalParam($params, "uiconf_swfUrlVersion", $uiconf->swfUrlVersion);
-		$this->addOptionalParam($params, "uiconf_confFile", $uiconf->confFile);
-		$this->addOptionalParam($params, "uiconf_confVars", $uiconf->confVars);
-		$this->addOptionalParam($params, "uiconf_useCdn", $uiconf->useCdn);
-		$this->addOptionalParam($params, "uiconf_tags", $uiconf->tags);
-		$this->addOptionalParam($params, "uiconf_autoplay", $uiconf->autoplay);
-		$this->addOptionalParam($params, "uiconf_automuted", $uiconf->automuted);
-
-		$result = $this->hit("adduiconf", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addUser($kalturaSessionUser, $userId, $user)
-	{
-		$params = array();
-		$params["user_id"] = $userId;
-		$this->addOptionalParam($params, "user_screenName", $user->screenName);
-		$this->addOptionalParam($params, "user_fullName", $user->fullName);
-		$this->addOptionalParam($params, "user_email", $user->email);
-		$this->addOptionalParam($params, "user_dateOfBirth", $user->dateOfBirth);
-		$this->addOptionalParam($params, "user_aboutMe", $user->aboutMe);
-		$this->addOptionalParam($params, "user_tags", $user->tags);
-		$this->addOptionalParam($params, "user_gender", $user->gender);
-		$this->addOptionalParam($params, "user_country", $user->country);
-		$this->addOptionalParam($params, "user_state", $user->state);
-		$this->addOptionalParam($params, "user_city", $user->city);
-		$this->addOptionalParam($params, "user_zip", $user->zip);
-		$this->addOptionalParam($params, "user_urlList", $user->urlList);
-		$this->addOptionalParam($params, "user_networkHighschool", $user->networkHighschool);
-		$this->addOptionalParam($params, "user_networkCollege", $user->networkCollege);
-		$this->addOptionalParam($params, "user_partnerData", $user->partnerData);
-
-		$result = $this->hit("adduser", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function addWidget($kalturaSessionUser, $widget)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "widget_kshowId", $widget->kshowId);
-		$this->addOptionalParam($params, "widget_entryId", $widget->entryId);
-		$this->addOptionalParam($params, "widget_sourceWidgetId", $widget->sourceWidgetId);
-		$this->addOptionalParam($params, "widget_uiConfId", $widget->uiConfId);
-		$this->addOptionalParam($params, "widget_customData", $widget->customData);
-		$this->addOptionalParam($params, "widget_partnerData", $widget->partnerData);
-		$this->addOptionalParam($params, "widget_securityType", $widget->securityType);
-
-		$result = $this->hit("addwidget", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function adminLogin($kalturaSessionUser, $email, $password)
-	{
-		$params = array();
-		$params["email"] = $email;
-		$params["password"] = $password;
-
-		$result = $this->hit("adminlogin", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function appendEntryToRoughcut($kalturaSessionUser, $entryId, $kshowId, $showEntryId = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "show_entry_id", $showEntryId);
-
-		$result = $this->hit("appendentrytoroughcut", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function checkNotifications($kalturaSessionUser, $notificationIds, $separator = ",", $detailed = null)
-	{
-		$params = array();
-		$params["notification_ids"] = $notificationIds;
-		$this->addOptionalParam($params, "separator", $separator);
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("checknotifications", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function cloneKShow($kalturaSessionUser, $kshowId, $detailed = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("clonekshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function cloneRoughcut($kalturaSessionUser, $entryId, $detailed = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("cloneroughcut", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function cloneUiConf($kalturaSessionUser, $uiconfId, $detailed = null)
-	{
-		$params = array();
-		$params["uiconf_id"] = $uiconfId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("cloneuiconf", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function deleteEntry($kalturaSessionUser, $entryId)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-
-		$result = $this->hit("deleteentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function deleteKShow($kalturaSessionUser, $kshowId)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-
-		$result = $this->hit("deletekshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function deletePlaylist($kalturaSessionUser, $entryId)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-
-		$result = $this->hit("deleteplaylist", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function deleteUiconf($kalturaSessionUser, $uiconfId)
-	{
-		$params = array();
-		$params["uiconf_id"] = $uiconfId;
-
-		$result = $this->hit("deleteuiconf", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function deleteUser($kalturaSessionUser, $userId)
-	{
-		$params = array();
-		$params["user_id"] = $userId;
-
-		$result = $this->hit("deleteuser", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function executePlaylist($kalturaSessionUser, $playlistId, $fp = null, $filter1 = null, $filter2 = null, $filter3 = null, $filter4 = null, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$params["playlist_id"] = $playlistId;
-		$this->addOptionalParam($params, "fp", $fp);
-		$this->addOptionalParam($params, "filter1", $filter1);
-		$this->addOptionalParam($params, "filter2", $filter2);
-		$this->addOptionalParam($params, "filter3", $filter3);
-		$this->addOptionalParam($params, "filter4", $filter4);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("executeplaylist", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function executePlaylistFromContent($kalturaSessionUser, $playlist, $fp = null, $filter1 = null, $filter2 = null, $filter3 = null, $filter4 = null, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "playlist_name", $playlist->name);
-		$this->addOptionalParam($params, "playlist_tags", $playlist->tags);
-		$this->addOptionalParam($params, "playlist_type", $playlist->type);
-		$this->addOptionalParam($params, "playlist_mediaType", $playlist->mediaType);
-		$this->addOptionalParam($params, "playlist_source", $playlist->source);
-		$this->addOptionalParam($params, "playlist_sourceId", $playlist->sourceId);
-		$this->addOptionalParam($params, "playlist_sourceLink", $playlist->sourceLink);
-		$this->addOptionalParam($params, "playlist_licenseType", $playlist->licenseType);
-		$this->addOptionalParam($params, "playlist_credit", $playlist->credit);
-		$this->addOptionalParam($params, "playlist_groupId", $playlist->groupId);
-		$this->addOptionalParam($params, "playlist_partnerData", $playlist->partnerData);
-		$this->addOptionalParam($params, "playlist_conversionQuality", $playlist->conversionQuality);
-		$this->addOptionalParam($params, "playlist_permissions", $playlist->permissions);
-		$this->addOptionalParam($params, "playlist_dataContent", $playlist->dataContent);
-		$this->addOptionalParam($params, "playlist_desiredVersion", $playlist->desiredVersion);
-		$this->addOptionalParam($params, "playlist_url", $playlist->url);
-		$this->addOptionalParam($params, "playlist_thumbUrl", $playlist->thumbUrl);
-		$this->addOptionalParam($params, "playlist_filename", $playlist->filename);
-		$this->addOptionalParam($params, "playlist_realFilename", $playlist->realFilename);
-		$this->addOptionalParam($params, "playlist_indexedCustomData1", $playlist->indexedCustomData1);
-		$this->addOptionalParam($params, "playlist_thumbOffset", $playlist->thumbOffset);
-		$this->addOptionalParam($params, "playlist_mediaId", $playlist->mediaId);
-		$this->addOptionalParam($params, "playlist_screenName", $playlist->screenName);
-		$this->addOptionalParam($params, "playlist_siteUrl", $playlist->siteUrl);
-		$this->addOptionalParam($params, "playlist_description", $playlist->description);
-		$this->addOptionalParam($params, "playlist_mediaDate", $playlist->mediaDate);
-		$this->addOptionalParam($params, "playlist_adminTags", $playlist->adminTags);
-		$this->addOptionalParam($params, "fp", $fp);
-		$this->addOptionalParam($params, "filter1", $filter1);
-		$this->addOptionalParam($params, "filter2", $filter2);
-		$this->addOptionalParam($params, "filter3", $filter3);
-		$this->addOptionalParam($params, "filter4", $filter4);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("executeplaylistfromcontent", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getAdminTags($kalturaSessionUser)
-	{
-		$params = array();
-
-		$result = $this->hit("getadmintags", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getAllEntries($kalturaSessionUser, $entryId, $kshowId, $listType = null, $version = null, $disableRoughcutEntryData = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "list_type", $listType);
-		$this->addOptionalParam($params, "version", $version);
-		$this->addOptionalParam($params, "disable_roughcut_entry_data", $disableRoughcutEntryData);
-
-		$result = $this->hit("getallentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getDefaultWidget($kalturaSessionUser, $uiConfId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "ui_conf_id", $uiConfId);
-
-		$result = $this->hit("getdefaultwidget", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getDvdEntry($kalturaSessionUser, $dvdEntryId, $detailed = null)
-	{
-		$params = array();
-		$params["dvdEntry_id"] = $dvdEntryId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getdvdentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getEntries($kalturaSessionUser, $entryIds, $separator = ",", $detailed = null)
-	{
-		$params = array();
-		$params["entry_ids"] = $entryIds;
-		$this->addOptionalParam($params, "separator", $separator);
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getEntry($kalturaSessionUser, $entryId, $detailed = null, $version = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "version", $version);
-
-		$result = $this->hit("getentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getEntryRoughcuts($kalturaSessionUser, $entryId)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-
-		$result = $this->hit("getentryroughcuts", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getKShow($kalturaSessionUser, $kshowId, $detailed = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getkshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getLastVersionsInfo($kalturaSessionUser, $kshowId)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-
-		$result = $this->hit("getlastversionsinfo", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getMetaDataAction($kalturaSessionUser, $entryId, $kshowId, $version)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["kshow_id"] = $kshowId;
-		$params["version"] = $version;
-
-		$result = $this->hit("getmetadata", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getPartner($kalturaSessionUser, $partnerAdminEmail, $cmsPassword, $partnerId, $detailed = null)
-	{
-		$params = array();
-		$params["partner_adminEmail"] = $partnerAdminEmail;
-		$params["cms_password"] = $cmsPassword;
-		$params["partner_id"] = $partnerId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getpartner", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getPartnerInfo($kalturaSessionUser, $partnerId, $detailed = null)
-	{
-		$params = array();
-		$params["partner_id"] = $partnerId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getpartnerinfo", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getPlaylist($kalturaSessionUser, $playlistId, $detailed = null)
-	{
-		$params = array();
-		$params["playlist_id"] = $playlistId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getplaylist", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getPlaylistStatsFromContent($kalturaSessionUser, $playlist, $fp = null, $filter1 = null, $filter2 = null, $filter3 = null, $filter4 = null, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "playlist_name", $playlist->name);
-		$this->addOptionalParam($params, "playlist_tags", $playlist->tags);
-		$this->addOptionalParam($params, "playlist_type", $playlist->type);
-		$this->addOptionalParam($params, "playlist_mediaType", $playlist->mediaType);
-		$this->addOptionalParam($params, "playlist_source", $playlist->source);
-		$this->addOptionalParam($params, "playlist_sourceId", $playlist->sourceId);
-		$this->addOptionalParam($params, "playlist_sourceLink", $playlist->sourceLink);
-		$this->addOptionalParam($params, "playlist_licenseType", $playlist->licenseType);
-		$this->addOptionalParam($params, "playlist_credit", $playlist->credit);
-		$this->addOptionalParam($params, "playlist_groupId", $playlist->groupId);
-		$this->addOptionalParam($params, "playlist_partnerData", $playlist->partnerData);
-		$this->addOptionalParam($params, "playlist_conversionQuality", $playlist->conversionQuality);
-		$this->addOptionalParam($params, "playlist_permissions", $playlist->permissions);
-		$this->addOptionalParam($params, "playlist_dataContent", $playlist->dataContent);
-		$this->addOptionalParam($params, "playlist_desiredVersion", $playlist->desiredVersion);
-		$this->addOptionalParam($params, "playlist_url", $playlist->url);
-		$this->addOptionalParam($params, "playlist_thumbUrl", $playlist->thumbUrl);
-		$this->addOptionalParam($params, "playlist_filename", $playlist->filename);
-		$this->addOptionalParam($params, "playlist_realFilename", $playlist->realFilename);
-		$this->addOptionalParam($params, "playlist_indexedCustomData1", $playlist->indexedCustomData1);
-		$this->addOptionalParam($params, "playlist_thumbOffset", $playlist->thumbOffset);
-		$this->addOptionalParam($params, "playlist_mediaId", $playlist->mediaId);
-		$this->addOptionalParam($params, "playlist_screenName", $playlist->screenName);
-		$this->addOptionalParam($params, "playlist_siteUrl", $playlist->siteUrl);
-		$this->addOptionalParam($params, "playlist_description", $playlist->description);
-		$this->addOptionalParam($params, "playlist_mediaDate", $playlist->mediaDate);
-		$this->addOptionalParam($params, "playlist_adminTags", $playlist->adminTags);
-		$this->addOptionalParam($params, "fp", $fp);
-		$this->addOptionalParam($params, "filter1", $filter1);
-		$this->addOptionalParam($params, "filter2", $filter2);
-		$this->addOptionalParam($params, "filter3", $filter3);
-		$this->addOptionalParam($params, "filter4", $filter4);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("getplayliststatsfromcontent", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getThumbnail($kalturaSessionUser, $filename)
-	{
-		$params = array();
-		$params["filename"] = $filename;
-
-		$result = $this->hit("getthumbnail", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getUIConf($kalturaSessionUser, $uiConfId, $detailed = null)
-	{
-		$params = array();
-		$params["ui_conf_id"] = $uiConfId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getuiconf", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getUser($kalturaSessionUser, $userId, $detailed = null)
-	{
-		$params = array();
-		$params["user_id"] = $userId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("getuser", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function getWidget($kalturaSessionUser, $widgetId, $detailed = null, $uiConfId = null)
-	{
-		$params = array();
-		$params["widget_id"] = $widgetId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "ui_conf_id", $uiConfId);
-
-		$result = $this->hit("getwidget", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function handleModeration($kalturaSessionUser, $moderationId, $moderationStatus)
-	{
-		$params = array();
-		$params["moderation_id"] = $moderationId;
-		$params["moderation_status"] = $moderationStatus;
-
-		$result = $this->hit("handlemoderation", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listConversionProfile($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_id", $filter->equalId);
-		$this->addOptionalParam($params, "filter__gte_id", $filter->greaterThanOrEqualId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_profile_type", $filter->equalProfileType);
-		$this->addOptionalParam($params, "filter__in_profile_type", $filter->inProfileType);
-		$this->addOptionalParam($params, "filter__eq_enabled", $filter->equalEnabled);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__eq_use_with_bulk", $filter->equalUseWithBulk);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-
-		$result = $this->hit("listconversionprofiles", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listDownloads($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_id", $filter->equalId);
-		$this->addOptionalParam($params, "filter__gte_id", $filter->greaterThanOrEqualId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__eq_job_type", $filter->equalJobType);
-		$this->addOptionalParam($params, "filter__in_job_type", $filter->inJobType);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-
-		$result = $this->hit("listdownloads", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listDvdEntries($kalturaSessionUser, $filter, $detailed = null, $detailedFields = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "detailed_fields", $detailedFields);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listdvdentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listEntries($kalturaSessionUser, $filter, $detailed = null, $detailedFields = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "detailed_fields", $detailedFields);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listKShows($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__eq_producer_id", $filter->equalProducerId);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__bitand_status", $filter->bitAndStatus);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_3", $filter->equalIndexedCustomData3);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listkshows", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listModerations($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_id", $filter->equalId);
-		$this->addOptionalParam($params, "filter__eq_puser_id", $filter->equalPuserId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__like_comments", $filter->likeComments);
-		$this->addOptionalParam($params, "filter__eq_object_id", $filter->equalObjectId);
-		$this->addOptionalParam($params, "filter__eq_object_type", $filter->equalObjectType);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-
-		$result = $this->hit("listmoderations", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listMyDvdEntries($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listmydvdentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listMyEntries($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listmyentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listMyKShows($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__eq_producer_id", $filter->equalProducerId);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__bitand_status", $filter->bitAndStatus);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_3", $filter->equalIndexedCustomData3);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listmykshows", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listNotifications($kalturaSessionUser, $filter, $pageSize = 10, $page = 1)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_id", $filter->equalId);
-		$this->addOptionalParam($params, "filter__gte_id", $filter->greaterThanOrEqualId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-
-		$result = $this->hit("listnotifications", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listPartnerEntries($kalturaSessionUser, $filter, $detailed = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listpartnerentries", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listPlaylists($kalturaSessionUser, $filter, $detailed = null, $detailedFields = null, $pageSize = 10, $page = 1, $useFilterPuserId = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_user_id", $filter->equalUserId);
-		$this->addOptionalParam($params, "filter__eq_kshow_id", $filter->equalKshowId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__in_status", $filter->inStatus);
-		$this->addOptionalParam($params, "filter__eq_type", $filter->equalType);
-		$this->addOptionalParam($params, "filter__in_type", $filter->inType);
-		$this->addOptionalParam($params, "filter__eq_media_type", $filter->equalMediaType);
-		$this->addOptionalParam($params, "filter__in_media_type", $filter->inMediaType);
-		$this->addOptionalParam($params, "filter__eq_indexed_custom_data_1", $filter->equalIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__in_indexed_custom_data_1", $filter->inIndexedCustomData1);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__eq_name", $filter->equalName);
-		$this->addOptionalParam($params, "filter__eq_tags", $filter->equalTags);
-		$this->addOptionalParam($params, "filter__like_tags", $filter->likeTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags", $filter->multiLikeAndTags);
-		$this->addOptionalParam($params, "filter__mlikeor_admin_tags", $filter->multiLikeOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_admin_tags", $filter->multiLikeAndAdminTags);
-		$this->addOptionalParam($params, "filter__like_admin_tags", $filter->likeAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_name", $filter->multiLikeOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_name", $filter->multiLikeAndName);
-		$this->addOptionalParam($params, "filter__mlikeor_search_text", $filter->multiLikeOrSearchText);
-		$this->addOptionalParam($params, "filter__mlikeand_search_text", $filter->multiLikeAndSearchText);
-		$this->addOptionalParam($params, "filter__eq_group_id", $filter->equalGroupId);
-		$this->addOptionalParam($params, "filter__gte_views", $filter->greaterThanOrEqualViews);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__gte_modified_at", $filter->greaterThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__lte_modified_at", $filter->lessThanOrEqualModifiedAt);
-		$this->addOptionalParam($params, "filter__in_partner_id", $filter->inPartnerId);
-		$this->addOptionalParam($params, "filter__eq_partner_id", $filter->equalPartnerId);
-		$this->addOptionalParam($params, "filter__eq_source_link", $filter->equalSourceLink);
-		$this->addOptionalParam($params, "filter__gte_media_date", $filter->greaterThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__lte_media_date", $filter->lessThanOrEqualMediaDate);
-		$this->addOptionalParam($params, "filter__eq_moderation_status", $filter->equalModerationStatus);
-		$this->addOptionalParam($params, "filter__in_moderation_status", $filter->inModerationStatus);
-		$this->addOptionalParam($params, "filter__in_display_in_search", $filter->inDisplayInSearch);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-name", $filter->multiLikeOrTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags", $filter->multiLikeOrTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeor_tags-admin_tags-name", $filter->multiLikeOrTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags", $filter->multiLikeAndTagsOrAdminTags);
-		$this->addOptionalParam($params, "filter__mlikeand_tags-admin_tags-name", $filter->multiLikeAndTagsOrAdminTagsOrName);
-		$this->addOptionalParam($params, "filter__matchand_search_text", $filter->matchAndSearchText);
-		$this->addOptionalParam($params, "filter__matchor_search_text", $filter->matchOrSearchText);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "detailed_fields", $detailedFields);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "use_filter_puser_id", $useFilterPuserId);
-
-		$result = $this->hit("listplaylists", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function listUiconf($kalturaSessionUser, $filter, $detailed = null, $detailedFields = null, $pageSize = 10, $page = 1)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "filter__eq_id", $filter->equalId);
-		$this->addOptionalParam($params, "filter__gte_id", $filter->greaterThanOrEqualId);
-		$this->addOptionalParam($params, "filter__eq_status", $filter->equalStatus);
-		$this->addOptionalParam($params, "filter__eq_obj_type", $filter->equalObjType);
-		$this->addOptionalParam($params, "filter__like_name", $filter->likeName);
-		$this->addOptionalParam($params, "filter__mlikeor_tags", $filter->multiLikeOrTags);
-		$this->addOptionalParam($params, "filter__gte_created_at", $filter->greaterThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__lte_created_at", $filter->lessThanOrEqualCreatedAt);
-		$this->addOptionalParam($params, "filter__gte_updated_at", $filter->greaterThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__lte_updated_at", $filter->lessThanOrEqualUpdatedAt);
-		$this->addOptionalParam($params, "filter__order_by", $filter->orderBy);
-		$this->addOptionalParam($params, "filter__limit", $filter->limit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "detailed_fields", $detailedFields);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-		$this->addOptionalParam($params, "page", $page);
-
-		$result = $this->hit("listuiconfs", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function ping($kalturaSessionUser)
-	{
-		$params = array();
-
-		$result = $this->hit("ping", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function queuePendingBatchJob($kalturaSessionUser, $jobType, $processorName, $processorTimeout, $overQuotaPartners = null, $deferedPartners = null)
-	{
-		$params = array();
-		$params["job_type"] = $jobType;
-		$params["processor_name"] = $processorName;
-		$params["processor_timeout"] = $processorTimeout;
-		$this->addOptionalParam($params, "over_quota_partners", $overQuotaPartners);
-		$this->addOptionalParam($params, "defered_partners", $deferedPartners);
-
-		$result = $this->hit("queuependingbatchjob", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function rankKShow($kalturaSessionUser, $kshowId, $rank)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$params["rank"] = $rank;
-
-		$result = $this->hit("rankkshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function registerPartner($kalturaSessionUser, $partner, $cmsPassword = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "partner_name", $partner->name);
-		$this->addOptionalParam($params, "partner_url1", $partner->url1);
-		$this->addOptionalParam($params, "partner_url2", $partner->url2);
-		$this->addOptionalParam($params, "partner_appearInSearch", $partner->appearInSearch);
-		$this->addOptionalParam($params, "partner_adminName", $partner->adminName);
-		$this->addOptionalParam($params, "partner_adminEmail", $partner->adminEmail);
-		$this->addOptionalParam($params, "partner_description", $partner->description);
-		$this->addOptionalParam($params, "partner_commercialUse", $partner->commercialUse);
-		$this->addOptionalParam($params, "partner_landingPage", $partner->landingPage);
-		$this->addOptionalParam($params, "partner_userLandingPage", $partner->userLandingPage);
-		$this->addOptionalParam($params, "partner_notificationsConfig", $partner->notificationsConfig);
-		$this->addOptionalParam($params, "partner_notify", $partner->notify);
-		$this->addOptionalParam($params, "partner_allowMultiNotification", $partner->allowMultiNotification);
-		$this->addOptionalParam($params, "partner_contentCategories", $partner->contentCategories);
-		$this->addOptionalParam($params, "partner_type", $partner->type);
-		$this->addOptionalParam($params, "partner_phone", $partner->phone);
-		$this->addOptionalParam($params, "partner_describeYourself", $partner->describeYourself);
-		$this->addOptionalParam($params, "partner_adultContent", $partner->adultContent);
-		$this->addOptionalParam($params, "partner_defConversionProfileType", $partner->defConversionProfileType);
-		$this->addOptionalParam($params, "cms_password", $cmsPassword);
-
-		$result = $this->hit("registerpartner", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function reportEntry($kalturaSessionUser, $moderation)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "moderation_comments", $moderation->comments);
-		$this->addOptionalParam($params, "moderation_objectType", $moderation->objectType);
-		$this->addOptionalParam($params, "moderation_objectId", $moderation->objectId);
-		$this->addOptionalParam($params, "moderation_reportCode", $moderation->reportCode);
-		$this->addOptionalParam($params, "moderation_status", $moderation->status);
-
-		$result = $this->hit("reportentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function reportError($kalturaSessionUser, $reportingObj = null, $errorCode = null, $errorDescription = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "reporting_obj", $reportingObj);
-		$this->addOptionalParam($params, "error_code", $errorCode);
-		$this->addOptionalParam($params, "error_description", $errorDescription);
-
-		$result = $this->hit("reporterror", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function reportKShow($kalturaSessionUser, $moderation)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "moderation_comments", $moderation->comments);
-		$this->addOptionalParam($params, "moderation_objectType", $moderation->objectType);
-		$this->addOptionalParam($params, "moderation_objectId", $moderation->objectId);
-		$this->addOptionalParam($params, "moderation_reportCode", $moderation->reportCode);
-		$this->addOptionalParam($params, "moderation_status", $moderation->status);
-
-		$result = $this->hit("reportkshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function reportUser($kalturaSessionUser, $moderation)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "moderation_comments", $moderation->comments);
-		$this->addOptionalParam($params, "moderation_objectType", $moderation->objectType);
-		$this->addOptionalParam($params, "moderation_objectId", $moderation->objectId);
-		$this->addOptionalParam($params, "moderation_reportCode", $moderation->reportCode);
-		$this->addOptionalParam($params, "moderation_status", $moderation->status);
-
-		$result = $this->hit("reportuser", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function resetAdminPassword($kalturaSessionUser, $email)
-	{
-		$params = array();
-		$params["email"] = $email;
-
-		$result = $this->hit("resetadminpassword", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function rollbackKShow($kalturaSessionUser, $kshowId, $kshowVersion)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$params["kshow_version"] = $kshowVersion;
-
-		$result = $this->hit("rollbackkshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function search($kalturaSessionUser, $mediaType, $mediaSource, $search, $authData = null, $page = 1, $pageSize = 10)
-	{
-		$params = array();
-		$params["media_type"] = $mediaType;
-		$params["media_source"] = $mediaSource;
-		$params["search"] = $search;
-		$this->addOptionalParam($params, "auth_data", $authData);
-		$this->addOptionalParam($params, "page", $page);
-		$this->addOptionalParam($params, "page_size", $pageSize);
-
-		$result = $this->hit("search", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function searchAuthData($kalturaSessionUser, $mediaSource, $username, $password)
-	{
-		$params = array();
-		$params["media_source"] = $mediaSource;
-		$params["username"] = $username;
-		$params["password"] = $password;
-
-		$result = $this->hit("searchauthdata", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function searchFromUrl($kalturaSessionUser, $url, $mediaType)
-	{
-		$params = array();
-		$params["url"] = $url;
-		$params["media_type"] = $mediaType;
-
-		$result = $this->hit("searchfromurl", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function searchMediaInfo($kalturaSessionUser, $mediaType, $mediaSource, $mediaId)
-	{
-		$params = array();
-		$params["media_type"] = $mediaType;
-		$params["media_source"] = $mediaSource;
-		$params["media_id"] = $mediaId;
-
-		$result = $this->hit("searchmediainfo", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function searchmediaproviders($kalturaSessionUser)
-	{
-		$params = array();
-
-		$result = $this->hit("searchmediaproviders", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function setMetaData($kalturaSessionUser, $entryId, $kshowId, $hasRoughCut, $xml)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["kshow_id"] = $kshowId;
-		$params["HasRoughCut"] = $hasRoughCut;
-		$params["xml"] = $xml;
-
-		$result = $this->hit("setmetadata", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function startSession($kalturaSessionUser, $secret, $admin = null, $privileges = null, $expiry = 86400)
-	{
-		$params = array();
-		$params["secret"] = $secret;
-		$this->addOptionalParam($params, "admin", $admin);
-		$this->addOptionalParam($params, "privileges", $privileges);
-		$this->addOptionalParam($params, "expiry", $expiry);
-
-		$result = $this->hit("startsession", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function startWidgetSession($kalturaSessionUser, $widgetId, $expiry = 86400)
-	{
-		$params = array();
-		$params["widget_id"] = $widgetId;
-		$this->addOptionalParam($params, "expiry", $expiry);
-
-		$result = $this->hit("startwidgetsession", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function testNotification($kalturaSessionUser)
-	{
-		$params = array();
-
-		$result = $this->hit("testnotification", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateAdminPassword($kalturaSessionUser, $email, $oldPassword, $password)
-	{
-		$params = array();
-		$params["email"] = $email;
-		$params["old_password"] = $oldPassword;
-		$params["password"] = $password;
-
-		$result = $this->hit("updateadminpassword", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateBatchJob($kalturaSessionUser, $batchjobId, $batchjob)
-	{
-		$params = array();
-		$params["batchjob_id"] = $batchjobId;
-		$this->addOptionalParam($params, "batchjob_data", $batchjob->data);
-		$this->addOptionalParam($params, "batchjob_status", $batchjob->status);
-		$this->addOptionalParam($params, "batchjob_abort", $batchjob->abort);
-		$this->addOptionalParam($params, "batchjob_checkAgainTimeout", $batchjob->checkAgainTimeout);
-		$this->addOptionalParam($params, "batchjob_progress", $batchjob->progress);
-		$this->addOptionalParam($params, "batchjob_message", $batchjob->message);
-		$this->addOptionalParam($params, "batchjob_description", $batchjob->description);
-		$this->addOptionalParam($params, "batchjob_updatesCount", $batchjob->updatesCount);
-		$this->addOptionalParam($params, "batchjob_processorExpiration", $batchjob->processorExpiration);
-
-		$result = $this->hit("updatebatchjob", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateDvdEntry($kalturaSessionUser, $entryId, $entry)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-
-		$result = $this->hit("updatedvdentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateEntriesThumbnails($kalturaSessionUser, $entryIds, $timeOffset)
-	{
-		$params = array();
-		$params["entry_ids"] = $entryIds;
-		$params["time_offset"] = $timeOffset;
-
-		$result = $this->hit("updateentriesthumbnails", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateEntry($kalturaSessionUser, $entryId, $entry, $allowEmptyField = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-		$this->addOptionalParam($params, "allow_empty_field", $allowEmptyField);
-
-		$result = $this->hit("updateentry", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateEntryTModeration($kalturaSessionUser, $entryId, $moderationStatus)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$params["moderation_status"] = $moderationStatus;
-
-		$result = $this->hit("updateentrymoderation", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateEntryThumbnail($kalturaSessionUser, $entryId, $sourceEntryId = null, $timeOffset = null)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "source_entry_id", $sourceEntryId);
-		$this->addOptionalParam($params, "time_offset", $timeOffset);
-
-		$result = $this->hit("updateentrythumbnail", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateEntryThumbnailJpeg($kalturaSessionUser, $entryId)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-
-		$result = $this->hit("updateentrythumbnailjpeg", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateKShow($kalturaSessionUser, $kshowId, $kshow, $detailed = null, $allowDuplicateNames = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "kshow_name", $kshow->name);
-		$this->addOptionalParam($params, "kshow_description", $kshow->description);
-		$this->addOptionalParam($params, "kshow_tags", $kshow->tags);
-		$this->addOptionalParam($params, "kshow_indexedCustomData3", $kshow->indexedCustomData3);
-		$this->addOptionalParam($params, "kshow_groupId", $kshow->groupId);
-		$this->addOptionalParam($params, "kshow_permissions", $kshow->permissions);
-		$this->addOptionalParam($params, "kshow_partnerData", $kshow->partnerData);
-		$this->addOptionalParam($params, "kshow_allowQuickEdit", $kshow->allowQuickEdit);
-		$this->addOptionalParam($params, "detailed", $detailed);
-		$this->addOptionalParam($params, "allow_duplicate_names", $allowDuplicateNames);
-
-		$result = $this->hit("updatekshow", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateKshowOwner($kalturaSessionUser, $kshowId, $detailed = null)
-	{
-		$params = array();
-		$params["kshow_id"] = $kshowId;
-		$this->addOptionalParam($params, "detailed", $detailed);
-
-		$result = $this->hit("updatekshowowner", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateNotification($kalturaSessionUser, $notification)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "notification_id", $notification->id);
-		$this->addOptionalParam($params, "notification_status", $notification->status);
-		$this->addOptionalParam($params, "notification_notificationResult", $notification->notificationResult);
-
-		$result = $this->hit("updatenotification", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updatePartner($kalturaSessionUser, $partner)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "partner_name", $partner->name);
-		$this->addOptionalParam($params, "partner_url1", $partner->url1);
-		$this->addOptionalParam($params, "partner_url2", $partner->url2);
-		$this->addOptionalParam($params, "partner_appearInSearch", $partner->appearInSearch);
-		$this->addOptionalParam($params, "partner_adminName", $partner->adminName);
-		$this->addOptionalParam($params, "partner_adminEmail", $partner->adminEmail);
-		$this->addOptionalParam($params, "partner_description", $partner->description);
-		$this->addOptionalParam($params, "partner_commercialUse", $partner->commercialUse);
-		$this->addOptionalParam($params, "partner_landingPage", $partner->landingPage);
-		$this->addOptionalParam($params, "partner_userLandingPage", $partner->userLandingPage);
-		$this->addOptionalParam($params, "partner_notificationsConfig", $partner->notificationsConfig);
-		$this->addOptionalParam($params, "partner_notify", $partner->notify);
-		$this->addOptionalParam($params, "partner_allowMultiNotification", $partner->allowMultiNotification);
-		$this->addOptionalParam($params, "partner_contentCategories", $partner->contentCategories);
-		$this->addOptionalParam($params, "partner_type", $partner->type);
-		$this->addOptionalParam($params, "partner_phone", $partner->phone);
-		$this->addOptionalParam($params, "partner_describeYourself", $partner->describeYourself);
-		$this->addOptionalParam($params, "partner_adultContent", $partner->adultContent);
-		$this->addOptionalParam($params, "partner_defConversionProfileType", $partner->defConversionProfileType);
-
-		$result = $this->hit("updatepartner", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updatePlaylist($kalturaSessionUser, $entryId, $entry)
-	{
-		$params = array();
-		$params["entry_id"] = $entryId;
-		$this->addOptionalParam($params, "entry_name", $entry->name);
-		$this->addOptionalParam($params, "entry_tags", $entry->tags);
-		$this->addOptionalParam($params, "entry_type", $entry->type);
-		$this->addOptionalParam($params, "entry_mediaType", $entry->mediaType);
-		$this->addOptionalParam($params, "entry_source", $entry->source);
-		$this->addOptionalParam($params, "entry_sourceId", $entry->sourceId);
-		$this->addOptionalParam($params, "entry_sourceLink", $entry->sourceLink);
-		$this->addOptionalParam($params, "entry_licenseType", $entry->licenseType);
-		$this->addOptionalParam($params, "entry_credit", $entry->credit);
-		$this->addOptionalParam($params, "entry_groupId", $entry->groupId);
-		$this->addOptionalParam($params, "entry_partnerData", $entry->partnerData);
-		$this->addOptionalParam($params, "entry_conversionQuality", $entry->conversionQuality);
-		$this->addOptionalParam($params, "entry_permissions", $entry->permissions);
-		$this->addOptionalParam($params, "entry_dataContent", $entry->dataContent);
-		$this->addOptionalParam($params, "entry_desiredVersion", $entry->desiredVersion);
-		$this->addOptionalParam($params, "entry_url", $entry->url);
-		$this->addOptionalParam($params, "entry_thumbUrl", $entry->thumbUrl);
-		$this->addOptionalParam($params, "entry_filename", $entry->filename);
-		$this->addOptionalParam($params, "entry_realFilename", $entry->realFilename);
-		$this->addOptionalParam($params, "entry_indexedCustomData1", $entry->indexedCustomData1);
-		$this->addOptionalParam($params, "entry_thumbOffset", $entry->thumbOffset);
-		$this->addOptionalParam($params, "entry_mediaId", $entry->mediaId);
-		$this->addOptionalParam($params, "entry_screenName", $entry->screenName);
-		$this->addOptionalParam($params, "entry_siteUrl", $entry->siteUrl);
-		$this->addOptionalParam($params, "entry_description", $entry->description);
-		$this->addOptionalParam($params, "entry_mediaDate", $entry->mediaDate);
-		$this->addOptionalParam($params, "entry_adminTags", $entry->adminTags);
-
-		$result = $this->hit("updateplaylist", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateUiconf($kalturaSessionUser, $uiconfId, $uiconf)
-	{
-		$params = array();
-		$params["uiconf_id"] = $uiconfId;
-		$this->addOptionalParam($params, "uiconf_name", $uiconf->name);
-		$this->addOptionalParam($params, "uiconf_objType", $uiconf->objType);
-		$this->addOptionalParam($params, "uiconf_width", $uiconf->width);
-		$this->addOptionalParam($params, "uiconf_height", $uiconf->height);
-		$this->addOptionalParam($params, "uiconf_htmlParams", $uiconf->htmlParams);
-		$this->addOptionalParam($params, "uiconf_swfUrl", $uiconf->swfUrl);
-		$this->addOptionalParam($params, "uiconf_creationMode", $uiconf->creationMode);
-		$this->addOptionalParam($params, "uiconf_swfUrlVersion", $uiconf->swfUrlVersion);
-		$this->addOptionalParam($params, "uiconf_confFile", $uiconf->confFile);
-		$this->addOptionalParam($params, "uiconf_confVars", $uiconf->confVars);
-		$this->addOptionalParam($params, "uiconf_useCdn", $uiconf->useCdn);
-		$this->addOptionalParam($params, "uiconf_tags", $uiconf->tags);
-		$this->addOptionalParam($params, "uiconf_autoplay", $uiconf->autoplay);
-		$this->addOptionalParam($params, "uiconf_automuted", $uiconf->automuted);
-
-		$result = $this->hit("updateuiconf", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateUser($kalturaSessionUser, $userId, $user)
-	{
-		$params = array();
-		$params["user_id"] = $userId;
-		$this->addOptionalParam($params, "user_screenName", $user->screenName);
-		$this->addOptionalParam($params, "user_fullName", $user->fullName);
-		$this->addOptionalParam($params, "user_email", $user->email);
-		$this->addOptionalParam($params, "user_dateOfBirth", $user->dateOfBirth);
-		$this->addOptionalParam($params, "user_aboutMe", $user->aboutMe);
-		$this->addOptionalParam($params, "user_tags", $user->tags);
-		$this->addOptionalParam($params, "user_gender", $user->gender);
-		$this->addOptionalParam($params, "user_country", $user->country);
-		$this->addOptionalParam($params, "user_state", $user->state);
-		$this->addOptionalParam($params, "user_city", $user->city);
-		$this->addOptionalParam($params, "user_zip", $user->zip);
-		$this->addOptionalParam($params, "user_urlList", $user->urlList);
-		$this->addOptionalParam($params, "user_networkHighschool", $user->networkHighschool);
-		$this->addOptionalParam($params, "user_networkCollege", $user->networkCollege);
-		$this->addOptionalParam($params, "user_partnerData", $user->partnerData);
-
-		$result = $this->hit("updateuser", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function updateUserId($kalturaSessionUser, $userId, $newUserId)
-	{
-		$params = array();
-		$params["user_id"] = $userId;
-		$params["new_user_id"] = $newUserId;
-
-		$result = $this->hit("updateuserid", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function upload($kalturaSessionUser, $filename)
-	{
-		$params = array();
-		$params["filename"] = $filename;
-
-		$result = $this->hit("upload", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function uploadJpeg($kalturaSessionUser, $filename, $hash)
-	{
-		$params = array();
-		$params["filename"] = $filename;
-		$params["hash"] = $hash;
-
-		$result = $this->hit("uploadjpeg", $kalturaSessionUser, $params);
-		return $result;
-	}
-
-	function viewWidget($kalturaSessionUser, $entryId = null, $kshowId = null, $widgetId = null, $host = null)
-	{
-		$params = array();
-		$this->addOptionalParam($params, "entry_id", $entryId);
-		$this->addOptionalParam($params, "kshow_id", $kshowId);
-		$this->addOptionalParam($params, "widget_id", $widgetId);
-		$this->addOptionalParam($params, "host", $host);
-
-		$result = $this->hit("viewwidget", $kalturaSessionUser, $params);
-		return $result;
+	/**
+	 * Media Service
+	 *
+	 * @var KalturaMediaService
+	 */
+	var $media = null;
+
+	/**
+	 * Mixing Service
+	 *
+	 * @var KalturaMixingService
+	 */
+	var $mixing = null;
+
+	/**
+	 * Base Entry Service
+	 *
+	 * @var KalturaBaseEntryService
+	 */
+	var $baseEntry = null;
+
+	/**
+	 * Session service
+	 *
+	 * @var KalturaSessionService
+	 */
+	var $session = null;
+
+	/**
+	 * UiConf service lets you create and manage your UIConfs for the various flash components
+	 * This service is used by the KMC-ApplicationStudio
+	 *
+	 * @var KalturaUiConfService
+	 */
+	var $uiConf = null;
+
+	/**
+	 * Playlist service lets you create,manage and play your playlists
+	 * Playlists could be static (containing a fixed list of entries) or dynamic (baseed on a filter)
+	 *
+	 * @var KalturaPlaylistService
+	 */
+	var $playlist = null;
+
+	/**
+	 * Manage partner users on Kaltura's side
+	 * The userId in kaltura is the unique Id in the partner's system, and the [partnerId,Id] couple are unique key in kaltura's DB
+	 *
+	 * @var KalturaUserService
+	 */
+	var $user = null;
+
+	/**
+	 * widget service for full widget management
+	 *
+	 * @var KalturaWidgetService
+	 */
+	var $widget = null;
+
+	/**
+	 * Search service allows you to search for media in various media providers
+	 * This service is being used mostly by the CW component
+	 *
+	 * @var KalturaSearchService
+	 */
+	var $search = null;
+
+	/**
+	 * partner service allows you to change/manage your partner personal details and settings as well
+	 *
+	 * @var KalturaPartnerService
+	 */
+	var $partner = null;
+
+	/**
+	 * adminuser service
+	 *
+	 * @var KalturaAdminuserService
+	 */
+	var $adminuser = null;
+
+	/**
+	 * System Service
+	 *
+	 * @var KalturaSystemService
+	 */
+	var $system = null;
+
+
+	function KalturaClient($config)
+	{
+		parent::KalturaClientBase($config);
+		$this->media = new KalturaMediaService(&$this);
+		$this->mixing = new KalturaMixingService(&$this);
+		$this->baseEntry = new KalturaBaseEntryService(&$this);
+		$this->session = new KalturaSessionService(&$this);
+		$this->uiConf = new KalturaUiConfService(&$this);
+		$this->playlist = new KalturaPlaylistService(&$this);
+		$this->user = new KalturaUserService(&$this);
+		$this->widget = new KalturaWidgetService(&$this);
+		$this->search = new KalturaSearchService(&$this);
+		$this->partner = new KalturaPartnerService(&$this);
+		$this->adminuser = new KalturaAdminuserService(&$this);
+		$this->system = new KalturaSystemService(&$this);
 	}
-
 }
-?>

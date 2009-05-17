@@ -7,33 +7,31 @@
 	define("KALTURA_KCW_UICONF_COMMENTS", 503);
 	define("KALTURA_KCW_UICONF_FOR_SE", 504);
 	define("KALTURA_THUMBNAIL_WIDGET", 523);
+	define("KALTURA_LOGGER", false);
 	
 	$KALTURA_GLOBAL_PLAYERS = array (
 		"whiteblue" => 
 			array(
 				"name" => "White/Blue", 
-				"uiConfId" => 520,
-				"horizontalSpacer" => 10,
-				"verticalSpacer" => 64,
-				"videoAspectRatio" => "4:3",
+				"uiConfId" => 530,
+				"horizontalSpacer" => 0,
+				"verticalSpacer" => 65,
 				"previewHeaderColor" => "#000"
 			),
 		"dark" => 
 			array(
 				"name" => "Dark", 
-				"uiConfId" => 521,
-				"horizontalSpacer" => 10,
-				"verticalSpacer" => 64,
-				"videoAspectRatio" => "4:3",
+				"uiConfId" => 531,
+				"horizontalSpacer" => 0,
+				"verticalSpacer" => 65,
 				"previewHeaderColor" => "#fff"
 			),
 		"grey" => 
 			array(
 				"name" => "Grey", 
-				"uiConfId" => 522,
-				"horizontalSpacer" => 10,
-				"verticalSpacer" => 64,
-				"videoAspectRatio" => "4:3",
+				"uiConfId" => 532,
+				"horizontalSpacer" => 0,
+				"verticalSpacer" => 65,
 				"previewHeaderColor" => "#31302E"
 			)
 	);

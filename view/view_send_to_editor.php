@@ -62,27 +62,45 @@
 <div class="kalturaTab">
 	<?php if (@$_GET["firstedit"] != "true"): ?>
 	<div class="backDiv">
-		<a href="<?php echo kalturaGenerateTabUrl(array()); ?>"><img src="<?php echo kalturaGetPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
+		<a href="<?php echo KalturaHelpers::generateTabUrl(array()); ?>"><img src="<?php echo KalturaHelpers::getPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
 	</div>
 	<?php endif; ?>
 	<form method="post" class="kalturaForm">
 		<table id="kalturaEditTable" class="form-table kalturaFormTable">
 			<tr>
 				<td valign="top" width="180">
-					<div id="divKalturaThumbnail" style="width:250px; height:244px;" class="kalturaHand" onclick="Kaltura.activatePlayer('divKalturaThumbnail','divKalturaPlayer');">
-						<div class="playerName"><nobr><?php echo @$kshow["name"]; ?></nobr></div>
+					<div id="divKalturaThumbnail" style="width:240px; height:245px;" class="kalturaHand" onclick="Kaltura.activatePlayer('divKalturaThumbnail','divKalturaPlayer');">
+						<div class="playerName"><nobr><?php echo $viewData["entry"]->name; ?></nobr></div>
 						<img id="thumbnailPreview" src=""  />
 					</div>
 					<div id="divKalturaPlayer" style="display: none"></div>
 					<?php $players = KalturaHelpers::getPlayers(); ?>
 					
 					<script type="text/javascript">
-						function embedPreviewPlayer(name) {
+						function updateRatio() {
+							var ratio = jQuery("input[name=playerRatio]:checked").val();
+							if (ratio == "16:9")
+							{
+								jQuery("#playerWidthLarge").next().text("Large (400x290)");
+								jQuery("#playerWidthMedium").next().text("Small (260x211)");
+							}
+							else
+							{
+								jQuery("#playerWidthLarge").next().text("Large (400x365)");
+								jQuery("#playerWidthMedium").next().text("Small (260x260)");
+							}
+						}
+						
+						function embedPreviewPlayer(name, aspectRatio) {
 							<?php foreach($players as $name => $details): ?>
 								var player_<?php echo $name; ?>_settings = {
 										url: "<?php echo KalturaHelpers::getSwfUrlForBaseWidget($name); ?>",
 										name: "<?php echo $details["name"]; ?>",
-										previewHeaderColor: "<?php echo $details["previewHeaderColor"]; ?>"
+										previewHeaderColor: "<?php echo $details["previewHeaderColor"]; ?>",
+										horizontalSpacer: <?php echo $details["horizontalSpacer"]; ?>,
+										verticalSpacer: <?php echo $details["verticalSpacer"]; ?>,
+										previewWidth: 240,
+										previewHeight: <?php echo KalturaHelpers::calculatePlayerHeight($name, 240); ?> 
 								};
 							<?php endforeach; ?>
 
@@ -90,7 +108,8 @@
 							var swfUrl = playerSettings.url;
 							jQuery("#thumbnailPreview").attr('src', '<?php echo $viewData["thumbnailPlaceHolderUrl"]; ?>&player_type='+name);
 							jQuery("#divKalturaThumbnail .playerName").css('color', playerSettings.previewHeaderColor);
-							var kalturaSwf = new SWFObject(swfUrl, "swfKalturaPlayer", "250", "244", "9", "#000000");
+							
+							var kalturaSwf = new SWFObject(swfUrl, "swfKalturaPlayer", playerSettings.previewWidth, playerSettings.previewHeight, "9", "#000000");
 							kalturaSwf.addParam("flashVars", "<?php echo $flashVarsStr; ?>");
 							kalturaSwf.addParam("wmode", "opaque");
 							kalturaSwf.addParam("allowScriptAccess", "always");
@@ -105,7 +124,7 @@
 						<tr>
 							<td style="padding-bottom:22px;" colspan="2">
 								<label for="ktitle">Title:</label>
-								<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo @$kshow["name"]; ?>" style="margin-left:6px;" />
+								<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo $viewData["entry"]->name; ?>" style="margin-left:6px;" />
 								<span style="color:red; font-size: 20px; font-weight: bold; display: none; line-height: 20px">*</span>
 							</td>
 						</tr>
@@ -113,7 +132,7 @@
 							<td valign="top">
 								<div class="selectBox">
 									<label for="playerType">Select player design:</label>
-									<select name="playerType" id="playerType" onchange="embedPreviewPlayer(this.options[this.selectedIndex].value);">
+									<select name="playerType" id="playerType" onchange="embedPreviewPlayer(this.options[this.selectedIndex].value, jQuery('input[name=playerRatio]:checked').val());">
 									<?php $players = KalturaHelpers::getPlayers(); ?>
 									<?php foreach($players as $name => $details): ?>
 										<option id="playerType_<?php echo $name; ?>" value="<?php echo $name; ?>" <?php echo @get_option("kaltura_default_player_type") == $name ? "selected=\"selected\"" : ""; ?>><?php echo $details["name"]; ?></option>
@@ -128,6 +147,7 @@
 									</script>
 									<?php endif; ?>
 								</div>	
+								<?php if ($viewData["entry"]->type == KalturaEntryType_MIX): ?>
 								<div class="selectBox">
 									<label for="addPermission">Who can add to video:</label>
 									<select name="addPermission" id="addPermission">
@@ -146,14 +166,23 @@
 										<option value="0" <?php echo @get_option("kaltura_permissions_edit") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
 									</select>
 								</div>
+								<?php else: ?>
+								<input type="hidden" name="addPermission" value="-1" />
+								<input type="hidden" name="editPermission" value="-1" />
+								<?php endif; ?>
 							</td>
 							<td valign="top" style="padding-left:25px;">
+								<strong>Player Dimensions:</strong>
+								<div class="playerRatioDiv">
+									<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>
+									<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="updateRatio();" value="16:9" <?php echo $wideScreenDisabled; ?>/><label for="playerRatioWide">Widescreen</label></span>
+								</div>
 								<strong>Select player size:</strong>
 								<div class="radioBox">
-									<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="410" checked="checked" /><label for="playerWidthLarge">Large (410x364)</label><br />
+									<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="400" checked="checked" /><label for="playerWidthLarge"></label><br />
 								</div>
 								<div class="radioBox">
-									<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="260" /><label for="playerWidthMedium">Small (260x252)</label>
+									<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="260" /><label for="playerWidthMedium"></label>
 								</div>
 								<div class="radioBox">
 									<input type="radio" class="iradio" name="playerWidth" id="playerWidthCustom" value="" /><label for="playerCustomWidth">Custom width</label>
@@ -171,6 +200,8 @@
 	</form>			
 </div>
 <script type="text/javascript">
+	updateRatio();
+	
 	jQuery("#playerCustomWidth").click(function(){
 		jQuery(this).siblings("[type=radio]").attr("checked", "checked");
 	});

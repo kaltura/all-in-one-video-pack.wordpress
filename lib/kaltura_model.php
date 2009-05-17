@@ -1,83 +1,157 @@
 <?php
 class KalturaModel 
 {
-	function getKshow($kalturaClient, $kshowId) 
+	var $session;
+	
+    function KalturaModel() 
+    {
+        $config = KalturaHelpers::getKalturaConfiguration();
+        $this->client = &new KalturaClient($config); // & is needed because of the subclasses inititailzation inside the KalturaClient constructor        
+    }
+    
+    function getInstance()
+    {
+        static $instance = null;
+        
+        if ($instance == null)    
+        {
+            $instance = &new KalturaModel();
+        }
+        
+        return $instance;
+    }
+
+    function getLastError()
+    {
+        return $this->client->error;
+    }
+    
+	function startSession()
+    {
+    	$ks = $this->getAdminSession("edit:*");
+		$this->client->setKs($ks);
+		$this->session = $ks;
+    }
+    
+	function getAdminSession($privileges = "")
+    {
+        $userId = KalturaHelpers::getLoggedUserId();
+        $partnerId = get_option("kaltura_partner_id");
+        $secret = get_option("kaltura_admin_secret");
+		return $this->client->session->start($partnerId, $secret, $userId, KalturaSessionType_ADMIN, 86400, $privileges);        
+    }
+    
+    function getClientSideSession($privileges = "")
+    {
+        $userId = KalturaHelpers::getLoggedUserId();
+        $partnerId = get_option("kaltura_partner_id");
+        $secret = get_option("kaltura_secret");
+		return $this->client->session->start($partnerId, $secret, $userId, KalturaSessionType_USER, 86400, $privileges);        
+    }
+    
+    function getSecrets($partnerId, $email, $password)
+    {
+        return $this->client->partner->getSecrets($partnerId, $email, $password);
+    }
+    
+	function getEntry($entryId) 
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$result = $kalturaClient->getKShow($sessionUser, $kshowId, true);
-		return @$result["result"]["kshow"];
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->baseEntry->get($entryId);
 	}
 	
-	function updateKshow($kalturaClient, $kshowId, $kshowUpdate)
+	function updateMediaEntry($mediaEntryId, $mediaEntry)
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$kalturaClient->updateKShow($sessionUser, $kshowId, $kshowUpdate);
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->media->update($mediaEntryId, $mediaEntry);
 	}
 	
-	function getKshows($kalturaAdminClient, $pageSize, $page)
+    function updateMixEntry($mixEntryId, $mediaEntry)
 	{
-		$sessionUser = kalturaGetSessionUser();
-					
-		$filter = new KalturaKShowFilter();
-		$filter->orderBy = KalturaKShowFilter_ORDER_BY_CREATED_AT_DESC;
-		$result = $kalturaAdminClient->listKShows($sessionUser, $filter, true, $pageSize, $page);
-		return $result["result"];
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->mixing->update($mixEntryId, $mediaEntry);
 	}
 	
-	function addKshow($kalturaClient, $kshow)
+    function addMixEntry($mixEntry)
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$res = $kalturaClient->addKShow($sessionUser, $kshow);
-		return @$res["result"]["kshow"]["id"];
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->mixing->add($mixEntry);
+	}
+	
+	function listEntries($pageSize, $page)
+	{
+		if (!$this->session)
+			$this->startSession();
+			
+		$filter = new KalturaBaseEntryFilter();
+		$filter->orderBy = "-createdAt";
+		
+		$pager = new KalturaFilterPager();
+		$pager->pageSize = $pageSize;
+		$pager->pageIndex = $page;
+		
+		return $this->client->baseEntry->listAction($filter, $pager);
 	}
 
-	function getPartner($kalturaClient, $email, $password, $partnerId)
+	function deleteEntry($mediaEntryId)
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$res = $kalturaClient->getPartner($sessionUser, $email, $password, $partnerId);
-		return @$res;
-	}
-
-	function getLastKshow($kalturaClient)
-	{
-		$sessionUser = kalturaGetSessionUser();
-		$filter = new KalturaKShowFilter();
-		$filter->orderBy = KalturaKShowFilter_ORDER_BY_CREATED_AT_DESC;
-		$res = $kalturaClient->listMyKShows($sessionUser, $filter, "true", 1, 1);
-		return @$res["result"]["kshows"][0];
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->baseEntry->delete($mediaEntryId);
 	}
 	
-	function deleteKShow($kalturaAdminClient, $kshowId)
+	function addWidget($entryId, $uiConfId) 
 	{
-		$sessionUser = kalturaGetSessionUser();
-		return $kalturaAdminClient->deleteKShow($sessionUser, $kshowId);
-	}
+		if (!$this->session)
+			$this->startSession();
 	
-	function addWidget($kalturaClient, $kshowId, $uiConfId) 
-	{
-		$sessionUser = kalturaGetSessionUser();
 		$widget = new KalturaWidget();
-		$widget->kshowId = $kshowId;
+		$widget->entryId = $entryId;
 		$widget->uiConfId = $uiConfId;
-		$result = $kalturaClient->addwidget($sessionUser, $widget);
-		return @$result["result"]["widget"]["id"];
+		return $this->client->widget->add($widget);
 	}
 	
-	function getWidget($kalturaClient, $widgetId) 
+	function getWidget($widgetId) 
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$result = $kalturaClient->getWidget($sessionUser, $widgetId);
-		return @$result["result"]["widget"];
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->widget->get($widgetId);
 	}
 	
-	function pingTest($kalturaClient)
+	function pingTest()
 	{
-		$sessionUser = kalturaGetSessionUser();
-		$res = $kalturaClient->ping($sessionUser);
-		if (@$res["result"]["status"] == "ok")
-			return true;
-		else
-			return false;
+		return $this->client->system->ping();
+	}
+	
+	function registerPartner($partner)
+	{
+	    return $this->client->partner->register($partner);
+	}
+	
+	function listUserEntries($userId, $pageSize, $page)
+	{
+	    if (!$this->session)
+			$this->startSession();
+			
+		$filter = new KalturaBaseEntryFilter();
+		$filter->orderBy = "-createdAt";
+		$filter->userIdEqual = $userId;
+		
+		$pager = new KalturaFilterPager();
+		$pager->pageSize = $pageSize;
+		$pager->pageIndex = $page;
+		
+		return $this->client->baseEntry->listAction($filter, $pager);
 	}
 }
 ?>

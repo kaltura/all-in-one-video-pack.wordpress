@@ -3,11 +3,10 @@
 	define('DOING_AJAX', true);
 	require_once('../../../wp-load.php');
 	require_once('settings.php');
-	require_once('lib/common.php');
 	require_once('lib/kaltura_helpers.php');
 	require_once("lib/kaltura_model.php");
 	
-	$sessionUser = kalturaGetSessionUser();
+	$sessionUser = KalturaHelpers::getSessionUser();
 	
 	$kshowId = @$_GET["kshowId"];
 	$postId = @$_GET["postId"];
@@ -15,7 +14,7 @@
 	// update the kshow
 	$kshowUpdate = new KalturaKShow();
 	$kshowUpdate->name = "Video comment for post #".$postId;
-	$kalturaClient = getKalturaClient(false, "edit:".$kshowId);  
+	$kalturaClient = KalturaHelpers::getKalturaClient(false, "edit:".$kshowId);  
 	KalturaModel::updateKshow($kalturaClient, $kshowId, $kshowUpdate);
 	
 	// add widget

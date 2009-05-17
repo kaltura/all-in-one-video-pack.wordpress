@@ -328,5 +328,13 @@ Kaltura = {
 				},
 				"html"
 			);
+	},
+	
+	unbindOverlayClick: function() {
+		jQuery("#TB_overlay").unbind("click");
+	},
+	
+	bindOverlayClick: function() {
+		jQuery("#TB_overlay").bind("click", tb_remove);
 	}
 }

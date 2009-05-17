@@ -2,7 +2,6 @@
 	define('WP_USE_THEMES', false);
 	require('../../../wp-blog-header.php');
 	require_once('settings.php');
-	require_once('lib/common.php');
 	require_once('lib/kaltura_helpers.php');
 	require_once("lib/kaltura_model.php");
 	
@@ -54,30 +53,29 @@
 	$js_error = kalturaValidateVideoComment();
 
 	if ($js_error == "") {
-		$kalturaClient = getKalturaClient();
-		if (!$kalturaClient)
+		$kmodel = KalturaModel::getInstance();
+		$ks = $kmodel->getClientSideSession();
+		if (!$ks)
 		{
 			$js_error = __('Failed to start new session.');
 		}
 		else
 		{
-			$kshowId = "-2";
-			$ks = $kalturaClient->getKs();
 			$viewData["swfUrl"]    		= KalturaHelpers::getContributionWizardUrl(KALTURA_KCW_UICONF_COMMENTS);
-			$viewData["flashVars"] 		= KalturaHelpers::getContributionWizardFlashVars($ks, $kshowId);
+			$viewData["flashVars"] 		= KalturaHelpers::getContributionWizardFlashVars($ks);
 			$viewData["postId"] = $_GET["postid"];
 		}
 	}
 ?>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<?php echo kalturaGetPluginUrl(); ?>/css/kaltura.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo KalturaHelpers::getPluginUrl(); ?>/css/kaltura.css"/>
 <style type="text/css">
 	html, body { margin:0; padding:0; }
 </style>
-<script type="text/javascript" src="<?php echo kalturaGetPluginUrl(); ?>/js/swfobject.js"></script>
-<script type="text/javascript" src="<?php echo kalturaGetPluginUrl(); ?>/js/kaltura.js"></script>
-<script type="text/javascript" src="<?php echo kalturaGetPluginUrl(); ?>/../../../wp-includes/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="<?php echo KalturaHelpers::getPluginUrl(); ?>/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo KalturaHelpers::getPluginUrl(); ?>/js/kaltura.js"></script>
+<script type="text/javascript" src="<?php echo KalturaHelpers::getPluginUrl(); ?>/../../../wp-includes/js/jquery/jquery.js"></script>
 
 <?php if ($js_error != ""): ?>
 <script type="text/javascript">
@@ -105,7 +103,7 @@
 		{
 			jQuery.ajax(
 				{
-					url: "<?php echo kalturaGetPluginUrl(); ?>/ajax_prepare_comment_widget.php",
+					url: "<?php echo KalturaHelpers::getPluginUrl(); ?>/ajax_prepare_comment_widget.php",
 					success: addWidgetSuccessHandler,
 					error: addWidgetErrorHandler,
 					dataType: "html",

@@ -1,33 +1,11 @@
 <?php
-/*
-This file is part of the Kaltura Collaborative Media Suite which allows users
-to do with audio, video, and animation what Wiki platfroms allow them to do with
-text.
-
-Copyright (C) 2006-2008 Kaltura Inc.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-define("KALTURA_API_VERSION", "0.7");
-define("KALTURA_SERVICE_FORMAT_JSON", "1");
-define("KALTURA_SERVICE_FORMAT_XML", "2");
-define("KALTURA_SERVICE_FORMAT_PHP", "3");
-
+define("KALTURA_API_VERSION", "3.0");
+define("KALTURA_SERVICE_FORMAT_JSON", 1);
+define("KALTURA_SERVICE_FORMAT_XML",  2);
+define("KALTURA_SERVICE_FORMAT_PHP",  3);
+	
 class KalturaClientBase 
 {
-
 	/**
 	 * @var KalturaConfiguration
 	 */
@@ -44,11 +22,16 @@ class KalturaClientBase
 	var $shouldLog = false;
 	
 	/**
+	 * @var string
+	 */
+	var $error;
+	
+	/**
 	 * Kaltura client constuctor, expecting configuration object 
 	 *
 	 * @param KalturaConfiguration $config
 	 */
-	function KalturaClientBase($config)
+	function KalturaClientBase(/*KalturaConfiguration*/ $config)
 	{
 		$this->config = $config;
 		
@@ -58,152 +41,79 @@ class KalturaClientBase
 			$this->shouldLog = true;	
 		}
 	}
-	
-	function http_parse_query($array = null, $convention = "%s")
+
+	function callService($service, $action, $params)
 	{
-		if( !$array || count( $array ) == 0 )
-	        return ''; 
-	        
-		$query = ''; 
-     
-		foreach( $array as $key => $value )
-		{
-		    if( is_array( $value ) )
-		    { 
-				$new_convention = sprintf( $convention, $key ) . '[%s]'; 
-			    $query .= http_parse_query( $value, $new_convention ); 
-			} else { 
-			    $key = urlencode( $key ); 
-			    $value = urlencode( $value ); 
-         
-			    $query .= sprintf( $convention, $key ) . "=$value&"; 
-            } 
-		} 
- 
-		return $query; 
-	}
-		
-	function do_post_request($url, $data, $optional_headers = null)
-	{
-		if (!function_exists('fsockopen'))
-			return null;
-		$start = strpos($url,'//')+2;
-		$end = strpos($url,'/',$start);
-		$host = substr($url, $start, $end-$start);
-		$domain = substr($url,$end);
-		$fp = fsockopen($host, 80);
-		if(!$fp) return null;
-		fputs ($fp,"POST $domain HTTP/1.1\n");
-		fputs ($fp,"Host: $host\n");
-		if ($optional_headers) {
-			fputs($fp, $optional_headers);
-		}
-		fputs ($fp,"Content-type: application/x-www-form-urlencoded\n");
-		fputs ($fp,"Content-length: ".strlen($data)."\n\n");
-		fputs ($fp,"$data\n\n");
-		
-		$response = "";
-		while(!feof($fp)) {
-			$response .= fread($fp, 32768);
-		}
-	
-		$pos = strpos($response, "\r\n\r\n");
-		if ($pos)
-			$response = substr($response, $pos + 4);
-		else
-			$response = "";
-			
-		fclose ($fp);
-		return $response;
-	}
-	
-	function hit($method, $session_user, $params)
-	{
-		$start_time = microtime(true);
+		$startTime = microtime(true);
+		$this->error = null;
 		
 		$this->log("service url: [" . $this->config->serviceUrl . "]");
-		$this->log("trying to call method: [" . $method . "] for user id: [" . $session_user->userId . "] using session: [" .$this->ks . "]");
+		$this->log("trying to call service: [".$service.".".$action."] using session: [" .$this->ks . "]");
 		
 		// append the basic params
-		$params["kaltura_api_version"] 	= KALTURA_API_VERSION;
-		$params["partner_id"] 			= $this->config->partnerId;
-		$params["subp_id"] 				= $this->config->subPartnerId;
-		$params["format"] 				= $this->config->format;
-		$params["uid"] 					= $session_user->userId;
-		$this->addOptionalParam($params, "user_name", $session_user->screenName);
-		$this->addOptionalParam($params, "ks", $this->ks);
+		$this->addParam($params, "apiVersion", KALTURA_API_VERSION);
+		$this->addParam($params, "format", $this->config->format);
+		$this->addParam($params, "ks", $this->ks);
 		
-		$url = $this->config->serviceUrl . "/index.php/partnerservices2/" . $method;
+		$url = $this->config->serviceUrl."/api_v3/index.php?service=".$service."&action=".$action;
 		$this->log("full reqeust url: [" . $url . "]");
 		
-		if (function_exists("curl_init"))
+		// flatten sub arrays (the objects)
+		$newParams = array();
+		foreach($params as $key => $val) 
 		{
-			$this->log("using curl");
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERAGENT, "Kaltura PHP4 Client (API version ".KALTURA_API_VERSION."; curl; PHP ".phpversion().")");
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			
-			$signature = $this->signature($params);
-			$params["kalsig"] = $signature;
-			
-			$http_result = curl_exec($ch);
-			
-			$curl_error = curl_error($ch);
-		}
-		else
-		{
-			$this->log("not using curl");
-			$curl_error = "";
-			$params_string = $this->http_parse_query($params);
-
-			$http_result = $this->do_post_request($url, $params_string);
-		}
-		
-		if ($curl_error)
-		{
-			$result["error"] = array(array("code" => "CURL_ERROR", "desc" => $curl_error));
-		}
-		else 
-		{
-			$this->log("result (serialized): [" . $http_result . "]");
-			
-			if ($this->config->format == KALTURA_SERVICE_FORMAT_PHP)
+			if (is_array($val))
 			{
-				$result = @unserialize($http_result);
-				
-				if (!$result) {
-					$result["result"] = null;
-					
-					$result["error"] = array(array("code" => "SERIALIZE_ERROR", "desc"=>"failed to serialize server result"));
+				foreach($val as $subKey => $subVal)
+				{
+					$newParams[$key.":".$subKey] = $subVal;
 				}
-				
-				//$dump = print_r($result, true);
-				//$this->log("result (object dump): " . $dump);
 			}
 			else
 			{
-				$result["error"] = array(array("code" => "UNSUPPORTED_FORMAT", "desc"=>"unsuppoted format [". $this->config->format . "]"));
+				 $newParams[$key] = $val;
+			}
+		}
+
+		$signature = $this->signature($newParams);
+		$this->addParam($params, "kalsig", $signature);
+		
+	    $this->log(print_r($newParams, true));
+	    
+		list($postResult, $error) = $this->doHttpRequest($url, $newParams);
+
+		if ($error)
+		{
+			$this->setError(array("code" => 0, "message" => $error));
+		}
+		else 
+		{
+			$this->log("result (serialized): " . $postResult);
+			
+			if ($this->config->format == KALTURA_SERVICE_FORMAT_PHP)
+			{
+				$result = @unserialize($postResult);
+
+				if ($result === false && serialize(false) !== $postResult)
+				{
+					$this->setError(array("code" => 0, "message" => "failed to serialize server result"));
+				}
+				$dump = print_r($result, true);
+				$this->log("result (object dump): " . $dump);
+			}
+			else
+			{
+				$this->setError(array("code" => 0, "message" => "unsupported format"));
 			}
 		}
 		
-		$end_time = microtime (true);
+		$endTime = microtime (true);
 		
-		$this->log("execution time for method [" . $method . "]: [" . ($end_time - $start_time) . "]");
+		$this->log("execution time for service [".$service.".".$action."]: [" . ($endTime - $startTime) . "]");
 		
 		return $result;
 	}
 
-	function start($session_user, $secret, $admin = null, $privileges = null, $expiry = 86400)
-	{
-		$result = $this->startsession($session_user, $secret, $admin, $privileges, $expiry);
-
-		$this->ks = @$result["result"]["ks"];
-		return $result;
-	}
-	
 	function signature($params)
 	{
 		ksort($params);
@@ -213,6 +123,94 @@ class KalturaClientBase
 			$str .= $k.$v;
 		}
 		return md5($str);
+	}
+	
+	function doHttpRequest($url, $params, $optionalHeaders = null)
+	{
+		if (function_exists('curl_init'))
+			return $this->doCurl($url, $params);
+		else
+			return $this->doPostRequest($url, $params, $optionalHeaders);
+	}
+
+	function doCurl($url, $params)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url );
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_USERAGENT, '');
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10 );
+
+		$result = curl_exec($ch);
+		$curlError = curl_error($ch);
+		curl_close($ch);
+		return array($result, $curlError);
+	}
+
+	function doPostRequest($url, $data, $optionalHeaders = null)
+	{
+		$formattedData = $this->httpParseQuery($data);
+		
+		if (!function_exists('fsockopen'))
+		{
+			$this->setError(array("code" => 0, "message" => "fsockopen is missing"));
+			return;
+		}
+		$start = strpos($url,'//')+2;
+		$end = strpos($url,'/',$start);
+		$host = substr($url, $start, $end-$start);
+		$domain = substr($url,$end);
+		$fp = fsockopen($host, 80);
+		if(!$fp) return null;
+		fputs ($fp,"POST $domain HTTP/1.1\n");
+		fputs ($fp,"Host: $host\n");
+		if ($optionalHeaders) {
+			fputs($fp, $optionalHeaders);
+		}
+		fputs ($fp,"Content-type: application/x-www-form-urlencoded\n");
+		fputs ($fp,"Content-length: ".strlen($formattedData)."\n\n");
+		fputs ($fp,"$formattedData\n\n");
+		
+		$response = "";
+		while(!feof($fp)) {
+			$response .= fread($fp, 32768);
+		}
+
+		$pos = strpos($response, "\r\n\r\n");
+		if ($pos)
+			$response = substr($response, $pos + 4);
+		else
+			$response = "";
+			
+		fclose ($fp);
+		return array($response, '');
+	}
+	
+	function httpParseQuery($array = null, $convention = "%s")
+	{
+		if (!$array || count($array) == 0)
+	        return ''; 
+	        
+		$query = ''; 
+     
+		foreach($array as $key => $value)
+		{
+		    if(is_array($value))
+		    { 
+				$new_convention = sprintf($convention, $key) . '[%s]'; 
+			    $query .= $this->httpParseQuery($value, $new_convention); 
+			} 
+			else 
+			{ 
+			    $key = urlencode($key); 
+			    $value = urlencode($value); 
+         
+			    $query .= sprintf($convention, $key) . "=$value&"; 
+            } 
+		} 
+ 
+		return $query; 
 	}
 		
 	function getKs()
@@ -225,7 +223,7 @@ class KalturaClientBase
 		$this->ks = $ks;
 	}
 	
-	function addOptionalParam(&$params, $paramName, $paramValue)
+	function addParam(&$params, $paramName, $paramValue)
 	{
 		if ($paramValue !== null)
 		{
@@ -233,41 +231,93 @@ class KalturaClientBase
 		}
 	}
 	
+	function checkForError($resultObject)
+	{
+		if (is_array($resultObject) && isset($resultObject["message"]) && isset($resultObject["code"]))
+		{
+			$this->setError(array("code" => $resultObject["code"], "message" => $resultObject["message"]));
+		}
+	}
+	
+	function validateObjectType($resultObject, $objectType)
+	{
+		if (is_object($resultObject))
+		{
+			if (get_class($resultObject) !== $objectType)
+				$this->setError(array("code" => 0, "message" => "Invalid object type"));
+		}
+		else if (gettype($resultObject) !== "NULL" && gettype($resultObject) !== $objectType)
+		{
+			$this->setError(array("code" => 0, "message" => "Invalid object type"));
+		}
+	}
+	
 	function log($msg)
 	{
 		if ($this->shouldLog)
 		{
-			$logger = $this->config->getLogger();
+		    $logger = $this->config->getLogger();
 			$logger->log($msg);
 		}
 	}
+	
+	function setError($error)
+	{
+	    if ($this->error == null) // this is needed so only the first error will be set, and not the last
+	    {
+	        $this->error = $error;
+	    }
+	}
 }
 
-class KalturaSessionUser
+
+/**
+ * Abstract base class for all client services 
+ *
+ */
+class KalturaServiceBase
 {
-	var $userId;
-	var $screenName;
+	var $client;
+	
+	/**
+	 * Initialize the service keeping reference to the KalturaClient
+	 *
+	 * @param KalturaClient $client
+	 */
+	function KalturaServiceBase(/*KalturaClient*/ &$client)
+	{
+		$this->client = &$client;
+	}
+}
+
+/**
+ * Abstract base class for all client objects 
+ *
+ */
+class KalturaObjectBase
+{
+	function addIfNotNull(&$params, $paramName, $paramValue)
+	{
+		if ($paramValue !== null)
+		{
+			$params[$paramName] = $paramValue;
+		}
+	}
 }
 
 class KalturaConfiguration
 {
 	var $logger;
 
-	var $serviceUrl    = "http://www.kaltura.com";
-	var $format        = KALTURA_SERVICE_FORMAT_PHP;
-	var $partnerId     = null;
-	var $subPartnerId  = null;
+	var $serviceUrl    = "http://www.kaltura.com/api_v3/";
+	var $format        = 3;
 	
 	/**
-	 * Constructs new kaltura configuration object, expecting partner id & sub partner id
+	 * Constructs new Kaltura configuration object
 	 *
-	 * @param int $partnerId
-	 * @param int $subPartnerId
 	 */
-	function KalturaConfiguration($partnerId, $subPartnerId)
+	function KalturaConfiguration()
 	{
-		$this->partnerId 	= $partnerId;
-		$this->subPartnerId = $subPartnerId;
 	}
 	
 	/**
@@ -283,22 +333,11 @@ class KalturaConfiguration
 	/**
 	 * Gets the logger (Internal client use)
 	 *
-	 * @return unknown
+	 * @return IKalturaLogger
 	 */
 	function getLogger()
 	{
 		return $this->logger;
 	}
 }
-
-/**
- * Implement to get kaltura client logs
- *
- */
-class IKalturaLogger 
-{
-	function log($msg) {}
-}
-
-
 ?>

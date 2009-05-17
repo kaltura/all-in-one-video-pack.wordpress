@@ -3,7 +3,7 @@ define("ABSPATH", realpath("../../../") . "/" );
 
 require_once("../../../wp-admin/admin.php");
 require_once('settings.php');
-require_once('lib/common.php');
+require_once('lib/kaltura_model.php');
 require_once('lib/kaltura_helpers.php');
   
 kaltura_register_js();
@@ -17,23 +17,22 @@ function update_thumbnail_frame()
 		wp_die(__('You do not have sufficient permissions to access this page.'));
 	}
 	
-	$kshowId = @$_GET['kshowid'];
+	$entryId = @$_GET['entryId'];
 	
-	if (!$kshowId)
+	if (!$entryId)
 	{
-		wp_die(__('The interactive video is missing or invalid.'));
+		wp_die(__('The video is missing or invalid.'));
 	}
 	
-	$kalturaClient = getKalturaClient(false, "edit:".$kshowId);
-	if (!$kalturaClient)
+	$kmodel = KalturaModel::getInstance();
+	$ks = $kmodel->getClientSideSession();
+	if (!$ks)
 	{
 		wp_die(__('Failed to start new session.'));
 	}
 	
-	$ks = $kalturaClient->getKs();
-	
 	$swfUrl	= KalturaHelpers::getSwfUrlForWidget(KALTURA_THUMBNAIL_WIDGET);
-	$flashVars = KalturaHelpers::getKalturaPlayerFlashVars($ks, $kshowId);
+	$flashVars = KalturaHelpers::getKalturaPlayerFlashVars(null, $ks, $entryId);
 	$flashVarsStr = KalturaHelpers::flashVarsToString($flashVars);
 	?>
 <div class="playerWrapper">

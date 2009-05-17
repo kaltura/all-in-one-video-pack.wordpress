@@ -4,11 +4,11 @@
 		
 	if (@$_POST['is_postback'] == "postback")
 	{
-		$name 						= $_POST['name'];
-		$email 						= $_POST['email'];
-		$webSiteUrl 			= $_POST['web_site_url'];
-		$phoneNumber 			= $_POST['phone_number'];
-		$description 			= $_POST['description'];
+		$name 				= $_POST['name'];
+		$email 				= $_POST['email'];
+		$webSiteUrl 		= $_POST['web_site_url'];
+		$phoneNumber 		= $_POST['phone_number'];
+		$description 		= $_POST['description'];
 		$contentCategory 	= $_POST['content_category'];
 		$adultContent 		= ($_POST['adult_content'] == "yes" ? "1" : null);
 		$agreeToTerms 		= $_POST['agree_to_terms'];
@@ -19,35 +19,33 @@
 			$partner->name = $name;
 			$partner->adminName = $name;
 			$partner->adminEmail = $email;
-			$partner->url1 = $webSiteUrl;
+			$partner->website = $webSiteUrl;
 			$partner->phone = $phoneNumber;
 			global $wp_version;
 			$partner->description = $description . "\nWordpress all-in-one plugin|" . $wp_version;
 			$partner->contentCategories = $contentCategory;
 			$partner->adultContent = $adultContent;
+			$partner->commercialUse = "non-commercial_use";
 			$partner->type = "101";
 			$partner->defConversionProfileType = "wp_default";
 	
-			$sessionUser = kalturaGetSessionUser();
-			$config = kalturaGetServiceConfiguration();
-			$config->partnerId = 0; // when we want to reregister, we should not pass partner id
-			$config->subPartnerId = 0;
-			$kalturaClient 	= new KalturaClient($config);
-			$result = $kalturaClient->registerPartner($sessionUser, $partner);
-
+			$kmodel = KalturaModel::getInstance();
+			$partner = $kmodel->registerPartner($partner);
+			
 			// check for errors
-			if (count(@$result["error"]))
-			{
-				$viewData["error"] = @$result["error"][0]["desc"];
-			}
+			$error = $kmodel->getLastError();
+            if ($error)
+            {
+                $viewData["error"] = $error["message"];
+            }
 			else
 			{
-				$partnerId = $result["result"]["partner"]["id"];
-				$subPartnerId = $result["result"]["subp_id"];
-				$secret = $result["result"]["partner"]["secret"];
-				$adminSecret = $result["result"]["partner"]["adminSecret"];
-				$cmsUser = $result["result"]["partner"]["adminEmail"];
-				$cmsPassword = $result["result"]["cms_password"];
+				$partnerId = $partner->id;
+				$subPartnerId = $partnerId * 100;
+				$secret = $partner->secret;
+				$adminSecret = $partner->adminSecret;
+				$cmsUser = $partner->adminEmail;
+				$cmsPassword = $partner->cmsPassword;
 		
 				// save partner details
 				update_option("kaltura_partner_id", $partnerId);
@@ -76,11 +74,12 @@
 		$profileuser = get_user_to_edit($user_ID);
 		$viewData["profile"] = $profileuser;
 		
-		$config = kalturaGetServiceConfiguration();
+		$config = KalturaHelpers::getKalturaConfiguration();
 		$config->partnerId = 0; // no need to pass partner id for ping
 		$config->subPartnerId = 0;
 		$kalturaClient = new KalturaClient($config);
-		$viewData["pingOk"] = KalturaModel::pingTest($kalturaClient);
+		$kmodel = KalturaModel::getInstance();
+		$viewData["pingOk"] = $kmodel->pingTest($kalturaClient);
 	}
 ?>
 
@@ -146,7 +145,7 @@
     	Once you complete the form below and click "Complete installation", the All in One Video Pack will be fully installed and ready to use. 
     </p>
 	<h3><?php _e("Get a Partner ID"); ?></h3>
-	<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" />
+	<form name="form1" method="post" />
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e("Blog Name"); ?>: *</th>

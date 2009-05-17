@@ -1,5 +1,5 @@
 <div class="<?php echo ($viewData["isLibrary"]) ? "wrap kalturaWrapFix" : "kalturaTab"?>">
-	<?php if (!count(@$viewData["result"]["kshows"])): ?>
+	<?php if (!count($viewData["result"]->objects)): ?>
 		<div class="updated kalturaUpdated">No interactive videos created yet</div>
 	<?php else: ?>
 		<?php
@@ -16,29 +16,28 @@
 				echo "<div class=\"kalturaPager\">$page_links</div>";
 		?>
 		<script type="text/javascript">
-			function deleteKShow(kshowId) {
+			function deleteEntry(entryId) {
 				var res = confirm("Are you sure?");
 				if (res)
-					window.location = '<?php echo kalturaGenerateTabUrl(array("kaction" => "delete", "kshowid" => null)); ?>&kshowid=' + kshowId; 
+					window.location = '<?php echo KalturaHelpers::generateTabUrl(array("kaction" => "delete", "entryid" => null)); ?>&entryid=' + entryId; 
 			}
 		</script>
 		<ul id="kalturaBrowse">
-		<?php foreach($viewData["result"]["kshows"] as $kshow): ?>
+		<?php foreach($result->objects as $mediaEntry): ?>
 			<li>
 				<?php 
-					$desc = $kshow["showEntry"];
-					$sendToEditorUrl =  kalturaGenerateTabUrl(array("kaction" => "sendtoeditor", "kshowid" => $kshow["id"]));
+					$sendToEditorUrl =  KalturaHelpers::generateTabUrl(array("kaction" => "sendtoeditor", "entryid" => $mediaEntry->id));
 				?>
 				
 				<div class="showName">
-					<?php echo $kshow["name"] ?><br />
+					<?php echo $mediaEntry->name ?><br />
 				</div>
 				<div class="thumb">
 					<?php if ($viewData["isLibrary"]): ?>
-						<img src="<?php echo $desc["thumbnailUrl"]; ?>" alt="<?php $kshow["name"] ?>" />
+						<img src="<?php echo $mediaEntry->thumbnailUrl; ?>" alt="<?php $mediaEntry->name ?>" />
 					<?php else: ?>
 					<a href="<?php echo $sendToEditorUrl; ?>">
-						<img src="<?php echo $desc["thumbnailUrl"]; ?>" alt="<?php $kshow["name"] ?>" />
+						<img src="<?php echo $mediaEntry->thumbnailUrl; ?>" alt="<?php $mediaEntry->name ?>" />
 					</a>
 					<?php endif; ?>
 				</div>
@@ -46,15 +45,19 @@
 					<?php if (!$viewData["isLibrary"]): ?>
 						<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo $sendToEditorUrl; ?>';" />
 					<?php endif; ?>
-					<?php if ($viewData["isLibrary"]): ?>
-						<input type="button" title="Edit video" class="edit_video" onclick="KalturaModal.openModal('simple_editor', '<?php echo kalturaGetPluginUrl() ?>/page_simple_editor_library.php?kshowid=<?php echo $kshow["id"]; ?>', { width: 890, height: 546 } ); jQuery('#simple_editor').addClass('modalSimpleEditor');" />
-					<?php else: ?>
-						<input type="button" title="Edit video" class="edit_video" onclick="window.location = '<?php echo kalturaGetPluginUrl() ?>/page_simple_editor_admin.php?kshowid=<?php echo $kshow["id"]; ?>&backurl=<?php echo urlencode(kalturaGetRequestUrl()); ?>';" />
+					<?php if ($mediaEntry->type == KalturaEntryType_MIX): ?>
+    					<?php if ($viewData["isLibrary"]): ?>
+    						<input type="button" title="Edit video" class="edit_video" onclick="KalturaModal.openModal('simple_editor', '<?php echo KalturaHelpers::getPluginUrl() ?>/page_simple_editor_library.php?entryId=<?php echo $mediaEntry->id; ?>', { width: 890, height: 546 } ); jQuery('#simple_editor').addClass('modalSimpleEditor');" />
+    					<?php else: ?>
+    						<input type="button" title="Edit video" class="edit_video" onclick="window.location = '<?php echo KalturaHelpers::getPluginUrl() ?>/page_simple_editor_admin.php?entryId=<?php echo $mediaEntry->id; ?>&backurl=<?php echo urlencode(KalturaHelpers::getRequestUrl()); ?>';" />
+    					<?php endif; ?>
 					<?php endif; ?>
-					<?php if ($viewData["isLibrary"]): ?>
-						<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo kalturaGetPluginUrl() ?>/page_update_thumbnail.php?kshowid=<?php echo $kshow["id"]; ?>&TB_iframe=true&height=425&width=750"" />
+					<?php $isVideo = ($mediaEntry->type == KalturaEntryType_MEDIA_CLIP && $mediaEntry->mediaType == KalturaMediaType_VIDEO); ?>
+					<?php $isMix = ($mediaEntry->type == KalturaEntryType_MIX); ?>
+					<?php if ($viewData["isLibrary"] && ($isVideo || $isMix)): ?>
+						<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo KalturaHelpers::getPluginUrl() ?>/page_update_thumbnail.php?entryId=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=425&width=750"" />
 					<?php endif; ?>
-					<input type="button" title="Delete video" class="del" onclick="deleteKShow('<?php echo $kshow["id"]; ?>');" />
+					<input type="button" title="Delete video" class="del" onclick="deleteEntry('<?php echo $mediaEntry->id; ?>');" />
 					<br clear="all" />
 				</div>
 			</li>

@@ -2,7 +2,6 @@
 	define('DOING_AJAX', true);
 	require_once('../../../wp-load.php');
 	require_once('settings.php');
-	require_once('lib/common.php');
 	require_once('lib/kaltura_helpers.php');
 	require_once("lib/kaltura_model.php");
 	require_once("lib/kaltura_wp_model.php");

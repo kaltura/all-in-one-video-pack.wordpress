@@ -1,50 +1,44 @@
 <?php
-	if (!defined("WP_ADMIN"))
-		die();
-		
-	if (@$_POST['is_postback'] == "postback")
-	{
-		$email 		= @$_POST['email'];
-		$password 	= @$_POST['password'];
-		$partnerId 	= @$_POST['partner_id'];
-	
-		$config = kalturaGetServiceConfiguration();
-		$config->partnerId = $partnerId;
-		$kalturaClient 	= new KalturaClient($config);
-		$result = KalturaModel::getPartner($kalturaClient, $email, $password, $partnerId);
+if (! defined("WP_ADMIN"))
+    die();
 
-		// check for errors
-		if (count(@$result["error"]))
-		{
-			$viewData["error"] = @$result["error"][0]["desc"];
-		}
-		else
-		{
-			$partnerId = $result["result"]["partner"]["id"];
-			$subPartnerId = $result["result"]["subp_id"];
-			$secret = $result["result"]["partner"]["secret"];
-			$adminSecret = $result["result"]["partner"]["adminSecret"];
-			$cmsUser = $result["result"]["partner"]["adminEmail"];
-	
-			// save partner details
-			update_option("kaltura_partner_id", $partnerId);
-			update_option("kaltura_subp_id", $subPartnerId);
-			update_option("kaltura_secret", $secret);
-			update_option("kaltura_admin_secret", $adminSecret);
-			update_option("kaltura_cms_user", $cmsUser);
-			update_option("kaltura_cms_password", $password);
-			update_option("kaltura_permissions_add", 0);
-			update_option("kaltura_permissions_edit", 0);
-			update_option("kaltura_enable_video_comments", true);
-			update_option("kaltura_allow_anonymous_comments", true);
-			
-			$viewData["success"] = true;
-		}
-	}
+if (@$_POST['is_postback'] == "postback") {
+    $email = @$_POST['email'];
+    $password = @$_POST['password'];
+    $partnerId = @$_POST['partner_id'];
+    
+    $config = KalturaHelpers::getKalturaConfiguration();
+    $config->partnerId = $partnerId;
+    $kalturaClient = new KalturaClient($config);
+    $kmodel = KalturaModel::getInstance();
+    $partner = $kmodel->getSecrets($partnerId, $email, $password);
+    
+    // check for errors
+    if ($kmodel->getLastError()) {
+        $error = $kmodel->getLastError();
+        $viewData["error"] = $error["message"];
+    }
+    else {
+        $partnerId = $partner->id;
+        $secret = $partner->secret;
+        $adminSecret = $partner->adminSecret;
+        $cmsUser = $partner->adminEmail;
+        
+        // save partner details
+        update_option("kaltura_partner_id", $partnerId);
+        update_option("kaltura_secret", $secret);
+        update_option("kaltura_admin_secret", $adminSecret);
+        update_option("kaltura_cms_user", $cmsUser);
+        update_option("kaltura_cms_password", $password);
+        update_option("kaltura_permissions_add", 0);
+        update_option("kaltura_permissions_edit", 0);
+        update_option("kaltura_enable_video_comments", true);
+        update_option("kaltura_allow_anonymous_comments", true);
+        
+        $viewData["success"] = true;
+    }
+}
 ?>
-
-
-
 
 <?php if ($viewData["error"]): ?>
 	<div class="wrap">
@@ -85,7 +79,7 @@
     <p>
 	    Please enter your CMS Email & password
     </p>
-	<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" />
+	<form name="form1" method="post" />
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e("Partner ID"); ?>:</th>
@@ -97,7 +91,7 @@
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Password"); ?>:</th>
-				<td><input type="password" id="password" name="password" value="" size="20" /> <a href="<?php echo kalturaGetServerUrl(); ?>/index.php/cms/login">forgot password?</a></td>
+				<td><input type="password" id="password" name="password" value="" size="20" /> <a href="<?php echo KalturaHelpers::getServerUrl(); ?>/index.php/kmc">forgot password?</a></td>
 			</tr>
 		</table>
 		

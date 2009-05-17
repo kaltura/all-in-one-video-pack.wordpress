@@ -21,6 +21,11 @@ input#kaltura_video_comment{ margin-top: 0; }
 a.kalturaLink{ color: #006699; font-size: 14px; font-weight: bold; text-decoration: underline; }
 a.kalturaLink:hover{ color: #6699CC; }
 
+/* choose video type */
+
+.chooseVideoType td { text-align: center; width: 50%; padding: 20px; vertical-align: top; }
+.chooseVideoType p.small { font-size: 11px; } 
+
 /* create tab */
 #kalturaCreateDiv { text-align: center; padding-top: 60px; }
 #kalturaCreateDiv input { padding-right: 1.25em; padding-left: 1.25em; width: 14em; }
@@ -59,7 +64,10 @@ ul#kalturaBrowse { list-style: none; padding: 0 0 0 5px; margin: 1em 0 0 0; }
 
 #kalturaEditTable div.selectBox{ margin-bottom:15px; }
 	#kalturaEditTable div.selectBox label{ display:block;}
-	
+
+#kalturaEditTable .playerRatioDiv { margin-bottom: 10px; }
+#kalturaEditTable .playerRatioDiv div { float: left; }
+
 #kalturaEditTable div.radioBox{ padding:4px 0 12px 0; }
 	#kalturaEditTable div.radioBox .iradio{ position:relative; top:3px; }
 	#kalturaEditTable div.radioBox label{ padding-left:7px; }

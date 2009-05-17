@@ -24,19 +24,26 @@
 	else
 	{
 		// try to create new session to make sure that the details are ok
-		$sessionUser 	= kalturaGetSessionUser();
-		$config 		= kalturaGetServiceConfiguration();
+		$userId 	    = KalturaHelpers::getLoggedUserID();
+		$config 		= KalturaHelpers::getKalturaConfiguration();
 		$secret 		= get_option("kaltura_secret");
 		$adminSecret	= get_option("kaltura_admin_secret");
 		$kalturaClient 	= new KalturaClient($config);
-		$result 		= $kalturaClient->startsession($sessionUser, $secret);
-		$resultAdmin 	= $kalturaClient->startsession($sessionUser, $adminSecret, true);
-
-		if (count(@$result['error']) > 0) {
-			$viewData["error"] = $result['error'][0]["desc"] . ' - ' . $result['error'][0]["code"];
-		}
-		else if (count(@$resultAdmin['error']) > 0) {
-			$viewData["error"] = $resultAdmin['error'][0]["desc"] . ' - ' . $resultAdmin['error'][0]["code"];
+		
+		$kmodel = KalturaModel::getInstance();
+		
+		$ks = $kmodel->getAdminSession();
+		if ($kmodel->getLastError())
+		{
+			$error = $kmodel->getLastError();
+		    $viewData["error"] = $error["message"] . ' - ' . $error["code"];
+		}   
+		
+		$ks = $kmodel->getClientSideSession();
+		if ($kmodel->getLastError())
+		{
+			$error = $kmodel->getLastError();
+		    $viewData["error"] = $error["message"] . ' - ' . $error["code"];
 		}
 	}
 ?>
@@ -48,7 +55,7 @@
 	<h2><?php _e('All in One Video Pack Settings'); ?></h2>
 	<br />
 	<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo $viewData["error"]; ?>)</p></div>
-	<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" />
+	<form name="form1" method="post" />
 	<p class="submit" style="text-align: left; "><input type="button" value="<?php _e('Click here to edit partner details manually'); ?>" onclick="window.location = 'options-general.php?page=interactive_video&partner_login=true';"></input></p>
 	<input type="hidden" id="manual_edit" name="manual_edit" value="true" />
 	</form>
@@ -60,7 +67,7 @@
 	<div id="message" class="updated"><p><strong><?php _e('The All in One Video Pack settings have been saved.'); ?></strong></p></div>
 	<?php endif; ?>
 	<h2><?php _e('All in One Video Pack Settings'); ?></h2>
-	<form name="form1" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" />
+	<form name="form1" method="post" />
 		<br />
 		<table id="kalturaCmsLogin">
 			<tr class="kalturaFirstRow">
@@ -149,7 +156,7 @@
 		<input type="hidden" name="is_postback" value="postback" />
 	</form>
 
-	<form id="frmCmsLogin" name="frmCmsLogin" method="post" target="_blank" action="<?php echo kalturaGetServerUrl(); ?>/index.php/cms/login">
+	<form id="frmCmsLogin" name="frmCmsLogin" method="post" target="_blank" action="<?php echo KalturaHelpers::getServerUrl(); ?>/index.php/cms/login">
 		<input type="hidden" name="email" id="email" value="<?php echo get_option("kaltura_cms_user"); ?>" />
 		<input type="hidden" name="pwd" id="pwd"  value="<?php echo get_option("kaltura_cms_password"); ?>" />
 	</form>

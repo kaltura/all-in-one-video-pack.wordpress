@@ -1,42 +1,113 @@
 <?php
 class KalturaHelpers
 {
-	function getContributionWizardFlashVars($ks, $kshowId)
-	{
-		$sessionUser = kalturaGetSessionUser();
-		$config = kalturaGetServiceConfiguration();
-		
-		$flashVars = array();
+    function getKalturaConfiguration() 
+    {
+    	$config = new KalturaConfiguration();
+    	$config->serviceUrl = KalturaHelpers::getServerUrl();
+    	require_once("kaltura_wordpress_logger.php");
+    	$config->setLogger(new KalturaWordpressLogger());
+    	return $config;
+    }
+    
+    function getServerUrl() 
+    {
+    	$url = KALTURA_SERVER_URL;
+    
+    	// remove the last slash from the url
+    	if (substr($url, strlen($url) - 1, 1) == '/')
+    		$url = substr($url, 0, strlen($url) - 1);
+    		
+    	return $url;
+    }
+    
+   
+    function getCdnUrl() 
+    {
+    	$url = KALTURA_CDN_URL;
+    	
+    	// remove the last slash from the url
+    	if (substr($url, strlen($url) - 1, 1) == '/')
+    		$url = substr($url, 0, strlen($url) - 1);
+    		
+    	return $url;
+    }
+    
+    function getLoggedUserId() 
+    {
+    	global $user_ID, $user_identity;
+    	
+    	if (!$user_ID) 
+    		return KALTURA_ANONYMOUS_USER_ID; 
+    	else
+        	return $user_ID;
+    }
+    
+    function getPluginUrl() 
+    {
+    	$plugin_name = plugin_basename(__FILE__);   
+    	$indx = strpos($plugin_name, "/");
+    	$plugin_dir = substr($plugin_name, 0, $indx);
+    	$plugin_url = get_settings('siteurl') . '/wp-content/plugins/' . $plugin_dir;
+    	return $plugin_url;
+    }
+    
+    function generateTabUrl($params) 
+    {
+    	$url = $_SERVER["REQUEST_URI"];
+    	
+    	if (!isset($params["kaction"]))
+    		$params["kaction"] = null;
+    		
+    	if (!isset($params["sendtoeditor"]))
+    		$params["sendtoeditor"] = null;
+    		
+    	if (!isset($params["entryid"]))
+    		$params["entryid"] = null;
+    
+    	if (!isset($params["paged"]))
+    		$params["paged"] = null;
+    		
+    	if (!isset($params["firstedit"]))
+    		$params["firstedit"] = null;
+    		
+		if (!isset($params["kaltura_entry_type"]))
+    		$params["kaltura_entry_type"] = null;
+    		
+    	return add_query_arg($params, $url, null);
+    }
+    
+    function getRequestUrl()
+    {
+    	return $_SERVER["REQUEST_URI"];
+    }
 
-		$flashVars["userId"] = $sessionUser->userId;
-		$flashVars["sessionId"] = $ks;
-	
-		if ($sessionUserId == KALTURA_ANONYMOUS_USER_ID) {
-			 $flashVars["isAnonymous"] = true;
-		}
-			
-		$flashVars["partnerId"] 	= $config->partnerId;
-		$flashVars["subPartnerId"] 	= $config->subPartnerId;
-		$flashVars["kshow_id"] 		= $kshowId;
+	function getContributionWizardFlashVars($ks, $entryId = null)
+	{
+		$flashVars = array();
+		$flashVars["userId"] 		= KalturaHelpers::getLoggedUserId();
+		$flashVars["sessionId"] 	= $ks;
+		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
+		$flashVars["subPartnerId"] 	= get_option("kaltura_partner_id") * 100;
+		if ($entryId)
+    		$flashVars["kshowId"] 		= "entry-".$entryId;
+		else
+			$flashVars["kshowId"] 		= "-2";
 		$flashVars["afterAddentry"] = "onContributionWizardAfterAddEntry";
 		$flashVars["close"] 		= "onContributionWizardClose";
-		$flashVars["terms_of_use"] 	= "http://corp.kaltura.com/static/tandc" ;
+		$flashVars["termsOfUse"] 	= "http://corp.kaltura.com/static/tandc" ;
 		
 		return $flashVars;
 	}
 	
-	function getSimpleEditorFlashVars($ks, $kshowId)
+	function getSimpleEditorFlashVars($ks, $entryId)
 	{
-		$config = kalturaGetServiceConfiguration();
-		$sessionUser = kalturaGetSessionUser();
-		
 		$flashVars = array();
-		
-		$flashVars["entry_id"] 		= -1;
-		$flashVars["kshow_id"] 		= $kshowId;
-		$flashVars["partner_id"] 	= $config->partnerId;;
-		$flashVars["subp_id"] 		= $config->subPartnerId;
-		$flashVars["uid"] 			= $sessionUser->userId;
+		$flashVars["entryId"] 		= $entryId;
+		$flashVars["kshowId"] 		= "entry-".$entryId;
+		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
+		$flashVars["subpId"] 		= get_option("kaltura_partner_id") * 100;
+		$flashVars["uid"] 		    = KalturaHelpers::getLoggedUserId();
 		$flashVars["ks"] 			= $ks;
 		$flashVars["backF"] 		= "onSimpleEditorBackClick";
 		$flashVars["saveF"] 		= "onSimpleEditorSaveClick";
@@ -44,27 +115,20 @@ class KalturaHelpers
 		return $flashVars;
 	}
 	
-	function getKalturaPlayerFlashVars($ks, $kshowId = -1, $entryId = -1)
+	function getKalturaPlayerFlashVars($uiConfId = null, $ks = null, $entryId = null)
 	{
-		$config = kalturaGetServiceConfiguration();
-		$sessionUser = kalturaGetSessionUser();
-		
 		$flashVars = array();
+		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
+		$flashVars["subpId"] 		= get_option("kaltura_partner_id") * 100;
+		$flashVars["uid"] 		    = KalturaHelpers::getLoggedUserId();
 		
-		$flashVars["kshowId"] 		= $kshowId;
-		$flashVars["entryId"] 		= $entryId;
-		$flashVars["partner_id"] 	= $config->partnerId;
-		$flashVars["subp_id"] 		= $config->subPartnerId;
-		$flashVars["uid"] 			= $sessionUser->userId;
-		$flashVars["ks"] 			= $ks;
+		if ($ks)
+		    $flashVars["ks"] 		= $ks;
+	    if ($uiConfId)
+	        $flashVars["uiConfId"] 	= $ks;
+        if ($entryId)
+            $flashVars["entryId"] 	= $entryId;
 		
-		return $flashVars;
-	}
-	
-	function getTinyPlayerFlashVars($ks, $kshowId) {
-		$sessionUser = kalturaGetSessionUser();
-		$flashVars = KalturaHelpers::getKalturaPlayerFlashVars($ks, $kshowId, -1);
-		$flashVars["layoutId"] = "playerOnly";
 		return $flashVars;
 	}
 	
@@ -81,22 +145,26 @@ class KalturaHelpers
 	function getSwfUrlForBaseWidget($type) 
 	{
 		$player = KalturaHelpers::getPlayerByType($type);
-		return kalturaGetServerUrl() . "/index.php/kwidget/wid/" . $player["uiConfId"];
+		return KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/_" . get_option("kaltura_partner_id") . "/ui_conf_id/" . $player["uiConfId"];
 	}
 	
-	function getSwfUrlForWidget($widgetId)
+	function getSwfUrlForWidget($widgetId, $uiConfId = null)
 	{
-		return kalturaGetServerUrl() . "/index.php/kwidget/wid/" . $widgetId;
+	    $url = KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/" . $widgetId;
+	    if ($uiConfId)
+	        $url .= ("/ui_conf_id/" . $uiConfId);
+	        
+		return $url;
 	}
 	
 	function getContributionWizardUrl($uiConfId)
 	{
-		return kalturaGetServerUrl() . "/kse/ui_conf_id/" . $uiConfId;
+		return KalturaHelpers::getServerUrl() . "/kse/ui_conf_id/" . $uiConfId;
 	}
 	
 	function getSimpleEditorUrl($uiConfId)
 	{
-		return kalturaGetServerUrl() . "/kcw/ui_conf_id/" . $uiConfId;
+		return KalturaHelpers::getServerUrl() . "/kcw/ui_conf_id/" . $uiConfId;
 	}
 
 	function userCanEdit($override = null) {
@@ -106,11 +174,10 @@ class KalturaHelpers
 		foreach($current_user->roles as $key => $val)
 			$roles[$val] = 1;
 			 
-		if ($override !== "0" && $override !== "1" && $override !== "2" && $override !== "3") 
+		if ($override === null) 
 			$permissionsEdit = @get_option('kaltura_permissions_edit');
 		else
 			$permissionsEdit = $override;
-
 		// note - there are no breaks in the switch (code should jump to next case)
 		switch($permissionsEdit)
 		{
@@ -141,7 +208,7 @@ class KalturaHelpers
 		foreach($current_user->roles as $key => $val)
 			$roles[$val] = 1;
 		
-		if ($override !== "0" && $override !== "1" && $override !== "2" && $override !== "3")
+		if ($override === null)
 			$permissionsAdd = @get_option('kaltura_permissions_add');
 		else
 			$permissionsAdd = $override;
@@ -180,10 +247,10 @@ class KalturaHelpers
 	
 	function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height= 180, $version = 100000)
 	{
-		$config = kalturaGetServiceConfiguration();
-		$url = kalturaGetCdnUrl();
-		$url .= "/p/" . $config->partnerId;
-		$url .= "/sp/" . $config->subPartnerId;
+		$config = KalturaHelpers::getKalturaConfiguration();
+		$url = KalturaHelpers::getCdnUrl();
+		$url .= "/p/" . get_option("kaltura_partner_id");
+		$url .= "/sp/" . get_option("kaltura_partner_id")*100;
 		$url .= "/thumbnail";
 		if ($widgetId)
 			$url .= "/widget_id/" . $widgetId;
@@ -212,12 +279,19 @@ class KalturaHelpers
 		return version_compare($wp_version, $compareVersion, $operator);
 	}
 	
+    function compareKalturaVersion($compareVersion, $operator)
+	{
+		$kversion = kaltura_get_version;
+		
+		return version_compare($kversion, $compareVersion, $operator);
+	}
+	
 	function addWPVersionJS()
 	{
 		global $wp_version;
 		echo("<script type='text/javascript'>\n");
 		echo('var Kaltura_WPVersion = "' . $wp_version . '";'."\n");
-		echo('var Kaltura_PluginUrl = "' . kalturaGetPluginUrl() . '";'."\n");
+		echo('var Kaltura_PluginUrl = "' . KalturaHelpers::getPluginUrl() . '";'."\n");
 		echo("</script>\n");
 	}
 	
@@ -242,11 +316,11 @@ class KalturaHelpers
 		return $player;
 	}
 	
-	function calculatePlayerHeight($type, $width)
+	function calculatePlayerHeight($type, $width, $playerRatio = "4:3")
 	{
 		$player = KalturaHelpers::getPlayerByType($type);
 		
-		$aspectRatio = (@$player["videoAspectRatio"] ? $player["videoAspectRatio"] : "4:3");
+		$aspectRatio = $playerRatio;
 		$hSpacer = (@$player["horizontalSpacer"] ? $player["horizontalSpacer"] : 0);
 		$vSpacer = (@$player["verticalSpacer"] ? $player["verticalSpacer"] : 0); 
 		
@@ -280,12 +354,12 @@ class KalturaHelpers
 		$shortcode_tags = $shortcode_tags_backup;
 	}
 	
-	function dieWithConnectionErrorMsg()
+	function dieWithConnectionErrorMsg($errorDesc)
 	{
 		echo '
 		<div class="error">
 			<p>
-				<strong>Your connection has failed to reach the Kaltura servers. Please check if your web host blocks outgoing connections and then retry.</strong>
+				<strong>Your connection has failed to reach the Kaltura servers. Please check if your web host blocks outgoing connections and then retry.</strong> ('.$errorDesc.')
 			</p>
 		</div>';
 		die();

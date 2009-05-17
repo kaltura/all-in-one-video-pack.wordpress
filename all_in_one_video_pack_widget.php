@@ -11,7 +11,6 @@ Author URI: http://corp.kaltura.com
 require_once('settings.php');
 require_once('lib/kaltura_client.php');
 require_once('lib/kaltura_helpers.php');
-require_once('lib/common.php');
 
 
 class AllInOneVideoWidget 
@@ -53,11 +52,11 @@ class AllInOneVideoWidget
 	    echo '<a id="kaltura-comments-button" onclick="Kaltura.switchSidebarTab(this, \'comments\');">'.__("Video Comments").'</a>' . "\n";
         echo '</div>' . "\n";
         
-        echo '<div id="kaltura-loader"><img src="'.kalturaGetPluginUrl().'/images/loader.gif" alt="Loading..." /></div>' . "\n";
+        echo '<div id="kaltura-loader"><img src="'.KalturaHelpers::getPluginUrl().'/images/loader.gif" alt="Loading..." /></div>' . "\n";
         echo '<div id="kaltura-sidebar-container"></div>' . "\n";
         echo '<script type="text/javascript">' . "\n";
         echo 'jQuery("#kaltura-posts-button").click()' . "\n";
-        echo 'var kaltura_loader = new SWFObject("'.kalturaGetPluginUrl().'/images/loader.swf", "kaltura-loader-swf", 35, 35, "9", "#000000");' . "\n";
+        echo 'var kaltura_loader = new SWFObject("'.KalturaHelpers::getPluginUrl().'/images/loader.swf", "kaltura-loader-swf", 35, 35, "9", "#000000");' . "\n";
         echo 'kaltura_loader.addParam("wmode", "transparent");' . "\n";
         echo 'kaltura_loader.write("kaltura-loader");' . "\n";
         echo '</script>' . "\n";

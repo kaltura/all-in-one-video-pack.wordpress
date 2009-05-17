@@ -26,25 +26,26 @@
 		switch($action)
 		{
 			case "delete":
-				$kshowId = @$_GET['kshowid'];
-				$kalturaAdminClient = getKalturaClient(true);
-				$res = KalturaModel::deleteKShow($kalturaAdminClient, $kshowId);
-				$redirectUrl = kalturaGenerateTabUrl(null);
+				$entryId = @$_GET['entryid'];
+				$kmodel = KalturaModel::getInstance();
+				$res = $kmodel->deleteEntry($entryId);
+				$redirectUrl = KalturaHelpers::generateTabUrl(null);
 				$viewData["jsCode"] = "window.location.href = '" . $redirectUrl . "';";
 				$viewData["redirectUrl"] = $redirectUrl;
 				require_once(dirname(__FILE__) . "/../view/view_deleted.php");
 				require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php");
 				break;
 			case "sendtoeditor":
-				$kshowId = @$_GET['kshowid'];
+				$entryId = @$_GET['entryid'];
 				if (!@$_POST["sendToEditorButton"])
 				{
-					$kalturaClient = getKalturaClient();
-					$kshow = KalturaModel::getKshow($kalturaClient, $kshowId);
-					$flashVars = KalturaHelpers::getTinyPlayerFlashVars($kalturaClient->getKs(), $kshowId);
+					$kmodel = KalturaModel::getInstance();
+					$entry = $kmodel->getEntry($entryId);
+					$clientSideSession = $kmodel->getClientSideSession();
+					$flashVars = KalturaHelpers::getKalturaPlayerFlashVars(null, $clientSideSession, $entryId);
 					$entryId = @$kshow["showEntry"]["id"];
-					$thumbnail = kalturaGetPluginUrl() . "/thumbnails/get_preview_thumbnail.php?thumbnail_url=" . @$kshow["showEntry"]["thumbnailUrl"];
-					$viewData["kshow"] = $kshow;
+					$thumbnail = KalturaHelpers::getPluginUrl() . "/thumbnails/get_preview_thumbnail.php?thumbnail_url=" . $entry->thumbnailUrl;
+					$viewData["entry"] = $entry;
 					$viewData["entryId"] = $entryId;
 					$viewData["flashVars"] = $flashVars;
 					$viewData["flashVars"]["autoPlay"] = "true";
@@ -54,48 +55,62 @@
 				}
 				else 
 				{
-					$kalturaClient = getKalturaClient(false, "edit:".$kshowId);
+					// update the entry name
+					$kmodel = KalturaModel::getInstance();
 					
-					// update the kshow name
-					$kshowUpdate = new KalturaKShow();
-					$kshowUpdate->name = $_POST["ktitle"];
-					KalturaModel::updateKshow($kalturaClient, $kshowId, $kshowUpdate);
+					$entry = $kmodel->getEntry($entryId);
+					
+					if ($entry->type == KalturaEntryType_MEDIA_CLIP)
+					{
+    					$mediaEntry = new KalturaMediaEntry();
+    					$mediaEntry->name = $_POST["ktitle"];
+    					$kmodel->updateMediaEntry($entryId, $mediaEntry);
+					}
+					else if ($entry->type == KalturaEntryType_MIX)
+					{
+					    $mixEntry = new KalturaMixEntry();
+    					$mixEntry->name = $_POST["ktitle"];
+    					$kmodel->updateMixEntry($entryId, $mixEntry);
+					}
 	
 					$width = $_POST["playerWidth"];
 					$type = $_POST["playerType"];
 					$addPermission = $_POST["addPermission"];
 					$editPermission = $_POST["editPermission"];
+					$playerRatio = $_POST["playerRatio"];
 					
 					// get player info by its type 
 					$player = KalturaHelpers::getPlayerByType($type);
 					
 					// add widget
-					$widgetId = KalturaModel::addWidget($kalturaClient, $kshowId, $player["uiConfId"]);
+					$widget = $kmodel->addWidget($entryId, $player["uiConfId"]);
 					
 					$viewData["playerWidth"] = $width;
-					$viewData["playerHeight"] = KalturaHelpers::calculatePlayerHeight($type, $width);
+					$viewData["playerHeight"] = KalturaHelpers::calculatePlayerHeight($type, $width, $playerRatio);
 					$viewData["playerType"] = $type;
-					$viewData["widgetId"] = $widgetId;
+					$viewData["widgetId"] = $widget->id;
 					$viewData["addPermission"] = $addPermission;
 					$viewData["editPermission"] = $editPermission;
-					$redirectUrl = kalturaGenerateTabUrl(array("kaction" => "browse"));
+					$redirectUrl = KalturaHelpers::generateTabUrl(array("kaction" => "browse"));
 					require_once(dirname(__FILE__) . "/../view/view_send_to_editor.php");
 					require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php"); 
 				}
 				break;
 			default: // "browse"
-				$kalturaAdminClient = getKalturaClient(true);
-				if (!$kalturaAdminClient)
-					KalturaHelpers::dieWithConnectionErrorMsg();
-					
+				$kmodel = KalturaModel::getInstance();
+
 				if ($isLibrary)
 					$pageSize = 20;
 				else
 					$pageSize = 18;
 				
 				$page = @$_GET["paged"] ? $_GET["paged"] : 1;
-				$result = KalturaModel::getKshows($kalturaAdminClient, $pageSize, $page);
-				$totalCount = $result["count"];
+				$result = $kmodel->listEntries($pageSize, $page);
+				$error = $kmodel->getLastError();
+				if ($error)
+					KalturaHelpers::dieWithConnectionErrorMsg($error["message"]);
+					
+				$totalCount = $result->totalCount;
 
 				$viewData["page"] 		= $page;
 				$viewData["pageSize"] 	= $pageSize;

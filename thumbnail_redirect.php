@@ -6,7 +6,6 @@
 	require('../../../wp-blog-header.php');
 
 	require_once("settings.php");
-	require_once("lib/common.php");
 	
 	$width = $_GET["width"];
 	$height = $_GET["height"];
@@ -21,7 +20,7 @@
 	$thumbnailPath .= "/type/2";
 	$thumbnailPath .= "/bgcolor/000000";
 	$thumbnailPath .= "/crop_provider/wordpress_placeholder";
-	header("Location: " . kalturaGetServerUrl() . $thumbnailPath);
+	header("Location: " . KalturaHelpers::getServerUrl() . $thumbnailPath);
 	
 	ob_end_flush();
 ?>
