@@ -148,8 +148,11 @@ class KalturaHelpers
 		return KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/_" . get_option("kaltura_partner_id") . "/ui_conf_id/" . $player["uiConfId"];
 	}
 	
-	function getSwfUrlForWidget($widgetId, $uiConfId = null)
+	function getSwfUrlForWidget($widgetId = null, $uiConfId = null)
 	{
+	    if (!$widgetId)
+	        $widgetId = "_" . get_option("kaltura_partner_id");
+	        
 	    $url = KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/" . $widgetId;
 	    if ($uiConfId)
 	        $url .= ("/ui_conf_id/" . $uiConfId);

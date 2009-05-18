@@ -31,7 +31,7 @@ function update_thumbnail_frame()
 		wp_die(__('Failed to start new session.'));
 	}
 	
-	$swfUrl	= KalturaHelpers::getSwfUrlForWidget(KALTURA_THUMBNAIL_WIDGET);
+	$swfUrl	= KalturaHelpers::getSwfUrlForWidget(null, KALTURA_THUMBNAIL_UICONF);
 	$flashVars = KalturaHelpers::getKalturaPlayerFlashVars(null, $ks, $entryId);
 	$flashVarsStr = KalturaHelpers::flashVarsToString($flashVars);
 	?>
@@ -55,7 +55,7 @@ function update_thumbnail_frame()
 		
 	</div>
 	<div class="submit">
-		<div>Play the video and you will see an "Update thumbnail" button on top of the video.  Click the button on the frame you want to capture, wait for a confirmation message and then click "Done".</div>
+		<div>Play the video and you will see an "Capture Thumbnail" button on top of the video.  Click the button on the frame you want to capture, wait for a confirmation message and then click "Done".</div>
 		<input type="button" value="Done" onclick="window.parent.location.reload(); window.parent.tb_remove();" />
 	</div>
 	<?php 
