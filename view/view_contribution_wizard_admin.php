@@ -77,13 +77,8 @@
 		if (Kaltura.isMacFF())
 			Kaltura.showTinyMCEToolbar();
 	})
-
-	if (Kaltura.compareWPVersion("2.6", ">=")) {
-		topWindow.Kaltura.hackModalBoxWp26();
-	}
 </script>
 
 <?php
-$viewData["extraCWHeight"] = 34;
 require_once("view_contribution_wizard.php");
 ?>
