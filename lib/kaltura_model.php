@@ -86,6 +86,14 @@ class KalturaModel
 		return $this->client->mixing->add($mixEntry);
 	}
 	
+	function appendMediaToMix($mixEntryId, $mediaEntryId)
+	{
+	    if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->mixing->appendMediaEntry($mixEntryId, $mediaEntryId);
+	}
+	
 	function listEntries($pageSize, $page)
 	{
 		if (!$this->session)

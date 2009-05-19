@@ -6,24 +6,27 @@
 	require_once('lib/kaltura_helpers.php');
 	require_once("lib/kaltura_model.php");
 	
-	$sessionUser = KalturaHelpers::getSessionUser();
-	
-	$kshowId = @$_GET["kshowId"];
+	$entryIdsStr = str_replace(" ", "", @$_GET["entryIds"]);
+	$entryIds = explode(",", $entryIdsStr);
 	$postId = @$_GET["postId"];
 	
-	// update the kshow
-	$kshowUpdate = new KalturaKShow();
-	$kshowUpdate->name = "Video comment for post #".$postId;
-	$kalturaClient = KalturaHelpers::getKalturaClient(false, "edit:".$kshowId);  
-	KalturaModel::updateKshow($kalturaClient, $kshowId, $kshowUpdate);
+	$kmodel = KalturaModel::getInstance();
 	
+	$mixEntry = new KalturaMixEntry();
+    $mixEntry->name = "Video comment for post #".$postId;
+    $mixEntry->editorType = KalturaEditorType_SIMPLE;
+    $mixEntry = $kmodel->addMixEntry($mixEntry);
+
+    foreach($entryIds as $entryId)
+    {
+        $kmodel->appendMediaToMix($mixEntry->id, $entryId);
+    }
+    
 	// add widget
 	$widget = new KalturaWidget();
-	$widget->kshowId = $kshowId;
 	$player = KalturaHelpers::getPlayerByType(get_option('kaltura_comments_player_type'));
-	$widget->uiConfId = $player["uiConfId"];
-	$result = $kalturaClient->addwidget($sessionUser, $widget);
-	$widgetId = @$result["result"]["widget"]["id"];
+	$widget = $kmodel->addWidget($mixEntry->id, $player["uiConfId"]);
+	$widgetId = $widget->id;
 	$playerSize = "comments";
 	
 	ob_clean();

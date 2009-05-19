@@ -84,12 +84,18 @@
 </script>
 <?php else: ?>		
 <script type="text/javascript">
-	var kshowId = null;
+	var entryIds = "";
 	var topWindow = Kaltura.getTopWindow();
 	function onContributionWizardAfterAddEntry(obj)
 	{
-		if (obj && obj.length > 0 && obj[0].kshowId)
-			kshowId = obj[0].kshowId;
+		if (obj && obj.length)
+		{
+			for(var i = 0; i < obj.length; i++)
+			{
+				entryIds += (obj[i].entryId + ",");
+			}
+			entryIds = entryIds.substr(0, entryIds.length - 1);
+		}
 	}
 	
 	function onContributionWizardClose(modified)
@@ -99,7 +105,7 @@
 	
 	function onContributionWizardCloseTimeouted(modified)
 	{
-		if (modified && kshowId) 
+		if (modified && entryIds.length > 0) 
 		{
 			jQuery.ajax(
 				{
@@ -108,7 +114,7 @@
 					error: addWidgetErrorHandler,
 					dataType: "html",
 					method: "GET",
-					data: { kshowId: kshowId, postId: <?php echo $viewData["postId"] ?> }
+					data: { entryIds: entryIds, postId: <?php echo $viewData["postId"] ?> }
 				}
 			);
 		}
@@ -125,6 +131,9 @@
 
 		if (jqComments.size() > 0 && jqSubmitButton.size() > 0)
 		{
+			// get only the first submit button that was found
+			jqSubmitButton = jQuery(jqSubmitButton[0]);
+			
 			var html = jqComments.val();
 			if (html.replace(" ", "") != "")
 				html += "\n";
