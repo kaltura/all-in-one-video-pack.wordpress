@@ -1,6 +1,6 @@
 === All in One Video Pack ===
 Contributors: Kaltura
-Donate link: http://community.kaltura.org/
+Donate link: http://kaltura.org/
 Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, youtube, video responses, video blog, audio, media, myspace, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
 Requires at least: 2.5
 Tested up to: 2.7.1
@@ -22,7 +22,7 @@ Highlights:
 * Sidebar widget displaying thumbnails of recent videos and video comments
 * Complete administrative capabilities. You decide who can add and edit each video; 
 * Supports more than 150 video, audio and image file formats and codecs 
-* Three different video player styles to choose from 
+* Choose your preferred video player style for each player you embed
 * Custom sizing of the video player 
 * Update thumbnail of video by selecting frame from video
 * Advanced sharing options for videos 
@@ -30,14 +30,14 @@ Highlights:
 * Easy installation that takes just 4 steps and a few minutes. 
 
 
-Additional capabilities coming soon:
+New features included in Version 2.3:
 
-* The ability to create, manage and display video playlists 
-* Podcast recorder and player 
-* The ability to create video galleries
-* Advanced playing features such as:  subtitles, download button, credits, content discovery, etc.
+* Widescreen support - you can now upload widescreen videos into a 16:9 player
+* New cool video player designs to choose from
+* Choose between uploading a single media file or creating a mix with more than one file
+* Bug fixing and maintenance
 
-Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://community.kaltura.org/viewforum.php?f=4 
+Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://kaltura.org/forums/wordpress-kaltura-plugin-all-one-video-pack-forums 
 
 
 == Installation ==
@@ -97,4 +97,4 @@ Creative potential, innovation, and competition all correlate directly with the 
 
 Kaltura is a founding member of the Open Video Alliance, a group of organizations, developers, creators, and academics all striving to foster the open-source online video revolution.  We invite the entire community to join us in building the first open-source platform for interactive and collaborative video. We look forward to your input, feedback, time, and support.
 
-Join the community and help us Open Source Video - http://community.kaltura.org
+Join the community and help us Open Source Video - http://kaltura.org
