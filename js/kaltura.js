@@ -303,9 +303,9 @@ Kaltura = {
 		
 		var pageToLoad = "";
 		if (type == "comments") 
-			pageToLoad = "ajax_get_video_comments.php";
+			pageToLoad = "ajax_get_video_comments.php?nocache="+Math.ceil(10000*Math.random());
 		else if (type == "posts")
-			pageToLoad = "ajax_get_video_posts.php";
+			pageToLoad = "ajax_get_video_posts.php?nocache="+Math.ceil(10000*Math.random());
 		else
 			return
 		

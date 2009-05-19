@@ -126,7 +126,7 @@
 		<p>
 			Next time you write a post, you will see a new icon in the Add Media toolbar that allows you to upload and edit Interactive Videos. <br />
 			<br />
-			Note that a Kaltura Partner ID has been created for you, and an email has been sent to the specified email address containing the ID information. The email you received also includes a link and a password to the Kaltura Content Management System (CMS), where you can track and manage all information related to the All in One Video Pack.<br />
+			Note that a Kaltura Partner ID has been created for you, and an email has been sent to the specified email address containing the ID information. The email you received also includes a link and a password to the Kaltura Management Console (KMC), where you can track and manage all information related to the All in One Video Pack.<br />
 		</p>
 		<br />
 		<iframe src="http://corp.kaltura.com/activation/wordpress/p/<?php echo get_option("kaltura_partner_id"); ?>" width="1" height="1" border="0" style="border: 0;"></iframe>

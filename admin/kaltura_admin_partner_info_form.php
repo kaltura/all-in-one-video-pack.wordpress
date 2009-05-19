@@ -75,17 +75,12 @@
 				<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_partner_id"); ?></strong></td>
 			</tr>
 			<tr>
-				<th align="left"><?php _e('CMS username'); ?>:</th>
+				<th align="left"><?php _e('KMC username'); ?>:</th>
 				<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_cms_user"); ?></strong></td>
 			</tr>
-			<tr>
-				<th align="left"><?php _e('CMS Password'); ?>:</th>
-				<td><strong><?php echo get_option("kaltura_cms_password"); ?></strong></td>
-			</tr>
 			<tr class="kalturaLastRow">
-				<td colspan="2" align="right" style="padding-top: 10px;">
-					<!-- <a href="#" onclick="document.getElementById('frmCmsLogin').submit()" class="kalturaLink"><?php _e('CMS Login'); ?></a>-->
-					<b><u>Updated CMS coming soon</u></b>
+				<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">
+					<a href="http://www.kaltura.com/index.php/kmc" target="_blank">Login</a> to Kaltura Management Console (KMC) for advanced <br />media management
 				</td>
 			</tr>
 		</table>
@@ -154,11 +149,6 @@
 	
 		Please feel free to contact <a href="mailto:support@kaltura.com">support@kaltura.com</a> with any questions.
 		<input type="hidden" name="is_postback" value="postback" />
-	</form>
-
-	<form id="frmCmsLogin" name="frmCmsLogin" method="post" target="_blank" action="<?php echo KalturaHelpers::getServerUrl(); ?>/index.php/cms/login">
-		<input type="hidden" name="email" id="email" value="<?php echo get_option("kaltura_cms_user"); ?>" />
-		<input type="hidden" name="pwd" id="pwd"  value="<?php echo get_option("kaltura_cms_password"); ?>" />
 	</form>
 	
 	<script type="text/javascript">
