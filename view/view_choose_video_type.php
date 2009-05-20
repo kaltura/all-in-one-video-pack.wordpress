@@ -4,12 +4,12 @@
     <table>
     	<tr>
     		<td>
-    			<a href="<?php echo KalturaHelpers::generateTabUrl(array("kaltura_entry_type" => KalturaEntryType_MIX)); ?>">[Yes, I want users to remix video]</a><br />
-    			<p class="small">If you add several files, they will play as a sequence that you can then edit and allow users to remix</p>
+    			<a href="<?php echo KalturaHelpers::generateTabUrl(array("kaltura_entry_type" => KalturaEntryType_MIX)); ?>">[Yes, I want users to remix this video]</a><br />
+    			<p class="small">If you add several files, they will play as a sequence that you can then add to, edit and allow users to upload and remix too.</p>
 			</td>
 			<td>
 				<a href="<?php echo KalturaHelpers::generateTabUrl(array("kaltura_entry_type" => KalturaEntryType_MEDIA_CLIP)); ?>">[No, I just want to post a video]</a><br />
-    			<p class="small">If you add more than one video, only the first will appear in player</p>
+    			<p class="small">This will display a single video.  (If you add more than one video, only the first will appear in player.)</p>
 			</td>
 		</tr>
 	</table>
