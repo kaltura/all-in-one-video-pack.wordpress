@@ -174,7 +174,7 @@
 							<td valign="top" style="padding-left:25px;">
 								<strong>Player Dimensions:</strong>
 								<div class="playerRatioDiv">
-									<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>
+									<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
 									<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="updateRatio();" value="16:9" <?php echo $wideScreenDisabled; ?>/><label for="playerRatioWide">Widescreen</label></span>
 								</div>
 								<strong>Select player size:</strong>
