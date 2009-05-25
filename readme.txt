@@ -4,7 +4,7 @@ Donate link: http://kaltura.org/
 Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, myspace, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 2.3
+Stable tag: 2.3.1
 
 Easily add full video capabilities to your blog.
 
