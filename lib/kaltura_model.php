@@ -38,7 +38,7 @@ class KalturaModel
         $userId = KalturaHelpers::getLoggedUserId();
         $partnerId = get_option("kaltura_partner_id");
         $secret = get_option("kaltura_admin_secret");
-		return $this->client->session->start($partnerId, $secret, $userId, KalturaSessionType_ADMIN, 86400, $privileges);        
+		return $this->client->session->start($secret, $userId, KalturaSessionType_ADMIN, $partnerId, 86400, $privileges);        
     }
     
     function getClientSideSession($privileges = "")
@@ -46,7 +46,7 @@ class KalturaModel
         $userId = KalturaHelpers::getLoggedUserId();
         $partnerId = get_option("kaltura_partner_id");
         $secret = get_option("kaltura_secret");
-		return $this->client->session->start($partnerId, $secret, $userId, KalturaSessionType_USER, 86400, $privileges);        
+		return $this->client->session->start($secret, $userId, KalturaSessionType_USER, $partnerId, 86400, $privileges);        
     }
     
     function getSecrets($partnerId, $email, $password)

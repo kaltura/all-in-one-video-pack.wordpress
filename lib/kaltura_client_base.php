@@ -36,7 +36,7 @@ class KalturaClientBase
 		$this->config = $config;
 		
 		$logger = $this->config->getLogger();
-		if ($logger)
+		if (isset($logger))
 		{
 			$this->shouldLog = true;	
 		}
@@ -52,6 +52,11 @@ class KalturaClientBase
 		
 		// append the basic params
 		$this->addParam($params, "apiVersion", KALTURA_API_VERSION);
+		
+		// in start session partner id is optional (default -1). if partner id was not set, use the one in the config
+		if (!isset($params["partnerId"]) || $params["partnerId"] === -1)
+	        $this->addParam($params, "partnerId", $this->config->partnerId);
+    
 		$this->addParam($params, "format", $this->config->format);
 		$this->addParam($params, "ks", $this->ks);
 		
@@ -163,7 +168,7 @@ class KalturaClientBase
 		$domain = substr($url,$end);
 		$fp = fsockopen($host, 80);
 		if(!$fp) return null;
-		fputs ($fp,"POST $domain HTTP/1.1\n");
+		fputs ($fp,"POST $domain HTTP/1.0\n"); // 1.0 beacause we don't want to support chunked transfer encoding
 		fputs ($fp,"Host: $host\n");
 		if ($optionalHeaders) {
 			fputs($fp, $optionalHeaders);
@@ -243,7 +248,7 @@ class KalturaClientBase
 	{
 		if (is_object($resultObject))
 		{
-			if (get_class($resultObject) !== $objectType)
+			if (!(is_a($resultObject, $objectType)))
 				$this->setError(array("code" => 0, "message" => "Invalid object type"));
 		}
 		else if (gettype($resultObject) !== "NULL" && gettype($resultObject) !== $objectType)
@@ -303,6 +308,17 @@ class KalturaObjectBase
 			$params[$paramName] = $paramValue;
 		}
 	}
+		
+	function toParams()
+	{
+		$params = array();
+		$params["objectType"] = get_class($this);
+	    foreach($this as $prop => $val)
+		{
+			$this->addIfNotNull($params, $prop, $val);
+		}
+		return $params;
+	}
 }
 
 class KalturaConfiguration
@@ -310,14 +326,16 @@ class KalturaConfiguration
 	var $logger;
 
 	var $serviceUrl    = "http://www.kaltura.com/api_v3/";
+	var $partnerId     = null;
 	var $format        = 3;
 	
 	/**
 	 * Constructs new Kaltura configuration object
 	 *
 	 */
-	function KalturaConfiguration()
+	function KalturaConfiguration($partnerId)
 	{
+	    $this->partnerId = $partnerId;
 	}
 	
 	/**

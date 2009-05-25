@@ -1,3 +1,13 @@
+Version 2.3.1
+-------------
+* Fixed PHP4 client throwing warnings when allow_call_time_pass_reference is off
+
+Version 2.3
+-------------
+* Added widescreen support
+* Changed video players designs
+* Bug fixing and maintenance
+
 Version 2.2
 -------------
 * Added option to update video thumbnail via the Library/Browse view

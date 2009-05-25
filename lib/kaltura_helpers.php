@@ -3,7 +3,7 @@ class KalturaHelpers
 {
     function getKalturaConfiguration() 
     {
-    	$config = new KalturaConfiguration();
+    	$config = new KalturaConfiguration(get_option("kaltura_partner_id"));
     	$config->serviceUrl = KalturaHelpers::getServerUrl();
     	require_once("kaltura_wordpress_logger.php");
     	$config->setLogger(new KalturaWordpressLogger());

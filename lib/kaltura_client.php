@@ -1,6 +1,9 @@
 <?php
 require_once("kaltura_client_base.php");
 
+define("KalturaEditorType_SIMPLE", 1);
+define("KalturaEditorType_ADVANCED", 2);
+
 define("KalturaEntryStatus_ERROR_CONVERTING", -1);
 define("KalturaEntryStatus_IMPORT", 0);
 define("KalturaEntryStatus_PRECONVERT", 1);
@@ -10,9 +13,12 @@ define("KalturaEntryStatus_PENDING", 4);
 define("KalturaEntryStatus_MODERATE", 5);
 define("KalturaEntryStatus_BLOCKED", 6);
 
+define("KalturaEntryType_AUTOMATIC", -1);
 define("KalturaEntryType_MEDIA_CLIP", 1);
 define("KalturaEntryType_MIX", 2);
 define("KalturaEntryType_PLAYLIST", 5);
+define("KalturaEntryType_DATA", 6);
+define("KalturaEntryType_DOCUMENT", 10);
 
 define("KalturaLicenseType_UNKNOWN", -1);
 define("KalturaLicenseType_NONE", 0);
@@ -23,10 +29,19 @@ define("KalturaMediaType_VIDEO", 1);
 define("KalturaMediaType_IMAGE", 2);
 define("KalturaMediaType_AUDIO", 5);
 
-define("KalturaSourceType_FILE", 1);
-define("KalturaSourceType_WEBCAM", 2);
-define("KalturaSourceType_URL", 5);
-define("KalturaSourceType_SEARCH_PROVIDER", 6);
+define("KalturaNotificationType_ENTRY_ADD", 1);
+define("KalturaNotificationType_ENTR_UPDATE_PERMISSIONS", 2);
+define("KalturaNotificationType_ENTRY_DELETE", 3);
+define("KalturaNotificationType_ENTRY_BLOCK", 4);
+define("KalturaNotificationType_ENTRY_UPDATE", 5);
+define("KalturaNotificationType_ENTRY_UPDATE_THUMBNAIL", 6);
+define("KalturaNotificationType_ENTRY_UPDATE_MODERATION", 7);
+define("KalturaNotificationType_USER_ADD", 21);
+define("KalturaNotificationType_USER_BANNED", 26);
+
+define("KalturaPlaylistType_DYNAMIC", 10);
+define("KalturaPlaylistType_STATIC_LIST", 3);
+define("KalturaPlaylistType_EXTERNAL", 101);
 
 define("KalturaSearchProviderType_FLICKR", 3);
 define("KalturaSearchProviderType_YOUTUBE", 4);
@@ -44,30 +59,29 @@ define("KalturaSearchProviderType_KALTURA_PARTNER", 23);
 define("KalturaSearchProviderType_METACAFE", 24);
 define("KalturaSearchProviderType_SEARCH_PROXY", 28);
 
-class KalturaMediaEntry extends KalturaObjectBase
+define("KalturaSessionType_USER", 0);
+define("KalturaSessionType_ADMIN", 2);
+
+define("KalturaSourceType_FILE", 1);
+define("KalturaSourceType_WEBCAM", 2);
+define("KalturaSourceType_URL", 5);
+define("KalturaSourceType_SEARCH_PROVIDER", 6);
+
+define("KalturaUiConfCreationMode_WIZARD", 2);
+define("KalturaUiConfCreationMode_ADVANCED", 3);
+
+define("KalturaUiConfObjType_PLAYER", 1);
+define("KalturaUiConfObjType_CONTRIBUTION_WIZARD", 2);
+define("KalturaUiConfObjType_SIMPLE_EDITOR", 3);
+define("KalturaUiConfObjType_ADVANCED_EDITOR", 4);
+define("KalturaUiConfObjType_PLAYLIST", 5);
+define("KalturaUiConfObjType_APP_STUDIO", 6);
+
+define("KalturaWidgetSecurityType_NONE", 1);
+define("KalturaWidgetSecurityType_TIMEHASH", 2);
+
+class KalturaAdminLoginResponse extends KalturaObjectBase
 {
-	/**
-	 * Auto generated 10 characters alphanumeric string
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $id = null;
-
-	/**
-	 * Entry name
-	 *
-	 * @var string
-	 */
-	var $name = null;
-
-	/**
-	 * Entry description
-	 *
-	 * @var string
-	 */
-	var $description = null;
-
 	/**
 	 * 
 	 *
@@ -77,1329 +91,66 @@ class KalturaMediaEntry extends KalturaObjectBase
 	var $partnerId = null;
 
 	/**
-	 * The ID of the user who is the owner of this entry 
+	 * 
 	 *
-	 * @var string
+	 * @var int
+	 * @readonly
 	 */
-	var $userId = null;
-
-	/**
-	 * Entry tags
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * Entry admin tags can be updated only by administrators and are not visible to the user
-	 *
-	 * @var string
-	 */
-	var $adminTags = null;
+	var $subpId = null;
 
 	/**
 	 * 
 	 *
-	 * @var KalturaEntryStatus
+	 * @var string
 	 * @readonly
 	 */
-	var $status = null;
-
-	/**
-	 * The type of the entry, this is auto filled by the derived entry object
-	 *
-	 * @var KalturaEntryType
-	 * @readonly
-	 */
-	var $type = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * Calculated rank
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $rank = null;
-
-	/**
-	 * The total (sum) of all votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $totalRank = null;
-
-	/**
-	 * Number of votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $votes = null;
+	var $ks = null;
 
 	/**
 	 * 
 	 *
-	 * @var int
-	 */
-	var $groupId = null;
-
-	/**
-	 * Can be used to store various partner related data as a string 
-	 *
-	 * @var string
-	 */
-	var $partnerData = null;
-
-	/**
-	 * Download URL for the entry
-	 *
 	 * @var string
 	 * @readonly
 	 */
-	var $downloadUrl = null;
+	var $uid = null;
 
 	/**
-	 * License type used for this entry
+	 * 
 	 *
-	 * @var KalturaLicenseType
-	 */
-	var $licenseType = null;
-
-	/**
-	 * Number of plays
-	 *
-	 * @var int
+	 * @var KalturaAdminUser
 	 * @readonly
 	 */
-	var $plays = null;
-
-	/**
-	 * Number of views
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $views = null;
-
-	/**
-	 * The width in pixels
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $width = null;
-
-	/**
-	 * The height in pixels
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $height = null;
-
-	/**
-	 * Thumbnail URL
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $thumbnailUrl = null;
-
-	/**
-	 * The duration in seconds
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $duration = null;
-
-	/**
-	 * The media type of the entry
-	 *
-	 * @var KalturaMediaType
-	 * @insertonly
-	 */
-	var $mediaType = null;
-
-	/**
-	 * Override the default conversion quality  
-	 *
-	 * @var string
-	 * @insertonly
-	 */
-	var $conversionQuality = null;
-
-	/**
-	 * The source type of the entry 
-	 *
-	 * @var KalturaSourceType
-	 * @readonly
-	 */
-	var $sourceType = null;
-
-	/**
-	 * The search provider type used to import this entry
-	 *
-	 * @var KalturaSearchProviderType
-	 * @readonly
-	 */
-	var $searchProviderType = null;
-
-	/**
-	 * The ID of the media in the importing site
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $searchProviderId = null;
-
-	/**
-	 * The user name used for credits
-	 *
-	 * @var string
-	 */
-	var $creditUserName = null;
-
-	/**
-	 * The URL for credits
-	 *
-	 * @var string
-	 */
-	var $creditUrl = null;
-
-	/**
-	 * The media date extracted from EXIF data (For images) as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $mediaDate = null;
-
-	/**
-	 * The URL used for playback. This is not the download URL.
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $dataUrl = null;
+	var $adminUser;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "userId", $this->userId);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "type", $this->type);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "rank", $this->rank);
-		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
-		$this->addIfNotNull($kparams, "votes", $this->votes);
-		$this->addIfNotNull($kparams, "groupId", $this->groupId);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
-		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
-		$this->addIfNotNull($kparams, "plays", $this->plays);
-		$this->addIfNotNull($kparams, "views", $this->views);
-		$this->addIfNotNull($kparams, "width", $this->width);
-		$this->addIfNotNull($kparams, "height", $this->height);
-		$this->addIfNotNull($kparams, "thumbnailUrl", $this->thumbnailUrl);
-		$this->addIfNotNull($kparams, "duration", $this->duration);
-		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
-		$this->addIfNotNull($kparams, "conversionQuality", $this->conversionQuality);
-		$this->addIfNotNull($kparams, "sourceType", $this->sourceType);
-		$this->addIfNotNull($kparams, "searchProviderType", $this->searchProviderType);
-		$this->addIfNotNull($kparams, "searchProviderId", $this->searchProviderId);
-		$this->addIfNotNull($kparams, "creditUserName", $this->creditUserName);
-		$this->addIfNotNull($kparams, "creditUrl", $this->creditUrl);
-		$this->addIfNotNull($kparams, "mediaDate", $this->mediaDate);
-		$this->addIfNotNull($kparams, "dataUrl", $this->dataUrl);
-		return $kparams;
-	}
 }
 
-class KalturaSearchResult extends KalturaObjectBase
+class KalturaAdminUser extends KalturaObjectBase
 {
 	/**
 	 * 
 	 *
 	 * @var string
-	 */
-	var $keyWords = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaSearchProviderType
-	 */
-	var $searchSource = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaMediaType
-	 */
-	var $mediaType = null;
-
-	/**
-	 * Use this field to pass dynamic data for searching
-	 * For example - if you set this field to "mymovies_$partner_id"
-	 * The $partner_id will be automatically replcaed with your real partner Id
-	 *
-	 * @var string
-	 */
-	var $extraData = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $id = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $title = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $thumbUrl = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $description = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $url = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $sourceLink = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $credit = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaLicenseType
-	 */
-	var $licenseType = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "keyWords", $this->keyWords);
-		$this->addIfNotNull($kparams, "searchSource", $this->searchSource);
-		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
-		$this->addIfNotNull($kparams, "extraData", $this->extraData);
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "title", $this->title);
-		$this->addIfNotNull($kparams, "thumbUrl", $this->thumbUrl);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "url", $this->url);
-		$this->addIfNotNull($kparams, "sourceLink", $this->sourceLink);
-		$this->addIfNotNull($kparams, "credit", $this->credit);
-		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
-		return $kparams;
-	}
-}
-
-class KalturaMediaEntryFilter extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $idEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $idIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $userIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $typeIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaEntryStatus
-	 */
-	var $statusEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $statusIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $groupIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $createdAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $updatedAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $modifiedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $modifiedAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $partnerIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $partnerIdIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $moderationStatusEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $moderationStatusIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndNameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsAndNameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndNameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsAndNameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $searchTextMatchAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $searchTextMatchOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaMediaType
-	 */
-	var $mediaTypeEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $mediaTypeIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $mediaDateGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $mediaDateLessThanEqual = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
-		$this->addIfNotNull($kparams, "idIn", $this->idIn);
-		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
-		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
-		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
-		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
-		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
-		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
-		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
-		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
-		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
-		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
-		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
-		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
-		$this->addIfNotNull($kparams, "mediaTypeEqual", $this->mediaTypeEqual);
-		$this->addIfNotNull($kparams, "mediaTypeIn", $this->mediaTypeIn);
-		$this->addIfNotNull($kparams, "mediaDateGreaterThanEqual", $this->mediaDateGreaterThanEqual);
-		$this->addIfNotNull($kparams, "mediaDateLessThanEqual", $this->mediaDateLessThanEqual);
-		return $kparams;
-	}
-}
-
-class KalturaFilterPager extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $pageSize = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $pageIndex = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "pageSize", $this->pageSize);
-		$this->addIfNotNull($kparams, "pageIndex", $this->pageIndex);
-		return $kparams;
-	}
-}
-
-class KalturaMediaListResponse extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var KalturaMediaEntries
 	 * @readonly
 	 */
-	var $objects;
+	var $password = null;
 
 	/**
 	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $totalCount = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
-		return $kparams;
-	}
-}
-
-define("KalturaEditorType_SIMPLE", 1);
-define("KalturaEditorType_ADVANCED", 2);
-
-class KalturaMixEntry extends KalturaObjectBase
-{
-	/**
-	 * Auto generated 10 characters alphanumeric string
 	 *
 	 * @var string
 	 * @readonly
 	 */
-	var $id = null;
-
-	/**
-	 * Entry name
-	 *
-	 * @var string
-	 */
-	var $name = null;
-
-	/**
-	 * Entry description
-	 *
-	 * @var string
-	 */
-	var $description = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $partnerId = null;
-
-	/**
-	 * The ID of the user who is the owner of this entry 
-	 *
-	 * @var string
-	 */
-	var $userId = null;
-
-	/**
-	 * Entry tags
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * Entry admin tags can be updated only by administrators and are not visible to the user
-	 *
-	 * @var string
-	 */
-	var $adminTags = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaEntryStatus
-	 * @readonly
-	 */
-	var $status = null;
-
-	/**
-	 * The type of the entry, this is auto filled by the derived entry object
-	 *
-	 * @var KalturaEntryType
-	 * @readonly
-	 */
-	var $type = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * Calculated rank
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $rank = null;
-
-	/**
-	 * The total (sum) of all votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $totalRank = null;
-
-	/**
-	 * Number of votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $votes = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $groupId = null;
-
-	/**
-	 * Can be used to store various partner related data as a string 
-	 *
-	 * @var string
-	 */
-	var $partnerData = null;
-
-	/**
-	 * Download URL for the entry
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $downloadUrl = null;
-
-	/**
-	 * License type used for this entry
-	 *
-	 * @var KalturaLicenseType
-	 */
-	var $licenseType = null;
-
-	/**
-	 * Number of plays
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $plays = null;
-
-	/**
-	 * Number of views
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $views = null;
-
-	/**
-	 * The width in pixels
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $width = null;
-
-	/**
-	 * The height in pixels
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $height = null;
-
-	/**
-	 * Thumbnail URL
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $thumbnailUrl = null;
-
-	/**
-	 * The duration in seconds
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $duration = null;
-
-	/**
-	 * Indicates whether the user has submited a real thumbnail to the mix (Not the one that was generated automaticaly)
-	 *
-	 * @var bool
-	 * @readonly
-	 */
-	var $hasRealThumbnail = null;
-
-	/**
-	 * The editor type used to edit the metadata
-	 *
-	 * @var KalturaEditorType
-	 */
-	var $editorType = null;
-
-	/**
-	 * The xml data of the mix
-	 *
-	 * @var string
-	 */
-	var $dataContent = null;
-
-	/**
-	 * The version of the mix
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $version = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "userId", $this->userId);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "type", $this->type);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "rank", $this->rank);
-		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
-		$this->addIfNotNull($kparams, "votes", $this->votes);
-		$this->addIfNotNull($kparams, "groupId", $this->groupId);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
-		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
-		$this->addIfNotNull($kparams, "plays", $this->plays);
-		$this->addIfNotNull($kparams, "views", $this->views);
-		$this->addIfNotNull($kparams, "width", $this->width);
-		$this->addIfNotNull($kparams, "height", $this->height);
-		$this->addIfNotNull($kparams, "thumbnailUrl", $this->thumbnailUrl);
-		$this->addIfNotNull($kparams, "duration", $this->duration);
-		$this->addIfNotNull($kparams, "hasRealThumbnail", $this->hasRealThumbnail);
-		$this->addIfNotNull($kparams, "editorType", $this->editorType);
-		$this->addIfNotNull($kparams, "dataContent", $this->dataContent);
-		$this->addIfNotNull($kparams, "version", $this->version);
-		return $kparams;
-	}
-}
-
-class KalturaMixEntryFilter extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
+	var $email = null;
 
 	/**
 	 * 
 	 *
 	 * @var string
 	 */
-	var $idEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $idIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $userIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $typeIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaEntryStatus
-	 */
-	var $statusEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $statusIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $adminTagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $groupIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $createdAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $updatedAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $modifiedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $modifiedAtLessThenEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $partnerIdEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $partnerIdIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $moderationStatusEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $moderationStatusIn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndNameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsAndNameMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndNameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsAndAdminTagsAndNameMultiLikeAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $searchTextMatchAnd = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $searchTextMatchOr = null;
+	var $screenName = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
-		$this->addIfNotNull($kparams, "idIn", $this->idIn);
-		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
-		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
-		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
-		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
-		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
-		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
-		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
-		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
-		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
-		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
-		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
-		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
-		return $kparams;
-	}
-}
-
-class KalturaMixListResponse extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var KalturaMixEntries
-	 * @readonly
-	 */
-	var $objects;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $totalCount = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
-		return $kparams;
-	}
 }
 
 class KalturaBaseEntry extends KalturaObjectBase
@@ -1533,39 +284,10 @@ class KalturaBaseEntry extends KalturaObjectBase
 	var $licenseType = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "userId", $this->userId);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "type", $this->type);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "rank", $this->rank);
-		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
-		$this->addIfNotNull($kparams, "votes", $this->votes);
-		$this->addIfNotNull($kparams, "groupId", $this->groupId);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
-		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
-		return $kparams;
-	}
 }
 
 class KalturaBaseEntryFilter extends KalturaObjectBase
 {
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
-
 	/**
 	 * 
 	 *
@@ -1812,47 +534,6 @@ class KalturaBaseEntryFilter extends KalturaObjectBase
 	var $searchTextMatchOr = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "idEqual", $this->idEqual);
-		$this->addIfNotNull($kparams, "idIn", $this->idIn);
-		$this->addIfNotNull($kparams, "userIdEqual", $this->userIdEqual);
-		$this->addIfNotNull($kparams, "typeIn", $this->typeIn);
-		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
-		$this->addIfNotNull($kparams, "statusIn", $this->statusIn);
-		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
-		$this->addIfNotNull($kparams, "nameMultiLikeOr", $this->nameMultiLikeOr);
-		$this->addIfNotNull($kparams, "nameMultiLikeAnd", $this->nameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "nameEqual", $this->nameEqual);
-		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
-		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsMultiLikeAnd", $this->tagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "adminTagsLike", $this->adminTagsLike);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeOr", $this->adminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "adminTagsMultiLikeAnd", $this->adminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "groupIdEqual", $this->groupIdEqual);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThenEqual", $this->createdAtLessThenEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThenEqual", $this->updatedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "modifiedAtGreaterThanEqual", $this->modifiedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "modifiedAtLessThenEqual", $this->modifiedAtLessThenEqual);
-		$this->addIfNotNull($kparams, "partnerIdEqual", $this->partnerIdEqual);
-		$this->addIfNotNull($kparams, "partnerIdIn", $this->partnerIdIn);
-		$this->addIfNotNull($kparams, "moderationStatusEqual", $this->moderationStatusEqual);
-		$this->addIfNotNull($kparams, "moderationStatusIn", $this->moderationStatusIn);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeOr", $this->tagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeOr", $this->tagsAndAdminTagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeOr", $this->tagsAndAdminTagsAndNameMultiLikeOr);
-		$this->addIfNotNull($kparams, "tagsAndNameMultiLikeAnd", $this->tagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsMultiLikeAnd", $this->tagsAndAdminTagsMultiLikeAnd);
-		$this->addIfNotNull($kparams, "tagsAndAdminTagsAndNameMultiLikeAnd", $this->tagsAndAdminTagsAndNameMultiLikeAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchAnd", $this->searchTextMatchAnd);
-		$this->addIfNotNull($kparams, "searchTextMatchOr", $this->searchTextMatchOr);
-		return $kparams;
-	}
 }
 
 class KalturaBaseEntryListResponse extends KalturaObjectBase
@@ -1874,441 +555,48 @@ class KalturaBaseEntryListResponse extends KalturaObjectBase
 	var $totalCount = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "totalCount", $this->totalCount);
-		return $kparams;
-	}
 }
 
-define("KalturaSessionType_USER", 0);
-define("KalturaSessionType_ADMIN", 2);
+class KalturaClientNotification extends KalturaObjectBase
+{
+	/**
+	 * The URL where the notification should be sent to 
+	 *
+	 * @var string
+	 */
+	var $url = null;
 
-define("KalturaUiConfObjType_PLAYER", 1);
-define("KalturaUiConfObjType_CONTRIBUTION_WIZARD", 2);
-define("KalturaUiConfObjType_SIMPLE_EDITOR", 3);
-define("KalturaUiConfObjType_ADVANCED_EDITOR", 4);
-define("KalturaUiConfObjType_PLAYLIST", 5);
-define("KalturaUiConfObjType_APP_STUDIO", 6);
+	/**
+	 * The serialized notification data to send
+	 *
+	 * @var string
+	 */
+	var $data = null;
 
-define("KalturaUiConfCreationMode_WIZARD", 2);
-define("KalturaUiConfCreationMode_ADVANCED", 3);
 
-class KalturaUiConf extends KalturaObjectBase
+}
+
+class KalturaFilterPager extends KalturaObjectBase
 {
 	/**
 	 * 
 	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $id = null;
-
-	/**
-	 * Name of the uiConf, this is not a primary key
-	 *
-	 * @var string
-	 */
-	var $name = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $description = null;
-
-	/**
-	 * 
-	 *
 	 * @var int
-	 * @readonly
 	 */
-	var $partnerId = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaUiConfObjType
-	 */
-	var $objType = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $objTypeAsString = null;
+	var $pageSize = null;
 
 	/**
 	 * 
 	 *
 	 * @var int
 	 */
-	var $width = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $height = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $htmlParams = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $swfUrl = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $confFilePath = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $confFile = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $confFileFeatures = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $confVars = null;
-
-	/**
-	 * 
-	 *
-	 * @var bool
-	 */
-	var $useCdn = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $swfUrlVersion = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $updatedAt = null;
-
-	/**
-	 * Enter description here...
-	 *
-	 * @var KalturaUiConfCreationMode
-	 */
-	var $creationMode = null;
+	var $pageIndex = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "objType", $this->objType);
-		$this->addIfNotNull($kparams, "objTypeAsString", $this->objTypeAsString);
-		$this->addIfNotNull($kparams, "width", $this->width);
-		$this->addIfNotNull($kparams, "height", $this->height);
-		$this->addIfNotNull($kparams, "htmlParams", $this->htmlParams);
-		$this->addIfNotNull($kparams, "swfUrl", $this->swfUrl);
-		$this->addIfNotNull($kparams, "confFilePath", $this->confFilePath);
-		$this->addIfNotNull($kparams, "confFile", $this->confFile);
-		$this->addIfNotNull($kparams, "confFileFeatures", $this->confFileFeatures);
-		$this->addIfNotNull($kparams, "confVars", $this->confVars);
-		$this->addIfNotNull($kparams, "useCdn", $this->useCdn);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "swfUrlVersion", $this->swfUrlVersion);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
-		$this->addIfNotNull($kparams, "creationMode", $this->creationMode);
-		return $kparams;
-	}
 }
 
-class KalturaUiConfFilter extends KalturaObjectBase
+class KalturaPlayableEntry extends KalturaBaseEntry
 {
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $id = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $idGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $status = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtLessThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtLessThanEqual = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "idGreaterThanEqual", $this->idGreaterThanEqual);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
-		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
-		return $kparams;
-	}
-}
-
-define("KalturaPlaylistType_DYNAMIC", 10);
-define("KalturaPlaylistType_STATIC_LIST", 3);
-define("KalturaPlaylistType_EXTERNAL", 101);
-
-class KalturaPlaylist extends KalturaObjectBase
-{
-	/**
-	 * Auto generated 10 characters alphanumeric string
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $id = null;
-
-	/**
-	 * Entry name
-	 *
-	 * @var string
-	 */
-	var $name = null;
-
-	/**
-	 * Entry description
-	 *
-	 * @var string
-	 */
-	var $description = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $partnerId = null;
-
-	/**
-	 * The ID of the user who is the owner of this entry 
-	 *
-	 * @var string
-	 */
-	var $userId = null;
-
-	/**
-	 * Entry tags
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * Entry admin tags can be updated only by administrators and are not visible to the user
-	 *
-	 * @var string
-	 */
-	var $adminTags = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaEntryStatus
-	 * @readonly
-	 */
-	var $status = null;
-
-	/**
-	 * The type of the entry, this is auto filled by the derived entry object
-	 *
-	 * @var KalturaEntryType
-	 * @readonly
-	 */
-	var $type = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * Calculated rank
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $rank = null;
-
-	/**
-	 * The total (sum) of all votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $totalRank = null;
-
-	/**
-	 * Number of votes
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $votes = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $groupId = null;
-
-	/**
-	 * Can be used to store various partner related data as a string 
-	 *
-	 * @var string
-	 */
-	var $partnerData = null;
-
-	/**
-	 * Download URL for the entry
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $downloadUrl = null;
-
-	/**
-	 * License type used for this entry
-	 *
-	 * @var KalturaLicenseType
-	 */
-	var $licenseType = null;
-
-	/**
-	 * Content of the playlist - 
-	 *
-	 * @var string
-	 */
-	var $playlistContent = null;
-
-	/**
-	 * Type of playlist  
-	 *
-	 * @var KalturaPlaylistType
-	 */
-	var $playlistType = null;
-
 	/**
 	 * Number of plays
 	 *
@@ -2326,6 +614,30 @@ class KalturaPlaylist extends KalturaObjectBase
 	var $views = null;
 
 	/**
+	 * The width in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $width = null;
+
+	/**
+	 * The height in pixels
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $height = null;
+
+	/**
+	 * Thumbnail URL
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $thumbnailUrl = null;
+
+	/**
 	 * The duration in seconds
 	 *
 	 * @var int
@@ -2333,715 +645,197 @@ class KalturaPlaylist extends KalturaObjectBase
 	 */
 	var $duration = null;
 
-	/**
-	 * The version of the file
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $version = null;
 
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "userId", $this->userId);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "adminTags", $this->adminTags);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "type", $this->type);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "rank", $this->rank);
-		$this->addIfNotNull($kparams, "totalRank", $this->totalRank);
-		$this->addIfNotNull($kparams, "votes", $this->votes);
-		$this->addIfNotNull($kparams, "groupId", $this->groupId);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "downloadUrl", $this->downloadUrl);
-		$this->addIfNotNull($kparams, "licenseType", $this->licenseType);
-		$this->addIfNotNull($kparams, "playlistContent", $this->playlistContent);
-		$this->addIfNotNull($kparams, "playlistType", $this->playlistType);
-		$this->addIfNotNull($kparams, "plays", $this->plays);
-		$this->addIfNotNull($kparams, "views", $this->views);
-		$this->addIfNotNull($kparams, "duration", $this->duration);
-		$this->addIfNotNull($kparams, "version", $this->version);
-		return $kparams;
-	}
 }
 
-class KalturaPlaylistFilter extends KalturaObjectBase
+class KalturaMediaEntry extends KalturaPlayableEntry
 {
 	/**
-	 * 
+	 * The media type of the entry
+	 *
+	 * @var KalturaMediaType
+	 * @insertonly
+	 */
+	var $mediaType = null;
+
+	/**
+	 * Override the default conversion quality  
 	 *
 	 * @var string
+	 * @insertonly
 	 */
-	var $orderBy = null;
+	var $conversionQuality = null;
 
 	/**
-	 * 
+	 * The source type of the entry 
 	 *
-	 * @var int
-	 */
-	var $idGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $statusEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $nameLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsMultiLikeOr = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtLessThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtLessThanEqual = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "idGreaterThanEqual", $this->idGreaterThanEqual);
-		$this->addIfNotNull($kparams, "statusEqual", $this->statusEqual);
-		$this->addIfNotNull($kparams, "nameLike", $this->nameLike);
-		$this->addIfNotNull($kparams, "tagsMultiLikeOr", $this->tagsMultiLikeOr);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
-		return $kparams;
-	}
-}
-
-class KalturaUser extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
+	 * @var KalturaSourceType
 	 * @readonly
 	 */
-	var $id = null;
+	var $sourceType = null;
 
 	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $screenName = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $fullName = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $email = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $dateOfBirth = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $country = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $state = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $city = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $zip = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $urlList = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $picture = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $icon = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $aboutMe = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tags = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $mobileNum = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $gender = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $views = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $fans = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $entries = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $producedKshows = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $status = null;
-
-	/**
-	 * Entry creation date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * Entry update date as Unix timestamp (In seconds)
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $updatedAt = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $partnerId = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $displayInSearch = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $partnerData = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "screenName", $this->screenName);
-		$this->addIfNotNull($kparams, "fullName", $this->fullName);
-		$this->addIfNotNull($kparams, "email", $this->email);
-		$this->addIfNotNull($kparams, "dateOfBirth", $this->dateOfBirth);
-		$this->addIfNotNull($kparams, "country", $this->country);
-		$this->addIfNotNull($kparams, "state", $this->state);
-		$this->addIfNotNull($kparams, "city", $this->city);
-		$this->addIfNotNull($kparams, "zip", $this->zip);
-		$this->addIfNotNull($kparams, "urlList", $this->urlList);
-		$this->addIfNotNull($kparams, "picture", $this->picture);
-		$this->addIfNotNull($kparams, "icon", $this->icon);
-		$this->addIfNotNull($kparams, "aboutMe", $this->aboutMe);
-		$this->addIfNotNull($kparams, "tags", $this->tags);
-		$this->addIfNotNull($kparams, "mobileNum", $this->mobileNum);
-		$this->addIfNotNull($kparams, "gender", $this->gender);
-		$this->addIfNotNull($kparams, "views", $this->views);
-		$this->addIfNotNull($kparams, "fans", $this->fans);
-		$this->addIfNotNull($kparams, "entries", $this->entries);
-		$this->addIfNotNull($kparams, "producedKshows", $this->producedKshows);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "displayInSearch", $this->displayInSearch);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		return $kparams;
-	}
-}
-
-class KalturaUserFilter extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $status = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $screenNameLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $tagsLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $emailLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $countryLike = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $emailLikeRegexp = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtLessThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtLessThanEqual = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "screenNameLike", $this->screenNameLike);
-		$this->addIfNotNull($kparams, "tagsLike", $this->tagsLike);
-		$this->addIfNotNull($kparams, "emailLike", $this->emailLike);
-		$this->addIfNotNull($kparams, "countryLike", $this->countryLike);
-		$this->addIfNotNull($kparams, "emailLikeRegexp", $this->emailLikeRegexp);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
-		return $kparams;
-	}
-}
-
-define("KalturaWidgetSecurityType_NONE", 1);
-define("KalturaWidgetSecurityType_TIMEHASH", 2);
-
-class KalturaWidget extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $id = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $sourceWidgetId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $rootWidgetId = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $partnerId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $kshowId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $entryId = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $uiConfId = null;
-
-	/**
-	 * 
-	 *
-	 * @var KalturaWidgetSecurityType
-	 */
-	var $securityType = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $securityPolicy = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $createdAt = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	var $updatedAt = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $partnerData = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	var $widgetHTML = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "sourceWidgetId", $this->sourceWidgetId);
-		$this->addIfNotNull($kparams, "rootWidgetId", $this->rootWidgetId);
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "kshowId", $this->kshowId);
-		$this->addIfNotNull($kparams, "entryId", $this->entryId);
-		$this->addIfNotNull($kparams, "uiConfId", $this->uiConfId);
-		$this->addIfNotNull($kparams, "securityType", $this->securityType);
-		$this->addIfNotNull($kparams, "securityPolicy", $this->securityPolicy);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "updatedAt", $this->updatedAt);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "widgetHTML", $this->widgetHTML);
-		return $kparams;
-	}
-}
-
-class KalturaWidgetFilter extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $orderBy = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $id = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $sourceWidgetId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $rootWidgetId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $entryId = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	var $uiConfId = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $partnerData = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $createdAtLessThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtGreaterThanEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $updatedAtLessThanEqual = null;
-
-
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "orderBy", $this->orderBy);
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "sourceWidgetId", $this->sourceWidgetId);
-		$this->addIfNotNull($kparams, "rootWidgetId", $this->rootWidgetId);
-		$this->addIfNotNull($kparams, "entryId", $this->entryId);
-		$this->addIfNotNull($kparams, "uiConfId", $this->uiConfId);
-		$this->addIfNotNull($kparams, "partnerData", $this->partnerData);
-		$this->addIfNotNull($kparams, "createdAtGreaterThanEqual", $this->createdAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "createdAtLessThanEqual", $this->createdAtLessThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtGreaterThanEqual", $this->updatedAtGreaterThanEqual);
-		$this->addIfNotNull($kparams, "updatedAtLessThanEqual", $this->updatedAtLessThanEqual);
-		return $kparams;
-	}
-}
-
-class KalturaSearch extends KalturaObjectBase
-{
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	var $keyWords = null;
-
-	/**
-	 * 
+	 * The search provider type used to import this entry
 	 *
 	 * @var KalturaSearchProviderType
+	 * @readonly
 	 */
-	var $searchSource = null;
+	var $searchProviderType = null;
 
+	/**
+	 * The ID of the media in the importing site
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $searchProviderId = null;
+
+	/**
+	 * The user name used for credits
+	 *
+	 * @var string
+	 */
+	var $creditUserName = null;
+
+	/**
+	 * The URL for credits
+	 *
+	 * @var string
+	 */
+	var $creditUrl = null;
+
+	/**
+	 * The media date extracted from EXIF data (For images) as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $mediaDate = null;
+
+	/**
+	 * The URL used for playback. This is not the download URL.
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $dataUrl = null;
+
+
+}
+
+class KalturaMediaEntryFilter extends KalturaBaseEntryFilter
+{
 	/**
 	 * 
 	 *
 	 * @var KalturaMediaType
 	 */
-	var $mediaType = null;
+	var $mediaTypeEqual = null;
 
 	/**
-	 * Use this field to pass dynamic data for searching
-	 * For example - if you set this field to "mymovies_$partner_id"
-	 * The $partner_id will be automatically replcaed with your real partner Id
+	 * 
 	 *
 	 * @var string
 	 */
-	var $extraData = null;
+	var $mediaTypeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $mediaDateGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $mediaDateLessThanEqual = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "keyWords", $this->keyWords);
-		$this->addIfNotNull($kparams, "searchSource", $this->searchSource);
-		$this->addIfNotNull($kparams, "mediaType", $this->mediaType);
-		$this->addIfNotNull($kparams, "extraData", $this->extraData);
-		return $kparams;
-	}
+}
+
+class KalturaMediaListResponse extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaEntries
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
+
+
+}
+
+class KalturaMixEntry extends KalturaPlayableEntry
+{
+	/**
+	 * Indicates whether the user has submited a real thumbnail to the mix (Not the one that was generated automaticaly)
+	 *
+	 * @var bool
+	 * @readonly
+	 */
+	var $hasRealThumbnail = null;
+
+	/**
+	 * The editor type used to edit the metadata
+	 *
+	 * @var KalturaEditorType
+	 */
+	var $editorType = null;
+
+	/**
+	 * The xml data of the mix
+	 *
+	 * @var string
+	 */
+	var $dataContent = null;
+
+	/**
+	 * The version of the mix
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $version = null;
+
+
+}
+
+class KalturaMixEntryFilter extends KalturaBaseEntryFilter
+{
+
+}
+
+class KalturaMixListResponse extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var KalturaMixEntries
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
+
+
 }
 
 class KalturaPartner extends KalturaObjectBase
@@ -3247,39 +1041,6 @@ class KalturaPartner extends KalturaObjectBase
 	var $cmsPassword = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "id", $this->id);
-		$this->addIfNotNull($kparams, "name", $this->name);
-		$this->addIfNotNull($kparams, "website", $this->website);
-		$this->addIfNotNull($kparams, "notificationUrl", $this->notificationUrl);
-		$this->addIfNotNull($kparams, "appearInSearch", $this->appearInSearch);
-		$this->addIfNotNull($kparams, "createdAt", $this->createdAt);
-		$this->addIfNotNull($kparams, "adminName", $this->adminName);
-		$this->addIfNotNull($kparams, "adminEmail", $this->adminEmail);
-		$this->addIfNotNull($kparams, "description", $this->description);
-		$this->addIfNotNull($kparams, "commercialUse", $this->commercialUse);
-		$this->addIfNotNull($kparams, "landingPage", $this->landingPage);
-		$this->addIfNotNull($kparams, "userLandingPage", $this->userLandingPage);
-		$this->addIfNotNull($kparams, "contentCategories", $this->contentCategories);
-		$this->addIfNotNull($kparams, "type", $this->type);
-		$this->addIfNotNull($kparams, "phone", $this->phone);
-		$this->addIfNotNull($kparams, "describeYourself", $this->describeYourself);
-		$this->addIfNotNull($kparams, "adultContent", $this->adultContent);
-		$this->addIfNotNull($kparams, "defConversionProfileType", $this->defConversionProfileType);
-		$this->addIfNotNull($kparams, "notify", $this->notify);
-		$this->addIfNotNull($kparams, "status", $this->status);
-		$this->addIfNotNull($kparams, "allowQuickEdit", $this->allowQuickEdit);
-		$this->addIfNotNull($kparams, "mergeEntryLists", $this->mergeEntryLists);
-		$this->addIfNotNull($kparams, "notificationsConfig", $this->notificationsConfig);
-		$this->addIfNotNull($kparams, "maxUploadSize", $this->maxUploadSize);
-		$this->addIfNotNull($kparams, "partnerPackage", $this->partnerPackage);
-		$this->addIfNotNull($kparams, "secret", $this->secret);
-		$this->addIfNotNull($kparams, "adminSecret", $this->adminSecret);
-		$this->addIfNotNull($kparams, "cmsPassword", $this->cmsPassword);
-		return $kparams;
-	}
 }
 
 class KalturaPartnerUsage extends KalturaObjectBase
@@ -3333,20 +1094,231 @@ class KalturaPartnerUsage extends KalturaObjectBase
 	var $usageGraph = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "hostingGB", $this->hostingGB);
-		$this->addIfNotNull($kparams, "Percent", $this->Percent);
-		$this->addIfNotNull($kparams, "packageBW", $this->packageBW);
-		$this->addIfNotNull($kparams, "usageGB", $this->usageGB);
-		$this->addIfNotNull($kparams, "reachedLimitDate", $this->reachedLimitDate);
-		$this->addIfNotNull($kparams, "usageGraph", $this->usageGraph);
-		return $kparams;
-	}
 }
 
-class KalturaAdminUser extends KalturaObjectBase
+class KalturaPlaylist extends KalturaBaseEntry
+{
+	/**
+	 * Content of the playlist - 
+	 *
+	 * @var string
+	 */
+	var $playlistContent = null;
+
+	/**
+	 * Type of playlist  
+	 *
+	 * @var KalturaPlaylistType
+	 */
+	var $playlistType = null;
+
+	/**
+	 * Number of plays
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $plays = null;
+
+	/**
+	 * Number of views
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * The duration in seconds
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $duration = null;
+
+	/**
+	 * The version of the file
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $version = null;
+
+
+}
+
+class KalturaPlaylistFilter extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $idGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $statusEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+}
+
+class KalturaSearch extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $keyWords = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaSearchProviderType
+	 */
+	var $searchSource = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaMediaType
+	 */
+	var $mediaType = null;
+
+	/**
+	 * Use this field to pass dynamic data for searching
+	 * For example - if you set this field to "mymovies_$partner_id"
+	 * The $partner_id will be automatically replcaed with your real partner Id
+	 *
+	 * @var string
+	 */
+	var $extraData = null;
+
+
+}
+
+class KalturaSearchResult extends KalturaSearch
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $title = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $thumbUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $url = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $sourceLink = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $credit = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaLicenseType
+	 */
+	var $licenseType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $flashPlaybackType = null;
+
+
+}
+
+class KalturaUiConf extends KalturaObjectBase
 {
 	/**
 	 * 
@@ -3354,7 +1326,36 @@ class KalturaAdminUser extends KalturaObjectBase
 	 * @var string
 	 * @readonly
 	 */
-	var $password = null;
+	var $id = null;
+
+	/**
+	 * Name of the uiConf, this is not a primary key
+	 *
+	 * @var string
+	 */
+	var $name = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $description = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaUiConfObjType
+	 */
+	var $objType = null;
 
 	/**
 	 * 
@@ -3362,7 +1363,189 @@ class KalturaAdminUser extends KalturaObjectBase
 	 * @var string
 	 * @readonly
 	 */
-	var $email = null;
+	var $objTypeAsString = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $width = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $height = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $htmlParams = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $swfUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $confFilePath = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confFile = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confFileFeatures = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $confVars = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	var $useCdn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $swfUrlVersion = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * Enter description here...
+	 *
+	 * @var KalturaUiConfCreationMode
+	 */
+	var $creationMode = null;
+
+
+}
+
+class KalturaUiConfFilter extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $idGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $nameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+}
+
+class KalturaUser extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $id = null;
 
 	/**
 	 * 
@@ -3371,19 +1554,160 @@ class KalturaAdminUser extends KalturaObjectBase
 	 */
 	var $screenName = null;
 
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $fullName = null;
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "password", $this->password);
-		$this->addIfNotNull($kparams, "email", $this->email);
-		$this->addIfNotNull($kparams, "screenName", $this->screenName);
-		return $kparams;
-	}
-}
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $email = null;
 
-class KalturaAdminLoginResponse extends KalturaObjectBase
-{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $dateOfBirth = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $country = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $state = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $city = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $zip = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $urlList = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $picture = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $icon = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $aboutMe = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tags = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $mobileNum = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $gender = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $views = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $fans = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $entries = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $producedKshows = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * Entry creation date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * Entry update date as Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
 	/**
 	 * 
 	 *
@@ -3396,9 +1720,110 @@ class KalturaAdminLoginResponse extends KalturaObjectBase
 	 * 
 	 *
 	 * @var int
+	 */
+	var $displayInSearch = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $partnerData = null;
+
+
+}
+
+class KalturaUserFilter extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $screenNameLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $tagsLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $emailLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $countryLike = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $emailLikeRegexp = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
+
+
+}
+
+class KalturaWidget extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
 	 * @readonly
 	 */
-	var $subpId = null;
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $sourceWidgetId = null;
 
 	/**
 	 * 
@@ -3406,7 +1831,73 @@ class KalturaAdminLoginResponse extends KalturaObjectBase
 	 * @var string
 	 * @readonly
 	 */
-	var $ks = null;
+	var $rootWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $kshowId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $entryId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $uiConfId = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaWidgetSecurityType
+	 */
+	var $securityType = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $securityPolicy = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
 
 	/**
 	 * 
@@ -3414,32 +1905,90 @@ class KalturaAdminLoginResponse extends KalturaObjectBase
 	 * @var string
 	 * @readonly
 	 */
-	var $uid = null;
+	var $widgetHTML = null;
+
+
+}
+
+class KalturaWidgetFilter extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $id = null;
 
 	/**
 	 * 
 	 *
-	 * @var KalturaAdminUser
-	 * @readonly
+	 * @var string
 	 */
-	var $adminUser;
+	var $sourceWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $rootWidgetId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $entryId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $uiConfId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $partnerData = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $createdAtLessThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtGreaterThanEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	var $updatedAtLessThanEqual = null;
 
 
-	function toParams()
-	{
-		$kparams = array();
-		$this->addIfNotNull($kparams, "partnerId", $this->partnerId);
-		$this->addIfNotNull($kparams, "subpId", $this->subpId);
-		$this->addIfNotNull($kparams, "ks", $this->ks);
-		$this->addIfNotNull($kparams, "uid", $this->uid);
-		return $kparams;
-	}
 }
 
 
 class KalturaMediaService extends KalturaServiceBase
 {
-	function KalturaMediaService($client)
+	function KalturaMediaService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -3547,7 +2096,7 @@ class KalturaMediaService extends KalturaServiceBase
 
 class KalturaMixingService extends KalturaServiceBase
 {
-	function KalturaMixingService($client)
+	function KalturaMixingService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -3642,9 +2191,21 @@ class KalturaMixingService extends KalturaServiceBase
 
 class KalturaBaseEntryService extends KalturaServiceBase
 {
-	function KalturaBaseEntryService($client)
+	function KalturaBaseEntryService(&$client)
 	{
 		parent::KalturaServiceBase($client);
+	}
+
+	function addFromUploadedFile($entry, $uploadTokenId, $type = -1)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entry", $entry->toParams());
+		$this->client->addParam($kparams, "uploadTokenId", $uploadTokenId);
+		$this->client->addParam($kparams, "type", $type);
+		$resultObject = $this->client->callService("baseentry", "addFromUploadedFile", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaBaseEntry");
+		return $resultObject;
 	}
 
 	function get($entryId)
@@ -3683,18 +2244,18 @@ class KalturaBaseEntryService extends KalturaServiceBase
 
 class KalturaSessionService extends KalturaServiceBase
 {
-	function KalturaSessionService($client)
+	function KalturaSessionService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
 
-	function start($partnerId, $secret, $userId, $type = 0, $expiry = 86400, $privileges = null)
+	function start($secret, $userId, $type = 0, $partnerId = -1, $expiry = 86400, $privileges = null)
 	{
 		$kparams = array();
-		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "secret", $secret);
 		$this->client->addParam($kparams, "userId", $userId);
 		$this->client->addParam($kparams, "type", $type);
+		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "expiry", $expiry);
 		$this->client->addParam($kparams, "privileges", $privileges);
 		$resultObject = $this->client->callService("session", "start", $kparams);
@@ -3717,7 +2278,7 @@ class KalturaSessionService extends KalturaServiceBase
 
 class KalturaUiConfService extends KalturaServiceBase
 {
-	function KalturaUiConfService($client)
+	function KalturaUiConfService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -3789,7 +2350,7 @@ class KalturaUiConfService extends KalturaServiceBase
 
 class KalturaPlaylistService extends KalturaServiceBase
 {
-	function KalturaPlaylistService($client)
+	function KalturaPlaylistService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -3887,7 +2448,7 @@ class KalturaPlaylistService extends KalturaServiceBase
 
 class KalturaUserService extends KalturaServiceBase
 {
-	function KalturaUserService($client)
+	function KalturaUserService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -3961,7 +2522,7 @@ class KalturaUserService extends KalturaServiceBase
 
 class KalturaWidgetService extends KalturaServiceBase
 {
-	function KalturaWidgetService($client)
+	function KalturaWidgetService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -4023,15 +2584,14 @@ class KalturaWidgetService extends KalturaServiceBase
 
 class KalturaSearchService extends KalturaServiceBase
 {
-	function KalturaSearchService($client)
+	function KalturaSearchService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
 
-	function search($partnerId, $search, $pager = null)
+	function search($search, $pager = null)
 	{
 		$kparams = array();
-		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "search", $search->toParams());
 		if ($pager !== null)
 			$this->client->addParam($kparams, "pager", $pager->toParams());
@@ -4041,24 +2601,22 @@ class KalturaSearchService extends KalturaServiceBase
 		return $resultObject;
 	}
 
-	function getmediainfo($partnerId, $searchResult)
+	function getMediaInfo($searchResult)
 	{
 		$kparams = array();
-		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "searchResult", $searchResult->toParams());
-		$resultObject = $this->client->callService("search", "getmediainfo", $kparams);
+		$resultObject = $this->client->callService("search", "getMediaInfo", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaSearchResult");
 		return $resultObject;
 	}
 
-	function searchurl($partnerId, $mediaType, $url)
+	function searchUrl($mediaType, $url)
 	{
 		$kparams = array();
-		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "mediaType", $mediaType);
 		$this->client->addParam($kparams, "url", $url);
-		$resultObject = $this->client->callService("search", "searchurl", $kparams);
+		$resultObject = $this->client->callService("search", "searchUrl", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaSearchResult");
 		return $resultObject;
@@ -4067,7 +2625,7 @@ class KalturaSearchService extends KalturaServiceBase
 
 class KalturaPartnerService extends KalturaServiceBase
 {
-	function KalturaPartnerService($client)
+	function KalturaPartnerService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -4130,7 +2688,7 @@ class KalturaPartnerService extends KalturaServiceBase
 
 class KalturaAdminuserService extends KalturaServiceBase
 {
-	function KalturaAdminuserService($client)
+	function KalturaAdminuserService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -4172,7 +2730,7 @@ class KalturaAdminuserService extends KalturaServiceBase
 
 class KalturaSystemService extends KalturaServiceBase
 {
-	function KalturaSystemService($client)
+	function KalturaSystemService(&$client)
 	{
 		parent::KalturaServiceBase($client);
 	}
@@ -4183,6 +2741,25 @@ class KalturaSystemService extends KalturaServiceBase
 		$resultObject = $this->client->callService("system", "ping", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "bool");
+		return $resultObject;
+	}
+}
+
+class KalturaNotificationService extends KalturaServiceBase
+{
+	function KalturaNotificationService(&$client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function getClientNotification($entryId, $type)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "type", $type);
+		$resultObject = $this->client->callService("notification", "getClientNotification", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaClientNotification");
 		return $resultObject;
 	}
 }
@@ -4277,21 +2854,29 @@ class KalturaClient extends KalturaClientBase
 	 */
 	var $system = null;
 
+	/**
+	 * Notification Service
+	 *
+	 * @var KalturaNotificationService
+	 */
+	var $notification = null;
+
 
 	function KalturaClient($config)
 	{
-		parent::KalturaClientBase($config);
-		$this->media = new KalturaMediaService(&$this);
-		$this->mixing = new KalturaMixingService(&$this);
-		$this->baseEntry = new KalturaBaseEntryService(&$this);
-		$this->session = new KalturaSessionService(&$this);
-		$this->uiConf = new KalturaUiConfService(&$this);
-		$this->playlist = new KalturaPlaylistService(&$this);
-		$this->user = new KalturaUserService(&$this);
-		$this->widget = new KalturaWidgetService(&$this);
-		$this->search = new KalturaSearchService(&$this);
-		$this->partner = new KalturaPartnerService(&$this);
-		$this->adminuser = new KalturaAdminuserService(&$this);
-		$this->system = new KalturaSystemService(&$this);
+		parent::KalturaClientBase(/*KalturaConfiguration*/ $config);
+		$this->media = new KalturaMediaService($this);
+		$this->mixing = new KalturaMixingService($this);
+		$this->baseEntry = new KalturaBaseEntryService($this);
+		$this->session = new KalturaSessionService($this);
+		$this->uiConf = new KalturaUiConfService($this);
+		$this->playlist = new KalturaPlaylistService($this);
+		$this->user = new KalturaUserService($this);
+		$this->widget = new KalturaWidgetService($this);
+		$this->search = new KalturaSearchService($this);
+		$this->partner = new KalturaPartnerService($this);
+		$this->adminuser = new KalturaAdminuserService($this);
+		$this->system = new KalturaSystemService($this);
+		$this->notification = new KalturaNotificationService($this);
 	}
 }
