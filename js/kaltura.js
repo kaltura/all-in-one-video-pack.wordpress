@@ -307,10 +307,10 @@ Kaltura = {
 		else if (type == "posts")
 			pageToLoad = "ajax_get_video_posts.php?nocache="+Math.ceil(10000*Math.random());
 		else
-			return
+			return;
 		
 		if (page)
-			pageToLoad = pageToLoad + "?page=" + page;
+			pageToLoad = pageToLoad + "&page=" + page;
 			
 		menu.find("a").removeClass("selected"); // unselect all
 		jQuery(sender).addClass("selected"); // select the current
