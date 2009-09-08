@@ -230,6 +230,7 @@ class KalturaPartner
 	var $adminEmail;
 	var $description;
 	var $commercialUse;
+	var $type;
 }
 
 define("KalturaEntryMediaType_ANY","0");
@@ -1015,6 +1016,7 @@ class KalturaClient extends KalturaClientBase
 		$this->addOptionalParam($params, "partner_adminEmail", $partner->adminEmail);
 		$this->addOptionalParam($params, "partner_description", $partner->description);
 		$this->addOptionalParam($params, "partner_commercialUse", $partner->commercialUse);
+		$this->addOptionalParam($params, "partner_type", $partner->type);
 		$this->addOptionalParam($params, "cms_password", $cmsPassword);
 
 		$result = $this->hit("registerpartner", $kalturaSessionUser, $params);

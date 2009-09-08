@@ -19,6 +19,7 @@
 			$partner->adminEmail = $adminEmail;
 			global $wp_version;
 			$partner->description = "Wordpress all-in-one plugin|".$wp_version;
+			$partner->type = "101";
 	
 			$sessionUser = kalturaGetSessionUser();
 			$config = kalturaGetServiceConfiguration();
