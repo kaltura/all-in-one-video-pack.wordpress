@@ -1,4 +1,13 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <div class="<?php echo ($viewData["isLibrary"]) ? "wrap kalturaWrapFix" : "kalturaTab"?>">
+	<?php if ($viewData["isLibrary"]): ?>
+	<h2>All in One Video</h2>
+	<ul class="subsubsub">
+		<li><a class="current" href="<?php echo add_query_arg(array('tab'=>'library')); ?>">Library</a> |</li>
+		<li><a href="<?php echo add_query_arg(array('tab'=>'video-posts')); ?>">Video Posts</a></li>
+	</ul>
+	<br clear="all" />
+	<?php endif; ?>
 	<?php if (!count($viewData["result"]->objects)): ?>
 		<div class="updated kalturaUpdated">No interactive videos created yet</div>
 	<?php else: ?>

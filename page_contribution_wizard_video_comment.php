@@ -5,6 +5,8 @@
 	require_once('lib/kaltura_helpers.php');
 	require_once("lib/kaltura_model.php");
 	
+	KalturaHelpers::force200Header();
+	
 	function kalturaValidateVideoComment() {
 		$js_error = "";
 		

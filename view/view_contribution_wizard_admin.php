@@ -1,3 +1,4 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <script type="text/javascript">
 
     <?php if ($viewData["entryId"]): ?>

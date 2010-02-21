@@ -194,6 +194,11 @@ function kaltura_library_page()
 	require_once("lib/kaltura_library_controller.php");
 }
 
+function kaltura_video_library_video_posts_page()
+{
+	require_once("lib/kaltura_library_controller.php");
+}
+
 function kaltura_library_page_load()
 {
 	if (KalturaHelpers::compareWPVersion("2.6", ">="))
@@ -217,7 +222,7 @@ function kaltura_add_admin_menu()
 {
 	add_options_page('All in One Video', 'All in One Video', 8, 'interactive_video', 'kaltura_admin_page');
 	
-	$args = array('All in One Video Library', 'All in One Video Library', 8, 'interactive_video_library', 'kaltura_library_page');
+	$args = array('All in One Video', 'All in One Video', 8, 'interactive_video_library', 'kaltura_library_page');
 	// because of the change in wordpress 2.7 menu structure, we move the library page under "Media" tab
 	if (KalturaHelpers::compareWPVersion("2.7", ">=")) 
 		call_user_func_array("add_media_page", $args);
@@ -433,7 +438,13 @@ function kaltura_shortcode($attrs)
 	// for wordpress 2.5, in wordpress 2.6+ shortcodes are striped in rss feedds
 	if (is_feed())
 		return "";
-		
+
+	// prevent xss
+	foreach($attrs as $key => $value)
+	{
+		$attrs[$key] = js_escape($value);
+	}
+	
 	// get the embed options from the attributes
 	$embedOptions = _kaltura_get_embed_options($attrs);
 
@@ -444,7 +455,7 @@ function kaltura_shortcode($attrs)
 	$divId 			= "kaltura_wrapper_" . $wid;
 	$thumbnailDivId = "kaltura_thumbnail_" . $wid;
 	$playerId 		= "kaltura_player_" . $wid;
-	
+		
 	$link = '';
 	$link .= '<a href="http://corp.kaltura.com/technology/video_management">video management</a>, ';
 	$link .= '<a href="http://corp.kaltura.com/solutions/video_solution">video solution</a>, ';
@@ -498,10 +509,14 @@ function kaltura_shortcode($attrs)
 					kaltura_swf.addParam("allowFullScreen", "true");
 					kaltura_swf.addParam("allowNetworking", "all");
 					kaltura_swf.write("' . $divId . '");
+				';
+		if (KalturaHelpers::compareWPVersion("2.6", ">=")) {
+			$html .= '
 					jQuery("#'.$divId.'").append("'.str_replace("\"", "\\\"", $powerdByBox).'"); 
-				</script>
-		';
-		//                                              ^ escape quotes for javascript ^
+				';
+			//                                              ^ escape quotes for javascript ^
+		}
+		$html .= '</script>'; 
 	}
 		
 	return $html;
@@ -598,10 +613,17 @@ function _kaltura_get_embed_options($params)
 	$postUrl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 
 	$flashVarsStr =  "layoutId=" . $layoutId;
+
 	
 	$wid = $params["wid"];
 	$swfUrl = KalturaHelpers::getSwfUrlForWidget($wid);
 
+	if (isset($params["uiconfid"]))
+		$swfUrl .= "/uiconf_id/".$params["uiconfid"];
+		
+	if (isset($params["entryid"]))
+		$swfUrl .= "/entry_id/".$params["entryid"];
+		
 	return array(
 		"flashVars" => $flashVarsStr,
 		"height" => $params["height"],
@@ -640,10 +662,13 @@ function _kaltura_find_comment_widgets($args)
 		return;
 	
 	global $kaltura_comment_id;
+	$comment = get_comment($kaltura_comment_id);
+	
 	// add new widget
 	$widget = array();
 	$widget["id"] = $wid;
 	$widget["type"] = KALTURA_WIDGET_TYPE_COMMENT;
+	$widget["post_id"] = $comment->comment_post_ID;
 	$widget["comment_id"] = $kaltura_comment_id;
 	$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
 	

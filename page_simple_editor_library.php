@@ -6,22 +6,25 @@
 	require_once('settings.php');
 	require_once('lib/kaltura_model.php');  
 	require_once('lib/kaltura_helpers.php');  
-  
+
+	KalturaHelpers::force200Header();
+	
+	$closeLink = KalturaHelpers::getCloseLinkForModals();
+	
 	if (!KalturaHelpers::userCanEdit())
 	{
-		wp_die(__('You do not have sufficient permissions to access this page.'));
+		wp_die(__('You do not have sufficient permissions to access this page.<br/><br/>'.$closeLink));
 	}
 	
 	$entryId = @$_GET['entryId'];
-	
 	if (!$entryId)
-		wp_die(__('The video is missing or invalid.'));
+		wp_die(__('The video is missing or invalid.<br/><br/>'.$closeLink));
 
 	$kmodel = KalturaModel::getInstance();
 	
 	$ks = $kmodel->getClientSideSession("edit:*");
 	if (!$ks)
-		wp_die(__('Failed to start new session.'));
+		wp_die(__('Failed to start new session.<br/><br/>'.$closeLink));
 	
 	$viewData["swfUrl"] 	= KalturaHelpers::getSimpleEditorUrl(KALTURA_KSE_UICONF);
 	$viewData["flashVars"] 	= KalturaHelpers::getSimpleEditorFlashVars($ks, $entryId);

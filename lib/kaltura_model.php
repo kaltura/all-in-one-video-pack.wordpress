@@ -37,18 +37,31 @@ class KalturaModel
     {
         $userId = KalturaHelpers::getLoggedUserId();
         $partnerId = get_option("kaltura_partner_id");
-        $secret = get_option("kaltura_admin_secret");
-		return $this->client->session->start($secret, $userId, KalturaSessionType_ADMIN, $partnerId, 86400, $privileges);        
+		return $this->createKS($partnerId, $userId, KalturaSessionType_ADMIN, $privileges);        
     }
     
-    function getClientSideSession($privileges = "")
+    function getClientSideSession($privileges = "", $expiry = 86400)
     {
         $userId = KalturaHelpers::getLoggedUserId();
         $partnerId = get_option("kaltura_partner_id");
-        $secret = get_option("kaltura_secret");
-		return $this->client->session->start($secret, $userId, KalturaSessionType_USER, $partnerId, 86400, $privileges);        
+        return $this->createKS($partnerId, $userId, KalturaSessionType_USER, $privileges, $expiry);
     }
     
+	function createKS($partnerId, $userId, $sessionType = KalturaSessionType_USER, $privileges = "", $expiry = 86400)
+	{
+		$rand = rand(0, 32000);
+		$rand = microtime(true);
+		$expiry = time() + $expiry;
+		$fields = array($partnerId, '', $expiry, $sessionType, $rand, $userId, $privileges);
+		$str = implode(";", $fields);
+		
+		$salt = get_option("kaltura_admin_secret");
+		$hashed_str = sha1($salt . $str) . "|" . $str;
+		$decoded_str = base64_encode($hashed_str);
+		
+		return $decoded_str;
+	}
+   
     function getSecrets($partnerId, $email, $password)
     {
         return $this->client->partner->getSecrets($partnerId, $email, $password);
@@ -100,13 +113,39 @@ class KalturaModel
 			$this->startSession();
 			
 		$filter = new KalturaBaseEntryFilter();
-		$filter->orderBy = "-createdAt";
+		$filter->orderBy = KalturaBaseEntryOrderBy_CREATED_AT_DESC;
+		$filter->typeIn = implode(",", array(KalturaEntryType_MEDIA_CLIP, KalturaEntryType_MIX));
 		
 		$pager = new KalturaFilterPager();
 		$pager->pageSize = $pageSize;
 		$pager->pageIndex = $page;
 		
 		return $this->client->baseEntry->listAction($filter, $pager);
+	}
+	
+	function listAllEntriesByCategory($category)
+	{
+		if (!$this->session)
+			$this->startSession();
+			
+		$filter = new KalturaBaseEntryFilter();
+		$filter->orderBy = KalturaBaseEntryOrderBy_CREATED_AT_DESC;
+		$filter->typeIn = implode(",", array(KalturaEntryType_MEDIA_CLIP, KalturaEntryType_MIX));
+		$filter->categoriesMatchOr = $category;
+		
+		$pager = new KalturaFilterPager();
+		$pager->pageSize = 500;
+		$pager->pageIndex = 1;
+		$entries = array();
+		while(true)
+		{
+			$result = $this->client->baseEntry->listAction($filter, $pager);
+			$entries = array_merge($entries, $result->objects);
+			if (!count($result->objects) || count($result->objects) == $result->totalCount)
+				break;
+			$pager->pageIndex++;
+		}
+		return $entries;
 	}
 
 	function deleteEntry($mediaEntryId)
@@ -160,6 +199,25 @@ class KalturaModel
 		$pager->pageIndex = $page;
 		
 		return $this->client->baseEntry->listAction($filter, $pager);
+	}
+	
+	function listCategoriesOrderByName()
+	{
+		if (!$this->session)
+			$this->startSession();
+		$filter = new KalturaCategoryFilter();
+		$filter->orderBy = KalturaCategoryOrderBy_FULL_NAME_ASC;
+		$filter->depthEqual = 0; // for now, support only top level
+		return $this->client->category->listAction($filter);
+	}
+	
+	function listUiConfs()
+	{
+		if (!$this->session)
+			$this->startSession();
+		$filter = new KalturaUiConfFilter();
+		$filter->orderBy = KalturaUiConfOrderBy_CREATED_AT_DESC;
+		return $this->client->uiConf->listAction($filter);
 	}
 }
 ?>

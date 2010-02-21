@@ -58,6 +58,7 @@ class KalturaClientBase
 	        $this->addParam($params, "partnerId", $this->config->partnerId);
     
 		$this->addParam($params, "format", $this->config->format);
+		$this->addParam($params, "clientTag", $this->config->clientTag);
 		$this->addParam($params, "ks", $this->ks);
 		
 		$url = $this->config->serviceUrl."/api_v3/index.php?service=".$service."&action=".$action;
@@ -99,7 +100,7 @@ class KalturaClientBase
 			{
 				$result = @unserialize($postResult);
 
-				if ($result === false && serialize(false) !== $postResult)
+				if ($result === false && serialize(false) !== $postResult) 
 				{
 					$this->setError(array("code" => 0, "message" => "failed to serialize server result"));
 				}
@@ -140,12 +141,15 @@ class KalturaClientBase
 
 	function doCurl($url, $params)
 	{
+		$t = microtime(true);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_USERAGENT, '');
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10 );
+		if (defined('CURLOPT_ENCODING'))
+			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate'); 
 
 		$result = curl_exec($ch);
 		$curlError = curl_error($ch);
@@ -325,9 +329,10 @@ class KalturaConfiguration
 {
 	var $logger;
 
-	var $serviceUrl    = "http://www.kaltura.com/api_v3/";
+	var $serviceUrl    = "http://www.kaltura.com/";
 	var $partnerId     = null;
 	var $format        = 3;
+	var $clientTag 	   = "php4";
 	
 	/**
 	 * Constructs new Kaltura configuration object

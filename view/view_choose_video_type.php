@@ -1,3 +1,4 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <div class="chooseVideoType">
 <center>
     <h3>Do you want to allow users to upload to or edit your video?</h3>

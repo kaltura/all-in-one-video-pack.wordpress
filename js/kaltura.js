@@ -182,7 +182,7 @@ Kaltura = {
 	},
 	
 	openCommentCW: function (pluginUrl) {
-		var postId = jQuery('[@name=comment_post_ID]').val();
+		var postId = jQuery('[name=comment_post_ID]').val();
 		var author = jQuery('#author').val();
 		var email  = jQuery('#email').val();
 		
@@ -298,7 +298,7 @@ Kaltura = {
 	
 	switchSidebarTab: function (sender, type, page) {
 		var menu = jQuery("#kaltura-sidebar-menu");
-		if  (menu.find("a[@class=selected]").get(0) == sender)
+		if  (menu.find("a[class=selected]").get(0) == sender)
 			return; // so we won't load the selected tab
 		
 		var pageToLoad = "";

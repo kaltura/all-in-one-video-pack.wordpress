@@ -53,10 +53,10 @@ class KalturaWPModel
 	{
 		// set the defaults
 		if (!@$widget["post_id"])
-			$widget["post_id"] = -1;
+			$widget["post_id"] = 0;
 			
 		if (!@$widget["comment_id"])
-			$widget["comment_id"] = -1;
+			$widget["comment_id"] = 0;
 		
 		if (!array_key_exists("add_permissions", $widget)) // beacuse 0 is counted as false
 			$widget["add_permissions"] = -1;
@@ -183,6 +183,39 @@ class KalturaWPModel
 			KALTURA_WIDGET_STATUS_PUBLISHED);
 
 		return $wpdb->get_var($query);
+	}
+	
+	function isCategoryExists($name)
+	{
+		$categories = get_categories('get=all');
+		foreach($categories as $category)
+		{
+			if (strtolower($category->name) == strtolower($name))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	function getCategoryByName($name)
+	{
+		$categories = get_categories('get=all');
+		foreach($categories as $category)
+		{
+			if (strtolower($category->name) == strtolower($name))
+				return $category;
+		}
+		return null;
+	}
+	
+	function getPostByTitle($title) {
+		$post_arr = sanitize_post(array("post_title" => $title), 'db');
+		$post_arr = $post_arr["post_title"];
+		global $wpdb;
+		$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type='post'", $title ));
+		if ($post)
+			return get_post($post, OBJECT);
+		return null;
 	}
 }
 ?>

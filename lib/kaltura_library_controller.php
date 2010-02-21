@@ -96,29 +96,125 @@
 					require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php"); 
 				}
 				break;
-			default: // "browse"
-				$kmodel = KalturaModel::getInstance();
-
-				if ($isLibrary)
-					$pageSize = 20;
+			default: // browse library & video posts 
+				if (isset($_GET["tab"]) && $_GET["tab"] == "video-posts")
+				{
+					if (KalturaHelpers::compareWPVersion('2.7', '<'))
+						$page = "edit.php";
+					else
+						$page = "upload.php";
+					$kmodel = KalturaModel::getInstance();
+					$screen = (isset($_GET["screen"]) ? (int)$_GET["screen"] : 1);
+					if ($screen == 3)
+					{
+						$entries = $_POST["entries"];
+						$createdPosts = 0;
+						$uiConfId = $_POST["uiconf_id"];
+						$width = $_POST["width"];
+						$height = $_POST["height"];
+						foreach($entries as $entryCat)
+						{
+							$arr = unserialize(base64_decode($entryCat));
+							$entryId = $arr[0];
+							$entryName = $arr[1];
+							$categoryName = $arr[2];
+							
+							// do we need to create new category?
+							if (!KalturaWPModel::isCategoryExists($categoryName))
+							{
+								$newCat = array("cat_name" => $categoryName);
+								wp_insert_category($newCat);
+								wp_cache_set('last_changed', microtime(true), 'terms'); // otherwise the category won't return when retrieving it later in the code
+							}
+							
+							$category = KalturaWPModel::getCategoryByName($categoryName);
+							
+							$post = KalturaWPModel::getPostByTitle($entryName);
+							if (!$post)
+							{
+								// create the post for the video
+								$partnerId = get_option("kaltura_partner_id");
+								$shortCode = "[kaltura-widget wid=\"_$partnerId\" uiConfId=\"$uiConfId\" entryId=\"$entryId\" width=\"$width\" height=\"$height\" /]";
+								$newPost = array(
+									"post_title" => $entryName,
+									"post_content" => $shortCode,
+								);
+								$postId = wp_insert_post($newPost);
+								if ($postId)
+									$createdPosts++;
+							}
+							else
+							{
+								$postId = $post->ID;
+							}
+							// link the post to the category
+							$categories = wp_get_post_categories($postId);
+							$categories[] =  $category->cat_ID;
+							wp_set_post_categories($postId, $categories);
+						}
+						$viewData["numOfCreatedPosts"] = $createdPosts;
+						require_once(dirname(__FILE__) . "/../view/view_video_posts_screen_3.php");
+					}
+					elseif ($screen == 2)
+					{
+						$categories = array();
+						$hasEntries = false;
+						foreach($_POST["categories"] as $category)
+						{
+							$entries = $kmodel->listAllEntriesByCategory($category);
+							
+							// remove the entries that have posts
+							$newEntries = array();
+							for($i = 0; $i < count($entries); $i++)
+							{
+								$entry = $entries[$i];
+								if (!KalturaWPModel::getPostByTitle($entry->name))
+								{
+									$hasEntries = true;
+									$newEntries[] = $entry;
+								}
+							} 
+							$categories[$category] = $newEntries;
+						}
+						
+						$viewData["uiConfs"] = $kmodel->listUiConfs();
+						$viewData["categories"] = $categories;
+						$viewData["hasEntries"] = $hasEntries;
+						require_once(dirname(__FILE__) . "/../view/view_video_posts_screen_2.php");
+					}
+					else
+					{
+						$categories = $kmodel->listCategoriesOrderByName();
+						$viewData["categories"] = $categories->objects;
+						$viewData["wpCategories"] = get_categories('get=all');
+						require_once(dirname(__FILE__) . "/../view/view_video_posts_screen_1.php");
+					}
+				}
 				else
-					$pageSize = 18;
-				
-				$page = @$_GET["paged"] ? $_GET["paged"] : 1;
-				$result = $kmodel->listEntries($pageSize, $page);
-				$error = $kmodel->getLastError();
-				if ($error)
-					KalturaHelpers::dieWithConnectionErrorMsg($error["message"]);
+				{
+					$kmodel = KalturaModel::getInstance();
+	
+					if ($isLibrary)
+						$pageSize = 20;
+					else
+						$pageSize = 18;
 					
-				$totalCount = $result->totalCount;
-
-				$viewData["page"] 		= $page;
-				$viewData["pageSize"] 	= $pageSize;
-				$viewData["totalCount"] = $totalCount;
-				$viewData["totalPages"] = ceil($totalCount / $pageSize);
-				$viewData["result"] 	= $result;
-				require_once(dirname(__FILE__) . "/../view/view_browse.php");
-				require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php");
+					$page = @$_GET["paged"] ? $_GET["paged"] : 1;
+					$result = $kmodel->listEntries($pageSize, $page);
+					$error = $kmodel->getLastError();
+					if ($error)
+						KalturaHelpers::dieWithConnectionErrorMsg($error["message"]);
+						
+					$totalCount = $result->totalCount;
+	
+					$viewData["page"] 		= $page;
+					$viewData["pageSize"] 	= $pageSize;
+					$viewData["totalCount"] = $totalCount;
+					$viewData["totalPages"] = ceil($totalCount / $pageSize);
+					$viewData["result"] 	= $result;
+					require_once(dirname(__FILE__) . "/../view/view_browse.php");
+					require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php");
+				}
 				break;
 		}
 	}

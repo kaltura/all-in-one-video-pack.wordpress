@@ -155,48 +155,48 @@
 	
 		function updateFormState() {
 			// premissions
-			jQuery("input[@type=radio][@name=permissions_add]").attr('disabled', false);
+			jQuery("input[type=radio][name=permissions_add]").attr('disabled', false);
 			
-			var checkedEdit = jQuery("input[@name=permissions_edit][@checked]");
+			var checkedEdit = jQuery("input[name=permissions_edit][checked]");
 			if (checkedEdit.size() == 0)
 				return;
 			
 			var permValue = Number(checkedEdit.get(0).value);
 			for(var i = 3; i > permValue; i--)
 			{
-				jQuery("input[@type=radio][@name=permissions_add][@value="+i+"]").attr('disabled', true);
+				jQuery("input[type=radio][name=permissions_add][value="+i+"]").attr('disabled', true);
 			}
-			var checkedAdd = jQuery("input[@type=radio][@name=permissions_add][@checked]");
+			var checkedAdd = jQuery("input[type=radio][name=permissions_add][checked]");
 			if (checkedAdd.size() > 0)
 			{
 				if (checkedAdd.attr('disabled'))
 				{
-					jQuery("input[@type=radio][@name=permissions_add][@value="+i+"]").attr('checked', 'checked');
+					jQuery("input[type=radio][name=permissions_add][value="+i+"]").attr('checked', 'checked');
 				}
 			}
 			else
 			{
-				jQuery("input[@type=radio][@name=permissions_add][@value="+i+"]").attr('checked', 'checked');
+				jQuery("input[type=radio][name=permissions_add][value="+i+"]").attr('checked', 'checked');
 			}
 			
 			// video comments settings 
-			var enableVideoComments = jQuery("input[@type=checkbox][@id=enable_video_comments]").attr('checked');
+			var enableVideoComments = jQuery("input[type=checkbox][id=enable_video_comments]").attr('checked');
 			if (enableVideoComments)
 			{
-				jQuery("input[@type=checkbox][@id=allow_anonymous_comments]").attr('disabled', false);
+				jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('disabled', false);
 			}
 			else
 			{
-				jQuery("input[@type=checkbox][@id=allow_anonymous_comments]").attr('disabled', true);
-				jQuery("input[@type=checkbox][@id=allow_anonymous_comments]").attr('checked', false);
+				jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('disabled', true);
+				jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('checked', false);
 			}
 		}
 		
-		jQuery("input[@type=radio][@name=permissions_edit]").click(updateFormState);
-		jQuery("input[@type=checkbox]").click(updateFormState);
+		jQuery("input[type=radio][name=permissions_edit]").click(updateFormState);
+		jQuery("input[type=checkbox]").click(updateFormState);
 		
 		// simulate the click to restore the ui state as it should be
-		jQuery("input[@type=radio][@name=permissions_edit][@checked]").click();
+		jQuery("input[type=radio][name=permissions_edit][checked]").click();
 	</script>
 </div>
 <?php endif; ?>

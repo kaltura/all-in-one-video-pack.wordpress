@@ -5,19 +5,21 @@
 	require_once('lib/kaltura_helpers.php');
 	require_once('lib/kaltura_model.php');    
 	require_once('lib/kaltura_wp_model.php');
-  
-	$widgetId = @$_GET['wid'];
 	
+	KalturaHelpers::force200Header();
+
+	$closeLink = KalturaHelpers::getCloseLinkForModals();
+	$widgetId = @$_GET['wid'];
 	if (!$widgetId)
-		wp_die(__('The interactive video is missing.'));
+		wp_die(__('The interactive video is missing.<br/><br/>'.$closeLink));
 	
 	// check widget permissions at wordpress db
 	$widgetDb = KalturaWPModel::getWidget($widgetId);
 	if (!$widgetDb)
-		wp_die(__('The interactive video was not found (Maybe the post was not published yet?).'));
+		wp_die(__('The interactive video was not found (Maybe the post was not published yet?).<br/><br/>'.$closeLink));
 	
 	if (!KalturaHelpers::userCanEdit((string)$widgetDb["edit_permissions"]))
-		wp_die(__('You do not have sufficient permissions to access this page.'));
+		wp_die(__('You do not have sufficient permissions to access this page.<br/><br/>'.$closeLink));
 
 	// get the widget from kaltura to find the kshow its linked to
 	$kmodel = KalturaModel::getInstance();
@@ -25,9 +27,9 @@
 	$entryId = $widget->entryId;
 	
 	if (!$entryId || !$widget)
-		wp_die(__('The video was not found.'));
+		wp_die(__('The video was not found.<br/><br/>'.$closeLink));
 		
-	$ks = $kmodel->getClientSideSession();
+	$ks = $kmodel->getClientSideSession("edit:*");
 	
 	$viewData["swfUrl"] 	= KalturaHelpers::getSimpleEditorUrl(KALTURA_KSE_UICONF);
 	$viewData["flashVars"] 	= KalturaHelpers::getSimpleEditorFlashVars($ks, $entryId);

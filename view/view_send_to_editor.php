@@ -1,3 +1,4 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <?php if ($viewData["widgetId"]): ?>
 <script type="text/javascript">
 	var playerWidth = "<?php echo $viewData["playerWidth"]; ?>";
@@ -17,10 +18,19 @@
 		{
 			topWindow.tinyMCE.execCommand('mceInsertRawHTML', false, html);
 		}
-		else 
+		else
 		{
-			topWindow.edInsertContent(topWindow.document.getElementById('content'), html);
+			if (topWindow.edInsertContent)
+			{
+				topWindow.edInsertContent(topWindow.document.getElementById('content'), html);
+			}
+			else
+			{
+				var content = topWindow.jQuery('#content');
+				content.val(content.val() + html);
+			}
 		}
+		
 		setTimeout('topWindow.tb_remove()', 0);
 	}
 	catch(e) 
@@ -40,7 +50,7 @@
 					<br />
 					<br />
 					<center>
-						<input type="button" value="<?php echo attribute_escape( __( 'Close' ) ); ?>" name="close" class="button-secondary" />
+						<input type="button" value="<?php echo attribute_escape( __( 'Close' ) ); ?>" onclick="setTimeout('topWindow.tb_remove()', 0);" name="close" class="button-secondary" />
 					</center>
 				</td>
 			</tr>
@@ -123,6 +133,7 @@
 					<table>
 						<tr>
 							<td style="padding-bottom:22px;" colspan="2">
+							<?php if ($viewData["isLibrary"])?>
 								<label for="ktitle">Title:</label>
 								<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo $viewData["entry"]->name; ?>" style="margin-left:6px;" />
 								<span style="color:red; font-size: 20px; font-weight: bold; display: none; line-height: 20px">*</span>

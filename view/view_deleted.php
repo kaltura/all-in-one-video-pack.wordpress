@@ -1,3 +1,4 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <div class="wrap kalturaWrapFix">
 	<div class="updated">
 		<p>

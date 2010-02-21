@@ -1,3 +1,4 @@
+<?php if (!defined("WP_ADMIN")) die();?>
 <script type="text/javascript">
 	jQuery("#media-upload-header a").each(function (i, obj) {
 		var href = obj.href;

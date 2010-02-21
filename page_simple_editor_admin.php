@@ -6,7 +6,9 @@
 	require_once('settings.php');
 	require_once('lib/kaltura_model.php');
 	require_once('lib/kaltura_helpers.php');  
-  
+
+	KalturaHelpers::force200Header();
+	
 	if (!KalturaHelpers::userCanEdit())
 	{
 		wp_die(__('You do not have sufficient permissions to access this page.'));
@@ -20,7 +22,7 @@
 	}
 
 	$kmodel = KalturaModel::getInstance();
-	$ks = $kmodel->getClientSideSession();
+	$ks = $kmodel->getClientSideSession("edit:*");
 	if (!$ks)
 	{
 		wp_die(__('Failed to start new session.'));

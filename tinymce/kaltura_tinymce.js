@@ -135,7 +135,16 @@
 				contentData += 'src="' + (this._url + '/../thumbnails/placeholder.gif') + '" ';
 				contentData += 'title="Kaltura" ';
 				contentData += 'alt="Kaltura" ';
-				contentData += 'class="kaltura_item align' + attribs['align'] + ' kaltura_add_' + attribs['addpermission'] + ' kaltura_edit_' + attribs['editpermission'] + ' kaltura_id_' + attribs["wid"] + '" '; 
+				contentData += 'class="';
+					contentData += 'kaltura_item align' + attribs['align'] + ' ';
+					contentData += 'kaltura_add_' + attribs['addpermission'] + ' ';
+					contentData += 'kaltura_edit_' + attribs['editpermission'] + ' ';
+					contentData += 'kaltura_id_' + attribs['wid'] + ' ';
+					if (attribs['uiconfid'])
+						contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
+					if (attribs['entryid'])
+						contentData += 'kaltura_entryid_' + attribs['entryid'] + ' ';
+				contentData += '" '; 
 				contentData += 'name="mce_plugin_kaltura_desc" ';
 				contentData += 'width="' + attribs['width'] + '" ';
 				contentData += 'height="' + attribs['height'] + '" ';
@@ -171,6 +180,8 @@
 					var wid = "";
 					var addpermission = "";
 					var editpermission = "";
+					var uiconfid = "";
+					var entryid = "";
 					
 					// get the attribs that we saved in the class name
 					var classAttribs = className.split(" "); 
@@ -187,7 +198,7 @@
 								attribs['align'] = 'center';
 								break;
 							default:
-								classAttrArr = classAttribs[j].match(/kaltura_(\w*)_(\w*)/);
+								classAttrArr = classAttribs[j].match(/kaltura_([a-zA-Z]*)_([\w]*)/);
 								if (classAttrArr && classAttrArr.length == 3) {
 									switch(classAttrArr[1]) {
 										case 'id':
@@ -201,6 +212,14 @@
 										case 'edit':
 											if (classAttrArr[2] != "")
 												editpermission = classAttrArr[2];
+											break;
+										case 'uiconfid':
+											if (classAttrArr[2] != "")
+												uiconfid = classAttrArr[2];
+											break;
+										case 'entryid':
+											if (classAttrArr[2] != "")
+												entryid = classAttrArr[2];
 											break;
 									}
 								}
@@ -216,6 +235,12 @@
 					contentData += this._tagStart + ' ';
 					contentData += 'wid="' + wid + '" '; // widget id
 					
+					if (uiconfid)
+						contentData += 'uiconfid="' + uiconfid + '" ';
+					
+					if (entryid)
+						contentData += 'entryid="' + entryid + '" ';
+						
 					contentData += 'width="' + attribs['width'] + '" ';
 					contentData += 'height="' + attribs['height'] + '" ';
 					

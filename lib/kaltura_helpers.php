@@ -367,5 +367,18 @@ class KalturaHelpers
 		</div>';
 		die();
 	}
+	
+	function getCloseLinkForModals()
+	{
+		return '<a href="#" onclick="((window.opener) ? window.opener : (window.parent) ? window.parent : window.top).KalturaModal.closeModal();">'.__('Close').'</a>';
+	}
+	
+	/**
+	 * sometimes wordpress thinks our url is a permalink and sets 404 header, calling this function will force back to 200
+	 */
+	function force200Header()
+	{
+		status_header(200);
+	}
 }
 ?>

@@ -22,7 +22,7 @@
 			$partner->website = $webSiteUrl;
 			$partner->phone = $phoneNumber;
 			global $wp_version;
-			$partner->description = $description . "\nWordpress all-in-one plugin|" . $wp_version;
+			$partner->description = $description . "\nWordPress all-in-one plugin|" . $wp_version;
 			$partner->contentCategories = $contentCategory;
 			$partner->adultContent = $adultContent;
 			$partner->commercialUse = "non-commercial_use";
