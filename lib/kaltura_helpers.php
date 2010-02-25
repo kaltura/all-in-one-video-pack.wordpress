@@ -48,7 +48,13 @@ class KalturaHelpers
     	$plugin_name = plugin_basename(__FILE__);   
     	$indx = strpos($plugin_name, "/");
     	$plugin_dir = substr($plugin_name, 0, $indx);
-    	$plugin_url = get_settings('siteurl') . '/wp-content/plugins/' . $plugin_dir;
+    	$site_url = get_settings('siteurl');
+    	
+    	// site url can be http, but the admin part can run under https
+    	if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
+    		$site_url = str_replace('http://', 'https://', $site_url);
+    	
+    	$plugin_url = $site_url . '/wp-content/plugins/' . $plugin_dir;
     	return $plugin_url;
     }
     
