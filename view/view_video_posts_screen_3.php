@@ -1,10 +1,7 @@
 <?php if (!defined("WP_ADMIN")) die();?>
 <div class="wrap kalturaWrapFix">
 	<h2><?php _e("Creating Video Post from Category"); ?></h2>
-	<ul class="subsubsub">
-		<li><a href="<?php echo add_query_arg(array('tab'=>'library','screen'=>null,'tab'=>null)); ?>">Library</a> |</li>
-		<li><a class="current" href="<?php echo add_query_arg(array('tab'=>'video-posts')); ?>">Video Posts</a></li>
-	</ul>
+	<?php require_once(dirname(__FILE__) . "/view_library_menu.php"); ?>
 	<br clear="all" />
 	<p><?php echo $viewData["numOfCreatedPosts"];?> video posts have been created and saved as drafts!</p>
 	<div class="tablenav">

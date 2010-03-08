@@ -7,14 +7,15 @@ class KalturaWPModel
 		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
 		
 		$data = array();
-		$data["id"] = $widget["id"];
-		$data["type"] = $widget["type"];
-		$data["status"] = $widget["status"];
-		$data["post_id"] = $widget["post_id"];
-		$data["comment_id"] = $widget["comment_id"];
-		$data["add_permissions"] = $widget["add_permissions"];
-		$data["edit_permissions"] = $widget["edit_permissions"];
-		$data["created_at"] = current_time('mysql');
+		$data["id"] 				= $widget["id"];
+		$data["entry_id"] 			= $widget["entry_id"];
+		$data["type"] 				= $widget["type"];
+		$data["status"] 			= $widget["status"];
+		$data["post_id"] 			= $widget["post_id"];
+		$data["comment_id"] 		= $widget["comment_id"];
+		$data["add_permissions"] 	= $widget["add_permissions"];
+		$data["edit_permissions"] 	= $widget["edit_permissions"];
+		$data["created_at"] 		= current_time('mysql');
 		$wpdb->insert($table, $data);
 	}
 	
@@ -24,24 +25,30 @@ class KalturaWPModel
 		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
 
 		$data = array();
-		$data["type"] = $widget["type"];
-		$data["status"] = $widget["status"];
-		$data["post_id"] = $widget["post_id"];
-		$data["comment_id"] = $widget["comment_id"];
-		$data["add_permissions"] = $widget["add_permissions"];
-		$data["edit_permissions"] = $widget["edit_permissions"];
+		$data["type"] 				= $widget["type"];
+		$data["status"] 			= $widget["status"];
+		$data["post_id"] 			= $widget["post_id"];
+		$data["comment_id"] 		= $widget["comment_id"];
+		$data["add_permissions"] 	= $widget["add_permissions"];
+		$data["edit_permissions"] 	= $widget["edit_permissions"];
 		
 		$where = array();
-		$where["id"] = $widget["id"];
+		$where["id"] 		= $widget["id"];
+		$where["entry_id"] = $widget["entry_id"];
 		
 		$wpdb->update($table, $data, $where);
 	}
 	
-	function getWidget($widgetId)
+	function getWidget($widgetId, $entryId)
 	{
 		global $wpdb;
 		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
-		return $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $table . " WHERE id = %s", $widgetId), ARRAY_A);
+		if ($widgetId) {
+			$sql = $wpdb->prepare("SELECT * FROM " . $table . " WHERE id = %s", $widgetId);
+		} else {
+			$sql = $wpdb->prepare("SELECT * FROM " . $table . " WHERE entry_id = %s", $entryId); 
+		}
+		return $wpdb->get_row($sql, ARRAY_A);
 	}
 	
 	function unpublishWidget()
@@ -64,7 +71,7 @@ class KalturaWPModel
 		if (!array_key_exists("edit_permissions", $widget)) // beacuse 0 is counted as false
 			$widget["edit_permissions"] = -1;
 			
-		$widgetFromDb = KalturaWPModel::getWidget($widget["id"]);
+		$widgetFromDb = KalturaWPModel::getWidget($widget["id"], $widget["entry_id"]);
 		if (!$widgetFromDb) 
 		{
 			KalturaWPModel::insertWidget($widget);
@@ -79,7 +86,10 @@ class KalturaWPModel
 	{
 		global $wpdb;
 		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
-		return $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $table . " WHERE post_id = %d", $post_id), ARRAY_A);
+		$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $table . " WHERE post_id = %d", $post_id), ARRAY_A);
+		if (!is_array($result))
+			$result = array();
+		return $result;
 	}
 	
 	function unpublishWidgets($widgets)
@@ -93,11 +103,10 @@ class KalturaWPModel
 			$widgetsTemp = $widgets;
 			$widgets = array($widgetsTemp);
 		}
-		
 		foreach($widgets as $widget)
 		{
 			$data = array("status" => KALTURA_WIDGET_STATUS_UNPUBLISHED);
-			$where = array("id" => $widget["id"]);
+			$where = array("id" => $widget["id"], "entry_id" => $widget["entry_id"]);
 			$wpdb->update($table, $data, $where);
 		}
 	}
@@ -107,16 +116,27 @@ class KalturaWPModel
 		global $wpdb;
 		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
 		$wid_ids = array();
-		foreach($used_widgets as $wid)
-		{
-			$wid_ids[] = "'" . $wpdb->escape($wid) . "'";
-		}
+		$entry_ids = array();
 		
-		$query = $wpdb->prepare("DELETE FROM " . $table . " WHERE post_id = %d", $post_id);
-		if (count($wid_ids) > 0) 
-			$query .= " AND id NOT IN (".implode(", ", $wid_ids).")";
+		$current_widgets = KalturaWPModel::getWidgetsByPost($post_id);
+		foreach($current_widgets as $temp_widget)
+		{
+			$should_delete = true;
+			foreach($used_widgets as $wid_entry_id)
+			{
+				$wid = $wid_entry_id[0];
+				$entry_id = $wid_entry_id[1];
 
-		$wpdb->query($query);
+				if ($temp_widget["id"] == $wid && $temp_widget["entry_id"] == $entry_id)
+					$should_delete = false;
+			}
+			
+			if ($should_delete)
+			{
+				$query = $wpdb->prepare("DELETE FROM " . $table . " WHERE post_id = %d AND id = %s and entry_id = %s", $post_id, $temp_widget["id"], $temp_widget["entry_id"]);
+				$wpdb->query($query);
+			}
+		}
 	}
 	
 	function deleteWidgetsByComment($comment_id)

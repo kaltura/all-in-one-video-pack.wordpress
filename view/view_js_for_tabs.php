@@ -11,7 +11,7 @@
 			var keyVal = queryArray[prop];
 			var key = keyVal.split("=")[0];
 			var value = keyVal.split("=")[1]; 
-			if (key != "kaction" && key != "entryid" && key != "firstedit" && key != "kaltura_entry_type")
+			if (key == "tab")
 			{
 				newUrl += (key + "=" + value + "&");
 			}

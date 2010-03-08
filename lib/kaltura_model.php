@@ -75,6 +75,35 @@ class KalturaModel
 		return $this->client->baseEntry->get($entryId);
 	}
 	
+	function getEntriesByIds($ids)
+	{
+		if (!$this->session)
+			$this->startSession();
+		$statuses = array(
+			KalturaEntryStatus_ERROR_CONVERTING, 
+			KalturaEntryStatus_ERROR_IMPORTING, 
+			KalturaEntryStatus_IMPORT,
+			KalturaEntryStatus_PRECONVERT,
+			KalturaEntryStatus_READY
+		);
+		$filter = new KalturaBaseEntryFilter();
+		$filter->statusIn = implode(',', $statuses);
+		if (is_array($ids))
+			$filter->idIn = implode(',', $ids);
+		else
+			return array();
+		$result = $this->client->baseEntry->listAction($filter);
+		return $result->objects;
+	}
+	
+	function updateBaseEntry($baseEntryId, $baseEntry)
+	{
+		if (!$this->session)
+			$this->startSession();
+			
+		return $this->client->baseEntry->update($baseEntryId, $baseEntry);
+	}
+	
 	function updateMediaEntry($mediaEntryId, $mediaEntry)
 	{
 		if (!$this->session)
@@ -101,26 +130,42 @@ class KalturaModel
 	
 	function appendMediaToMix($mixEntryId, $mediaEntryId)
 	{
-	    if (!$this->session)
+		if (!$this->session)
 			$this->startSession();
 			
 		return $this->client->mixing->appendMediaEntry($mixEntryId, $mediaEntryId);
 	}
 	
-	function listEntries($pageSize, $page)
+	function listEntriesByTypes($types, $pageSize, $page)
 	{
 		if (!$this->session)
 			$this->startSession();
 			
 		$filter = new KalturaBaseEntryFilter();
 		$filter->orderBy = KalturaBaseEntryOrderBy_CREATED_AT_DESC;
-		$filter->typeIn = implode(",", array(KalturaEntryType_MEDIA_CLIP, KalturaEntryType_MIX));
+		$filter->typeIn = $types;
 		
 		$pager = new KalturaFilterPager();
 		$pager->pageSize = $pageSize;
 		$pager->pageIndex = $page;
 		
 		return $this->client->baseEntry->listAction($filter, $pager);
+	}
+	
+	function listMediaEntries($pageSize, $page)
+	{
+		return $this->listEntriesByTypes(KalturaEntryType_MEDIA_CLIP, $pageSize, $page);
+	}
+	
+	function listMixEntries($pageSize, $page)
+	{
+		return $this->listEntriesByTypes(KalturaEntryType_MIX, $pageSize, $page);
+	}
+	
+	function listEntries($pageSize, $page)
+	{
+		$types = implode(",", array(KalturaEntryType_MEDIA_CLIP, KalturaEntryType_MIX));
+		return $this->listEntriesByTypes($types, $pageSize, $page);
 	}
 	
 	function listAllEntriesByCategory($category)
@@ -218,6 +263,53 @@ class KalturaModel
 		$filter = new KalturaUiConfFilter();
 		$filter->orderBy = KalturaUiConfOrderBy_CREATED_AT_DESC;
 		return $this->client->uiConf->listAction($filter);
+	}
+	
+	function listPlayersUiConfs()
+	{
+		if (!$this->session)
+			$this->startSession();
+		$filter = new KalturaUiConfFilter();
+		$filter->objTypeEqual = KalturaUiConfObjType_PLAYER;
+		$filter->orderBy = KalturaUiConfOrderBy_CREATED_AT_DESC;
+		$uiConfs = $this->client->uiConf->listAction($filter);
+		
+		// add the default players
+		global $KALTURA_DEFAULT_PLAYERS;
+		$uiConfs->objects = array_reverse($uiConfs->objects); // default players should be first
+		foreach($KALTURA_DEFAULT_PLAYERS as $player)
+		{
+			$tempUiConf = new KalturaUiConf();
+			$tempUiConf->id = $player['id'];
+			$tempUiConf->name = $player['name'];
+			$tempUiConf->width = $player['width'];
+			$tempUiConf->height = $player['height'];
+			$uiConfs->objects[] = $tempUiConf;
+			$uiConfs->totalCount++;
+		}
+		$uiConfs->objects = array_reverse($uiConfs->objects);
+		
+		// add the legacy players
+		global $KALTURA_LEGACY_PLAYERS;
+		foreach($KALTURA_LEGACY_PLAYERS as $player)
+		{
+			$tempUiConf = new KalturaUiConf();
+			$tempUiConf->id = $player['id'];
+			$tempUiConf->name = $player['name'];
+			$tempUiConf->width = $player['width'];
+			$tempUiConf->height = $player['height'];
+			$uiConfs->objects[] = $tempUiConf;
+			$uiConfs->totalCount++;
+		}
+		
+		return $uiConfs;
+	}
+	
+	function getPlayerUiConf($uiConfId)
+	{
+		if (!$this->session)
+			$this->startSession();
+		return $this->client->uiConf->get($uiConfId);
 	}
 }
 ?>

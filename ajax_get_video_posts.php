@@ -33,7 +33,7 @@
 			echo '<li>';
 			echo '<div class="thumb">';
 			echo '<a href="'.get_permalink($post_id).'">';
-			echo '<img src="'.KalturaHelpers::getThumbnailUrl($widget["id"], null, 120, 90, null).'" width="120" height="90" />';
+			echo '<img src="'.KalturaHelpers::getThumbnailUrl($widget["id"], $widget["entry_id"], 120, 90, null).'" width="120" height="90" />';
 			echo '</a>';
 			echo '</div>';
 			echo '<a href="'.get_permalink($post_id).'">'.$post->post_title.'</a><br />';

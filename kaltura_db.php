@@ -1,7 +1,7 @@
 <?php
 
 global $kaltura_db_version;
-$kaltura_db_version = "1.0";
+$kaltura_db_version = "1.1";
 
 function kaltura_install_db()
 {
@@ -23,12 +23,27 @@ function kaltura_install_db()
 			KEY post_id (post_id),
 			KEY status_created_at (status, created_at)
 		);";
-		
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		
 		dbDelta($sql);
-
 		add_option("kaltura_db_version", $kaltura_db_version);
+	}
+	
+	// upgrades
+	$installed_ver = get_option("kaltura_db_version");
+
+	if($installed_ver == "1.0") {
+		$sql = "ALTER TABLE " . $table_name . " DROP PRIMARY KEY;";
+		$wpdb->query($sql);
+		
+		$sql = "ALTER TABLE " . $table_name . "
+ 				CHANGE id id VARCHAR(20) NOT NULL,
+ 				ADD entry_id VARCHAR(20) NOT NULL AFTER id;"; 
+		$wpdb->query($sql);
+		
+		$sql = "ALTER TABLE " . $table_name . " ADD PRIMARY KEY  (id, entry_id);";
+		$wpdb->query($sql);
+		
+		update_option("kaltura_db_version", $kaltura_db_version);
 	}
 }
 

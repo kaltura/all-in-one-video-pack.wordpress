@@ -119,21 +119,23 @@
 					<br />
 				</td>
 			</tr>
+			<?php
+				$kmodel = KalturaModel::getInstance();
+				$players = $kmodel->listPlayersUiConfs(); 
+			?>
 			<tr valign="top">
 				<td><?php _e("Video comments player design:"); ?></td>
 				<td>
-					<?php $players = KalturaHelpers::getPlayers(); ?>
-					<?php foreach($players as $name => $details): ?>
-						<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo $name; ?>" value="<?php echo $name; ?>" <?php echo @get_option("kaltura_comments_player_type") == $name ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo $name; ?>"><?php echo $details["name"]; ?></label><br />
+					<?php foreach($players->objects as $player): ?>
+						<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo @get_option("kaltura_comments_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
 					<?php endforeach; ?>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td><?php _e("Default player design:"); ?></td>
 				<td>
-					<?php $players = KalturaHelpers::getPlayers(); ?>
-					<?php foreach($players as $name => $details): ?>
-						<input type="radio" name="default_player_type" id="default_player_type_<?php echo $name; ?>" value="<?php echo $name; ?>" <?php echo @get_option("kaltura_default_player_type") == $name ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo $name; ?>"><?php echo $details["name"]; ?></label><br />
+					<?php foreach($players->objects as $player): ?>
+						<input type="radio" name="default_player_type" id="default_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo @get_option("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
 					<?php endforeach; ?>
 				</td>
 			</tr>

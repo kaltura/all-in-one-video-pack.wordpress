@@ -63,31 +63,37 @@ Kaltura = {
 		if (jQuery("#TB_window").size() == 0)
 		{
 			callback();
+			return;
 		}
-		else
-		{
-			this.originalWidth = Number(jQuery("#TB_window").css("width").replace("px", ""));
-			this.originalHeight = Number(jQuery("#TB_iframeContent").css("height").replace("px", "")); // take the height of the iframe, because we ignore the height of the dark gray header (it's outside of the iframe)
+		
+		this.originalWidth = Number(jQuery("#TB_window").css("width").replace("px", ""));
+		this.originalHeight = Number(jQuery("#TB_iframeContent").css("height").replace("px", "")); // take the height of the iframe, because we ignore the height of the dark gray header (it's outside of the iframe)
 
-			jQuery("#TB_window").animate(
-				{ 
-			        width: width + "px",
-		        	marginTop: "-" + ((height + 27) / 2) + "px",
-		        	marginLeft: "-" + (width / 2) + "px"
-		      	}, 
-		      	600 
-			);
-			
-			jQuery("#TB_iframeContent").animate(
-				{
-					width: width + "px",
-					height: height + "px"
-				},
-				600,
-				null,
-				callback
-			);
+		// no need to animate if dimensions are the same
+		if ((width == this.originalWidth) && (height == this.originalHeight))
+		{
+			callback();
+			return
 		}
+		
+		jQuery("#TB_window").animate(
+			{ 
+		        width: width + "px",
+	        	marginTop: "-" + ((height + 27) / 2) + "px",
+	        	marginLeft: "-" + (width / 2) + "px"
+	      	}, 
+	      	600 
+		);
+		
+		jQuery("#TB_iframeContent").animate(
+			{
+				width: width + "px",
+				height: height + "px"
+			},
+			600,
+			null,
+			callback
+		);
 	},
 	
 	restoreModalSize: function (callback) {
@@ -135,6 +141,10 @@ Kaltura = {
 		if (!Kaltura.compareWPVersion("2.6", ">=")) 
 			return;
 
+		// don't run twice
+		if (typeof(tb_positionKalturaBackup) == "function")
+			return;
+		
 		// run tb_position to set the default thick box dimensions
 		tb_position();
 		
@@ -173,6 +183,7 @@ Kaltura = {
 		
 		// restore the position of the thickbox
 		tb_position = tb_positionKalturaBackup;
+		tb_positionKalturaBackup = null;
 		tb_position();
 	},
 	

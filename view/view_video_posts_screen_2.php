@@ -1,10 +1,7 @@
 <?php if (!defined("WP_ADMIN")) die();?>
 <div class="wrap kalturaWrapFix">
 	<h2><?php _e("Creating Video Post from Category"); ?></h2>
-	<ul class="subsubsub">
-		<li><a href="<?php echo add_query_arg(array('tab'=>'library','screen'=>null,'tab'=>null)); ?>">Library</a> |</li>
-		<li><a class="current" href="<?php echo add_query_arg(array('tab'=>'video-posts')); ?>">Video Posts</a></li>
-	</ul>
+	<?php require_once(dirname(__FILE__) . "/view_library_menu.php"); ?>
 	<br clear="all" />
 	<?php if (!$viewData["hasEntries"]): ?>
 	<div class="tablenav">
@@ -21,7 +18,7 @@
 	<div class="tablenav">
 		<?php _e('Here are the videos found in your KMC categories that match your WordPress categories. Select player and videos to create posts.'); ?>
 	</div>
-	<form action="<?php echo $page; ?>?page=interactive_video_library&tab=video-posts&screen=3" method="post">
+	<form action="<?php echo $page; ?>?page=interactive_video_library&kaction=videoposts&screen=3" method="post">
 	<table class="form-table">
 		<tr valign="top">
 			<th scope="row"><label for="uiconf_id"> Select player:</label></th>

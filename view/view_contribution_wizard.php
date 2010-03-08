@@ -17,5 +17,4 @@
 	cwSwf.addParam("flashVars", "<?php echo $flashVarsStr; ?>");
 	cwSwf.addParam("allowScriptAccess", "always");
 	cwSwf.addParam("allowNetworking", "all");
-	cwSwf.write("kaltura_contribution_wizard_wrapper");
 </script>

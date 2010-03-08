@@ -60,27 +60,12 @@ class KalturaHelpers
     
     function generateTabUrl($params) 
     {
-    	$url = $_SERVER["REQUEST_URI"];
-    	
-    	if (!isset($params["kaction"]))
-    		$params["kaction"] = null;
+    	$query = $_SERVER["REQUEST_URI"];
+    	foreach($_GET as $k => $v)
+    		$query = add_query_arg($k, false, $query);
     		
-    	if (!isset($params["sendtoeditor"]))
-    		$params["sendtoeditor"] = null;
-    		
-    	if (!isset($params["entryid"]))
-    		$params["entryid"] = null;
-    
-    	if (!isset($params["paged"]))
-    		$params["paged"] = null;
-    		
-    	if (!isset($params["firstedit"]))
-    		$params["firstedit"] = null;
-    		
-		if (!isset($params["kaltura_entry_type"]))
-    		$params["kaltura_entry_type"] = null;
-    		
-    	return add_query_arg($params, $url, null);
+    	$query = add_query_arg($params, $query);
+    	return $query;
     }
     
     function getRequestUrl()
@@ -95,10 +80,6 @@ class KalturaHelpers
 		$flashVars["sessionId"] 	= $ks;
 		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
 		$flashVars["subPartnerId"] 	= get_option("kaltura_partner_id") * 100;
-		if ($entryId)
-    		$flashVars["kshowId"] 		= "entry-".$entryId;
-		else
-			$flashVars["kshowId"] 		= "-2";
 		$flashVars["afterAddentry"] = "onContributionWizardAfterAddEntry";
 		$flashVars["close"] 		= "onContributionWizardClose";
 		$flashVars["termsOfUse"] 	= "http://corp.kaltura.com/static/tandc" ;
@@ -146,12 +127,6 @@ class KalturaHelpers
 			$flashVarsStr .= ($key . "=" . $value . "&"); 
 		}
 		return substr($flashVarsStr, 0, strlen($flashVarsStr) - 1);
-	}
-	
-	function getSwfUrlForBaseWidget($type) 
-	{
-		$player = KalturaHelpers::getPlayerByType($type);
-		return KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/_" . get_option("kaltura_partner_id") . "/ui_conf_id/" . $player["uiConfId"];
 	}
 	
 	function getSwfUrlForWidget($widgetId = null, $uiConfId = null)
@@ -304,48 +279,18 @@ class KalturaHelpers
 		echo("</script>\n");
 	}
 	
-	function getPlayers() 
+	function calculatePlayerHeight($uiConfId, $width, $playerRatio = '4:3')
 	{
-		global $KALTURA_GLOBAL_PLAYERS;
-		return $KALTURA_GLOBAL_PLAYERS;
-	}
-	
-	function getPlayerByType($type)
-	{
-		$players = KalturaHelpers::getPlayers();
-		if (array_key_exists($type, $players))
-		{
-			$player = $players[$type];
-		}
+		$kmodel = KalturaModel::getInstance();
+		$player = $kmodel->getPlayerUiConf($uiConfId);
+		
+		$spacer = $player->height - ($player->width / 4) * 3; // assume the width and height saved in kaltura is 4/3
+		if ($playerRatio == '16:9')
+			$height = ($width / 16) * 9 + $spacer;
 		else
-		{
-			$player = $players[get_option('kaltura_default_player_type')];
-		}
+			$height = ($width / 4) * 3 + $spacer;
 		
-		return $player;
-	}
-	
-	function calculatePlayerHeight($type, $width, $playerRatio = "4:3")
-	{
-		$player = KalturaHelpers::getPlayerByType($type);
-		
-		$aspectRatio = $playerRatio;
-		$hSpacer = (@$player["horizontalSpacer"] ? $player["horizontalSpacer"] : 0);
-		$vSpacer = (@$player["verticalSpacer"] ? $player["verticalSpacer"] : 0); 
-		
-		switch($aspectRatio)
-		{
-			case "4:3":
-				$screenHeight = ($width - $hSpacer) / 4 * 3;
-				$height = $screenHeight + $vSpacer;
-				break;
-			case "16:9":
-				$screenHeight = ($width - $hSpacer) / 16 * 9;
-				$height = $screenHeight + $vSpacer;
-				break;
-		}
-		
-		return round($height);
+		return (int)$height;
 	}
 	
 	function runKalturaShortcode($content, $callback)

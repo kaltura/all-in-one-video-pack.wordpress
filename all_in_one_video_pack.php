@@ -43,7 +43,7 @@ add_action('admin_menu', 'kaltura_add_admin_menu'); // add kaltura admin menu
 add_filter("media_buttons_context", "kaltura_add_media_button"); // will add button over the rich text editor
 add_filter("media_upload_tabs", "kaltura_add_upload_tab"); // will add tab to the modal media box
 
-add_action("media_upload_kaltura", "kaltura_tab");
+add_action("media_upload_kaltura_upload", "kaltura_upload_tab");
 add_action("media_upload_kaltura_browse", "kaltura_browse_tab");
 
 if (KalturaHelpers::compareWPVersion("2.6", "<")) {
@@ -115,8 +115,8 @@ add_action("transition_post_status", "kaltura_post_status_change", 10, 3);
  */
 function kaltura_delete_post($post_id)
 {
-    require_once("lib/kaltura_wp_model.php");
-    KalturaWPModel::deleteUnusedWidgetsByPost($post_id, array());
+	require_once("lib/kaltura_wp_model.php");
+	KalturaWPModel::deleteUnusedWidgetsByPost($post_id, array());
 }
 
 add_action("deleted_post", "kaltura_delete_post", 10, 1); 
@@ -191,6 +191,7 @@ function kaltura_admin_page()
 
 function kaltura_library_page()
 {
+	$_GET["kaction"] = isset($_GET["kaction"]) ? $_GET["kaction"] : "entries";
 	require_once("lib/kaltura_library_controller.php");
 }
 
@@ -257,7 +258,8 @@ function kaltura_print_js($content)
 	$content[] = 'kaltura';
 	$content[] = 'jquery';
 	$content[] = 'kaltura_swfobject_1.5';
-	
+	if (is_admin())
+		$content[] = 'kadmin';
 	KalturaHelpers::addWPVersionJS();
 	
 	return $content;
@@ -267,6 +269,8 @@ function kaltura_register_js()
 {
 	$plugin_url = KalturaHelpers::getPluginUrl();
 	wp_register_script('kaltura', $plugin_url . '/js/kaltura.js?v'.kaltura_get_version());
+	if (is_admin())
+		wp_register_script('kadmin', $plugin_url . '/js/kadmin.js?v'.kaltura_get_version());
 	wp_register_script('kaltura_swfobject_1.5', $plugin_url . '/js/swfobject.js?v'.kaltura_get_version(), array(), '1.5');
 }
 
@@ -281,14 +285,22 @@ function kaltura_footer()
 	$plugin_url = KalturaHelpers::getPluginUrl();
 	echo ' 
 	<script type="text/javascript">
-		function handleGotoContribWizard (widgetId) {
-			KalturaModal.openModal("contribution_wizard", "' . $plugin_url . '/page_contribution_wizard_front_end.php?wid=" + widgetId, { width: 680, height: 360 } );
+		function handleGotoContribWizard (widgetId, entryId) {
+			KalturaModal.openModal("contribution_wizard", "' . $plugin_url . '/page_contribution_wizard_front_end.php?wid=" + widgetId + "&entryId=" + entryId, { width: 680, height: 360 } );
 			jQuery("#contribution_wizard").addClass("modalContributionWizard");
 		}
 	
-		function handleGotoEditorWindow (widgetId) {
-			KalturaModal.openModal("simple_editor", "' . $plugin_url . '/page_simple_editor_front_end.php?wid=" + widgetId, { width: 890, height: 546 } );
+		function handleGotoEditorWindow (widgetId, entryId) {
+			KalturaModal.openModal("simple_editor", "' . $plugin_url . '/page_simple_editor_front_end.php?wid=" + widgetId + "&entryId=" + entryId, { width: 890, height: 546 } );
 			jQuery("#simple_editor").addClass("modalSimpleEditor");
+		}
+		
+		function gotoContributorWindow(entryId) {
+			handleGotoContribWizard("", entryId);
+		}
+		
+		function gotoEditorWindow(entryId) {
+			handleGotoEditorWindow("", entryId);
 		}
 	</script>
 	
@@ -312,7 +324,7 @@ function kaltura_add_media_button($content)
 	global $post_ID, $temp_ID;
 	$uploading_iframe_ID = (int) (0 == $post_ID ? $temp_ID : $post_ID);
 	$media_upload_iframe_src = "media-upload.php?post_id=$uploading_iframe_ID";
-	$kaltura_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura");
+	$kaltura_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_upload");
 	$kaltura_browse_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_browse");
 	$kaltura_title = __('Add Interactive Video');
 	$kaltura_button_src = KalturaHelpers::getPluginUrl() . '/images/interactive_video_button.gif';
@@ -325,96 +337,55 @@ EOF;
 
 function kaltura_add_upload_tab($content)
 {
-	$content["kaltura"] = __("All in One Video");
+	$content["kaltura_upload"] = __("All in One Video");
 	return $content;
 }
 
 function kaltura_add_upload_tab_interactive_video_only($content)
 {
 	$content = array();
-	$content["kaltura"] = __("Add Interactive Video");
+	$content["kaltura_upload"] = __("Add Interactive Video");
 	$content["kaltura_browse"] = __("Browse Interactive Videos");
 	return $content;
 }
 
-function kaltura_tab()
+function kaltura_upload_tab()
 {
 	// only for 2.6 and higher
 	if (KalturaHelpers::compareWPVersion("2.6", ">="))
-	{
 		wp_enqueue_style('media');
-	}
-	wp_iframe('kaltura_tab_content');
-}
-
-function kaltura_tab_content()
-{
-	unset($GLOBALS['wp_filter']['media_upload_tabs']); // remove all registerd filters for the tabs
-	add_filter("media_upload_tabs", "kaltura_add_upload_tab_interactive_video_only"); // register our filter for the tabs
-	media_upload_header(); // will add the tabs menu
-	if (!get_option('kaltura_partner_id'))
-	{
-		?>
-			<div class="kalturaTab">
-				To get started, you need to get a Partner ID. <a href="options-general.php?page=interactive_video" target="_parent">Click here</a> to get one
-			</div>
-		<?php
-	}
-	else
-	{
-		$entryType = @$_GET["kaltura_entry_type"];
-		if ($entryType)
-		{
-    		require_once("lib/kaltura_model.php");
-    		require_once("lib/kaltura_helpers.php");
-    	
-    		$kmodel = KalturaModel::getInstance();
-    		$ks = $kmodel->getClientSideSession();
-        	if (!$ks)
-        	{
-        		KalturaHelpers::dieWithConnectionErrorMsg();
-        	}
-    		$viewData["flashVars"] 	= KalturaHelpers::getContributionWizardFlashVars($ks);
-    		$viewData["flashVars"]["showCloseButton"] 	= "false";
-    		$viewData["swfUrl"]    	= KalturaHelpers::getContributionWizardUrl(KALTURA_KCW_UICONF);
-    		if ($entryType == KalturaEntryType_MIX)
-    		{
-    		    $mixEntry = new KalturaMixEntry();
-    		    $mixEntry->name = "New Mix";
-    		    $mixEntry->editorType = KalturaEditorType_SIMPLE;
-    		    $mixEntry = $kmodel->addMixEntry($mixEntry);
-    		    $viewData["entryId"] = $mixEntry->id;
-    			$viewData["flashVars"]["kshowId"] = "entry-".$mixEntry->id;
-    		}
-			else
-				$viewData["flashVars"]["kshowId"] = -1;
-    		
-			require_once("view/view_js_for_tabs.php");
-    		require_once("view/view_contribution_wizard_admin.php");
-		}
-		else
-		{
-			require_once("view/view_choose_video_type.php");
-		}
-	}
+	
+	wp_iframe('kaltura_upload_tab_content');
 }
 
 function kaltura_browse_tab()
 {
 	// only for 2.6 and higher
 	if (KalturaHelpers::compareWPVersion("2.6", ">="))
-	{
 		wp_enqueue_style('media');
-	}
-	wp_iframe('kaltura_tab_browse_content');
+		
+	wp_iframe('kaltura_browse_tab_content');
 }
 
-function kaltura_tab_browse_content()
+function kaltura_upload_tab_content()
 {
 	unset($GLOBALS['wp_filter']['media_upload_tabs']); // remove all registerd filters for the tabs
 	add_filter("media_upload_tabs", "kaltura_add_upload_tab_interactive_video_only"); // register our filter for the tabs
 	media_upload_header(); // will add the tabs menu
 	
+	if (!isset($_GET["kaction"]))
+		$_GET["kaction"] = "upload";
+	require_once("lib/kaltura_library_controller.php");
+}
+
+function kaltura_browse_tab_content()
+{
+	unset($GLOBALS['wp_filter']['media_upload_tabs']); // remove all registerd filters for the tabs
+	add_filter("media_upload_tabs", "kaltura_add_upload_tab_interactive_video_only"); // register our filter for the tabs
+	media_upload_header(); // will add the tabs menu
+	
+	if (!isset($_GET["kaction"]))
+		$_GET["kaction"] = "browse";
 	require_once("lib/kaltura_library_controller.php");
 }
 
@@ -450,12 +421,14 @@ function kaltura_shortcode($attrs)
 
 	$isComment		= (@$attrs["size"] == "comments") ? true : false;
 	$wid 			= $embedOptions["wid"];
+	$entryId 		= $embedOptions["entryId"];
 	$width 			= $embedOptions["width"];
 	$height 		= $embedOptions["height"];
-	$divId 			= "kaltura_wrapper_" . $wid;
-	$thumbnailDivId = "kaltura_thumbnail_" . $wid;
-	$playerId 		= "kaltura_player_" . $wid;
-		
+	$randId 		= md5($wid . $entryId . rand(0, time()));
+	$divId 			= "kaltura_wrapper_" . $randId;
+	$thumbnailDivId = "kaltura_thumbnail_" . $randId;
+	$playerId 		= "kaltura_player_" . $randId;
+
 	$link = '';
 	$link .= '<a href="http://corp.kaltura.com/technology/video_management">video management</a>, ';
 	$link .= '<a href="http://corp.kaltura.com/solutions/video_solution">video solution</a>, ';
@@ -465,7 +438,7 @@ function kaltura_shortcode($attrs)
 	
 	if ($isComment)
 	{
-		$thumbnailPlaceHolderUrl = KalturaHelpers::getCommentPlaceholderThumbnailUrl($wid, null, 240, 180, null);
+		$thumbnailPlaceHolderUrl = KalturaHelpers::getCommentPlaceholderThumbnailUrl($wid, $entryId, 240, 180, null);
 
 		$embedOptions["flashVars"] .= "&autoPlay=true";
 		$html = '
@@ -487,8 +460,6 @@ function kaltura_shortcode($attrs)
 	}
 	else
 	{
-		$divId = "kaltura_wrapper_" . $embedOptions["wid"];
-		$playerId = "kaltura_player_" . $embedOptions["wid"];
 		$style = '';
 		$style .= 'width:' . $embedOptions["width"] .'px;';
 		$style .= 'height:' . ($embedOptions["height"] + 10) . 'px;'; // + 10 is for the powered by div
@@ -541,6 +512,21 @@ function _kaltura_get_embed_options($params)
 		else
 			$type = get_option('kaltura_default_player_type'); 
 			
+		// backward compatibility
+		if ($type == "whiteblue")
+			$params["uiconfid"] = 530;
+		elseif ($type == "dark")
+			$params["uiconfid"] = 531;
+		elseif ($type == "grey")
+			$params["uiconfid"] = 532;
+		elseif ($type)
+			$params["uiconfid"] = $type;
+		else 
+		{
+			global $KALTURA_DEFAULT_PLAYERS;
+			$params["uiconfid"] = $KALTURA_DEFAULT_PLAYERS[0]["id"];
+		}
+			
 		$params["width"] = 250;
 		$params["height"] = 244;
 		$layoutId = "tinyPlayer";
@@ -569,17 +555,30 @@ function _kaltura_get_embed_options($params)
 			$params["height"] = KalturaHelpers::calculatePlayerHeight(get_option('kaltura_default_player_type'), $params["width"]);
 			
 		// check the permissions
+		$kdp3LayoutFlashVars = "";
+		$externalInterfaceDisabled = null;
 		if (KalturaHelpers::userCanEdit(@$params["editpermission"]))
 		{
 			$layoutId = "full";
+			$externalInterfaceDisabled = false;
+			$kdp3LayoutFlashVars .= _kdp3_upload_layout_flashvars(true);
+			$kdp3LayoutFlashVars .= "&";
+			$kdp3LayoutFlashVars .= _kdp3_edit_layout_flashvars(true);
 		}
 		else if (KalturaHelpers::userCanAdd(@$params["addpermission"]))
 		{
 			$layoutId = "addOnly";
+			$externalInterfaceDisabled = false;
+			$kdp3LayoutFlashVars .= _kdp3_upload_layout_flashvars(true);
+			$kdp3LayoutFlashVars .= "&";
+			$kdp3LayoutFlashVars .= _kdp3_edit_layout_flashvars(false);
 		}
 		else
 		{ 
 			$layoutId = "playerOnly";
+			$kdp3LayoutFlashVars .= _kdp3_upload_layout_flashvars(false);
+			$kdp3LayoutFlashVars .= "&";
+			$kdp3LayoutFlashVars .= _kdp3_edit_layout_flashvars(false);
 		}
 			
 		if ($params["size"] == "large_wide_screen")  // FIXME: temp hack
@@ -612,7 +611,11 @@ function _kaltura_get_embed_options($params)
 		 
 	$postUrl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 
-	$flashVarsStr =  "layoutId=" . $layoutId;
+	$flashVarsStr = "";
+	$flashVarsStr .=  "layoutId=" . $layoutId;
+	$flashVarsStr .= ("&" . $kdp3LayoutFlashVars);
+	if ($externalInterfaceDisabled === false)
+		$flashVarsStr .= "&externalInterfaceDisabled=false";
 
 	
 	$wid = $params["wid"];
@@ -621,8 +624,12 @@ function _kaltura_get_embed_options($params)
 	if (isset($params["uiconfid"]))
 		$swfUrl .= "/uiconf_id/".$params["uiconfid"];
 		
+	$entryId = null;
 	if (isset($params["entryid"]))
-		$swfUrl .= "/entry_id/".$params["entryid"];
+	{
+		$entryId = $params["entryid"];
+		$swfUrl .= "/entry_id/".$entryId;
+	}
 		
 	return array(
 		"flashVars" => $flashVarsStr,
@@ -631,48 +638,90 @@ function _kaltura_get_embed_options($params)
 		"align" => $align,
 		"style" => @$params["style"],
 		"wid" => $wid,
+		"entryId" => $entryId,
 		"swfUrl" => $swfUrl
 	);
 }
 
 function _kaltura_find_post_widgets($args) 
 {
-	$wid = @$args["wid"];
-	if (!$wid)
+	$wid = isset($args["wid"]) ? $args["wid"] : null;
+	$entryId = isset($args["entryid"]) ? $args["entryid"] : null;
+	if (!$wid && !$entryId)
 		return;
+		
 	global $kaltura_post_id;
 	global $kaltura_widgets_in_post;
-	$kaltura_widgets_in_post[] = $wid; // later will use it to delete the widgets that are not in the post 
+	$kaltura_widgets_in_post[] = array($wid, $entryId); // later will use it to delete the widgets that are not in the post 
 	
 	$widget = array();
 	$widget["id"] = $wid;
+	$widget["entry_id"] = $entryId;
 	$widget["type"] = KALTURA_WIDGET_TYPE_POST;
 	$widget["add_permissions"] = $args["addpermission"];
 	$widget["edit_permissions"] = $args["editpermission"];
 	$widget["post_id"] = $kaltura_post_id;
 	$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
-	
 	$widget = KalturaWPModel::insertOrUpdateWidget($widget);
 }
 
 function _kaltura_find_comment_widgets($args)
 {
-	$wid = @$args["wid"];
-	if (!$wid)
+	$wid = isset($args["wid"]) ? $args["wid"] : null;
+	$entryId = isset($args["entryid"]) ? $args["entryid"] : null;
+	if (!$wid && !$entryId)
 		return;
-	
+		
+	if (!$wid)
+		$wid = "_" . get_option("kaltura_partner_id");
+		
 	global $kaltura_comment_id;
 	$comment = get_comment($kaltura_comment_id);
 	
 	// add new widget
 	$widget = array();
 	$widget["id"] = $wid;
+	$widget["entry_id"] = $entryId;
 	$widget["type"] = KALTURA_WIDGET_TYPE_COMMENT;
 	$widget["post_id"] = $comment->comment_post_ID;
 	$widget["comment_id"] = $kaltura_comment_id;
 	$widget["status"] = KALTURA_WIDGET_STATUS_PUBLISHED;
 	
 	$widget = KalturaWPModel::insertOrUpdateWidget($widget);
+}
+
+function _kdp3_edit_layout_flashvars($enabled) {
+	$enabled = ($enabled) ? 'true' : 'false';
+	$params = array(
+		"editBtnControllerScreen.includeInLayout" => $enabled,
+		"editBtnControllerScreen.visible" => $enabled,
+		"editBtnStartScreen.includeInLayout" => $enabled,
+		"editBtnStartScreen.visible" => $enabled,
+		"editBtnPauseScreen.includeInLayout" => $enabled,
+		"editBtnPauseScreen.visible" => $enabled,
+		"editBtnPlayScreen.includeInLayout" => $enabled,
+		"editBtnPlayScreen.visible" => $enabled,
+		"editBtnEndScreen.includeInLayout" => $enabled,
+		"editBtnEndScreen.visible" => $enabled,
+	);
+	return http_build_query($params);
+}
+
+function _kdp3_upload_layout_flashvars($enabled) {
+	$enabled = ($enabled) ? 'true' : 'false';
+	$params = array(
+		"uploadBtnControllerScreen.includeInLayout" => $enabled,
+		"uploadBtnControllerScreen.visible" => $enabled,
+		"uploadBtnStartScreen.includeInLayout" => $enabled,
+		"uploadBtnStartScreen.visible" => $enabled,
+		"uploadBtnPauseScreen.includeInLayout" => $enabled,
+		"uploadBtnPauseScreen.visible" => $enabled,
+		"uploadBtnPlayScreen.includeInLayout" => $enabled,
+		"uploadBtnPlayScreen.visible" => $enabled,
+		"uploadBtnEndScreen.includeInLayout" => $enabled,
+		"uploadBtnEndScreen.visible" => $enabled,
+	);
+	return http_build_query($params);
 }
 		
 if ( !get_option('kaltura_partner_id') && !isset($_POST['submit']) && !strpos($_SERVER["REQUEST_URI"], "page=interactive_video")) {

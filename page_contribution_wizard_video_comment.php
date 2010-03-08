@@ -86,17 +86,13 @@
 </script>
 <?php else: ?>		
 <script type="text/javascript">
-	var entryIds = "";
+	var entryId = "";
 	var topWindow = Kaltura.getTopWindow();
 	function onContributionWizardAfterAddEntry(obj)
 	{
-		if (obj && obj.length)
+		if (obj && obj.length > 0)
 		{
-			for(var i = 0; i < obj.length; i++)
-			{
-				entryIds += (obj[i].entryId + ",");
-			}
-			entryIds = entryIds.substr(0, entryIds.length - 1);
+			entryId = (obj[0].entryId) ? obj[0].entryId : obj[0].uniqueID;
 		}
 	}
 	
@@ -107,55 +103,39 @@
 	
 	function onContributionWizardCloseTimeouted(modified)
 	{
-		if (modified && entryIds.length > 0) 
+		if (modified) 
 		{
-			jQuery.ajax(
-				{
-					url: "<?php echo KalturaHelpers::getPluginUrl(); ?>/ajax_prepare_comment_widget.php",
-					success: addWidgetSuccessHandler,
-					error: addWidgetErrorHandler,
-					dataType: "html",
-					method: "GET",
-					data: { entryIds: entryIds, postId: <?php echo $viewData["postId"] ?> }
-				}
-			);
+			if (!entryId)
+				topWindow.Kaltura.doErrorFromComments("Failed to add your comment");
+			
+			var jqComments = topWindow.jQuery("#comment,[name=comment]");
+			var jqSubmitButton = topWindow.jQuery("#submit,[name=submit]");
+			var widgetHtml = '[kaltura-widget entryid="'+entryId+'" size="comments" /]';
+			
+			if (jqComments.size() > 0 && jqSubmitButton.size() > 0)
+			{
+				// get only the first submit button that was found
+				jqSubmitButton = jQuery(jqSubmitButton[0]);
+				
+				var html = jqComments.val();
+				if (html.replace(" ", "") != "")
+					html += "\n";
+				
+				html += widgetHtml;
+				jqComments.val(html);
+				jqComments.attr('readonly', true);
+				jqSubmitButton.click();
+				jqSubmitButton.val("Please wait...");
+				jqSubmitButton.attr("disabled", true);
+			}
+			
+			topWindow.KalturaModal.closeModal();
 		}
 		else
 		{
 			topWindow.KalturaModal.closeModal();
 		}
 	}
-	
-	function addWidgetSuccessHandler(data, status)
-	{
-		var jqComments = topWindow.jQuery("#comment,[name=comment]");
-		var jqSubmitButton = topWindow.jQuery("#submit,[name=submit]");
-
-		if (jqComments.size() > 0 && jqSubmitButton.size() > 0)
-		{
-			// get only the first submit button that was found
-			jqSubmitButton = jQuery(jqSubmitButton[0]);
-			
-			var html = jqComments.val();
-			if (html.replace(" ", "") != "")
-				html += "\n";
-				
-			html += data;
-			jqComments.val(html);
-			jqComments.attr('readonly', true);
-			jqSubmitButton.click();
-			jqSubmitButton.val("Please wait...");
-			jqSubmitButton.attr("disabled", true);
-		}
-		
-		topWindow.KalturaModal.closeModal();
-	}
-	
-	function addWidgetErrorHandler()
-	{
-		topWindow.Kaltura.doErrorFromComments("Failed to add your comment");
-	}
-	
 </script>
 </head>
 <body>
@@ -163,7 +143,9 @@
 <?php
 	require_once("view/view_contribution_wizard.php");
 ?>
-
+<script type="text/javascript">
+	cwSwf.write("kaltura_contribution_wizard_wrapper");
+</script>
 </body>
 <?php endif; ?>
 </html>

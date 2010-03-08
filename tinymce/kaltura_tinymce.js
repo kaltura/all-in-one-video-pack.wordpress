@@ -139,7 +139,8 @@
 					contentData += 'kaltura_item align' + attribs['align'] + ' ';
 					contentData += 'kaltura_add_' + attribs['addpermission'] + ' ';
 					contentData += 'kaltura_edit_' + attribs['editpermission'] + ' ';
-					contentData += 'kaltura_id_' + attribs['wid'] + ' ';
+					if (attribs['wid'])
+						contentData += 'kaltura_id_' + attribs['wid'] + ' ';
 					if (attribs['uiconfid'])
 						contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
 					if (attribs['entryid'])
@@ -233,7 +234,8 @@
 					
 
 					contentData += this._tagStart + ' ';
-					contentData += 'wid="' + wid + '" '; // widget id
+					if (wid)
+						contentData += 'wid="' + wid + '" ';
 					
 					if (uiconfid)
 						contentData += 'uiconfid="' + uiconfid + '" ';

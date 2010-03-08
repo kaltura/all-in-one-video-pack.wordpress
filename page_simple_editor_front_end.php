@@ -9,24 +9,33 @@
 	KalturaHelpers::force200Header();
 
 	$closeLink = KalturaHelpers::getCloseLinkForModals();
-	$widgetId = @$_GET['wid'];
-	if (!$widgetId)
+	$widgetId = isset($_GET['wid']) ? $_GET['wid'] : "";
+	$entryId = isset($_GET['entryId']) ? $_GET['entryId'] : "";
+	
+	if ($widgetId == "_".get_option('kaltura_partner_id')) // backward compatibility for old players sending widget id when we use entries
+		$widgetId = "";
+		
+	if (!$widgetId && !$entryId)
 		wp_die(__('The interactive video is missing.<br/><br/>'.$closeLink));
 	
 	// check widget permissions at wordpress db
-	$widgetDb = KalturaWPModel::getWidget($widgetId);
+	$widgetDb = KalturaWPModel::getWidget($widgetId, $entryId);
 	if (!$widgetDb)
 		wp_die(__('The interactive video was not found (Maybe the post was not published yet?).<br/><br/>'.$closeLink));
 	
 	if (!KalturaHelpers::userCanEdit((string)$widgetDb["edit_permissions"]))
 		wp_die(__('You do not have sufficient permissions to access this page.<br/><br/>'.$closeLink));
 
-	// get the widget from kaltura to find the kshow its linked to
 	$kmodel = KalturaModel::getInstance();
-	$widget = $kmodel->getWidget($widgetId);
-	$entryId = $widget->entryId;
 	
-	if (!$entryId || !$widget)
+	if (!$entryId) // for backward compatibility
+	{
+		// get the widget from kaltura to find the entry its linked to
+		$widget = $kmodel->getWidget($widgetId);
+		$entryId = $widget->entryId;
+	}
+	
+	if (!$entryId || !$widgetDb)
 		wp_die(__('The video was not found.<br/><br/>'.$closeLink));
 		
 	$ks = $kmodel->getClientSideSession("edit:*");

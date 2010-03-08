@@ -1,13 +1,27 @@
 <?php if (!defined("WP_ADMIN")) die();?>
-<?php if ($viewData["widgetId"]): ?>
+<?php if ($viewData["uiConfId"]): ?>
 <script type="text/javascript">
 	var playerWidth = "<?php echo $viewData["playerWidth"]; ?>";
 	var playerHeight = "<?php echo $viewData["playerHeight"]; ?>";
-	var playerType = "<?php echo $viewData["playerType"]; ?>";
+	var uiConfId = "<?php echo $viewData["uiConfId"]; ?>";
+	var entryId = "<?php echo $viewData["entryId"]; ?>";
 	var addPermission = "<?php echo $viewData["addPermission"]; ?>";
 	var editPermission = "<?php echo $viewData["editPermission"]; ?>";
+
+	var htmlArray = [];
+	htmlArray.push('[');
+	htmlArray.push('kaltura-widget ');
+	htmlArray.push('uiconfid="'+uiConfId+'" '); 
+	htmlArray.push('entryid="'+entryId+'" ');
+	htmlArray.push('width="'+playerWidth+'" ');
+	htmlArray.push('height="'+playerHeight+'" ');
+	htmlArray.push('addpermission="'+addPermission+'" ');
+	htmlArray.push('editpermission="'+editPermission+'" ');
+	htmlArray.push('/]');
+	htmlArray.push('\n');
 	
-	var html = '[kaltura-widget wid="<?php echo $viewData["widgetId"]; ?>" width="'+playerWidth+'" height="'+playerHeight+'" type="'+playerType+'" addPermission="'+addPermission+'" editPermission="'+editPermission+'" /]';
+
+	var html = htmlArray.join('');
 
 	// lets make it safe
 	try
@@ -30,17 +44,22 @@
 				content.val(content.val() + html);
 			}
 		}
-		
+
+		<?php if (count($viewData["nextEntryIds"]) > 0): ?>
+		var url =  "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $viewData["nextEntryIds"])); ?>";
+		window.location.href = url;
+		<?php else: ?>
 		setTimeout('topWindow.tb_remove()', 0);
+		<?php endif; ?>
 	}
 	catch(e) 
 	{
 		var displayEditTable = true;
 	}
 </script>
-<div class="kalturaTab">
+<div id="sendToEditor" class="kalturaTab">
 	<form method="post" class="kalturaForm">
-		<table id="kalturaEditTable" class="form-table kalturaFormTable" style="display: none;">
+		<table class="form-table" style="display: none;">
 			<tr>
 				<td>
 					<b>We were unable to insert the player code into the editor. Please copy and paste the code as it appears below.</b>
@@ -60,7 +79,7 @@
 <script>
 	if (displayEditTable)
 	{
-		jQuery("#kalturaEditTable").show();
+		jQuery("table").show();
 		jQuery("#txtCode").val(html);
 	}
 </script>
@@ -69,23 +88,17 @@
 	$flashVarsStr = KalturaHelpers::flashVarsToString($viewData["flashVars"]);
 ?>
 
-<div class="kalturaTab">
+<div id="sendToEditor" class="kalturaTab">
 	<?php if (@$_GET["firstedit"] != "true"): ?>
 	<div class="backDiv">
-		<a href="<?php echo KalturaHelpers::generateTabUrl(array()); ?>"><img src="<?php echo KalturaHelpers::getPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
+		<a href="<?php echo KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_browse')); ?>"><img src="<?php echo KalturaHelpers::getPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
 	</div>
 	<?php endif; ?>
-	<form method="post" class="kalturaForm">
-		<table id="kalturaEditTable" class="form-table kalturaFormTable">
+	<form method="post" class="kalturaForm" action="<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $viewData["nextEntryIds"])); ?>">
+		<table class="form-table">
 			<tr>
-				<td valign="top" width="180">
-					<div id="divKalturaThumbnail" style="width:240px; height:245px;" class="kalturaHand" onclick="Kaltura.activatePlayer('divKalturaThumbnail','divKalturaPlayer');">
-						<div class="playerName"><nobr><?php echo $viewData["entry"]->name; ?></nobr></div>
-						<img id="thumbnailPreview" src=""  />
-					</div>
-					<div id="divKalturaPlayer" style="display: none"></div>
-					<?php $players = KalturaHelpers::getPlayers(); ?>
-					
+				<td valign="top" width="240">
+					<div id="divKalturaPlayer"></div>
 					<script type="text/javascript">
 						function updateRatio() {
 							var ratio = jQuery("input[name=playerRatio]:checked").val();
@@ -100,37 +113,10 @@
 								jQuery("#playerWidthMedium").next().text("Small (260x260)");
 							}
 						}
-						
-						function embedPreviewPlayer(name, aspectRatio) {
-							<?php foreach($players as $name => $details): ?>
-								var player_<?php echo $name; ?>_settings = {
-										url: "<?php echo KalturaHelpers::getSwfUrlForBaseWidget($name); ?>",
-										name: "<?php echo $details["name"]; ?>",
-										previewHeaderColor: "<?php echo $details["previewHeaderColor"]; ?>",
-										horizontalSpacer: <?php echo $details["horizontalSpacer"]; ?>,
-										verticalSpacer: <?php echo $details["verticalSpacer"]; ?>,
-										previewWidth: 240,
-										previewHeight: <?php echo KalturaHelpers::calculatePlayerHeight($name, 240); ?> 
-								};
-							<?php endforeach; ?>
-
-							var playerSettings = eval("player_" + name + "_settings");
-							var swfUrl = playerSettings.url;
-							jQuery("#thumbnailPreview").attr('src', '<?php echo $viewData["thumbnailPlaceHolderUrl"]; ?>&player_type='+name);
-							jQuery("#divKalturaThumbnail .playerName").css('color', playerSettings.previewHeaderColor);
-							
-							var kalturaSwf = new SWFObject(swfUrl, "swfKalturaPlayer", playerSettings.previewWidth, playerSettings.previewHeight, "9", "#000000");
-							kalturaSwf.addParam("flashVars", "<?php echo $flashVarsStr; ?>");
-							kalturaSwf.addParam("wmode", "opaque");
-							kalturaSwf.addParam("allowScriptAccess", "always");
-							kalturaSwf.addParam("allowFullScreen", "true");
-							kalturaSwf.addParam("allowNetworking", "all");
-							kalturaSwf.write("divKalturaPlayer");
-						};
 					</script>
 				</td>
-				<td id="kalturaEditRight" valign="top">
-					<table>
+				<td valign="top">
+					<table class="options">
 						<tr>
 							<td style="padding-bottom:22px;" colspan="2">
 							<?php if ($viewData["isLibrary"])?>
@@ -142,16 +128,8 @@
 						<tr>
 							<td valign="top">
 								<div class="selectBox">
-									<label for="playerType">Select player design:</label>
-									<select name="playerType" id="playerType" onchange="embedPreviewPlayer(this.options[this.selectedIndex].value, jQuery('input[name=playerRatio]:checked').val());">
-									<?php $players = KalturaHelpers::getPlayers(); ?>
-									<?php foreach($players as $name => $details): ?>
-										<option id="playerType_<?php echo $name; ?>" value="<?php echo $name; ?>" <?php echo @get_option("kaltura_default_player_type") == $name ? "selected=\"selected\"" : ""; ?>><?php echo $details["name"]; ?></option>
-										<?php if (@get_option("kaltura_default_player_type") == $name): ?>
-											<?php $selectedPlayerName = $name; ?>
-										<?php endif; ?>
-									<?php endforeach; ?>
-									</select>
+									<label for="uiConfId">Select player design:</label>
+									<select name="uiConfId" id="uiConfId"></select>
 									<?php if ($selectedPlayerName): ?>
 									<script type="text/javascript">
 										embedPreviewPlayer('<?php echo $selectedPlayerName; ?>');
@@ -202,12 +180,17 @@
 							</td>
 						</tr>
 					</table>
-					<p id="kalturaEditButtons" class="submit">
-						<input type="submit" value="<?php echo attribute_escape( __( 'Insert into Post' ) ); ?>" name="sendToEditorButton" class="button-secondary" />
-					</p>
 				</td>
 			</tr>
 		</table>
+		<?php if ($viewData["entry"]->type == KalturaEntryType_MIX): ?>
+		<p class="note"><?php _e('Note:  If your custom player includes the "Edit" and/or "Upload" actions make sure you allow users to edit this video.'); ?></p>
+		<?php elseif ($viewData["entry"]->type == KalturaEntryType_MEDIA_CLIP): ?>
+		<p class="note"><?php _e('Note: Make sure you do not use a player that includes the "Edit" and/or "Upload" actions, as this video is not editable.'); ?></p>
+		<?php endif; ?>
+		<p class="submit">
+			<input type="submit" value="<?php echo attribute_escape( __( 'Insert into Post' ) ); ?>" name="sendToEditorButton" class="button-secondary" />
+		</p> 
 	</form>			
 </div>
 <script type="text/javascript">
@@ -217,7 +200,7 @@
 		jQuery(this).siblings("[type=radio]").attr("checked", "checked");
 	});
 	
-	jQuery("#kalturaEditButtons input[type=submit]").click(function () {
+	jQuery("input[type=submit]").click(function () {
 			jQuery("#ktitle").css("border-color", "").siblings("span").hide();
 			if (jQuery("#ktitle").val().replace(/ /g, "").length == 0) {
 				jQuery("#ktitle").css("border-color", "red").siblings("span").show();
@@ -235,5 +218,26 @@
 			}
 			return true;
 	});
+
+	jQuery().kalturaPlayerSelector({
+		url: '<?php echo KalturaHelpers::getPluginUrl() ?>/ajax_get_players.php',
+		defaultId: '<?php echo get_option("kaltura_default_player_type"); ?>',
+		swfBaseUrl: '<?php echo KalturaHelpers::getSwfUrlForWidget(); ?>',
+		previewId: 'divKalturaPlayer',
+		entryId: '<?php echo $viewData["entry"]->id; ?>',
+		playersList: '#uiConfId',
+		dimensions: 'input[name=playerRatio]',
+		submit: 'input[name=sendToEditorButton]',
+		onSelect: function() {
+			fixHeight();
+		}
+	});
+
+	function fixHeight() {
+		var topWindow = Kaltura.getTopWindow();
+		topWindow.Kaltura.animateModalSize(680,jQuery("#sendToEditor").height() + 70);
+	}
+
+	fixHeight();
 </script>
 <?php endif; ?>
