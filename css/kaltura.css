@@ -20,6 +20,7 @@ input#kaltura_video_comment{ margin-top: 0; }
 fieldset.kalturaNoBorderFieldSet{ border: 0; }
 fieldset.kalturaNoBorderFieldSet legend label{ font-weight: bold; }
 form.kalturaForm{ margin: 0; }
+.media_page_interactive_video_library .column-posts { width: 5em; }
 
 /* general for tabs */
 .kalturaTab{ margin: 15px; }

@@ -27,7 +27,7 @@ $messages[5] = __('Category not updated.');
 				<th scope="col" id="name" class="manage-column column-name" style=""><?php _e("Name"); ?></th>
 				<th scope="col" id="description" class="manage-column column-description" style=""><?php _e("Description"); ?></th>
 				<th scope="col" id="slug" class="manage-column column-slug" style=""><?php _e("Slug"); ?></th>
-				<th scope="col" id="posts" class="manage-column column-comments num" style=""><?php _e("Posts"); ?></th>
+				<th scope="col" id="posts" class="manage-column column-posts num" style=""><?php _e("Posts"); ?></th>
 			</tr>
 		</thead>
 		<?php if (KalturaHelpers::compareWPVersion('2.7', '>=')): ?> 
@@ -37,7 +37,7 @@ $messages[5] = __('Category not updated.');
 				<th scope="col"  class="manage-column column-name" style=""><?php _e("Name"); ?></th>
 				<th scope="col"  class="manage-column column-description" style=""><?php _e("Description"); ?></th>
 				<th scope="col"  class="manage-column column-slug" style=""><?php _e("Slug"); ?></th>
-				<th scope="col"  class="manage-column column-date" style=""><?php _e("Posts"); ?></th>
+				<th scope="col"  class="manage-column column-posts num" style=""><?php _e("Posts"); ?></th>
 			</tr>
 		</tfoot>
 		<?php endif; ?>
