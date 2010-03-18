@@ -13,37 +13,18 @@
 	$KALTURA_DEFAULT_PLAYERS = array (
 		array(
 			"id" => 534,
-			"name" => "KDP3 Light Player", 
+			"name" => "Light Skin", 
 			"width" => 400,
 			"height" => 330
 		),
 		array(
 			"id" => 535,
-			"name" => "KDP3 Dark Player", 
+			"name" => "Dark Skin", 
 			"width" => 400,
 			"height" => 330
 		),
 	);
 	
 	
-	$KALTURA_LEGACY_PLAYERS = array (
-		array(
-			"id" => 530,
-			"name" => "White/Blue", 
-			"width" => 400,
-			"height" => 365,
-		),
-		array(
-			"id" => 531,
-			"name" => "Dark",
-			"width" => 400,
-			"height" => 365, 
-		),
-		array(
-			"id" => 532,
-			"name" => "Grey", 
-			"width" => 400,
-			"height" => 365,
-		)
-	);
+	$KALTURA_LEGACY_PLAYERS = array ();
 ?>

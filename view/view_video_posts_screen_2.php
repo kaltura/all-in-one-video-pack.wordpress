@@ -5,7 +5,7 @@
 	<br clear="all" />
 	<?php if (!$viewData["hasEntries"]): ?>
 	<div class="tablenav">
-		<?php _e("No videos found!"); ?>
+		<?php _e("No videos found. There might not be any videos in your KMC or you have previously created video posts from these categories (you can create a video post once)."); ?>
 	</div>
 	<div class="tablenav">
 		<div class="alignleft actions">

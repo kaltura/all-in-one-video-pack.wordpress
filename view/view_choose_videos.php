@@ -61,7 +61,7 @@
 
 		if (!ready)
 		{
-			alert("<?php _e('Only converted items can be added to mixes.\nPlease wait or reselect ready items only.'); ?>");
+			alert("<?php _e('Only converted items can be added to mixes.\nPlease wait or reselect ready items only.\nYou can create your mix later. Conversion will continue in the background.'); ?>");
 			return;
 		}
 		
