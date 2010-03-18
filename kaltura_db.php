@@ -25,7 +25,7 @@ function kaltura_install_db()
 		);";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
-		add_option("kaltura_db_version", $kaltura_db_version);
+		add_option("kaltura_db_version", "1.0");
 	}
 	
 	// upgrades
@@ -43,7 +43,7 @@ function kaltura_install_db()
 		$sql = "ALTER TABLE " . $table_name . " ADD PRIMARY KEY  (id, entry_id);";
 		$wpdb->query($sql);
 		
-		update_option("kaltura_db_version", $kaltura_db_version);
+		update_option("kaltura_db_version", "1.1");
 	}
 }
 
