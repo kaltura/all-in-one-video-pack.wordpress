@@ -69,19 +69,19 @@
 		// restore the mac firefox opacity bug workaround
 		if (Kaltura.isMacFF())
 			Kaltura.showTinyMCEToolbar();
-			
-		topWindow.Kaltura.restoreModalSize(
+
+		topWindow.Kaltura.animateModalSize(
+			topWindow.Kaltura.originalWidth,
+			topWindow.Kaltura.originalHeight,
 			function () {
 				topWindow.Kaltura.bindOverlayClick();
 				window.location = '<?php echo urldecode($_GET["backurl"]); ?>';
 			}
-		);	
+		);
 	}
 
 	var topWindow = Kaltura.getTopWindow();
 
-	topWindow.Kaltura.unbindOverlayClick();
-	
 	// fix for IE6, scroll the page up so modal would animate in the center of the window
 	if (jQuery.browser.msie && jQuery.browser.version < 7)
 		topWindow.scrollTo(0,0);
@@ -96,9 +96,13 @@
 		// this is needed when the user clicks back on his browser
 		jQuery(window).unload(function () {
 			Kaltura.restoreSimpleEditorHack();
-
+			
 			// call the top window to do the animation
-			topWindow.Kaltura.restoreModalSize();
+			topWindow.Kaltura.animateModalSize(
+					topWindow.Kaltura.originalWidth,
+					topWindow.Kaltura.originalHeight,
+					function () { }
+				);
 			
 			// restore the mac firefox opacity bug workaround
 			if (Kaltura.isMacFF())

@@ -82,10 +82,11 @@
 		return entryIds;
 	}
 
-	function createMixSuccess(data) {
-		var entryIds = [];
-		entryIds.push(data);
-		sendToEditor(entryIds, true);
+	function createMixSuccess(entryId) {
+		var backurl = '<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>';
+		backurl += ('&entryIds[]=' + entryId);
+		var url =  '<?php echo KalturaHelpers::getPluginUrl(); ?>/page_simple_editor_admin.php?entryId=' + entryId + '&backurl=' + escape(backurl);
+		window.location.href = url;
 	}
 
 	function createMixError() {

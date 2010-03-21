@@ -66,7 +66,10 @@ function kaltura_library_delete()
 	$entryId = @$_GET['entryid'];
 	$kmodel = KalturaModel::getInstance();
 	$res = $kmodel->deleteEntry($entryId);
-	$redirectUrl = KalturaHelpers::generateTabUrl(array("page" => "interactive_video_library"));
+	if (isset($_GET['nextUrl']))
+		$redirectUrl = $_GET['nextUrl'];
+	else
+		$redirectUrl = KalturaHelpers::generateTabUrl(array("page" => "interactive_video_library"));
 	$viewData["jsCode"] = "window.location.href = '" . $redirectUrl . "';";
 	$viewData["redirectUrl"] = $redirectUrl;
 	require_once(dirname(__FILE__) . "/../view/view_deleted.php");

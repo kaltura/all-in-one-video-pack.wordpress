@@ -27,8 +27,9 @@
 		<script type="text/javascript">
 			function deleteEntry(entryId) {
 				var res = confirm("Are you sure?");
-				if (res)
-					window.location = '<?php echo KalturaHelpers::generateTabUrl(array("page" => "interactive_video_library", "kaction" => "delete", "entryIds" => null)); ?>&entryid=' + entryId; 
+				<?php $nextUrl = urlencode($_SERVER["REQUEST_URI"]); ?>
+				if (res) 
+					window.location = '<?php echo KalturaHelpers::generateTabUrl(array("page" => "interactive_video_library", "kaction" => "delete", "nextUrl" => $nextUrl, "entryIds" => null)); ?>&entryid=' + entryId; 
 			}
 		</script>
 		<ul id="kalturaBrowse">
