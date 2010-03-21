@@ -37,7 +37,7 @@ a.kalturaLink:hover{ color: #6699CC; }
 #kalturaTabChooseVideos .options a { margin: 0 10px; }
 #kalturaTabChooseVideos .loader { position: fixed; left: 9px; bottom: 7px; }
 #kalturaTabChooseVideos { margin-bottom: 0px; }
-#kalturaTabChooseVideos .fixIe7 { position: relative; top: -10px; height: 4px; }
+#kalturaTabChooseVideos .fixIe7 { position: relative; top: -10px; height: 4px; z-index: -1; }
 
 /* create tab */
 #kalturaCreateDiv { text-align: center; padding-top: 60px; }
