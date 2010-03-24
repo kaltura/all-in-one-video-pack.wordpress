@@ -1,3 +1,12 @@
+Version 2.4
+-------------
+* MultiUser Support
+* New default players
+* Option to use custom KMC players within WordPress
+* Option to automatically generate video posts using categories from within the user’s KMC
+* Improved playback performance
+* Removed 200MB per upload restriction 
+
 Version 2.3.1
 -------------
 * Fixed PHP4 client throwing warnings when allow_call_time_pass_reference is off

@@ -1,10 +1,10 @@
 === All in One Video Pack ===
 Contributors: Kaltura
 Donate link: http://www.kaltura.org/
-Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, myspace, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
+Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
 Requires at least: 2.5
-Tested up to: 2.7.1
-Stable tag: 2.3.1
+Tested up to: 2.9.2
+Stable tag: 2.4
 
 Easily add full video capabilities to your blog.
 
@@ -16,7 +16,7 @@ Highlights:
 
 * Upload, record from webcam and import all rich-media directly to your blog post; 
 * Edit and remix videos using Kaltura's online full-featured video editor; 
-* Easily import all rich media (video, audio, pictures...) from other sites and social networks, such as MySpace, Flickr, CCMixter, Jamendo, New York Public Library, any URL on the web etc.; 
+* Easily import all rich media (video, audio, pictures...) from other sites and social networks, such as Flickr, CCMixter, Jamendo, New York Public Library, any URL on the web etc.; 
 * Allow readers and subscribers to add video and audio comments, and to participate in collaborative videos; 
 * Manage and track interactive videos through the management console; 
 * Sidebar widget displaying thumbnails of recent videos and video comments
@@ -30,12 +30,14 @@ Highlights:
 * Easy installation that takes just 4 steps and a few minutes. 
 
 
-New features included in Version 2.3:
-
-* Widescreen support - you can now upload widescreen videos into a 16:9 player
-* New cool video player designs to choose from
-* Choose between uploading a single media file or creating a mix with more than one file
-* Bug fixing and maintenance
+Version 2.4
+-------------
+* MultiUser Support
+* New default players
+* Option to use custom KMC players within WordPress
+* Option to automatically generate video posts using categories from within the user’s KMC
+* Improved playback performance
+* Removed 200MB per upload restriction 
 
 Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://www.kaltura.org/forums/wordpress-kaltura-plugin-all-one-video-pack-forums
 
