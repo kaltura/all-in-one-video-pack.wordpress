@@ -39,7 +39,9 @@ Version 2.4
 * Improved playback performance
 * Removed 200MB per upload restriction 
 
-Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://www.kaltura.org/forums/wordpress-kaltura-plugin-all-one-video-pack-forums
+Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums
+
+View video walk-throughs of new features in version 2.4 here: http://wordpress.kaltura.org
 
 
 == Installation ==
@@ -79,7 +81,7 @@ It might be caused due to an old version of PHP.
 
 The Kaltura wp plugin is written for PHP4 and PHP5 with the use of classes and static members, these are not supported on earlier versions of PHP.
 
-Upgrade to PHP5 / later. If upgrading doesn't solve this issue or you already have PHP5 on your server, post the error information on the forum and we'll help you. (http://community.kaltura.org/viewforum.php?f=4).
+Upgrade to PHP5 / later. If upgrading doesn't solve this issue or you already have PHP5 on your server, post the error information on the forum and we'll help you. (http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums).
 
 Support for PHP4 was added on version 1.0
 
@@ -88,10 +90,12 @@ Support for PHP4 was added on version 1.0
 
 1. Blog main page with video posts
 2. Add a video comment
-3. Management panel Kaltura integration (write a post)
-4. Gallery on management screen
+3. Add Video Screen
+4. Entries Library
 5. Player with interactive options of adding assets (photo, video, audio) to the video and edit
-6. The plugin settings page
+6. Create Video Posts
+7. The plugin settings page
+8. Video Editor
 
 == Join the Kaltura Community and Contribute to Open Source Video! ==
 
