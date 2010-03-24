@@ -35,7 +35,7 @@ Version 2.4
 * MultiUser Support
 * New default players
 * Option to use custom KMC players within WordPress
-* Option to automatically generate video posts using categories from within the user’s KMC
+* Option to automatically generate video posts using categories from within the user's KMC
 * Improved playback performance
 * Removed 200MB per upload restriction 
 
@@ -61,7 +61,7 @@ If you are upgrading your current version of the plugin, or if you're upgrading 
 
 Installing the Recent Videos Sidebar Widget
 
-1. Activate the All in One Video Pack Sidebar Widget through the ‘Plugins’ menu in the WordPress admin application
+1. Activate the All in One Video Pack Sidebar Widget through the 'Plugins' menu in the WordPress admin application
 2. Go to Design > Widgets in the WordPress admin application, then click Add to add the Recent Videos Widget to your sidebar 
 
 Note that videos from earlier versions of the plugin will not show up on the sidebar unless they are reposted, or you can edit them with the Kaltura video editor, resave them, and they will appear in the sidebar.
