@@ -141,7 +141,6 @@ class KalturaClientBase
 
 	function doCurl($url, $params)
 	{
-		$t = microtime(true);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url );
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
@@ -149,7 +148,7 @@ class KalturaClientBase
 		curl_setopt($ch, CURLOPT_USERAGENT, '');
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10 );
 		if (defined('CURLOPT_ENCODING'))
-			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate'); 
+			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
 
 		$result = curl_exec($ch);
 		$curlError = curl_error($ch);

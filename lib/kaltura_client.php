@@ -7,6 +7,7 @@ define("KalturaAccessControlOrderBy_CREATED_AT_DESC", "-createdAt");
 define("KalturaAudioCodec_NONE", "");
 define("KalturaAudioCodec_MP3", "mp3");
 define("KalturaAudioCodec_AAC", "aac");
+define("KalturaAudioCodec_VORBIS", "vorbis");
 
 define("KalturaBaseEntryOrderBy_NAME_ASC", "+name");
 define("KalturaBaseEntryOrderBy_NAME_DESC", "-name");
@@ -91,6 +92,7 @@ define("KalturaContainerFormat_AVI", "avi");
 define("KalturaContainerFormat_MOV", "mov");
 define("KalturaContainerFormat_MP3", "mp3");
 define("KalturaContainerFormat__3GP", "3gp");
+define("KalturaContainerFormat_OGG", "ogg");
 
 define("KalturaControlPanelCommandOrderBy_CREATED_AT_ASC", "+createdAt");
 define("KalturaControlPanelCommandOrderBy_CREATED_AT_DESC", "-createdAt");
@@ -335,6 +337,8 @@ define("KalturaPlayableEntryOrderBy_VIEWS_ASC", "+views");
 define("KalturaPlayableEntryOrderBy_VIEWS_DESC", "-views");
 define("KalturaPlayableEntryOrderBy_DURATION_ASC", "+duration");
 define("KalturaPlayableEntryOrderBy_DURATION_DESC", "-duration");
+define("KalturaPlayableEntryOrderBy_MS_DURATION_ASC", "+msDuration");
+define("KalturaPlayableEntryOrderBy_MS_DURATION_DESC", "-msDuration");
 define("KalturaPlayableEntryOrderBy_NAME_ASC", "+name");
 define("KalturaPlayableEntryOrderBy_NAME_DESC", "-name");
 define("KalturaPlayableEntryOrderBy_MODERATION_COUNT_ASC", "+moderationCount");
@@ -352,6 +356,8 @@ define("KalturaMediaEntryOrderBy_VIEWS_ASC", "+views");
 define("KalturaMediaEntryOrderBy_VIEWS_DESC", "-views");
 define("KalturaMediaEntryOrderBy_DURATION_ASC", "+duration");
 define("KalturaMediaEntryOrderBy_DURATION_DESC", "-duration");
+define("KalturaMediaEntryOrderBy_MS_DURATION_ASC", "+msDuration");
+define("KalturaMediaEntryOrderBy_MS_DURATION_DESC", "-msDuration");
 define("KalturaMediaEntryOrderBy_NAME_ASC", "+name");
 define("KalturaMediaEntryOrderBy_NAME_DESC", "-name");
 define("KalturaMediaEntryOrderBy_MODERATION_COUNT_ASC", "+moderationCount");
@@ -372,6 +378,8 @@ define("KalturaMixEntryOrderBy_VIEWS_ASC", "+views");
 define("KalturaMixEntryOrderBy_VIEWS_DESC", "-views");
 define("KalturaMixEntryOrderBy_DURATION_ASC", "+duration");
 define("KalturaMixEntryOrderBy_DURATION_DESC", "-duration");
+define("KalturaMixEntryOrderBy_MS_DURATION_ASC", "+msDuration");
+define("KalturaMixEntryOrderBy_MS_DURATION_DESC", "-msDuration");
 define("KalturaMixEntryOrderBy_NAME_ASC", "+name");
 define("KalturaMixEntryOrderBy_NAME_DESC", "-name");
 define("KalturaMixEntryOrderBy_MODERATION_COUNT_ASC", "+moderationCount");
@@ -472,6 +480,7 @@ define("KalturaSearchProviderType_ARCHIVE_ORG", 22);
 define("KalturaSearchProviderType_KALTURA_PARTNER", 23);
 define("KalturaSearchProviderType_METACAFE", 24);
 define("KalturaSearchProviderType_SEARCH_PROXY", 28);
+define("KalturaSearchProviderType_PARTNER_SPECIFIC", 100);
 
 define("KalturaSessionType_USER", 0);
 define("KalturaSessionType_ADMIN", 2);
@@ -640,6 +649,7 @@ define("KalturaVideoCodec_H263", "h263");
 define("KalturaVideoCodec_H264", "h264");
 define("KalturaVideoCodec_FLV", "flv");
 define("KalturaVideoCodec_MPEG4", "mpeg4");
+define("KalturaVideoCodec_THEORA", "theora");
 
 define("KalturaWidgetOrderBy_CREATED_AT_ASC", "+createdAt");
 define("KalturaWidgetOrderBy_CREATED_AT_DESC", "-createdAt");
@@ -2675,6 +2685,187 @@ class KalturaEntryContextDataResult extends KalturaObjectBase
 
 }
 
+class KalturaFileSync extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $id = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $partnerId = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaFileSyncObjectType
+	 * @readonly
+	 */
+	var $objectType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $objectId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $version = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $objectSubType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $dc = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $original = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $createdAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $updatedAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $readyAt = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $syncTime = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaFileSyncStatus
+	 * @readonly
+	 */
+	var $status = null;
+
+	/**
+	 * 
+	 *
+	 * @var KalturaFileSyncType
+	 * @readonly
+	 */
+	var $fileType = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $linkedId = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $linkCount = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $fileRoot = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $filePath = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $fileSize = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $fileUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	var $fileContent = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $fileDiscSize = null;
+
+
+}
+
 class KalturaFileSyncFilter extends KalturaFilter
 {
 	/**
@@ -2879,6 +3070,27 @@ class KalturaFileSyncFilter extends KalturaFilter
 	 * @var int
 	 */
 	var $fileSizeLessThanOrEqual = null;
+
+
+}
+
+class KalturaFileSyncListResponse extends KalturaObjectBase
+{
+	/**
+	 * 
+	 *
+	 * @var KalturaFileSyncArray
+	 * @readonly
+	 */
+	var $objects;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $totalCount = null;
 
 
 }
@@ -3357,6 +3569,13 @@ class KalturaFlavorParamsOutput extends KalturaFlavorParams
 	 */
 	var $flavorAssetVersion = null;
 
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $readyBehavior = null;
+
 
 }
 
@@ -3543,6 +3762,15 @@ class KalturaPlayableEntry extends KalturaBaseEntry
 	var $duration = null;
 
 	/**
+	 * The duration in miliseconds
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	var $msDuration = null;
+
+	/**
 	 * The duration type (short for 0-4 mins, medium for 4-20 mins, long for 20+ mins)
 	 * 
 	 *
@@ -3669,6 +3897,34 @@ class KalturaPlayableEntryFilter extends KalturaBaseEntryFilter
 	 * @var int
 	 */
 	var $durationGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $msDurationLessThan = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $msDurationGreaterThan = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $msDurationLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	var $msDurationGreaterThanOrEqual = null;
 
 	/**
 	 * 
@@ -7021,7 +7277,7 @@ class KalturaPlaylistService extends KalturaServiceBase
 		return $resultObject;
 	}
 
-	function executeFromFilters(array $filters, $totalResults, $detailed = false)
+	function executeFromFilters($filters, $totalResults, $detailed = false)
 	{
 		$kparams = array();
 		foreach(filters as $obj)
@@ -7604,6 +7860,27 @@ class KalturaXInternalService extends KalturaServiceBase
 	}
 }
 
+class KalturaFileSyncService extends KalturaServiceBase
+{
+	function KalturaFileSyncService(&$client)
+	{
+		parent::KalturaServiceBase($client);
+	}
+
+	function listAction($filter = null, $pager = null)
+	{
+		$kparams = array();
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$resultObject = $this->client->callService("filesync", "list", $kparams);
+		$this->client->checkForError($resultObject);
+		$this->client->validateObjectType($resultObject, "KalturaFileSyncListResponse");
+		return $resultObject;
+	}
+}
+
 class KalturaClient extends KalturaClientBase
 {
 	/**
@@ -7786,6 +8063,13 @@ class KalturaClient extends KalturaClientBase
 	 */
 	var $xInternal = null;
 
+	/**
+	 * System user service
+	 *
+	 * @var KalturaFileSyncService
+	 */
+	var $fileSync = null;
+
 
 	function KalturaClient($config)
 	{
@@ -7815,5 +8099,6 @@ class KalturaClient extends KalturaClientBase
 		$this->user = new KalturaUserService($this);
 		$this->widget = new KalturaWidgetService($this);
 		$this->xInternal = new KalturaXInternalService($this);
+		$this->fileSync = new KalturaFileSyncService($this);
 	}
 }
