@@ -1,7 +1,7 @@
 === All in One Video Pack ===
 Contributors: Kaltura
 Donate link: http://www.kaltura.org/
-Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one
+Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one, transcoding, encoding, advertising, video ads, video advertising
 Requires at least: 2.5
 Tested up to: 2.9.2
 Stable tag: 2.4
@@ -19,6 +19,7 @@ Highlights:
 * Easily import all rich media (video, audio, pictures...) from other sites and social networks, such as Flickr, CCMixter, Jamendo, New York Public Library, any URL on the web etc.; 
 * Allow readers and subscribers to add video and audio comments, and to participate in collaborative videos; 
 * Manage and track interactive videos through the management console; 
+* Enable video advertising
 * Sidebar widget displaying thumbnails of recent videos and video comments
 * Complete administrative capabilities. You decide who can add and edit each video; 
 * Supports more than 150 video, audio and image file formats and codecs 
@@ -34,8 +35,8 @@ Version 2.4
 -------------
 * MultiUser Support
 * New default players
-* Option to use custom KMC players within WordPress
-* Option to automatically generate video posts using categories from within the user's KMC
+* Option to create custom video players within the video management console, and use them within WordPress
+* Option to automatically generate video posts using categories from within the user's video management console
 * Improved playback performance
 * Removed 200MB per upload restriction 
 
