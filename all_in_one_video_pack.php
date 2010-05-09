@@ -552,7 +552,10 @@ function _kaltura_get_embed_options($params)
 
 		// if height is missing, recalculate it
 		if (!@$params["height"])
+		{
+			require_once("lib/kaltura_model.php");
 			$params["height"] = KalturaHelpers::calculatePlayerHeight(get_option('kaltura_default_player_type'), $params["width"]);
+		}
 			
 		// check the permissions
 		$kdp3LayoutFlashVars = "";
