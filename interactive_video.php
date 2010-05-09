@@ -3,7 +3,7 @@
 Plugin Name: All in One Video Pack
 Plugin URI: http://kaltura.org/
 Description: This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including playing, uploading and editing.  
-Version: 99.99(DEV)
+Version: 2.4.1
 Author: Kaltura
 Author URI: http://kaltura.org/
 */
