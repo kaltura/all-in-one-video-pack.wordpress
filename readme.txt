@@ -45,6 +45,16 @@ Showcase your blog, see examples and pictures of the plugin and get support in o
 View video walk-throughs of new features in version 2.4 here: http://wordpress.kaltura.org
 
 
+Kaltura Hosted Solution – Free Trial and Affordable Packages
+-------------
+When you signup with Kaltura.com (http://corp.kaltura.com/about/signup) you get 10GB free hosting and streaming using Kaltura’s world-class CDNs and hosting facilities, as well as premium support, SLAs and more. Get started with your free trial today!
+For more information on our packages beyond 10GB, please contact us and we'll get right back to you: http://corp.kaltura.com/about/contact
+
+Self-Hosted Solution
+-------------
+You can also connect your Kaltura Video extension to the Kaltura Community Edition - the self-hosted, community supported version of Kaltura's Open Source Online Video Platform – all behind your own firewall and on your own servers for free.
+Learn more about the Community Edition on the Project page: http://www.kaltura.org/project/community_edition_video_platform
+
 == Installation ==
 
 If you are installing this plugin for the first time:
