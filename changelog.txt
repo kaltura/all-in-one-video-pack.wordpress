@@ -1,3 +1,7 @@
+Version 2.4.2
+-------------
+* Removed link back to Kaltura for statistics gathering.
+
 Version 2.4
 -------------
 * MultiUser Support

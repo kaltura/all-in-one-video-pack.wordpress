@@ -432,9 +432,10 @@ function kaltura_shortcode($attrs)
 	$link = '';
 	$link .= '<a href="http://corp.kaltura.com/">open source video</a>, ';
 	$link .= '<a href="http://corp.kaltura.com/">online video platform</a>, ';
-	$link .= '<a href="http://corp.kaltura.com/solutions/video_solution">video solution</a>';
+	$link .= '<a href="http://corp.kaltura.com/video_platform/video_streaming">video streaming</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/solutions/video_solutions">video solutions</a>';
 	
-	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/technology/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
+	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/video_platform/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
 	
 	if ($isComment)
 	{
