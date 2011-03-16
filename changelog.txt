@@ -1,3 +1,7 @@
+Version 2.4.3
+-------------
+* Fixed compatibility with WordPress 3.1
+
 Version 2.4.2
 -------------
 * Removed link back to Kaltura for statistics gathering.
