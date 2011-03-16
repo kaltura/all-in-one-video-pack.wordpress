@@ -154,9 +154,9 @@ Kaltura = {
 		if (isNaN(height))
 			height = 0;
 			
-		jQuery("#TB_window").css("top", null);
+		jQuery("#TB_window").css("top", '');
 		jQuery("#TB_window").css("margin-top", "-" + (height / 2) + "px");
-		jQuery("#TB_window").css("height", null);
+		jQuery("#TB_window").css("height", '');
 		
 		// backup and temporary remove the tb_position function
 		tb_positionKalturaBackup = tb_position;
