@@ -488,7 +488,7 @@
 							<option value="">Please select...</option>
 							<?php 
 								$selectData = array(
-									'Enerprise / Small Business / Government Agency' => 'Enterprise',
+									'Enterprise / Small Business / Government Agency' => 'Enterprise',
 									'Education Organization' => 'Education',
 									'Media Company / Agency' => 'Media',
 									'CDN / ISP / Integrator / Hosting Provider' => 'Service Provider',
