@@ -1,3 +1,7 @@
+Version 2.4.4
+-------------
+* Changed registration form. Note that this is only relevant for new users of the plugin.
+
 Version 2.4.3
 -------------
 * Fixed compatibility with WordPress 3.1

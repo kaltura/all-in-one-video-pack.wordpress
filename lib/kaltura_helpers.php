@@ -45,7 +45,8 @@ class KalturaHelpers
     
     function getPluginUrl() 
     {
-    	$plugin_name = plugin_basename(__FILE__);   
+    	global $all_in_one_video_pack_file;
+    	$plugin_name = plugin_basename($all_in_one_video_pack_file);   
     	$indx = strpos($plugin_name, "/");
     	$plugin_dir = substr($plugin_name, 0, $indx);
     	$site_url = get_settings('siteurl');

@@ -115,6 +115,15 @@ ul#kalturaBrowse { clear: both; list-style: none; padding: 0 0 0 5px; margin: 1e
 /* mixes page */
 .mixes p.info  { margin: 0 0 12px; float: left; }
 	
+/* registration page */
+.settings_page_interactive_video .registration .form-table th { width: 250px }
+.settings_page_interactive_video .registration input[type="text"] { width: 300px; }
+.settings_page_interactive_video .registration select { width: 300px; }
+.settings_page_interactive_video .registration textarea { width: 300px; }
+.settings_page_interactive_video .registration .error { border: solid 1px #CC0000; background-color: #FFEBE8; }
+.settings_page_interactive_video .registration label.error { border: none; }
+.settings_page_interactive_video .registration tr.agree_to_terms label.error { background: transparent; color: #CC0000; display: block;} 
+
 /*-------------------------------- 
 	Modal Window
 ---------------------------------*/

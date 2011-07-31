@@ -3,6 +3,19 @@ require_once('settings.php');
 require_once('lib/kaltura_client.php');
 require_once('lib/kaltura_helpers.php');
  
+
+// a workaround when using symbolic links and __FILE__ holds the resolved path
+$all_in_one_video_pack_file = __FILE__;
+if (isset($mu_plugin)) {
+    $all_in_one_video_pack_file = $mu_plugin;
+}
+if (isset($network_plugin)) {
+    $all_in_one_video_pack_file = $network_plugin;
+}
+if (isset( $plugin ) ) {
+    $all_in_one_video_pack_file = $plugin;
+}
+
 // comments filter
 if (KalturaHelpers::compareWPVersion("2.5", "=")) 
 	// in wp 2.5 there was a bug in wptexturize which corrupted our tag with unicode html entities
