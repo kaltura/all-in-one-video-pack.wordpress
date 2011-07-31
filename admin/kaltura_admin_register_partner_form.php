@@ -537,7 +537,7 @@
 						?>
 						<select id="would_you_like" name="would_you_like">
 						<?php foreach($selectData as $value => $name): ?>
-							<option value="<?php echo $value; ?>" <?php echo (@$_POST['would_you_like'] == $value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
+							<option value="<?php echo $value; ?>" <?php echo (@$_POST['would_you_like'] == (string)$value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
 						<?php endforeach; ?>
 						</select>
 					</td>
