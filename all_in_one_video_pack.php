@@ -1,7 +1,9 @@
 <?php
-require_once('settings.php');
-require_once('lib/kaltura_client.php');
-require_once('lib/kaltura_helpers.php');
+define('KALTURA_ROOT', dirname(__FILE__));
+
+require_once(KALTURA_ROOT.'/settings.php');
+require_once(KALTURA_ROOT.'/lib/kaltura_client.php');
+require_once(KALTURA_ROOT.'/lib/kaltura_helpers.php');
  
 
 // a workaround when using symbolic links and __FILE__ holds the resolved path

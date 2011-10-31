@@ -7,10 +7,11 @@ Version: 99.99(DEV)
 Author: Kaltura
 Author URI: http://kaltura.org/
 */
+define('KALTURA_ROOT', dirname(__FILE__));
 
-require_once('settings.php');
-require_once('lib/kaltura_client.php');
-require_once('lib/kaltura_helpers.php');
+require_once(KALTURA_ROOT.'/settings.php');
+require_once(KALTURA_ROOT.'/lib/kaltura_client.php');
+require_once(KALTURA_ROOT.'/lib/kaltura_helpers.php');
 
 
 class AllInOneVideoWidget 
