@@ -157,6 +157,7 @@ Kaltura = {
 		jQuery("#TB_window").css("top", '');
 		jQuery("#TB_window").css("margin-top", "-" + (height / 2) + "px");
 		jQuery("#TB_window").css("height", '');
+		jQuery("#TB_window").show(); // fixes compatibility with wordpress 3.1+, see: http://www.kaltura.org/pop-video-embed-dashboard-broken
 		
 		// backup and temporary remove the tb_position function
 		tb_positionKalturaBackup = tb_position;
