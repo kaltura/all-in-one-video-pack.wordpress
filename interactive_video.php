@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: All in One Video Pack
-Plugin URI: http://kaltura.org/
+Plugin URI: http://www.kaltura.org/
 Description: This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including playing, uploading and editing.  
 Version: 99.99(DEV)
 Author: Kaltura
-Author URI: http://kaltura.org/
+Author URI: http://www.kaltura.org/
 */
 
 define("KALTURA_PLUGIN_FILE", __FILE__);

@@ -7,7 +7,7 @@ require_once(KALTURA_ROOT.'/lib/kaltura_helpers.php');
  
 
 // a workaround when using symbolic links and __FILE__ holds the resolved path
-$all_in_one_video_pack_file = __FILE__;
+$all_in_one_video_pack_file = KALTURA_PLUGIN_FILE;
 if (isset($mu_plugin)) {
     $all_in_one_video_pack_file = $mu_plugin;
 }
@@ -188,14 +188,29 @@ add_action("comment_post", "kaltura_comment_post", 10, 2);
  */
 function kaltura_activate()
 {
-	update_option("kaltura_default_player_type", "whiteblue");
-	update_option("kaltura_comments_player_type", "whiteblue");
+	global $KALTURA_DEFAULT_PLAYERS;
+	if (!get_option("kaltura_default_player_type"))
+		update_option("kaltura_default_player_type", $KALTURA_DEFAULT_PLAYERS[0]['id']);
+		
+	if (!get_option("kaltura_comments_player_type"))	
+		update_option("kaltura_comments_player_type", $KALTURA_DEFAULT_PLAYERS[0]['id']);
 
 	require_once("kaltura_db.php");
 	kaltura_install_db();
+	
+	require_once("lib/kaltura_wp_model.php");
+	$wpModel = new KalturaWPModel();
+	if (!get_option('kaltura_user_identifier'))
+	{
+		// option was not set yet
+		if ($wpModel->countWidgets()) // this is an upgrade of an existing version
+			update_option('kaltura_user_identifier', 'user_id');
+		else // assume this is a fresh install
+			update_option('kaltura_user_identifier', 'user_login');
+	}
 }
 
-register_activation_hook(KALTURA_PLUGIN_FILE, 'kaltura_activate');
+register_activation_hook($all_in_one_video_pack_file, 'kaltura_activate');
 
 
 function kaltura_admin_page()
@@ -445,12 +460,12 @@ function kaltura_shortcode($attrs)
 	$playerId 		= "kaltura_player_" . $randId;
 
 	$link = '';
-	$link .= '<a href="http://corp.kaltura.com/">open source video</a>, ';
-	$link .= '<a href="http://corp.kaltura.com/">online video platform</a>, ';
-	$link .= '<a href="http://corp.kaltura.com/video_platform/video_streaming">video streaming</a>, ';
-	$link .= '<a href="http://corp.kaltura.com/solutions/video_solutions">video solutions</a>';
+	$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Hosting">Video Hosting</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Streaming">Video Streaming</a>, ';
+	$link .= '<a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>';
 	
-	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/video_platform/video_player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
+	$powerdByBox ='<div class="poweredByKaltura" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
 	
 	if ($isComment)
 	{

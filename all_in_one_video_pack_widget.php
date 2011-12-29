@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: All in One Video Pack Sidebar Widget
-Plugin URI: http://kaltura.org/
+Plugin URI: http://www.kaltura.org/
 Description: A sidebar widget that allows you to display the most recent posted videos and comments in your blog.  
 Version: 99.99(DEV)
 Author: Kaltura
-Author URI: http://kaltura.org/
+Author URI: http://www.kaltura.org/
 */
 define('KALTURA_ROOT', dirname(__FILE__));
 

@@ -35,12 +35,13 @@ class KalturaHelpers
     
     function getLoggedUserId() 
     {
-    	global $user_ID, $user_identity;
-    	
-    	if (!$user_ID) 
+    	global $user_ID, $user_login;
+    	if (!$user_ID && !$user_login) 
     		return KALTURA_ANONYMOUS_USER_ID; 
-    	else
+    	elseif (get_option('kaltura_user_identifier') == 'user_id')
         	return $user_ID;
+    	else 
+    		return $user_login;
     }
     
     function getPluginUrl() 

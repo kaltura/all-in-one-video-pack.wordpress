@@ -92,6 +92,14 @@ class KalturaWPModel
 		return $result;
 	}
 	
+	function countWidgets()
+	{
+		global $wpdb;
+		$table = $wpdb->prefix . KALTURA_WIDGET_TABLE;
+		$retult = $wpdb->get_results($wpdb->prepare("SELECT count(*) as c FROM " . $table), ARRAY_A);
+		return intval($retult[0]['c']);
+	}
+	
 	function unpublishWidgets($widgets)
 	{
 		global $wpdb;

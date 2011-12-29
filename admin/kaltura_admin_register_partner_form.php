@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	if (!defined("WP_ADMIN"))
 		die();
 		
@@ -90,8 +90,8 @@
 		$_POST['first_name'] = $profileuser->first_name;
 		$_POST['last_name'] = $profileuser->last_name;
 		$_POST['email'] = $profileuser->user_email;
-		$_POST['company'] = bloginfo('name');
-		$_POST['website'] = form_option('home');
+		$_POST['company'] = get_bloginfo('name');
+		$_POST['website'] = get_option('home');
 		
 		$config = KalturaHelpers::getKalturaConfiguration();
 		$config->partnerId = 0; // no need to pass partner id for ping
