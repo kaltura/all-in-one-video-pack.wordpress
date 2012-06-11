@@ -1,8 +1,8 @@
 <?php
 	if (!defined("WP_ADMIN"))
 		die();
-	
-	$kalturaPartnerId = get_option('kaltura_partner_id');
+
+	$kalturaPartnerId = KalturaHelpers::getOption('kaltura_partner_id');
 	$partnerLogin = @$_GET['partner_login'];
 	$forceRegiration = @$_GET['force_registration'];
 	if ($partnerLogin == "true")

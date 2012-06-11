@@ -58,19 +58,13 @@
 				$secret = $partner->secret;
 				$adminSecret = $partner->adminSecret;
 				$cmsUser = $partner->adminEmail;
-				$cmsPassword = $partner->cmsPassword;
-		
+
 				// save partner details
 				update_option("kaltura_partner_id", $partnerId);
 				update_option("kaltura_subp_id", $subPartnerId);
 				update_option("kaltura_secret", $secret);
 				update_option("kaltura_admin_secret", $adminSecret);
 				update_option("kaltura_cms_user", $cmsUser);
-				update_option("kaltura_cms_password", $cmsPassword);
-				update_option("kaltura_permissions_add", 0);
-				update_option("kaltura_permissions_edit", 0);
-				update_option("kaltura_enable_video_comments", true);
-				update_option("kaltura_allow_anonymous_comments", true);
 				$viewData["success"] = true;
 			}
 		}

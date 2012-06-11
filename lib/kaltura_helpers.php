@@ -3,7 +3,7 @@ class KalturaHelpers
 {
     function getKalturaConfiguration() 
     {
-    	$config = new KalturaConfiguration(get_option("kaltura_partner_id"));
+    	$config = new KalturaConfiguration(KalturaHelpers::getOption("kaltura_partner_id"));
     	$config->serviceUrl = KalturaHelpers::getServerUrl();
     	require_once("kaltura_wordpress_logger.php");
     	$config->setLogger(new KalturaWordpressLogger());
@@ -80,8 +80,8 @@ class KalturaHelpers
 		$flashVars = array();
 		$flashVars["userId"] 		= KalturaHelpers::getLoggedUserId();
 		$flashVars["sessionId"] 	= $ks;
-		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
-		$flashVars["subPartnerId"] 	= get_option("kaltura_partner_id") * 100;
+		$flashVars["partnerId"] 	= KalturaHelpers::getOption("kaltura_partner_id");
+		$flashVars["subPartnerId"] 	= KalturaHelpers::getOption("kaltura_partner_id") * 100;
 		$flashVars["afterAddentry"] = "onContributionWizardAfterAddEntry";
 		$flashVars["close"] 		= "onContributionWizardClose";
 		$flashVars["termsOfUse"] 	= "http://corp.kaltura.com/static/tandc" ;
@@ -94,8 +94,8 @@ class KalturaHelpers
 		$flashVars = array();
 		$flashVars["entryId"] 		= $entryId;
 		$flashVars["kshowId"] 		= "entry-".$entryId;
-		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
-		$flashVars["subpId"] 		= get_option("kaltura_partner_id") * 100;
+		$flashVars["partnerId"] 	= KalturaHelpers::getOption("kaltura_partner_id");
+		$flashVars["subpId"] 		= KalturaHelpers::getOption("kaltura_partner_id") * 100;
 		$flashVars["uid"] 		    = KalturaHelpers::getLoggedUserId();
 		$flashVars["ks"] 			= $ks;
 		$flashVars["backF"] 		= "onSimpleEditorBackClick";
@@ -107,8 +107,8 @@ class KalturaHelpers
 	function getKalturaPlayerFlashVars($uiConfId = null, $ks = null, $entryId = null)
 	{
 		$flashVars = array();
-		$flashVars["partnerId"] 	= get_option("kaltura_partner_id");
-		$flashVars["subpId"] 		= get_option("kaltura_partner_id") * 100;
+		$flashVars["partnerId"] 	= KalturaHelpers::getOption("kaltura_partner_id");
+		$flashVars["subpId"] 		= KalturaHelpers::getOption("kaltura_partner_id") * 100;
 		$flashVars["uid"] 		    = KalturaHelpers::getLoggedUserId();
 		
 		if ($ks)
@@ -134,7 +134,7 @@ class KalturaHelpers
 	function getSwfUrlForWidget($widgetId = null, $uiConfId = null)
 	{
 	    if (!$widgetId)
-	        $widgetId = "_" . get_option("kaltura_partner_id");
+	        $widgetId = "_" . KalturaHelpers::getOption("kaltura_partner_id");
 	        
 	    $url = KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/" . $widgetId;
 	    if ($uiConfId)
@@ -161,7 +161,7 @@ class KalturaHelpers
 			$roles[$val] = 1;
 			 
 		if ($override === null) 
-			$permissionsEdit = @get_option('kaltura_permissions_edit');
+			$permissionsEdit = KalturaHelpers::getOption('kaltura_permissions_edit');
 		else
 			$permissionsEdit = $override;
 		// note - there are no breaks in the switch (code should jump to next case)
@@ -195,7 +195,7 @@ class KalturaHelpers
 			$roles[$val] = 1;
 		
 		if ($override === null)
-			$permissionsAdd = @get_option('kaltura_permissions_add');
+			$permissionsAdd = KalturaHelpers::getOption('kaltura_permissions_add');
 		else
 			$permissionsAdd = $override;
 			
@@ -223,20 +223,20 @@ class KalturaHelpers
 
 	function anonymousCommentsAllowed()
 	{
-		return @get_option("kaltura_allow_anonymous_comments") == true ? true : false;
+		return KalturaHelpers::getOption("kaltura_allow_anonymous_comments") == true ? true : false;
 	}
 	
 	function videoCommentsEnabled()
 	{
-		return @get_option("kaltura_enable_video_comments") == true ? true : false;
+		return KalturaHelpers::getOption("kaltura_enable_video_comments") == true ? true : false;
 	}
 	
 	function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height= 180, $version = 100000)
 	{
 		$config = KalturaHelpers::getKalturaConfiguration();
 		$url = KalturaHelpers::getCdnUrl();
-		$url .= "/p/" . get_option("kaltura_partner_id");
-		$url .= "/sp/" . get_option("kaltura_partner_id")*100;
+		$url .= "/p/" . KalturaHelpers::getOption("kaltura_partner_id");
+		$url .= "/sp/" . KalturaHelpers::getOption("kaltura_partner_id")*100;
 		$url .= "/thumbnail";
 		if ($widgetId)
 			$url .= "/widget_id/" . $widgetId;
@@ -332,6 +332,17 @@ class KalturaHelpers
 	function force200Header()
 	{
 		status_header(200);
+	}
+
+	function getOption($name, $default = false)
+	{
+		$value = get_option($name);
+		if ($value)
+			return $value;
+		else if (function_exists('get_site_option'))
+			return get_site_option($name, $default);
+		else
+			return false;
 	}
 }
 ?>

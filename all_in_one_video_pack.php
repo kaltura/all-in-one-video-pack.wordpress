@@ -183,7 +183,7 @@ function kaltura_comment_post($comment_id, $approved)
 add_action("comment_post", "kaltura_comment_post", 10, 2);
 
 /*
- * Occures when the plugin is activated 
+ * Occurs when the plugin is activated
  * @return unknown_type
  */
 function kaltura_activate()
@@ -194,6 +194,12 @@ function kaltura_activate()
 		
 	if (!get_option("kaltura_comments_player_type"))	
 		update_option("kaltura_comments_player_type", $KALTURA_DEFAULT_PLAYERS[0]['id']);
+
+	// set defaults
+	update_option("kaltura_permissions_add", 0);
+	update_option("kaltura_permissions_edit", 0);
+	update_option("kaltura_enable_video_comments", true);
+	update_option("kaltura_allow_anonymous_comments", true);
 
 	require_once("kaltura_db.php");
 	kaltura_install_db();
@@ -707,7 +713,7 @@ function _kaltura_find_comment_widgets($args)
 		return;
 		
 	if (!$wid)
-		$wid = "_" . get_option("kaltura_partner_id");
+		$wid = "_" . KalturaHelpers::getOption("kaltura_partner_id");
 		
 	global $kaltura_comment_id;
 	$comment = get_comment($kaltura_comment_id);
@@ -758,7 +764,7 @@ function _kdp3_upload_layout_flashvars($enabled) {
 	return http_build_query($params);
 }
 		
-if ( !get_option('kaltura_partner_id') && !isset($_POST['submit']) && !strpos($_SERVER["REQUEST_URI"], "page=interactive_video")) {
+if ( !KalturaHelpers::getOption('kaltura_partner_id') && !isset($_POST['submit']) && !strpos($_SERVER["REQUEST_URI"], "page=interactive_video")) {
 	function kaltura_warning() {
 		echo "
 		<div class='updated fade'><p><strong>".__('To complete the All in One Video Pack installation, <a href="'.get_settings('siteurl').'/wp-admin/options-general.php?page=interactive_video">you must get a Partner ID.</a>')."</strong></p></div>
@@ -766,4 +772,20 @@ if ( !get_option('kaltura_partner_id') && !isset($_POST['submit']) && !strpos($_
 	}
 	add_action('admin_notices', 'kaltura_warning');
 }
-?>
+
+
+if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE)
+{
+	add_action('network_admin_menu', 'add_network_admin_menu');
+
+	function add_network_admin_menu()
+	{
+		add_submenu_page('settings.php', 'All in One Video', 'All in One Video', 'manage_network_options', 'all-in-one-video-pack-mu-settings',  'kaltura_show_network_settings');
+	}
+
+	function kaltura_show_network_settings()
+	{
+		require_once("lib/kaltura_model.php");
+		require_once('admin-mu/kaltura_admin_mu_controller.php');
+	}
+}

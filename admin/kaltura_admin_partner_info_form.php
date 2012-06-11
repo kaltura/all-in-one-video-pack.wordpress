@@ -28,8 +28,8 @@
 		// try to create new session to make sure that the details are ok
 		$userId 	    = KalturaHelpers::getLoggedUserID();
 		$config 		= KalturaHelpers::getKalturaConfiguration();
-		$secret 		= get_option("kaltura_secret");
-		$adminSecret	= get_option("kaltura_admin_secret");
+		$secret 		= KalturaHelpers::getOption("kaltura_secret");
+		$adminSecret	= KalturaHelpers::getOption("kaltura_admin_secret");
 		$kalturaClient 	= new KalturaClient($config);
 		
 		$kmodel = KalturaModel::getInstance();
@@ -74,11 +74,11 @@
 		<table id="kalturaCmsLogin">
 			<tr class="kalturaFirstRow">
 				<th align="left"><?php _e('Partner ID'); ?>:</th>
-				<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_partner_id"); ?></strong></td>
+				<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_partner_id"); ?></strong></td>
 			</tr>
 			<tr>
 				<th align="left"><?php _e('KMC username'); ?>:</th>
-				<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_cms_user"); ?></strong></td>
+				<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_cms_user"); ?></strong></td>
 			</tr>
 			<tr class="kalturaLastRow">
 				<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">
@@ -91,27 +91,27 @@
 			<tr valign="top">
 				<td width="200"><?php _e("Who can edit videos?"); ?></td>
 				<td>
-					<input type="radio" id="perm_admins_edit" name="permissions_edit" value="3" <?php echo @get_option("kaltura_permissions_edit") == "3" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_admins_edit"><?php _e("Blog Administrators"); ?></label><br />
-					<input type="radio" id="perm_editors_edit" name="permissions_edit" value="2" <?php echo @get_option("kaltura_permissions_edit") == "2" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_editors_edit"><?php _e("Blog Editors/Contributors & Authors"); ?></label><br />
-					<input type="radio" id="perm_subscribers_edit" name="permissions_edit" value="1" <?php echo @get_option("kaltura_permissions_edit") == "1" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_subscribers_edit"><?php _e("Blog Subscribers"); ?></label><br />
-					<input type="radio" id="perm_everybody_edit" name="permissions_edit" value="0" <?php echo @get_option("kaltura_permissions_edit") == "0" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_everybody_edit"><?php _e("Everybody"); ?></label><br />
+					<input type="radio" id="perm_admins_edit" name="permissions_edit" value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "3" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_admins_edit"><?php _e("Blog Administrators"); ?></label><br />
+					<input type="radio" id="perm_editors_edit" name="permissions_edit" value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "2" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_editors_edit"><?php _e("Blog Editors/Contributors & Authors"); ?></label><br />
+					<input type="radio" id="perm_subscribers_edit" name="permissions_edit" value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "1" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_subscribers_edit"><?php _e("Blog Subscribers"); ?></label><br />
+					<input type="radio" id="perm_everybody_edit" name="permissions_edit" value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "0" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_everybody_edit"><?php _e("Everybody"); ?></label><br />
 					<br />
 				</td>
 			</tr>
 			<tr valign="top">
 				<td><?php _e("Who can add to videos?"); ?></td>
 				<td>
-					<input type="radio" id="perm_admins_add" name="permissions_add" value="3" <?php echo @get_option("kaltura_permissions_add") == "3" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_admins_add"><?php _e("Blog Administrators"); ?></label><br />
-					<input type="radio" id="perm_editors_add" name="permissions_add" value="2" <?php echo @get_option("kaltura_permissions_add") == "2" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_editors_add"><?php _e("Blog Editors/Contributors & Authors"); ?></label><br />
-					<input type="radio" id="perm_subscribers_add" name="permissions_add" value="1" <?php echo @get_option("kaltura_permissions_add") == "1" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_subscribers_add"><?php _e("Blog Subscribers"); ?></label><br />
-					<input type="radio" id="perm_everybody_add" name="permissions_add" value="0" <?php echo @get_option("kaltura_permissions_add") == "0" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_everybody_add"><?php _e("Everybody"); ?></label><br />
+					<input type="radio" id="perm_admins_add" name="permissions_add" value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "3" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_admins_add"><?php _e("Blog Administrators"); ?></label><br />
+					<input type="radio" id="perm_editors_add" name="permissions_add" value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "2" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_editors_add"><?php _e("Blog Editors/Contributors & Authors"); ?></label><br />
+					<input type="radio" id="perm_subscribers_add" name="permissions_add" value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "1" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_subscribers_add"><?php _e("Blog Subscribers"); ?></label><br />
+					<input type="radio" id="perm_everybody_add" name="permissions_add" value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "0" ? "checked=\"checked\"" : ""; ?> /> <label for="perm_everybody_add"><?php _e("Everybody"); ?></label><br />
 					<br />
 				</td>
 			</tr>
 			<tr valign="top">
 				<td><?php _e("Enable video comments?"); ?></td>
 				<td>
-					<input type="checkbox" id="enable_video_comments" name="enable_video_comments" <?php echo @get_option("kaltura_enable_video_comments") ? "checked=\"checked\"" : ""; ?> />
+					<input type="checkbox" id="enable_video_comments" name="enable_video_comments" <?php echo KalturaHelpers::getOption("kaltura_enable_video_comments") ? "checked=\"checked\"" : ""; ?> />
 					<br />
 					<br />
 				</td>
@@ -119,7 +119,7 @@
 			<tr valign="top">
 				<td><?php _e("Allow anonymous video comments?"); ?></td>
 				<td>
-					<input type="checkbox" id="allow_anonymous_comments" name="allow_anonymous_comments" <?php echo @get_option("kaltura_allow_anonymous_comments") ? "checked=\"checked\"" : ""; ?> />
+					<input type="checkbox" id="allow_anonymous_comments" name="allow_anonymous_comments" <?php echo KalturaHelpers::getOption("kaltura_allow_anonymous_comments") ? "checked=\"checked\"" : ""; ?> />
 					<br />
 					<br />
 					<br />
@@ -153,14 +153,14 @@
 			<tr valign="top" class="advanced user_identifier">
 				<td width="200"><?php _e("WordPress user identifier field to be used by Kaltura:"); ?></td>
 				<td>
-					<input type="radio" id="kaltura_user_identifier_user_login" name="kaltura_user_identifier" value="user_id" <?php echo get_option("kaltura_user_identifier") == "user_id" ? "checked=\"checked\"" : ""; ?> /> 
+					<input type="radio" id="kaltura_user_identifier_user_login" name="kaltura_user_identifier" value="user_id" <?php echo KalturaHelpers::getOption("kaltura_user_identifier") == "user_id" ? "checked=\"checked\"" : ""; ?> />
 					<label for="kaltura_user_identifier_user_login"><?php _e("ID"); ?></label>
 					<br />
 					<div class="user_identifier_desc">
 						<?php _e("This identifier was used in previous versions of Kaltura All in One WordPress plugin. Choose this option if you have upgraded from a previous version of Kaltura and want to keep the existing media content associated with the users that uploaded it."); ?>
 					</div>
 					
-					<input type="radio" id="kaltura_user_identifier_user_id" name="kaltura_user_identifier" value="user_login" <?php echo get_option("kaltura_user_identifier") == "user_login" ? "checked=\"checked\"" : ""; ?> /> 
+					<input type="radio" id="kaltura_user_identifier_user_id" name="kaltura_user_identifier" value="user_login" <?php echo KalturaHelpers::getOption("kaltura_user_identifier") == "user_login" ? "checked=\"checked\"" : ""; ?> />
 					<label for="kaltura_user_identifier_user_id"><?php _e("user_login"); ?></label>
 					<br />
 					<div class="user_identifier_desc">

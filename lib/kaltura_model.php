@@ -36,14 +36,14 @@ class KalturaModel
 	function getAdminSession($privileges = "")
     {
         $userId = KalturaHelpers::getLoggedUserId();
-        $partnerId = get_option("kaltura_partner_id");
+        $partnerId = KalturaHelpers::getOption("kaltura_partner_id");
 		return $this->createKS($partnerId, $userId, KalturaSessionType_ADMIN, $privileges);        
     }
     
     function getClientSideSession($privileges = "", $expiry = 86400)
     {
         $userId = KalturaHelpers::getLoggedUserId();
-        $partnerId = get_option("kaltura_partner_id");
+        $partnerId = KalturaHelpers::getOption("kaltura_partner_id");
         return $this->createKS($partnerId, $userId, KalturaSessionType_USER, $privileges, $expiry);
     }
     
@@ -55,7 +55,7 @@ class KalturaModel
 		$fields = array($partnerId, '', $expiry, $sessionType, $rand, $userId, $privileges);
 		$str = implode(";", $fields);
 		
-		$salt = get_option("kaltura_admin_secret");
+		$salt = KalturaHelpers::getOption("kaltura_admin_secret");
 		$hashed_str = sha1($salt . $str) . "|" . $str;
 		$decoded_str = base64_encode($hashed_str);
 		

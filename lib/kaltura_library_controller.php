@@ -3,7 +3,7 @@ if (!defined("WP_ADMIN"))
 	die();
 
 $kaction = @$_GET['kaction'];
-if (!get_option('kaltura_partner_id'))
+if (!KalturaHelpers::getOption('kaltura_partner_id'))
 {
 	?>
 		<div class="kalturaTab">
@@ -168,7 +168,7 @@ function kaltura_library_videoposts()
 			if (!$post)
 			{
 				// create the post for the video
-				$partnerId = get_option("kaltura_partner_id");
+				$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
 				$shortCode = "[kaltura-widget uiconfid=\"$uiConfId\" entryid=\"$entryId\" width=\"$width\" height=\"$height\" /]";
 				$newPost = array(
 					"post_title" => $entryName,

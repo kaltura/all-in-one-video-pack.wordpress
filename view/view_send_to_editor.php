@@ -140,19 +140,19 @@
 								<div class="selectBox">
 									<label for="addPermission">Who can add to video:</label>
 									<select name="addPermission" id="addPermission">
-										<option value="3" <?php echo @get_option("kaltura_permissions_add") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
-										<option value="2" <?php echo @get_option("kaltura_permissions_add") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
-										<option value="1" <?php echo @get_option("kaltura_permissions_add") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>										
-										<option value="0" <?php echo @get_option("kaltura_permissions_add") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
+										<option value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
+										<option value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
+										<option value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>
+										<option value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
 									</select>
 								</div>
 								<div class="selectBox">
 									<label for="editPermission">Who can edit the video:</label>
 									<select name="editPermission" id="editPermission">
-										<option value="3" <?php echo @get_option("kaltura_permissions_edit") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
-										<option value="2" <?php echo @get_option("kaltura_permissions_edit") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
-										<option value="1" <?php echo @get_option("kaltura_permissions_edit") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>										
-										<option value="0" <?php echo @get_option("kaltura_permissions_edit") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
+										<option value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
+										<option value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
+										<option value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>
+										<option value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
 									</select>
 								</div>
 								<?php else: ?>

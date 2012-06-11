@@ -25,10 +25,16 @@ if (@$_POST['is_postback'] == "postback") {
         $cmsUser = $partner->adminEmail;
         
         // save partner details
-        update_option("kaltura_partner_id", $partnerId);
-        update_option("kaltura_secret", $secret);
-        update_option("kaltura_admin_secret", $adminSecret);
-        update_option("kaltura_cms_user", $cmsUser);
+        update_site_option("kaltura_partner_id", $partnerId);
+		update_site_option("kaltura_secret", $secret);
+		update_site_option("kaltura_admin_secret", $adminSecret);
+		update_site_option("kaltura_cms_user", $cmsUser);
+
+		// set site default
+		update_site_option("kaltura_permissions_add", 0);
+		update_site_option("kaltura_permissions_edit", 0);
+		update_site_option("kaltura_enable_video_comments", true);
+		update_site_option("kaltura_allow_anonymous_comments", true);
 
         $viewData["success"] = true;
     }
@@ -37,7 +43,7 @@ if (@$_POST['is_postback'] == "postback") {
 
 <?php if ($viewData["error"]): ?>
 	<div class="wrap">
-		<h2><?php _e('All in One Video Pack Installation'); ?></h2>
+		<h2><?php _e('All in One Video Pack Settings'); ?></h2>
 		<br />
 		<div class="error">
 			<p>
@@ -58,21 +64,19 @@ if (@$_POST['is_postback'] == "postback") {
 				<strong>You have successfully installed the All in One Video Pack. </strong>
 			</p>
 		</div>
-		<p>
-			Next time you write a post, you will see a new icon in the Add Media toolbar that allows you to upload and edit Interactive Videos. <br />
-			<br />
-			Note that a Kaltura Partner ID has been created for you, and an email has been sent to the specified email address containing the ID information. The email you received also includes a link and a password to the Kaltura Management Console (KMC), where you can track and manage all information related to the All in One Video Pack.<br />
-		</p>
 		<br />
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = 'options-general.php?page=interactive_video'"><?php _e('Continue...'); ?></a>
+			<a href="#" onclick="window.location.href = 'settings.php?page=all-in-one-video-pack-mu-settings'"><?php _e('Continue...'); ?></a>
 		</div>
 	</div>
 <?php else: ?>
 	<div class="wrap">
-	<h2><?php _e('All in One Video Pack Installation'); ?></h2>
+	<h2><?php _e('All in One Video Pack MU Installation'); ?></h2>
+	<p>
+		This installation page should be used in order to configure the default Kaltura integration settings for all sub blogs.
+	</p>
     <p>
-	    Please enter your Kaltura Management Console (KMC) Email & password
+		Please enter your Kaltura Management Console (KMC) Email & password
     </p>
 	<form name="form1" method="post" />
 		<table class="form-table">

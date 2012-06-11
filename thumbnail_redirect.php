@@ -11,8 +11,8 @@
 	$height = $_GET["height"];
 	$widgetId = $_GET['widget_id'];
 	$thumbnailPath .= "";
-	$thumbnailPath .= "/p/" . get_option('kaltura_partner_id');
-	$thumbnailPath .= "/sp/" . get_option('kaltura_subp_id');
+	$thumbnailPath .= "/p/" . KalturaHelpers::getOption('kaltura_partner_id');
+	$thumbnailPath .= "/sp/" . KalturaHelpers::getOption('kaltura_subp_id');
 	$thumbnailPath .= "/thumbnail";
 	$thumbnailPath .= "/width/" . $width;
 	$thumbnailPath .= "/height/" . $height;

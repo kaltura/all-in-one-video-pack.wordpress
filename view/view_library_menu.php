@@ -28,11 +28,11 @@ $menu = array(
 <table id="kalturaCmsLogin">
 	<tr class="kalturaFirstRow">
 		<th align="left"><?php _e('Partner ID'); ?>:</th>
-		<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_partner_id"); ?></strong></td>
+		<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_partner_id"); ?></strong></td>
 	</tr>
 	<tr>
 		<th align="left"><?php _e('KMC username'); ?>:</th>
-		<td style="padding-right: 90px;"><strong><?php echo get_option("kaltura_cms_user"); ?></strong></td>
+		<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_cms_user"); ?></strong></td>
 	</tr>
 	<tr class="kalturaLastRow">
 		<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">

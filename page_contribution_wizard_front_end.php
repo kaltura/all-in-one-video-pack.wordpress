@@ -12,7 +12,7 @@
 	$widgetId = isset($_GET['wid']) ? $_GET['wid'] : "";
 	$entryId = isset($_GET['entryId']) ? $_GET['entryId'] : "";
 	
-	if ($widgetId == "_".get_option('kaltura_partner_id')) // backward compatibility for old players sending widget id when we use entries
+	if ($widgetId == "_".KalturaHelpers::getOption('kaltura_partner_id')) // backward compatibility for old players sending widget id when we use entries
 		$widgetId = "";
 		
 	if (!$widgetId && !$entryId)
