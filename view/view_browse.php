@@ -57,11 +57,6 @@
 					<?php if (!$viewData["isLibrary"]): ?>
 						<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo $sendToEditorUrl; ?>';" />
 					<?php endif; ?>
-					<?php if ($mediaEntry->type == KalturaEntryType_MIX): ?>
-    					<?php if ($viewData["isLibrary"]): ?>
-    						<input type="button" title="Edit video" class="edit_video" onclick="KalturaModal.openModal('simple_editor', '<?php echo KalturaHelpers::getPluginUrl() ?>/page_simple_editor_library.php?entryId=<?php echo $mediaEntry->id; ?>', { width: 890, height: 546 } ); jQuery('#simple_editor').addClass('modalSimpleEditor');" />
-    					<?php endif; ?>
-					<?php endif; ?>
 					<?php $isVideo = ($mediaEntry->type == KalturaEntryType_MEDIA_CLIP && $mediaEntry->mediaType == KalturaMediaType_VIDEO); ?>
 					<?php $isMix = ($mediaEntry->type == KalturaEntryType_MIX); ?>
 					<?php if ($viewData["isLibrary"]): ?>

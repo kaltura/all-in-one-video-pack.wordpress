@@ -88,7 +88,7 @@ Kaltura = {
 		jQuery("#TB_iframeContent").animate(
 			{
 				width: width + "px",
-				height: height + "px"
+				height: (height+27) + "px"
 			},
 			600,
 			null,
@@ -314,12 +314,6 @@ Kaltura = {
 			return; // so we won't load the selected tab
 		
 		var pageToLoad = "";
-		if (type == "comments") 
-			pageToLoad = "ajax_get_video_comments.php?nocache="+Math.ceil(10000*Math.random());
-		else if (type == "posts")
-			pageToLoad = "ajax_get_video_posts.php?nocache="+Math.ceil(10000*Math.random());
-		else
-			return;
 		
 		if (page)
 			pageToLoad = pageToLoad + "&page=" + page;

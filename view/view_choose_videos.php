@@ -37,42 +37,12 @@
 	</div>
 	<div class="options">
 		<a class="button" disabled="disabled" onclick="sendToEditor();"><?php _e("Create a player for each selected"); ?></a>
-		<a class="button" disabled="disabled" onclick="createMix();"><?php _e("Add selected to \"Mix\" (Single video)"); ?></a>
 	</div>
 	<div class="fixIe7">&nbsp;</div>
 </div>
 
 <script type="text/javascript">
-	function createMix() {
-		var entryIds = getSelectedIds();
-		if (entryIds.length == 0) 
-		{
-			alert('<?php _e('Please select at least one item'); ?>');
-			return;
-		}
-
-		var ready = true;
-		jQuery.each(entryIds, function(index, entryId) {
-			if (!jQuery('#entryId_'+entryId).parent().hasClass('statusReady')) {
-				ready = false;
-				return; // from jQuery each
-			}
-		});
-
-		if (!ready)
-		{
-			alert("<?php _e('Only converted items can be added to mixes.\nPlease wait or reselect ready items only.\nYou can create your mix later. Conversion will continue in the background.'); ?>");
-			return;
-		}
-		
-		jQuery('.loader').show();
-		jQuery.ajax({
-			url: '<?php echo KalturaHelpers::getPluginUrl(); ?>/ajax_create_mix.php',
-			data: { "entryIds[]": entryIds },
-			success: createMixSuccess,
-			error: createMixError
-		});
-	}
+	
 
 	function getSelectedIds() {
 		var entryIds = [];
@@ -80,18 +50,6 @@
 			entryIds.push(element.value);
 		});
 		return entryIds;
-	}
-
-	function createMixSuccess(entryId) {
-		var backurl = '<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>';
-		backurl += ('&entryIds[]=' + entryId);
-		var url =  '<?php echo KalturaHelpers::getPluginUrl(); ?>/page_simple_editor_admin.php?entryId=' + entryId + '&backurl=' + escape(backurl);
-		window.location.href = url;
-	}
-
-	function createMixError() {
-		jQuery('.loader').hide();
-		alert('<?php _e('Failed to create mix'); ?>');
 	}
 
 	function sendToEditor(entryIds, ignoreStatus) {

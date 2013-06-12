@@ -89,11 +89,7 @@
 				if (!attribs['wid'])
 					attribs['wid'] = '';
 				
-				if (!attribs['addpermission'])
-					attribs['addpermission'] = '';
 				
-				if (!attribs['editpermission'])
-					attribs['editpermission'] = '';
 				
 				if (!attribs['size'])
 					attribs['size'] = 'custom';
@@ -136,15 +132,13 @@
 				contentData += 'title="Kaltura" ';
 				contentData += 'alt="Kaltura" ';
 				contentData += 'class="';
-					contentData += 'kaltura_item align' + attribs['align'] + ' ';
-					contentData += 'kaltura_add_' + attribs['addpermission'] + ' ';
-					contentData += 'kaltura_edit_' + attribs['editpermission'] + ' ';
-					if (attribs['wid'])
-						contentData += 'kaltura_id_' + attribs['wid'] + ' ';
-					if (attribs['uiconfid'])
-						contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
-					if (attribs['entryid'])
-						contentData += 'kaltura_entryid_' + attribs['entryid'] + ' ';
+				contentData += 'kaltura_item align' + attribs['align'] + ' ';
+				if (attribs['wid'])
+					contentData += 'kaltura_id_' + attribs['wid'] + ' ';
+				if (attribs['uiconfid'])
+					contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
+				if (attribs['entryid'])
+					contentData += 'kaltura_entryid_' + attribs['entryid'] + ' ';
 				contentData += '" '; 
 				contentData += 'name="mce_plugin_kaltura_desc" ';
 				contentData += 'width="' + attribs['width'] + '" ';
@@ -179,8 +173,6 @@
 					}
 					
 					var wid = "";
-					var addpermission = "";
-					var editpermission = "";
 					var uiconfid = "";
 					var entryid = "";
 					
@@ -205,14 +197,6 @@
 										case 'id':
 											if (classAttrArr[2] != "")
 												wid = classAttrArr[2];
-											break;
-										case 'add': 
-											if (classAttrArr[2] != "")
-												addpermission = classAttrArr[2];
-											break;
-										case 'edit':
-											if (classAttrArr[2] != "")
-												editpermission = classAttrArr[2];
 											break;
 										case 'uiconfid':
 											if (classAttrArr[2] != "")
@@ -248,9 +232,6 @@
 					
 					if (attribs['style'])
 						contentData += 'style="' + attribs['style'] + '" ';
-					
-					contentData += 'addpermission="' +  addpermission + '" ';
-					contentData += 'editpermission="' +  editpermission + '" ';
 					
 					if (attribs['align'])
 						contentData += 'align="' + attribs['align'] + '" '; // align

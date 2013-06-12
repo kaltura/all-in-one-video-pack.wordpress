@@ -3,7 +3,6 @@ $kaction = isset($_GET['kaction']) ? $_GET['kaction'] : 'library';
 
 $menu = array(
 	"Entries" => array('kaction' => 'entries', 'screen' => null, 'paged' => null),
-	"Mixes" => array('kaction' => 'mixes', 'screen' => null, 'paged' => null),
 	"Video Posts" => array('kaction' => 'videoposts', 'paged' => null),
 )
 ?>

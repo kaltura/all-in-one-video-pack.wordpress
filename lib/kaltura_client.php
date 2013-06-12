@@ -14750,7 +14750,7 @@ class KalturaMetadataService extends KalturaServiceBase
 			$this->client->addParam($kparams, "filter", $filter->toParams());
 		if ($pager !== null)
 			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$resultObject = $this->client->callService("metadata", "list", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "list", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataListResponse");
 		return $resultObject;
@@ -14763,7 +14763,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$this->client->addParam($kparams, "objectType", $objectType);
 		$this->client->addParam($kparams, "objectId", $objectId);
 		$this->client->addParam($kparams, "xmlData", $xmlData);
-		$resultObject = $this->client->callService("metadata", "add", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "add", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14776,7 +14776,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$this->client->addParam($kparams, "objectType", $objectType);
 		$this->client->addParam($kparams, "objectId", $objectId);
 		$this->client->addParam($kparams, "xmlFile", $xmlFile->toParams());
-		$resultObject = $this->client->callService("metadata", "addFromFile", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "addFromFile", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14789,7 +14789,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$this->client->addParam($kparams, "objectType", $objectType);
 		$this->client->addParam($kparams, "objectId", $objectId);
 		$this->client->addParam($kparams, "url", $url);
-		$resultObject = $this->client->callService("metadata", "addFromUrl", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "addFromUrl", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14802,7 +14802,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$this->client->addParam($kparams, "objectType", $objectType);
 		$this->client->addParam($kparams, "objectId", $objectId);
 		$this->client->addParam($kparams, "url", $url);
-		$resultObject = $this->client->callService("metadata", "addFromBulk", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "addFromBulk", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14822,7 +14822,7 @@ class KalturaMetadataService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$resultObject = $this->client->callService("metadata", "invalidate", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "invalidate", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "null");
 		return $resultObject;
@@ -14832,7 +14832,7 @@ class KalturaMetadataService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$resultObject = $this->client->callService("metadata", "get", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "get", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14843,7 +14843,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
 		$this->client->addParam($kparams, "xmlData", $xmlData);
-		$resultObject = $this->client->callService("metadata", "update", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "update", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14855,7 +14855,7 @@ class KalturaMetadataService extends KalturaServiceBase
 		$this->client->addParam($kparams, "id", $id);
 		if ($xmlFile !== null)
 			$this->client->addParam($kparams, "xmlFile", $xmlFile->toParams());
-		$resultObject = $this->client->callService("metadata", "updateFromFile", $kparams);
+		$resultObject = $this->client->callService("metadata_metadata", "updateFromFile", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadata");
 		return $resultObject;
@@ -14876,7 +14876,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 			$this->client->addParam($kparams, "filter", $filter->toParams());
 		if ($pager !== null)
 			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$resultObject = $this->client->callService("metadataprofile", "list", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "list", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfileListResponse");
 		return $resultObject;
@@ -14886,7 +14886,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "metadataProfileId", $metadataProfileId);
-		$resultObject = $this->client->callService("metadataprofile", "listFields", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "listFields", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfileFieldListResponse");
 		return $resultObject;
@@ -14898,7 +14898,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 		$this->client->addParam($kparams, "metadataProfile", $metadataProfile->toParams());
 		$this->client->addParam($kparams, "xsdData", $xsdData);
 		$this->client->addParam($kparams, "viewsData", $viewsData);
-		$resultObject = $this->client->callService("metadataprofile", "add", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "add", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfile");
 		return $resultObject;
@@ -14911,7 +14911,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 		$this->client->addParam($kparams, "xsdFile", $xsdFile->toParams());
 		if ($viewsFile !== null)
 			$this->client->addParam($kparams, "viewsFile", $viewsFile->toParams());
-		$resultObject = $this->client->callService("metadataprofile", "addFromFile", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "addFromFile", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfile");
 		return $resultObject;
@@ -14921,7 +14921,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$resultObject = $this->client->callService("metadataprofile", "delete", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "delete", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "null");
 		return $resultObject;
@@ -14931,7 +14931,7 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$resultObject = $this->client->callService("metadataprofile", "get", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "get", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfile");
 		return $resultObject;
@@ -14941,10 +14941,10 @@ class KalturaMetadataProfileService extends KalturaServiceBase
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$this->client->addParam($kparams, "metadataProfile", $metadataProfile->toParams());
+		$this->client->addParam($kparams, "metadata_metadataprofile", $metadataProfile->toParams());
 		$this->client->addParam($kparams, "xsdData", $xsdData);
 		$this->client->addParam($kparams, "viewsData", $viewsData);
-		$resultObject = $this->client->callService("metadataprofile", "update", $kparams);
+		$resultObject = $this->client->callService("metadata_metadataprofile", "update", $kparams);
 		$this->client->checkForError($resultObject);
 		$this->client->validateObjectType($resultObject, "KalturaMetadataProfile");
 		return $resultObject;

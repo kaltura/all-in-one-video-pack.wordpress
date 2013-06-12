@@ -18,13 +18,6 @@
 	if (!$widgetId && !$entryId)
 		wp_die(__('The interactive video is missing.<br/><br/>'.$closeLink));
 	
-	// check widget permissions at wordpress db
-	$widgetDb = KalturaWPModel::getWidget($widgetId, $entryId);
-	if (!$widgetDb)
-		wp_die(__('The interactive video was not found (Maybe the post was not published yet?).<br/><br/>'.$closeLink));
-	
-	if (!KalturaHelpers::userCanAdd((string)$widgetDb["add_permissions"]))
-		wp_die(__('You do not have sufficient permissions to access this page.<br/><br/>'.$closeLink));
 
 	$kmodel = KalturaModel::getInstance();
 	
@@ -35,7 +28,7 @@
 		$entryId = $widget->entryId;
 	}
 
-	if (!$entryId || !$widgetDb)
+	if (!$entryId)
 		wp_die(__('The video was not found.<br/><br/>'.$closeLink));
 	
 	$ks = $kmodel->getClientSideSession();

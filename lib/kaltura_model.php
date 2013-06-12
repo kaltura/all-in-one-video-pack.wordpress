@@ -322,5 +322,44 @@ class KalturaModel
 			$this->startSession();
 		return $this->client->uiConf->get($uiConfId);
 	}
+	
+	function getEntryMetadata($entryId, $metadataProfileId)
+	{
+		if (!$this->session)
+			$this->startSession();
+			
+		$filter = new KalturaMetadataFilter();
+		$filter->objectIdEqual = $entryId;
+		$filter->metadataProfileIdEqual = $metadataProfileId;
+		return $this->client->metadata->listAction($filter);
+	}
+	
+	function updateEntryMetadata($metadataId,$xmlData)
+	{
+		if (!$this->session)
+			$this->startSession();
+		return $this->client->metadata->update($metadataId ,$xmlData);
+	}
+	
+	function addEntryMetadata($metadataProfileId,$entryId,$xmlData)
+	{
+		if (!$this->session)
+			$this->startSession();
+		return $this->client->metadata->add($metadataProfileId, 1, $entryId, $xmlData);
+	}
+	
+	function getMetadataProfilesTypeEntry(){
+		if (!$this->session)
+			$this->startSession();
+		$filter = new KalturaMetadataProfileFilter();
+		$filter->metadataObjectTypeEqual = 1;//KalturaMetadataObjectType::ENTRY
+		return $this->client->metadataProfile->listAction($filter);
+	}
+	
+	function getMetadataProfileFields($metadataProfileId){
+		if (!$this->session)
+			$this->startSession();
+		return $this->client->metadataProfile->listFields($metadataProfileId);
+	}
 }
 ?>

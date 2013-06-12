@@ -115,8 +115,6 @@ function kaltura_library_sendtoeditor()
 		array_shift($entryIds); // done with 1 entry, maybe we have more
 		$width = $_POST["playerWidth"];
 		$uiConfId = $_POST["uiConfId"];
-		$addPermission = $_POST["addPermission"];
-		$editPermission = $_POST["editPermission"];
 		$playerRatio = $_POST["playerRatio"];
 		
 		$viewData["entryId"] = $entryId;
@@ -124,8 +122,6 @@ function kaltura_library_sendtoeditor()
 		$viewData["playerWidth"] = $width;
 		$viewData["playerHeight"] = KalturaHelpers::calculatePlayerHeight($uiConfId, $width, $playerRatio);
 		$viewData["uiConfId"] = $uiConfId;
-		$viewData["addPermission"] = $addPermission;
-		$viewData["editPermission"] = $editPermission;
 		$redirectUrl = KalturaHelpers::generateTabUrl(array("kaction" => "browse"));
 		require_once(dirname(__FILE__) . "/../view/view_send_to_editor.php");
 		require_once(dirname(__FILE__) . "/../view/view_js_for_tabs.php"); 
@@ -164,24 +160,18 @@ function kaltura_library_videoposts()
 			
 			$category = KalturaWPModel::getCategoryByName($categoryName);
 			
-			$post = KalturaWPModel::getPostByTitle($entryName);
-			if (!$post)
-			{
-				// create the post for the video
-				$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
-				$shortCode = "[kaltura-widget uiconfid=\"$uiConfId\" entryid=\"$entryId\" width=\"$width\" height=\"$height\" /]";
-				$newPost = array(
-					"post_title" => $entryName,
-					"post_content" => $shortCode,
-				);
-				$postId = wp_insert_post($newPost);
-				if ($postId)
-					$createdPosts++;
-			}
-			else
-			{
-				$postId = $post->ID;
-			}
+		
+			// create the post for the video
+			$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
+			$shortCode = "[kaltura-widget uiconfid=\"$uiConfId\" entryid=\"$entryId\" width=\"$width\" height=\"$height\" /]";
+			$newPost = array(
+				"post_title" => $entryName,
+				"post_content" => $shortCode,
+			);
+			$postId = wp_insert_post($newPost);
+			if ($postId)
+				$createdPosts++;
+			
 			// link the post to the category
 			$categories = wp_get_post_categories($postId);
 			$categories[] =  $category->cat_ID;
@@ -204,11 +194,8 @@ function kaltura_library_videoposts()
 			for($i = 0; $i < count($entries); $i++)
 			{
 				$entry = $entries[$i];
-				if (!KalturaWPModel::getPostByTitle($entry->name))
-				{
-					$hasEntries = true;
-					$newEntries[] = $entry;
-				}
+				$hasEntries = true;
+				$newEntries[] = $entry;
 			} 
 			$categories[$category] = $newEntries;
 		}

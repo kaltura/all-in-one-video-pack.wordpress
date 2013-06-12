@@ -38,7 +38,7 @@ class KalturaHelpers
     	global $user_ID, $user_login;
     	if (!$user_ID && !$user_login) 
     		return KALTURA_ANONYMOUS_USER_ID; 
-    	elseif (get_option('kaltura_user_identifier') == 'user_id')
+    	elseif (get_option('kaltura_user_identifier', 'user_login') == 'user_id')
         	return $user_ID;
     	else 
     		return $user_login;
@@ -223,12 +223,12 @@ class KalturaHelpers
 
 	function anonymousCommentsAllowed()
 	{
-		return KalturaHelpers::getOption("kaltura_allow_anonymous_comments") == true ? true : false;
+		return KalturaHelpers::getOption("kaltura_allow_anonymous_comments",true) == true ? true : false;
 	}
 	
 	function videoCommentsEnabled()
 	{
-		return KalturaHelpers::getOption("kaltura_enable_video_comments") == true ? true : false;
+		return KalturaHelpers::getOption("kaltura_enable_video_comments",true) == true ? true : false;
 	}
 	
 	function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height= 180, $version = 100000)

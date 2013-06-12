@@ -13,13 +13,13 @@
 	global $KALTURA_DEFAULT_PLAYERS; // although it looks like a global scope, when the plugin is activated it is executed in a sandbox function
 	$KALTURA_DEFAULT_PLAYERS = array (
 		array(
-			"id" => 534,
+			"id" => 11958362,
 			"name" => "Light Skin", 
 			"width" => 400,
 			"height" => 330
 		),
 		array(
-			"id" => 535,
+			"id" => 11958342,
 			"name" => "Dark Skin", 
 			"width" => 400,
 			"height" => 330

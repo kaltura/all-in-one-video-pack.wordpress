@@ -1,3 +1,4 @@
+<?php global $KALTURA_DEFAULT_PLAYERS;?>
 <?php if (!defined("WP_ADMIN")) die();?>
 <?php if ($viewData["uiConfId"]): ?>
 <script type="text/javascript">
@@ -5,8 +6,6 @@
 	var playerHeight = "<?php echo $viewData["playerHeight"]; ?>";
 	var uiConfId = "<?php echo $viewData["uiConfId"]; ?>";
 	var entryId = "<?php echo $viewData["entryId"]; ?>";
-	var addPermission = "<?php echo $viewData["addPermission"]; ?>";
-	var editPermission = "<?php echo $viewData["editPermission"]; ?>";
 
 	var htmlArray = [];
 	htmlArray.push('[');
@@ -15,8 +14,6 @@
 	htmlArray.push('entryid="'+entryId+'" ');
 	htmlArray.push('width="'+playerWidth+'" ');
 	htmlArray.push('height="'+playerHeight+'" ');
-	htmlArray.push('addpermission="'+addPermission+'" ');
-	htmlArray.push('editpermission="'+editPermission+'" ');
 	htmlArray.push('/]');
 	htmlArray.push('\n');
 	
@@ -136,29 +133,6 @@
 									</script>
 									<?php endif; ?>
 								</div>	
-								<?php if ($viewData["entry"]->type == KalturaEntryType_MIX): ?>
-								<div class="selectBox">
-									<label for="addPermission">Who can add to video:</label>
-									<select name="addPermission" id="addPermission">
-										<option value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
-										<option value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
-										<option value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>
-										<option value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_add") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
-									</select>
-								</div>
-								<div class="selectBox">
-									<label for="editPermission">Who can edit the video:</label>
-									<select name="editPermission" id="editPermission">
-										<option value="3" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "3" ? "selected=\"selected\"" : ""; ?>>Blog Administrators</option>
-										<option value="2" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "2" ? "selected=\"selected\"" : ""; ?>>Blog Editors/Contributors & Authors</option>
-										<option value="1" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "1" ? "selected=\"selected\"" : ""; ?>>Blog Subscribers</option>
-										<option value="0" <?php echo KalturaHelpers::getOption("kaltura_permissions_edit") == "0" ? "selected=\"selected\"" : ""; ?>>Everybody</option>
-									</select>
-								</div>
-								<?php else: ?>
-								<input type="hidden" name="addPermission" value="-1" />
-								<input type="hidden" name="editPermission" value="-1" />
-								<?php endif; ?>
 							</td>
 							<td valign="top" style="padding-left:25px;">
 								<strong>Player Dimensions:</strong>
@@ -221,7 +195,7 @@
 
 	jQuery().kalturaPlayerSelector({
 		url: '<?php echo KalturaHelpers::getPluginUrl() ?>/ajax_get_players.php',
-		defaultId: '<?php echo get_option("kaltura_default_player_type"); ?>',
+		defaultId: '<?php echo get_option("kaltura_default_player_type",$KALTURA_DEFAULT_PLAYERS[0]['id']); ?>',
 		swfBaseUrl: '<?php echo KalturaHelpers::getSwfUrlForWidget(); ?>',
 		previewId: 'divKalturaPlayer',
 		entryId: '<?php echo $viewData["entry"]->id; ?>',
