@@ -263,11 +263,11 @@ EOF;
 			$style = '';
 			$style .= 'width:' . $width .'px;';
 			$style .= 'height:' . ($height + 10) . 'px;'; // + 10 is for the powered by div
-			if (@$embedOptions['align'])
+			if (isset($embedOptions['align']))
 				$style .= 'float:' . $embedOptions['align'] . ';';
 
 			// append the manual style properties
-			if (@$embedOptions['style'])
+			if (isset($embedOptions['style']))
 				$style .= $embedOptions['style'];
 
 			$html.='
@@ -286,47 +286,24 @@ EOF;
 		return $html;
 	}
 
-	//save the post permalink in the entries metadata ipon save_post event.
-	public function kaltura_save_post_entries_permalink($post_ID)
+	public function savePost($postId)
 	{
-		$kmodel = KalturaModel::getInstance();
-		if(!KalturaHelpers::getOption('kaltura_save_permalink'))
+		if (!KalturaHelpers::getOption('kaltura_save_permalink'))
 			return;
 
-		$metadataProfileId = KalturaHelpers::getOption('kaltura_permalink_metadata_profile_id');
-		$metadataFieldsResponse = $kmodel->getMetadataProfileFields($metadataProfileId);
-		//the metadata profile should have only one field.
-		if ($metadataFieldsResponse->totalCount != 1)
+		// ignore revisions
+		if (wp_is_post_revision($postId)) {
 			return;
-
-		$metadataField = $metadataFieldsResponse->objects[0];
-		$permalink = get_permalink($post_ID);
-		$content = $_POST['content'];
-		$matches = null;
-		preg_match_all('/entryid=\\\\"([^\\\\]*)/', $content ,$matches);
-		if ($matches && is_array($matches) && isset($matches[1]) && is_array($matches[1]) && count($matches[1])){
-			foreach ($matches[1] as $entryId){
-				_update_entry_permalink($entryId,$permalink,$metadataProfileId,$metadataField->key);
-			}
 		}
-	}
 
-	public function savePost()
-	{
-
-	}
-
-	public function _update_entry_permalink($entryId, $permalink, $metadataProfileId, $metadataFieldName){
-		$kmodel = KalturaModel::getInstance();
-		$result = $kmodel->getEntryMetadata($entryId, $metadataProfileId);
-		$xmlData = '<metadata><'.$metadataFieldName.'>'.$permalink.'</'.$metadataFieldName.'></metadata>';
-		if($result->totalCount == 0){
-			$kmodel->addEntryMetadata($metadataProfileId, $entryId, $xmlData);
+		try
+		{
+			$kmodel = KalturaModel::getInstance();
+			$kmodel->updateEntryPermalink($postId);
 		}
-		else{
-			/* @var $metadata KalturaMetadata */
-			$metadata = $result->objects[0];
-			$kmodel->updateEntryMetadata($metadata->id, $xmlData);
+		catch(Exception $ex)
+		{
+			error_log('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString());
 		}
 	}
 

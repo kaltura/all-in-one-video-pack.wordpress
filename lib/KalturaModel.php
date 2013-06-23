@@ -322,4 +322,42 @@ class KalturaModel
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
 		return $metadataPlugin->metadataProfile->listFields($metadataProfileId);
 	}
+
+	public function updateEntryPermalinkMetadata($entryId, $permalink, $metadataProfileId, $metadataFieldName)
+	{
+		$result = $this->getEntryMetadata($entryId, $metadataProfileId);
+		$xmlData = '<metadata><'.$metadataFieldName.'>'.$permalink.'</'.$metadataFieldName.'></metadata>';
+		if($result->totalCount == 0)
+		{
+			$this->addEntryMetadata($metadataProfileId, $entryId, $xmlData);
+		}
+		else
+		{
+			/* @var $metadata Kaltura_Client_Metadata_Type_Metadata */
+			$metadata = $result->objects[0];
+			$this->updateEntryMetadata($metadata->id, $xmlData);
+		}
+	}
+
+	public function updateEntryPermalink($postId)
+	{
+		$metadataProfileId = KalturaHelpers::getOption('kaltura_permalink_metadata_profile_id');
+		$metadataFieldsResponse = $this->getMetadataProfileFields($metadataProfileId);
+
+		// the metadata profile should have only one field.
+		if ($metadataFieldsResponse->totalCount != 1)
+			return;
+
+		$metadataField = $metadataFieldsResponse->objects[0];
+		$permalink = get_permalink($postId);
+		$content = $_POST['content'];
+		$matches = null;
+		if (preg_match_all('/entryid=\\\\"([^\\\\]*)/', $content, $matches))
+		{
+			foreach ($matches[1] as $entryId)
+			{
+				$this->updateEntryPermalinkMetadata($entryId, $permalink, $metadataProfileId, $metadataField->key);
+			}
+		}
+	}
 }
