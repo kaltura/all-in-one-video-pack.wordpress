@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php if ($this->uiConfId): ?>
 	<script type="text/javascript">
 		var playerWidth = "<?php echo $this->playerWidth; ?>";

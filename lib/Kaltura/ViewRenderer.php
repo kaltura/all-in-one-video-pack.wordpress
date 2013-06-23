@@ -9,7 +9,7 @@ class Kaltura_ViewRenderer
 		{
 			$this->$key = $value;
 		}
-
+		$this->allowViewRendering = true;
 		include(dirname(__FILE__).'/../../view/'.$viewFile);
 	}
 }

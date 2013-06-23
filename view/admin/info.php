@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php if ($this->error): ?>
 	<div class="wrap">
 		<h2><?php _e('All in One Video Pack Settings'); ?></h2>
@@ -28,11 +29,20 @@
 				<tr class="kalturaLastRow">
 					<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">
 						<a href="http://www.kaltura.com/index.php/kmc" target="_blank">Login</a> to the Kaltura Management Console (KMC) for advanced <br />media management<br />
-						Learn More about <a href="http://wordpress.kaltura.org/" target="_blank">new plugin features</a>
+						Learn More about the <a href="http://wordpress.kaltura.org/" target="_blank">new plugin features</a>
 					</td>
 				</tr>
 			</table>
 			<table>
+				<tr valign="top">
+					<td><label><?php _e("Default player design:"); ?></label></td>
+					<td>
+						<?php foreach($this->players->objects as $player): ?>
+							<input type="radio" name="default_player_type" id="default_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
+						<?php endforeach; ?>
+						<br />
+					</td>
+				</tr>
 				<tr valign="top">
 					<td><label for="enable_video_comments"><?php _e("Enable video comments?"); ?></label></td>
 					<td>
@@ -55,15 +65,6 @@
 					<td>
 						<?php foreach($this->players->objects as $player): ?>
 							<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
-						<?php endforeach; ?>
-						<br />
-					</td>
-				</tr>
-				<tr valign="top">
-					<td><label><?php _e("Default player design:"); ?></label></td>
-					<td>
-						<?php foreach($this->players->objects as $player): ?>
-							<input type="radio" name="default_player_type" id="default_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
 						<?php endforeach; ?>
 						<br />
 					</td>

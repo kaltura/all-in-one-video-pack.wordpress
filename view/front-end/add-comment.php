@@ -1,7 +1,8 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php if ($this->jsError): ?>
 	<script type="text/javascript">
 		var topWindow = Kaltura.getTopWindow();
-		topWindow.Kaltura.doErrorFromComments("<?php echo $this->jsError; ?>");
+		topWindow.Kaltura.doErrorFromComments("<?php echo esc_js($this->jsError); ?>");
 	</script>
 <?php else: ?>
 <script type="text/javascript">

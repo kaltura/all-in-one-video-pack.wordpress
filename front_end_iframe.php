@@ -1,6 +1,5 @@
 <?php
 require_once('../../../wp-load.php');
-require_once(ABSPATH . 'wp-admin/includes/admin.php');
 nocache_headers();
 $controller = new Kaltura_FrontEndController();
 ob_start();

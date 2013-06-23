@@ -3,6 +3,9 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController
 {
 	public function execute()
 	{
+		if (!current_user_can('manage_network_options'))
+			wp_die('Access denied');
+
 		wp_enqueue_script('kaltura-admin');
 		$kalturaPartnerId = get_site_option('kaltura_partner_id');
 		$partnerLogin = isset($_GET['partner_login']) ? true : false;

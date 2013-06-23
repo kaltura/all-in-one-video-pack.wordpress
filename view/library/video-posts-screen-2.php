@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <div class="wrap kaltura-wrap">
 	<h2><?php _e("Creating Video Post from Category"); ?></h2>
 	<?php $this->renderView('library/library_menu.php'); ?>

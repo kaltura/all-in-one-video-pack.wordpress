@@ -1,5 +1,6 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php $kaction = isset($_GET["kaction"]) ? $_GET["kaction"] : "browse"; ?>
-<div class="<?php echo ($this->isLibrary) ? "wrap kaltura-wrap $kaction" : "kaltura-tab"?>">
+<div class="<?php echo ($this->isLibrary) ? "wrap kaltura-wrap ".esc_attr($kaction) : "kaltura-tab"?>">
 	<?php if ($this->isLibrary): ?>
 		<h2>All in One Video</h2>
 		<?php $this->renderView('library/library_menu.php'); ?>

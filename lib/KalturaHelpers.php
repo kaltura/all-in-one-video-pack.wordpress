@@ -84,6 +84,12 @@ class KalturaHelpers
 		return isset($_GET[$param]) ? $_GET[$param] : $default;
 	}
 
+	public static function protectView($view)
+	{
+		if (!isset($view->allowViewRendering) || $view->allowViewRendering !== true)
+			wp_die('Access denied');
+	}
+
 	public static function getContributionWizardFlashVars($ks, $entryId = null)
 	{
 		$flashVars                  = array();

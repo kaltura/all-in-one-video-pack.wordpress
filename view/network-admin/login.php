@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php if ($this->error): ?>
 	<div class="wrap">
 		<h2><?php _e('All in One Video Pack Settings'); ?></h2>

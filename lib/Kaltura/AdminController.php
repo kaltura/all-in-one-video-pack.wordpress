@@ -3,6 +3,9 @@ class Kaltura_AdminController extends Kaltura_BaseController
 {
 	public function execute()
 	{
+		if (!current_user_can('manage_options'))
+			wp_die('Access denied');
+
 		wp_enqueue_script('kaltura-admin');
 		wp_enqueue_script('kaltura-jquery-validate');
 		$kalturaPartnerId = KalturaHelpers::getOption('kaltura_partner_id');

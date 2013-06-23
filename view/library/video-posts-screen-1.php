@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <div class="wrap kaltura-wrap">
 	<h2>All in One Video</h2>
 	<?php $this->renderView('library/library_menu.php'); ?>

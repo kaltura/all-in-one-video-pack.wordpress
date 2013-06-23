@@ -9,7 +9,7 @@ class Kaltura_AllInOneVideoPackPlugin
 
 	public function init()
 	{
-		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE)
+		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE && apply_filters('kaltura_use_network_settings', true))
 			add_action('network_admin_menu', $this->callback('networkAdminMenuAction'));
 
 		if (!KalturaHelpers::getOption('kaltura_partner_id') &&
@@ -147,7 +147,7 @@ class Kaltura_AllInOneVideoPackPlugin
 		$media_upload_iframe_src = "media-upload.php?post_id=$uploading_iframe_ID";
 		$kaltura_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_upload");
 		$kaltura_browse_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_browse");
-		$kaltura_title = __('Add Interactive Video');
+		$kaltura_title = __('Add Kaltura Media');
 		$kaltura_button_src = KalturaHelpers::getPluginUrl() . '/images/interactive_video_button.gif';
 		$content .= <<<EOF
 		<a href="{$kaltura_iframe_src}&amp;TB_iframe=true&amp;height=500&amp;width=640" class="thickbox" title='$kaltura_title'><img src='$kaltura_button_src' alt='$kaltura_title' /></a>
@@ -158,8 +158,8 @@ EOF;
 
 	public function mediaUploadTabsFilter($content)
 	{
-		$content['kaltura_upload'] = __('All in One Video');
-		$content['kaltura_browse'] = __('Browse Interactive Videos');
+		$content['kaltura_upload'] = __('Add Media');
+		$content['kaltura_browse'] = __('Browse Existing Media');
 		return $content;
 	}
 

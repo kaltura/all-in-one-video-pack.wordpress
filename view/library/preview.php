@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php $GLOBALS['body_id'] = 'preview-page'; ?>
 <div class="player-wrapper">
 	<div id="kplayer"></div>
@@ -7,7 +8,7 @@
 			"targetId": 'kplayer',
 			"wid": '<?php echo $this->widgetId; ?>',
 			"uiconf_id": '<?php echo $this->uiConfId; ?>',
-			"entry_id":  '<?php echo $this->entryId; ?>',
+			"entry_id":  '<?php echo esc_js($this->entryId); ?>',
 			"flashvars": <?php echo json_encode($this->flashVars); ?>,
 			"entry_id": '<?php echo $this->entryId; ?>'
 		});

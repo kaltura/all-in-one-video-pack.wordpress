@@ -3,6 +3,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 {
 	public function execute()
 	{
+		if (!current_user_can('edit_posts') && !current_user_can('edit_pages'))
+			wp_die('Access denied');
+
 		wp_enqueue_script('kaltura');
 		wp_enqueue_script('kaltura-admin');
 		wp_enqueue_style('kaltura-admin');
@@ -121,7 +124,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		$params['totalCount'] = $totalCount;
 		$params['totalPages'] = ceil($totalCount / $pageSize);
 		$params['result'] 	= $result;
-		$params['isLibrary'] = isset($_GET['isLibrary']) ? $_GET['isLibrary'] : false;
+		$params['isLibrary'] = isset($_GET['isLibrary']) ? esc_js($_GET['isLibrary']) : false;
 		$this->renderView('library/browse.php', $params);
 	}
 

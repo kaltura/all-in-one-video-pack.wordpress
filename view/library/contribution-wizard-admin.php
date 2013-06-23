@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php
 	$this->renderView('contribution-wizard.php');
 ?>

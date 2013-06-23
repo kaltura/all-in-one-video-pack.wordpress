@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <?php
 	$flashVarsStr = KalturaHelpers::flashVarsToString($this->flashVars);
 ?>

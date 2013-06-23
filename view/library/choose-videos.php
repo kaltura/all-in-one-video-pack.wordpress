@@ -1,3 +1,4 @@
+<?php KalturaHelpers::protectView($this); ?>
 <div id="kaltura-tab-choose-videos" class="kaltura-tab" >
 	<div class="loader"></div>
 	<div class="scroll">
