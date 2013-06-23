@@ -9,6 +9,9 @@ class Kaltura_AllInOneVideoPackPlugin
 
 	public function init()
 	{
+		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE)
+			add_action('network_admin_menu', $this->callback('networkAdminMenuAction'));
+
 		if (!KalturaHelpers::getOption('kaltura_partner_id') &&
 			!isset($_POST['submit']) &&
 			!strpos($_SERVER['REQUEST_URI'], 'page=kaltura_options'))
@@ -41,9 +44,6 @@ class Kaltura_AllInOneVideoPackPlugin
 
 		if (KalturaHelpers::videoCommentsEnabled())
 			add_action('comment_form', $this->callback('commentFormAction'));
-
-		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE)
-			add_action('network_admin_menu', $this->callback('networkAdminMenuAction'));
 
 		add_shortcode('kaltura-widget', $this->callback('shortcodeHandler'));
 	}
