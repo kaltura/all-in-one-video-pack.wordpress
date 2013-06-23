@@ -68,5 +68,3 @@ class AllInOneVideoWidget
 
 // initialize the plugin after all plugins are loaded because we depend on our main plugin
 add_action("plugins_loaded", create_function("", '$allInOneVideoWidget = new AllInOneVideoWidget();'));
-
-?>

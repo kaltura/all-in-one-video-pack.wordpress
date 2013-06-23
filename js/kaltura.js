@@ -198,7 +198,7 @@ Kaltura = {
 		var author = jQuery('#author').val();
 		var email  = jQuery('#email').val();
 		
-		KalturaModal.openModal('contribution_wizard', pluginUrl + '/page_contribution_wizard_video_comment.php?postid='+postId+'&author='+author+'&email='+email, { width: 680, height: 360 } );
+		KalturaModal.openModal('contribution_wizard', pluginUrl + '/front_end_iframe.php?kaction=addcomment&postid='+postId+'&author='+author+'&email='+email, { width: 680, height: 360 } );
 		jQuery("#contribution_wizard").addClass("modalContributionWizard");
 	},
 	

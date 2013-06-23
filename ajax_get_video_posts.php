@@ -12,8 +12,8 @@
 	if ($page < 1)
 		$page = 1;
 		
-	$widgets = KalturaWPModel::getLastPublishedPostWidgets($page, $page_size);
-	$total_count = KalturaWPModel::getLastPublishedPostWidgetsCount();
+	$widgets = Kaltura_WPModel::getLastPublishedPostWidgets($page, $page_size);
+	$total_count = Kaltura_WPModel::getLastPublishedPostWidgetsCount();
 
 	if ($page * $page_size >= $total_count)
 		$last_page = true;
@@ -62,4 +62,3 @@
 		echo 'No posted videos yet';
 	}
 	echo '</div>';
-?>

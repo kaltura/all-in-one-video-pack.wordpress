@@ -12,4 +12,3 @@
 	{
 		require_once('kaltura_admin_mu_partner_info_form.php');
 	}
-?>

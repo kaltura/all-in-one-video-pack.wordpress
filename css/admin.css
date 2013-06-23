@@ -1,0 +1,130 @@
+html, body{ height:100%; }
+body.wait, body.wait * { cursor: wait !important; }
+
+.kaltura-loader { display: none; width: 16px; height: 16px; background-image: url(../images/small_loader.gif); }
+
+form.kaltura-form{ margin: 0; }
+.media_page_interactive_video_library .column-posts { width: 5em; }
+.kaltura-pager { text-align: center; }
+
+/* general for tabs */
+.kaltura-tab{ margin: 15px; }
+.kaltura-updated{ padding: 0.6em 1.6em; font-weight: bold; }
+a.kalturaLink{ color: #006699; font-size: 14px; font-weight: bold; text-decoration: underline; }
+a.kalturaLink:hover{ color: #6699CC; }
+
+/* choose videos tab */
+#kaltura-tab-choose-videos p { margin: 0px 15px 10px 15px; }
+#kaltura-tab-choose-videos .scroll { position: relative; height: 310px; overflow: auto; }
+#kaltura-tab-choose-videos .options { text-align: center; margin-top: 5px; }
+#kaltura-tab-choose-videos .options a { margin: 0 10px; }
+#kaltura-tab-choose-videos .loader { position: fixed; left: 9px; bottom: 7px; }
+#kaltura-tab-choose-videos { margin-bottom: 0px; }
+#kaltura-tab-choose-videos .fixIe7 { position: relative; top: -10px; height: 4px; z-index: -1; }
+
+/* browse tab */
+div.kaltura-wrap { max-width: 810px; padding-top: 10px; }
+ul#kaltura-browse { clear: both; list-style: none; padding: 0 0 0 5px; margin: 1em 0 0 0; }
+	ul#kaltura-browse li{ float: left; position: relative; width: 180px; margin: 0 10px 15px 10px; padding: 10px 0 5px 0; text-align: center; background:url("../images/entries_bg.png") center 0 no-repeat; }
+	ul#kaltura-browse li .status { display: none; position: absolute; top: 97px; left: 0; height: 25px; width: 100px; margin: 0 40px; line-height: 25px; color: #333; background-color: #e5f1fb; z-index: 5; }
+		ul#kaltura-browse li .thumb{ height:100px; border:none; }
+		ul#kaltura-browse li .thumb .overlay { display: none; position: absolute; top: 40px; left:0; width: 120px; height:90px; margin: 0 30px; background-image: url(../images/status_bg.png); z-index: 2; }
+		ul#kaltura-browse li.statusConverting .overlay,
+		ul#kaltura-browse li.statusError .overlay { display: block; }
+			ul#kaltura-browse li.statusConverting div.convertingMsg { display: block; }
+			ul#kaltura-browse li.statusError div.errorMsg { display: block; }
+		ul#kaltura-browse li .showName{ cursor: pointer; cursor: hand; line-height: 15px; height: 30px; font-size: 11px; font-weight: bold; color: #31302E; overflow: hidden; margin: 0 5px 0 5px; }
+		ul#kaltura-browse li .submit{ text-align: center; padding: 5px 10px 0; border:none; }
+			ul#kaltura-browse li .submit input{ width:23px; height:22px; margin:0 5px; border:none; padding:0; }
+			ul#kaltura-browse li .submit input.checkbox { width: 10px; height: 10px; }
+				ul#kaltura-browse li .submit input.delete{ background:url("../images/delete_icon.gif") 0 0 no-repeat; cursor: pointer; }
+				ul#kaltura-browse li .submit input.add{ background:url("../images/add_icon.gif") 0 0 no-repeat; cursor: pointer; }
+				ul#kaltura-browse li .submit input.thumb{ background:url("../images/capture_icon.gif") 0 0 no-repeat; cursor: pointer; }
+			ul#kaltura-browse li .submit a{ color:#004265; }
+	ul#kaltura-browse li input.sendButton{ width: 9em; }
+
+/* update thumbnail page */
+#update-thumbnail-page { overflow: hidden; }
+#update-thumbnail-page .page-wrapper { background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
+#update-thumbnail-page .player-wrapper { min-height: 330px; margin-top: 20px; }
+#update-thumbnail-page .player-wrapper #kplayer { width: 400px; height: 330px; margin: 0 auto; }
+#update-thumbnail-page p { text-align: center; padding: 0 30px; }
+
+/* preview page */
+#preview-page { overflow: hidden; }
+#preview-page .player-wrapper { min-height: 380px; background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
+#preview-page .player-wrapper #kplayer { width: 350px; height: 320px; margin: 30px auto; }
+
+/* edit & send tabs */
+#send-to-editor { border: solid 1px #AED3E3; }
+#send-to-editor .kaltura-loader { margin: 50px auto; }
+#send-to-editor .playerName{ position: absolute; margin: 5px 0 0 5px; font-size: 12px; width: 200px; font-weight: normal; color: #000; overflow: hidden; }
+#send-to-editor table.options td{ padding: 0; }
+#send-to-editor .backDiv { text-align: right; padding: 5px; }
+#send-to-editor .form-table td{ border: 0; }
+#send-to-editor .form-table td table{ width:100%; }
+#send-to-editor .submit{ margin: 0 10px 10px 10px; padding:0; text-align:right; border: 0; }
+#send-to-editor #divKalturaPlayer { text-align: center; }
+#send-to-editor p.note { margin: 5px 0 0 10px; width: 400px; font-size: 10px; }
+#send-to-editor label{ font-weight:bold; }
+#send-to-editor fieldset{ padding: 5px 5px 10px 5px; }
+#send-to-editor fieldset legend{ padding-bottom: 0px; }
+#send-to-editor div.selectBox{ margin-bottom:15px; }
+#send-to-editor div.selectBox label{ display:block;}
+#send-to-editor .playerRatioDiv { margin-bottom: 10px; }
+#send-to-editor .playerRatioDiv div { float: left; }
+#send-to-editor div.radioBox{ padding:4px 0 12px 0; }
+#send-to-editor div.radioBox .iradio{ position:relative; top:3px; }
+#send-to-editor div.radioBox label{ padding-left:7px; }
+#send-to-editor select{ width: 130px; height:auto; padding:0; }
+
+/* cms login box */
+#kaltura-cms-login{ background-color: #E1EAEF; border: solid 1px #B4D5E5; margin: 5px 0 15px 0; }
+#kaltura-cms-login .kalturaFirstRow td{ padding-top: 10px; }
+#kaltura-cms-login .kalturaFirstRow th{ padding-top: 10px; }
+#kaltura-cms-login th{ font-weight:normal; padding-left: 10px; }
+#kaltura-cms-login .kalturaLastRow td{ padding-right: 10px; padding-bottom: 10px; }
+.kaltura-wrap #kaltura-cms-login { float: right; }
+
+/* entries page */
+.entries p.info { margin: 0 0 12px; float: left; }
+	
+/* registration page */
+.settings_page_kaltura_options .registration .form-table th { width: 250px }
+.settings_page_kaltura_options .registration input[type="text"] { width: 300px; }
+.settings_page_kaltura_options .registration select { width: 300px; }
+.settings_page_kaltura_options .registration textarea { width: 300px; }
+.settings_page_kaltura_options .registration .error { border: solid 1px #CC0000; background-color: #FFEBE8; }
+.settings_page_kaltura_options .registration label.error { border: none; }
+.settings_page_kaltura_options .registration tr.agree_to_terms label.error { background: transparent; color: #CC0000; display: block;}
+
+/* settings info page */
+.settings_page_kaltura_options tr.advanced { display: none; }
+.settings_page_kaltura_options .user_identifier_desc { width: 400px; padding-left: 23px; }
+.settings_page_kaltura_options tr.user_identifier label { font-weight: bold; }
+.settings_page_kaltura_options .parmalink_row label { padding-top: 4px; }
+
+/*--------------------------------
+	Contribution Wizard Modal Window
+---------------------------------*/
+* html .modalContributionWizard{ top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(0) + 200 + 'px'); } 
+
+/*--------------------------------
+	Sidebar Widget
+---------------------------------*/
+
+#all-in-one-video-pack-widget #kaltura-loader { display: none; width: 35px; height: 35px; padding: 20px 0; margin: auto; }
+#all-in-one-video-pack-widget #kaltura-sidebar-menu { width:100%; margin: 0; padding: 10px 0; text-align: center; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a { cursor: pointer; white-space: nowrap; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected { font-weight: bold; }
+	#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected:hover { text-decoration: none; cursor: default; }
+	
+#all-in-one-video-pack-widget ul#kaltura-items { margin: 0; }  
+	#all-in-one-video-pack-widget ul#kaltura-items li { background: none; text-align: center; margin: 0; margin-bottom: 10px; }
+	#all-in-one-video-pack-widget ul#kaltura-items li:before { content: ""; }
+	#all-in-one-video-pack-widget ul#kaltura-items li div.thumb { width: 120px; height: 90px; margin: 0 auto; background-color: #000000; }
+	
+#all-in-one-video-pack-widget ul.kaltura-sidebar-pager { width:100%; margin: 0 0 30px 0; padding: 0; }
+	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li { float: left; width: 50%; text-align: center; margin: 0; padding: 0; background: none; }
+	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li:before { content: ""; }
+	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager a { cursor: pointer; }

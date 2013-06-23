@@ -12,8 +12,8 @@
 	if ($page < 1)
 		$page = 1;
 		
-	$widgets = KalturaWPModel::getLastPublishedCommentWidgets($page, $page_size);
-	$total_count = KalturaWPModel::getLastPublishedCommentWidgetsCount();
+	$widgets = Kaltura_WPModel::getLastPublishedCommentWidgets($page, $page_size);
+	$total_count = Kaltura_WPModel::getLastPublishedCommentWidgetsCount();
 
 	if ($page * $page_size >= $total_count)
 		$last_page = true;
@@ -63,4 +63,3 @@
 		echo 'No video comments yet';
 	}
 	echo '</div>';
-?>
