@@ -258,9 +258,9 @@ class KalturaHelpers
 		if (!is_null($value))
 			return $value;
 
-		$value = get_option($name, $default);
+		$value = get_site_option($name, $default);
 		if (!is_null($value))
-			return get_site_option($name, $default);
+			return $value;
 
 		if (is_null(self::$_settings))
 			self::$_settings = parse_ini_file(dirname(__FILE__).'/../settings.ini');
