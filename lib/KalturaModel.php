@@ -33,6 +33,9 @@ class KalturaModel
 
 	public function startSession()
 	{
+		if (!KalturaHelpers::getOption("kaltura_partner_id"))
+			return;
+
 		$ks = $this->getAdminSession("edit:*");
 		$this->_client->setKs($ks);
 		$this->_session = $ks;
