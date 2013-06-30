@@ -91,6 +91,8 @@ class KalturaModel
 
 	public function getSecrets($partnerId, $email, $password)
 	{
+		$this->_client->setKs(null);
+		$this->_client->getConfig()->partnerId = null;
 		return $this->_client->partner->getSecrets($partnerId, $email, $password);
 	}
 
