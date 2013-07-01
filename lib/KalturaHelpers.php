@@ -146,7 +146,7 @@ class KalturaHelpers
 	public static function enqueueHtml5Lib($uiConfId)
 	{
 		$html5LibUrl = ''.
-			'http://www.kaltura.com'.
+			self::getServerUrl().
 			'/p/'.KalturaHelpers::getOption("kaltura_partner_id").
 			'/sp/'.KalturaHelpers::getOption("kaltura_partner_id").'00'.
 			'/embedIframeJs'.
