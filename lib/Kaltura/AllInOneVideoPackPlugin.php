@@ -221,6 +221,9 @@ EOF;
 			$attrs[$key] = esc_js($value);
 		}
 
+		if (!isset($attrs['entryid']))
+			return '';
+
 		// get the embed options from the attributes
 		$embedOptions = KalturaHelpers::getEmbedOptions($attrs);
 
