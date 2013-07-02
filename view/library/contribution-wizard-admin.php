@@ -4,6 +4,8 @@
 ?>
 
 <script type="text/javascript">
+	jQuery('body').css('overflow', 'hidden');
+
 	var cwWidth = 680;
 	var cwHeight = 360;
 	var entryIds = [];
@@ -18,7 +20,7 @@
 
 	topWindow.Kaltura.animateModalSize(
 		cwWidth, 
-		cwHeight + 12,
+		cwHeight + 8,
 		function() {
 		}
 	);
@@ -57,9 +59,6 @@
 	// fix mac firefox opacity bug
 	if (Kaltura.isMacFF())
 		Kaltura.hideTinyMCEToolbar();
-	
-	// fix the height of the tabs so the contribution wizard would be in full window height
-	jQuery("#media-upload-header").css("height", "33px");
 	
 	jQuery(window).unload(function () {
 		// restore the mac firefox opacity bug workaround
