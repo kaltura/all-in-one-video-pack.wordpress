@@ -172,7 +172,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_script('jquery');
 
 		$kmodel = KalturaModel::getInstance();
-		$ks = $kmodel->getClientSideSession();
+		$ks = $kmodel->getAdminSession();
 		$flashVars = array();
 		$flashVars['ks'] = $ks;
 		$params = array(
