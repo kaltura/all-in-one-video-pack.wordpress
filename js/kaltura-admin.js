@@ -73,7 +73,7 @@
 					if (element.attr('name') == 'agree_to_terms')
 						error.appendTo(element.parent());
 					//error.appendTo( element.parent("td").next("td") );
-				},
+				}
 			});
 
 			$('select[name=country]').change();
