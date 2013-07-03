@@ -37,7 +37,7 @@ $menu = array(
 	<tr class="kalturaLastRow">
 		<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">
 			<a href="http://www.kaltura.com/index.php/kmc" target="_blank">Login</a> to the Kaltura Management Console (KMC) for advanced <br />media management<br />
-			Learn More about the <a href="http://wordpress.kaltura.org/" target="_blank">new plugin features</a>
+			Learn more about the <a href="http://corp.kaltura.com/Products/Video-Applications/WordPress-Video-Plugin" target="_blank">new plugin features</a>
 		</td>
 	</tr>
 </table>
