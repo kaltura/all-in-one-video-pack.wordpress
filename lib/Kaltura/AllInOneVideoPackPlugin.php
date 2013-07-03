@@ -200,6 +200,9 @@ EOF;
 
 	public function commentFormAction($post_id)
 	{
+		if (wp_is_mobile())
+			return;
+
 		$user = wp_get_current_user();
 		if (!$user->ID && !KalturaHelpers::anonymousCommentsAllowed())
 		{
