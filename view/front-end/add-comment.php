@@ -28,8 +28,8 @@
 			if (!entryId)
 				topWindow.Kaltura.doErrorFromComments("Failed to add your comment");
 
-			var jqComments = topWindow.jQuery("#comment,[name=comment]");
-			var jqSubmitButton = topWindow.jQuery("#submit,[name=submit]");
+			var jqComments = topWindow.jQuery("#comment");
+			var jqSubmitButton = topWindow.jQuery("#submit");
 			var widgetHtml = '[kaltura-widget entryid="'+entryId+'" size="comments" /]';
 
 			if (jqComments.size() > 0 && jqSubmitButton.size() > 0)
