@@ -347,10 +347,16 @@ class Kaltura_Client_ClientBase
 	 */
 	private function doHttpRequest($url, $params = array(), $files = array())
 	{
-		if (function_exists('curl_init'))
-			return $this->doCurl($url, $params, $files);
+		$args = array(
+			'body' => $params,
+			'timeout' => $this->config->curlTimeout,
+			'sslverify' => $this->config->verifySSL
+		);
+		$responseData = wp_remote_post($url, $args);
+		if (is_wp_error($responseData))
+			return array(null, implode(', ', $responseData->get_error_messages()));
 		else
-			return $this->doPostRequest($url, $params, $files);
+			return array($responseData['body'], null);
 	}
 
 	/**
