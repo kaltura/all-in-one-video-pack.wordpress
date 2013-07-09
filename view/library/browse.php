@@ -36,7 +36,7 @@
 				</div>
 				<div class="thumb">
 					<?php if ($this->isLibrary): ?>
-						<a href="<?php echo KalturaHelpers::getPluginUrl() ?>/library_iframe.php?kaction=preview&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=390&width=600" title="Preview" class="thickbox">
+						<a href="<?php echo admin_url('upload.php') ?>?kaltura_admin_iframe_handler&kaction=preview&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=390&width=600" title="Preview" class="thickbox">
 							<img src="<?php echo $mediaEntry->thumbnailUrl; ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php $mediaEntry->name ?>" width="120" height="90" />
 						</a>
 					<?php else: ?>
@@ -52,7 +52,7 @@
 					<?php $isVideo = ($mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO); ?>
 					<?php if ($this->isLibrary): ?>
 						<?php if ($isVideo) :?>
-						<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo KalturaHelpers::getPluginUrl() ?>/library_iframe.php?kaction=updatethumbnail&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=440&width=750"" />
+						<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo admin_url('upload.php'); ?>?kaltura_admin_iframe_handler&kaction=updatethumbnail&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=440&width=750"" />
 						<?php endif; ?>
 						<input type="button" title="Delete video" class="delete" data-id="<?php echo $mediaEntry->id; ?>" />
 					<?php endif; ?>

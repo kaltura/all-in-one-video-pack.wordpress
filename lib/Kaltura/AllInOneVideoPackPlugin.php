@@ -46,6 +46,8 @@ class Kaltura_AllInOneVideoPackPlugin
 			add_action('comment_form', $this->callback('commentFormAction'));
 
 		add_shortcode('kaltura-widget', $this->callback('shortcodeHandler'));
+
+		add_filter('parse_request', $this->callback('parseRequest'));
 	}
 
 	private function callback($functionName)
@@ -210,8 +212,7 @@ EOF;
 		}
 		else
 		{
-			$plugin_url = KalturaHelpers::getPluginUrl();
-			$js_click_code = "Kaltura.openCommentCW('".$plugin_url."'); ";
+			$js_click_code = "Kaltura.openCommentCW('".site_url().'?kaltura_iframe_handler'."'); ";
 			echo "<input type=\"button\" id=\"kaltura_video_comment\" name=\"kaltura_video_comment\" tabindex=\"6\" value=\"Add Video Comment\" onclick=\"" . $js_click_code . "\" />";
 		}
 	}
@@ -322,6 +323,32 @@ EOF;
 	{
 		$controller = new Kaltura_NetworkAdminController();
 		$controller->execute();
+	}
+
+	public function parseRequest($args)
+	{
+		if (isset($_GET['kaltura_iframe_handler']))
+		{
+			nocache_headers();
+			$controller = new Kaltura_FrontEndController();
+			$controller->execute();
+			die;
+		}
+		elseif (isset($_GET['kaltura_admin_iframe_handler']))
+		{
+			auth_redirect();
+			nocache_headers();
+			global $show_admin_bar;
+			$show_admin_bar = false;
+
+			$controller = new Kaltura_LibraryController();
+			// we want to execute our controller before wordpress starts outputting the html
+			ob_start();
+			$controller->execute();
+			$this->controllerOutput = ob_get_clean();
+			wp_iframe(create_function('', 'global $kalturaPlugin; echo $kalturaPlugin->controllerOutput;'));
+			die;
+		}
 	}
 
 	private function setKalturaOnlyMediaTabs()

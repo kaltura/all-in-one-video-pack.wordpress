@@ -1,4 +1,5 @@
 <?php KalturaHelpers::protectView($this); ?>
+<?php $this->renderView('library/no-wp-toolbar-css.php'); ?>
 <?php $GLOBALS['body_id'] = 'update-thumbnail-page'; ?>
 <div class="page-wrapper">
 	<div class="player-wrapper">
