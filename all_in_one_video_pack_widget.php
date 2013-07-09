@@ -7,64 +7,45 @@ Version: 99.99(DEV)
 Author: Kaltura
 Author URI: http://www.kaltura.org/
 */
-define('KALTURA_ROOT', dirname(__FILE__));
 
-require_once(KALTURA_ROOT.'/settings.php');
-require_once(KALTURA_ROOT.'/lib/kaltura_client.php');
-require_once(KALTURA_ROOT.'/lib/kaltura_helpers.php');
+if (isset($plugin)) {
+	if (!defined('KALTURA_WIDGET_PLUGIN_FILE'))
+		define('KALTURA_WIDGET_PLUGIN_FILE', $plugin);
+}
+elseif (isset($network_plugin)) {
+	if (!defined('KALTURA_WIDGET_PLUGIN_FILE'))
+		define('KALTURA_WIDGET_PLUGIN_FILE', $network_plugin);
+}
+elseif (isset($mu_plugin)) {
+	if (!defined('KALTURA_WIDGET_PLUGIN_FILE'))
+		define('KALTURA_WIDGET_PLUGIN_FILE', $mu_plugin);
+}
+else {
+	if (!defined('KALTURA_WIDGET_PLUGIN_FILE'))
+		define('KALTURA_WIDGET_PLUGIN_FILE', __FILE__);
+}
 
+register_activation_hook(KALTURA_WIDGET_PLUGIN_FILE, 'kaltura_activate_widget_plugin');
 
-class AllInOneVideoWidget 
+function kaltura_initialize_widget_plugin()
 {
-	function AllInOneVideoWidget() 
+	// initialize only if the main plugin is loadeded
+	if (!defined('KALTURA_PLUGIN_FILE'))
 	{
-		// load only if the main plugin is loadeded
-		if (defined("KALTURA_PLUGIN_FILE")) 
-		{
-			add_action("widgets_init", array(&$this, "registerWidget"));
-		}
-		else
-		{
-			$msg = __("Please activate \"All in One Video Pack\" before using the sidebar widget");
-			$notice = '<div class="updated fade"><p><strong>'.$msg.'</strong></p></div>';
-			add_action('admin_notices', create_function("", 'echo \''.$notice.'\';'));
-		}
+		$msg    = __("Please activate \"All in One Video Pack\" before using the sidebar widget");
+		$notice = '<div class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
+		add_action('admin_notices', create_function("", 'echo \'' . $notice . '\';'));
+		return;
 	}
-	
-	function registerWidget() 
-	{
-		$description = "The most recent posted videos and comments in your blog";
-		$options = array("classname" => "widget_text", "description" => $description);
-		$id = "all-in-one-video-pack-widget";
-		$name = "Recent Videos Widget";
-		wp_register_sidebar_widget($id, $name, array(&$this, 'displayWidget'), $options);
-	}
-	
-	function displayWidget($args)
-	{
-		extract($args);
 
-        echo $before_widget;
-        echo $before_title;
-        echo 'Recent Videos';
-        echo $after_title;
-        echo '<div id="kaltura-sidebar-menu">' . "\n";
-	    echo '<a id="kaltura-posts-button" onclick="Kaltura.switchSidebarTab(this, \'posts\');">'.__("Posted Videos").'</a> | ' . "\n";
-	    echo '<a id="kaltura-comments-button" onclick="Kaltura.switchSidebarTab(this, \'comments\');">'.__("Video Comments").'</a>' . "\n";
-        echo '</div>' . "\n";
-        
-        echo '<div id="kaltura-loader"><img src="'.KalturaHelpers::getPluginUrl().'/images/loader.gif" alt="Loading..." /></div>' . "\n";
-        echo '<div id="kaltura-sidebar-container"></div>' . "\n";
-        echo '<script type="text/javascript">' . "\n";
-        echo 'jQuery("#kaltura-posts-button").click()' . "\n";
-        echo 'var kaltura_loader = new SWFObject("'.KalturaHelpers::getPluginUrl().'/images/loader.swf", "kaltura-loader-swf", 35, 35, "9", "#000000");' . "\n";
-        echo 'kaltura_loader.addParam("wmode", "transparent");' . "\n";
-        echo 'kaltura_loader.write("kaltura-loader");' . "\n";
-        echo '</script>' . "\n";
-        
-        echo $after_widget;
-	}
+	new Kaltura_AllInOneVideoWidgetPlugin();
+}
+
+function kaltura_activate_widget_plugin()
+{
+	require_once('lib/Kaltura/WPDB.php');
+	Kaltura_WPDB::install();
 }
 
 // initialize the plugin after all plugins are loaded because we depend on our main plugin
-add_action("plugins_loaded", create_function("", '$allInOneVideoWidget = new AllInOneVideoWidget();'));
+add_action("plugins_loaded", 'kaltura_initialize_widget_plugin');

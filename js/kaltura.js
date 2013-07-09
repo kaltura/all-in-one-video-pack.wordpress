@@ -313,20 +313,16 @@ Kaltura = {
 		if  (menu.find("a[class=selected]").get(0) == sender)
 			return; // so we won't load the selected tab
 		
-		var pageToLoad = "";
-		
-		if (page)
-			pageToLoad = pageToLoad + "&page=" + page;
-			
 		menu.find("a").removeClass("selected"); // unselect all
 		jQuery(sender).addClass("selected"); // select the current
 		
 		
 		jQuery("#kaltura-sidebar-container").empty();
 		jQuery("#kaltura-loader").show();
-		
+
+		var url = KalturaSidebarWidget.ajaxurl + "?action=kaltura_widget_ajax&kaction="+type+"&page="+page;
 		jQuery.get(
-				Kaltura_PluginUrl + "/" + pageToLoad,
+				url,
 				null,
 				function (data, status) {
 					jQuery("#kaltura-loader").hide();

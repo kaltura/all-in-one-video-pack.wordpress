@@ -180,7 +180,7 @@ class KalturaHelpers
 		$url .= "/thumbnail";
 		if ($widgetId)
 			$url .= "/widget_id/" . $widgetId;
-		else if ($entryId)
+		if ($entryId)
 			$url .= "/entry_id/" . $entryId;
 		$url .= "/width/" . $width;
 		$url .= "/height/" . $height;
@@ -232,6 +232,21 @@ class KalturaHelpers
 			$height = ($width / 4) * 3 + $spacer;
 
 		return (int)$height;
+	}
+
+	public static function runKalturaShortcode($content, $callback)
+	{
+		global $shortcode_tags;
+
+		// we will backup the shortcode array, and run only our shortcode
+		$shortcode_tags_backup = $shortcode_tags;
+
+		add_shortcode('kaltura-widget', $callback);
+
+		$content = do_shortcode($content);
+
+		// now we can restore the original shortcode list
+		$shortcode_tags = $shortcode_tags_backup;
 	}
 
 	public static function dieWithConnectionErrorMsg($errorDesc = '')
