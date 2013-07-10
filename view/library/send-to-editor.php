@@ -26,6 +26,10 @@
 
 			if (topWindow.tinyMCE && topWindow.tinyMCE.get('content') && !topWindow.tinyMCE.get('content').isHidden())
 			{
+				var ed = topWindow.tinyMCE.activeEditor;
+				if (topWindow.tinyMCE.isIE && ed.windowManager.insertimagebookmark)
+					ed.selection.moveToBookmark(ed.windowManager.insertimagebookmark);
+
 				topWindow.tinyMCE.execCommand('mceInsertRawHTML', false, html);
 			}
 			else
