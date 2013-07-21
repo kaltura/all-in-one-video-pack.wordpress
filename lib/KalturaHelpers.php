@@ -314,8 +314,8 @@ class KalturaHelpers
 	public static function getEmbedOptions($params)
 	{
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array('size', 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid');
-		foreach($arrayKeys as $key => $value)
+		$arrayKeys = array('size', 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style');
+		foreach($arrayKeys as $key)
 		{
 			if (!isset($params[$key]))
 				$params[$key] = null;

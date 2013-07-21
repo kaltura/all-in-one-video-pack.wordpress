@@ -169,6 +169,7 @@ class Kaltura_AdminController extends Kaltura_BaseController
 	{
 		$params = array();
 		$params['error'] = null;
+		$params['showMessage'] = false;
 		if (count($_POST))
 		{
 			$enableVideoComments = KalturaHelpers::getRequestPostParam('enable_video_comments') ? true : false;

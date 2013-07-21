@@ -76,8 +76,8 @@ class Kaltura_AllInOneVideoPackPlugin
 
 	public function adminMenuAction()
 	{
-		add_options_page('All in One Video', 'All in One Video', 8, 'kaltura_options', $this->callback('executeAdminController'));
-		add_media_page('All in One Video', 'All in One Video', 8, 'kaltura_library', $this->callback('executeLibraryController'));
+		add_options_page('All in One Video', 'All in One Video', 'manage_options', 'kaltura_options', $this->callback('executeAdminController'));
+		add_media_page('All in One Video', 'All in One Video', 'edit_posts', 'kaltura_library', $this->callback('executeLibraryController'));
 	}
 
 	public function printScripts()

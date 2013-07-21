@@ -19,6 +19,9 @@ class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 		$widgets 	= Kaltura_WPModel::getLastPublishedCommentWidgets($page, $pageSize);
 		$totalCount = Kaltura_WPModel::getLastPublishedCommentWidgetsCount();
 
+		$viewData['lastPage'] = false;
+		$viewData['firstPage'] = false;
+
 		if ($page * $pageSize >= $totalCount)
 			$viewData['lastPage'] = true;
 
@@ -41,6 +44,9 @@ class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 		$widgets 	= Kaltura_WPModel::getLastPublishedPostWidgets($page, $pageSize);
 		$totalCount = Kaltura_WPModel::getLastPublishedPostWidgetsCount();
 
+		$viewData['lastPage'] = false;
+		$viewData['firstPage'] = false;
+		
 		if ($page * $pageSize >= $totalCount)
 			$viewData['lastPage'] = true;
 

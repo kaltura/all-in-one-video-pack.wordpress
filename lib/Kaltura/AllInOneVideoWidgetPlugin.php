@@ -13,8 +13,7 @@ class Kaltura_AllInOneVideoWidgetPlugin
 		add_action('widgets_init', $this->callback('registerWidget'));
 		add_action('wp_ajax_kaltura_widget_ajax', $this->callback('executeSidebarWidgetController'));
 		add_action('wp_ajax_nopriv_kaltura_widget_ajax', $this->callback('executeSidebarWidgetController'));
-		wp_enqueue_script('kaltura', KalturaHelpers::jsUrl('js/kaltura.js'));
-		wp_localize_script('kaltura', 'KalturaSidebarWidget', array('ajaxurl' => admin_url('admin-ajax.php' )));
+		add_action('wp_enqueue_scripts', $this->callback('enqueueScripts'));
 	}
 
 	public function registerWidget()
@@ -24,6 +23,12 @@ class Kaltura_AllInOneVideoWidgetPlugin
 		$id          = "all-in-one-video-pack-widget";
 		$name        = "Recent Videos Widget";
 		wp_register_sidebar_widget($id, $name, $this->callback('displayWidget'), $options);
+	}
+
+	public function enqueueScripts()
+	{
+		wp_enqueue_script('kaltura', KalturaHelpers::jsUrl('js/kaltura.js'));
+		wp_localize_script('kaltura', 'KalturaSidebarWidget', array('ajaxurl' => admin_url('admin-ajax.php' )));
 	}
 
 	public function displayWidget($args)
