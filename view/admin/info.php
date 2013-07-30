@@ -77,7 +77,7 @@
 						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
 							<?php foreach ($this->metadataProfilesResponse->objects as $metadataProfile):?>
 								<option  value="<?php echo $metadataProfile->id;?>" <?php echo KalturaHelpers::getOption("kaltura_permalink_metadata_profile_id") == $metadataProfile->id ? "selected=\"selected\"" : ""; ?>><?php echo $metadataProfile->name;?></option>
-							<? endforeach;?>
+							<?php endforeach;?>
 						</select>
 					</td>
 				</tr>
