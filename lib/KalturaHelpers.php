@@ -378,7 +378,7 @@ class KalturaHelpers
 		else
 			$protocol = 'http://';
 
-		$flashVarsStr = '';
+		$flashVarsStr = '"streamerType" : "auto"'; //leverage Kaltura's new automatic protocol selection
 
 		return array(
 			'flashVars' => $flashVarsStr,
