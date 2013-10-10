@@ -284,7 +284,11 @@ class KalturaHelpers
 			return $value;
 
 		if (is_null(self::$_settings))
-			self::$_settings = parse_ini_file(dirname(__FILE__).'/../settings.ini');
+			self::$_settings = apply_filters('kaltura_settings', array(
+				"server_url" => "http://www.kaltura.com",
+				"cdn_url" => "http://cdn.kaltura.com",
+				"anonymous_user_id" => "Anonymous",
+			));
 		$settings = self::$_settings;
 
 		if (isset($settings[$name]))
