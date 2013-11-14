@@ -1,59 +1,50 @@
-=== All in One Video Pack ===
+=== Kaltura All-in-One Video Plugin for WordPress ===
 Contributors: Kaltura
 Donate link: http://www.kaltura.org/
-Tags: plugin, admin, images, posts, Post, comments, kaltura, participate, media library, edit, camera, podcast, record, vlog, video editor, video responses, video blog, audio, media, flickr, Facebook, mix, mixing, remix, collaboration, interactive, richmedia cms, webcam, ria, CCMixter, Jamendo, rich-media, picture, editor, player, video comments, New York Public Library, photo, video, all in one, playlist, video gallery, gallery, widget, all-in-one, transcoding, encoding, advertising, video ads, video advertising
-Requires at least: 2.5
-Tested up to: 3.1
+Tags: admin, advertising, all in one,  audio, camera,  collaboration, comments, , Encoding, Facebook, flickr, gallery, images, interactive, kaltura, media, media library, participate, photo, picture, player, playlist, plugin,podcast, Post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video comments, video gallery, video responses, video-ads, vlog, webcam, widget, mobile
+Requires at least: 2.5.2
+Tested up to: 3.5.2
 Stable tag: 2.4.4
 
 Easily add full video capabilities to your blog.
 
 == Description ==
 
-This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos directly to your post, edit and remix content with an online video editor, enable video responses, manage and track your video content, create playlists and much more... And Kaltura covers all hosting and streaming costs for FREE up to 10GB.
+This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos and publish them directly to your post, enable video comments, centrally manage and track your video content. 
+You will instantly enhance user engagement on your WordPress site by enriching it with video. Leverage the full power of our Online Video Platform: superb playback, audience engagement, monetization, video management, social sharing, mobile and tablet delivery and more. Kaltura will handle all the heavy lifting in the back-end, including transcoding, storing, and streaming of your video content.
 
-Highlights:
+It’s simple to install, use and customize -  [download the Kaltura All-in-One Video Plugin](http://downloads.wordpress.org/plugin/all-in-one-video-pack.2.5.zip) and choose one of two options to host and manage your Kaltura back-end:
 
-* Upload, record from webcam and import all rich-media directly to your blog post; 
-* Edit and remix videos using Kaltura's online full-featured video editor; 
-* Easily import all rich media (video, audio, pictures...) from other sites and social networks, such as Flickr, CCMixter, Jamendo, New York Public Library, any URL on the web etc.; 
-* Allow readers and subscribers to add video and audio comments, and to participate in collaborative videos; 
-* Manage and track interactive videos through the management console; 
-* Enable video advertising
-* Sidebar widget displaying thumbnails of recent videos and video comments
-* Complete administrative capabilities. You decide who can add and edit each video; 
-* Supports more than 150 video, audio and image file formats and codecs 
-* Choose your preferred video player style for each player you embed
-* Custom sizing of the video player 
+**Kaltura Hosted Solution (Kaltura SaaS) - Free Trial and Affordable Packages**
+-------------
+When you sign up with Kaltura.com you get 10GB free hosting and streaming using Kaltura's world-class CDNs and hosting facilities. Get started with your free trial today! For more information on our packages beyond 10GB, please contact us and we'll get right back to you. 
+
+**Self-Hosted Solution**
+-------------
+You can also connect your Kaltura Video plugin to Kaltura’s Community Edition- the self-hosted, community supported version of Kaltura's Open Source Online Video Platform - all behind your own firewall and on your own server for free.
+
+**Features and Benefits**
+-------------
+* Easy video upload - import rich-media directly to your blog post or record from webcam
+* Central media management – through the Kaltura Management Console. Includes video analytics and reports
+* Complete administrative capabilities - you decide who can contribute and access videos
+* Configurable player branding and features
+* Visitor Engagement - allow readers and subscribers to add video and audio comments, and to participate in collaborative videos
+* Support for Advertising & Monetization
+* Social Sharing – easily share across social networks, blogs, and sites 
+* Optimal Playback Experience – with our adaptive bitrate technology, on any device
+* Sidebar widget displaying all recent videos and video comments posted
 * Update thumbnail of video by selecting frame from video
-* Advanced sharing options for videos 
-* Sidebar widget showing all recent videos posted and video comments.
-* Easy installation that takes just 4 steps and a few minutes. 
 
-
-Version 2.4
+**What’s New in Version 2.5?**
 -------------
-* MultiUser Support
-* New default players
-* Option to create custom video players within the video management console, and use them within WordPress
-* Option to automatically generate video posts using categories from within the user's video management console
-* Improved playback performance
-* Removed 200MB per upload restriction 
+* Full support for WordPress 3.5.2
+* MultiUser Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
+* Mobile playback support – reach anyone on any device (including iOS, Android), web, and set-top boxes.
 
-Showcase your blog, see examples and pictures of the plugin and get support in our forum: http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums
+See release notes [here](http://knowledge.kaltura.com/node/905).
 
-View video walk-throughs of new features in version 2.4 here: http://wordpress.kaltura.org
-
-
-Kaltura Hosted Solution - Free Trial and Affordable Packages
--------------
-When you signup with Kaltura.com (http://corp.kaltura.com/about/signup) you get 10GB free hosting and streaming using Kaltura's world-class CDNs and hosting facilities, as well as premium support, SLAs and more. Get started with your free trial today!
-For more information on our packages beyond 10GB, please contact us and we'll get right back to you: http://corp.kaltura.com/about/contact
-
-Self-Hosted Solution
--------------
-You can also connect your Kaltura Video extension to the Kaltura Community Edition - the self-hosted, community supported version of Kaltura's Open Source Online Video Platform - all behind your own firewall and on your own servers for free.
-Learn more about the Community Edition on the Project page: http://www.kaltura.org/project/community_edition_video_platform
+Showcase your blog, see examples and pictures of the plugin and get support in our [forum](http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums).
 
 == Installation ==
 
