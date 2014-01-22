@@ -284,13 +284,31 @@ class KalturaHelpers
 			return $value;
 
 		if (is_null(self::$_settings))
-			self::$_settings = parse_ini_file(dirname(__FILE__).'/../settings.ini');
+			self::$_settings = self::getDefaultSettings();
 		$settings = self::$_settings;
 
 		if (isset($settings[$name]))
 			return $settings[$name];
 		else
 			return $default;
+	}
+
+	public static function getDefaultSettings()
+	{
+		$defaultSettings = require(dirname(__FILE__).'/../settings.php');
+
+		if (function_exists('wpcom_is_vip'))
+			return $defaultSettings;
+
+		// on non vip enviroments, try to load settings.ini for backward compatibility
+		$iniFilePath = dirname(__FILE__).'/../settings.ini';
+		if (file_exists($iniFilePath))
+		{
+			$iniSettings = parse_ini_file($iniFilePath);
+			$defaultSettings = array_merge($defaultSettings, $iniSettings);
+		}
+
+		return $defaultSettings;
 	}
 
 	public static function pluginUrl($uri = '')
