@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) // to be on the safe side
+	die;
+
 return array(
 	'server_url' => 'http://www.kaltura.com',
 	'cdn_url' => 'http://cdn.kaltura.com',
