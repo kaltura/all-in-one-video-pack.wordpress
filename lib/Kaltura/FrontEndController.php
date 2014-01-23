@@ -1,16 +1,17 @@
 <?php
 class Kaltura_FrontEndController extends Kaltura_BaseController
 {
+	protected function allowedActions()
+	{
+		return array('addcomment');
+	}
+
 	public function execute()
 	{
+		$this->validateAccess();
 		wp_enqueue_script('kaltura');
 
-		$kaction = isset($_GET['kaction']) ? $_GET['kaction'] : null;
-		$methodName = $kaction.'Action';
-		if (method_exists($this, $methodName))
-		{
-			call_user_func(array($this, $methodName));
-		}
+		parent::execute();
 	}
 
 	public function addcommentAction()

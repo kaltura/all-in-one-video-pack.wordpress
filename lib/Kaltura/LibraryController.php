@@ -1,6 +1,24 @@
 <?php
 class Kaltura_LibraryController extends Kaltura_BaseController
 {
+	protected function allowedActions()
+	{
+		return array(
+			'upload',
+			'delete',
+			'sendtoeditor',
+			'library',
+			'browse',
+			'choosevideos',
+			'preview',
+			'updatethumbnail',
+			'getplayers',
+			'saveentryname',
+			'videoposts',
+			'getentriesstatus',
+		);
+	}
+
 	public function execute()
 	{
 		if (!current_user_can('edit_posts') && !current_user_can('edit_pages'))
@@ -10,18 +28,14 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_script('kaltura-admin');
 		wp_enqueue_style('kaltura-admin');
 
-		$kaction = isset($_GET['kaction']) ? $_GET['kaction'] : null;
+		$kaction = $this->getKAction();
 		if (!KalturaHelpers::getOption('kaltura_partner_id'))
 		{
 			$this->renderView('library/partner-id-missing.php');
 		}
 		else
 		{
-			$methodName = $kaction.'Action';
-			if (method_exists($this, $methodName))
-			{
-				call_user_func(array($this, $methodName));
-			}
+			parent::execute();
 		}
 	}
 

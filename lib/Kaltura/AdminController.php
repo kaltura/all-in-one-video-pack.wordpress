@@ -1,6 +1,11 @@
 <?php
 class Kaltura_AdminController extends Kaltura_BaseController
 {
+	public function allowedActions()
+	{
+		return array();
+	}
+
 	public function execute()
 	{
 		if (!current_user_can('manage_options'))

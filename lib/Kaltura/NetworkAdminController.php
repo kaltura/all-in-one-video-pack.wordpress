@@ -1,6 +1,11 @@
 <?php
 class Kaltura_NetworkAdminController extends Kaltura_BaseController
 {
+	protected function allowedActions()
+	{
+		return array();
+	}
+
 	public function execute()
 	{
 		if (!current_user_can('manage_network_options'))

@@ -1,14 +1,9 @@
 <?php
 class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 {
-	public function execute()
+	protected function allowedActions()
 	{
-		$kaction = isset($_GET['kaction']) ? $_GET['kaction'] : null;
-		$methodName = $kaction.'Action';
-		if (method_exists($this, $methodName))
-		{
-			call_user_func(array($this, $methodName));
-		}
+		return array('videocomments', 'videoposts');
 	}
 
 	public function videocommentsAction()
