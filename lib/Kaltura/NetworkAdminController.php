@@ -62,7 +62,9 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController
 
 	public function infoAction()
 	{
+		$params = array();
 		$params['error'] = null;
+		$params['showMessage'] = false;
 		// try to create new session to make sure that the details are ok
 		$kmodel = KalturaModel::getInstance();
 		try

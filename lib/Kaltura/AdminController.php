@@ -65,6 +65,9 @@ class Kaltura_AdminController extends Kaltura_BaseController
 
 	public function registerAction()
 	{
+		$params = array(
+			'success' => false,
+		);
 		if (count($_POST))
 		{
 			if ($_POST['agree_to_terms'])

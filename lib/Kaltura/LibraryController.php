@@ -28,7 +28,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_script('kaltura-admin');
 		wp_enqueue_style('kaltura-admin');
 
-		$kaction = $this->getKAction();
 		if (!KalturaHelpers::getOption('kaltura_partner_id'))
 		{
 			$this->renderView('library/partner-id-missing.php');
@@ -79,6 +78,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		if (is_null($entryId))
 			wp_die('No entry specified');
 
+		$params = array_fill_keys(array(
+			'entry', 'entryId', 'nextEntryIds', 'flashVars', 'thumbnailPlaceHolderUrl',
+			'playerWidth', 'playerHeight', 'uiConfId', 'isLibrary',
+		), null);
 		if (!count($_POST))
 		{
 			$kmodel = KalturaModel::getInstance();
@@ -129,7 +132,11 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_style('media');
 		wp_enqueue_script('kaltura-editable-name');
 		$kmodel = KalturaModel::getInstance();
-		$pageSize = 18;
+		$isLibrary = isset($_GET['isLibrary']) ? esc_js($_GET['isLibrary']) : false;
+		if ($isLibrary)
+			$pageSize = 16;
+		else
+			$pageSize = 18;
 		$page = isset($_GET['paged']) ? $_GET['paged'] : 1;
 		$result = $kmodel->listEntries($pageSize, $page);
 		$totalCount = $result->totalCount;
@@ -138,7 +145,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		$params['totalCount'] = $totalCount;
 		$params['totalPages'] = ceil($totalCount / $pageSize);
 		$params['result'] 	= $result;
-		$params['isLibrary'] = isset($_GET['isLibrary']) ? esc_js($_GET['isLibrary']) : false;
+		$params['isLibrary'] = $isLibrary;
 		$this->renderView('library/browse.php', $params);
 	}
 

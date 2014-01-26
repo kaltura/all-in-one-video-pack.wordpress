@@ -69,7 +69,7 @@
 						<br />
 						<br />
 						<center>
-							<input type="button" value="<?php echo attribute_escape( __( 'Close' ) ); ?>" onclick="setTimeout('topWindow.tb_remove()', 0);" name="close" class="button-secondary" />
+							<input type="button" value="<?php echo esc_attr( __( 'Close' ) ); ?>" onclick="setTimeout('topWindow.tb_remove()', 0);" name="close" class="button-secondary" />
 						</center>
 					</td>
 				</tr>
@@ -131,7 +131,7 @@
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
 										<select name="uiConfId" id="uiConfId"></select>
-										<?php if ($selectedPlayerName): ?>
+										<?php if (isset($selectedPlayerName)): ?>
 										<script type="text/javascript">
 											embedPreviewPlayer('<?php echo $selectedPlayerName; ?>');
 										</script>
@@ -142,7 +142,7 @@
 									<strong>Player Dimensions:</strong>
 									<div class="playerRatioDiv">
 										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="updateRatio();" value="16:9" <?php echo $wideScreenDisabled; ?>/><label for="playerRatioWide">Widescreen</label></span>
+										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="updateRatio();" value="16:9" /><label for="playerRatioWide">Widescreen</label></span>
 									</div>
 									<strong>Select player size:</strong>
 									<div class="radioBox">
@@ -161,13 +161,8 @@
 					</td>
 				</tr>
 			</table>
-			<?php if ($this->entry->type == KalturaEntryType_MIX): ?>
-			<p class="note"><?php _e('Note:  If your custom player includes the "Edit" and/or "Upload" actions make sure you allow users to edit this video.'); ?></p>
-			<?php elseif ($this->entry->type == KalturaEntryType_MEDIA_CLIP): ?>
-			<p class="note"><?php _e('Note: Make sure you do not use a player that includes the "Edit" and/or "Upload" actions, as this video is not editable.'); ?></p>
-			<?php endif; ?>
 			<p class="submit">
-				<input type="submit" value="<?php echo attribute_escape( __( 'Insert into Post' ) ); ?>" name="sendToEditorButton" class="button-secondary" />
+				<input type="submit" value="<?php echo esc_attr( __( 'Insert into Post' ) ); ?>" name="sendToEditorButton" class="button-secondary" />
 			</p>
 		</form>
 	</div>
@@ -200,7 +195,7 @@
 
 			jQuery.kalturaPlayerSelector({
 				url: ajaxurl+'?action=kaltura_ajax&kaction=getplayers',
-				defaultId: '<?php echo get_option("kaltura_default_player_type",$KALTURA_DEFAULT_PLAYERS[0]['id']); ?>',
+				defaultId: '<?php echo get_option("kaltura_default_player_type"); ?>',
 				swfBaseUrl: '<?php echo KalturaHelpers::getSwfUrlForWidget(); ?>',
 				previewId: 'divKalturaPlayer',
 				entryId: '<?php echo $this->entry->id; ?>',

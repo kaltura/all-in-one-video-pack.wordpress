@@ -145,7 +145,7 @@
 			</tr>
 			<tr class="agree_to_terms">
 				<th colspan="2">
-					<input type="checkbox" name="agree_to_terms" id="agree_to_terms" value="1" <?php echo ($_POST['agree_to_terms'] == '1') ? ' checked="checked"' : ''; ?> />
+					<input type="checkbox" name="agree_to_terms" id="agree_to_terms" value="1" <?php echo (KalturaHelpers::getRequestPostParam('agree_to_terms') == '1') ? ' checked="checked"' : ''; ?> />
 					<label for="agree_to_terms">I Accept </label><a href="http://corp.kaltura.com/tandc" target="_blank">Terms of Use</a> *
 				</th>
 			</tr>

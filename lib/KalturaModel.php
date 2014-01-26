@@ -180,19 +180,6 @@ class KalturaModel
 		return $this->_client->baseEntry->delete($mediaEntryId);
 	}
 
-	public function addWidget($entryId, $uiConfId)
-	{
-		$widget = new Kaltura_Client_WidgetService();
-		$widget->entryId = $entryId;
-		$widget->uiConfId = $uiConfId;
-		return $this->_client->widget->add($widget);
-	}
-
-	public function getWidget($widgetId)
-	{
-		return $this->_client->widget->get($widgetId);
-	}
-
 	public function pingTest()
 	{
 		try
@@ -352,7 +339,10 @@ class KalturaModel
 
 		$metadataField = $metadataFieldsResponse->objects[0];
 		$permalink = get_permalink($postId);
-		$content = $_POST['content'];
+		$content = KalturaHelpers::getRequestPostParam('content');
+		if (!$content)
+			return;
+
 		$matches = null;
 		if (preg_match_all('/entryid=\\\\"([^\\\\]*)/', $content, $matches))
 		{

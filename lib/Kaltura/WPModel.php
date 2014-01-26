@@ -207,7 +207,18 @@ class Kaltura_WPModel
 
 	public static function getCategoryByName($name)
 	{
-		return get_term($name, 'category');
+		if ($term = get_term_by('name', $name, 'category'))
+		{
+			$cat = get_category($term->term_id);
+			if (is_wp_error($cat))
+				return null;
+			else
+				return $cat;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public static function getPostByTitle($title)
