@@ -12,24 +12,12 @@ class KalturaHelpers
 
 	public static function getServerUrl()
 	{
-		$url = KalturaHelpers::getOption('server_url');
-
-		// remove the last slash from the url
-		if (substr($url, strlen($url) - 1, 1) == '/')
-			$url = substr($url, 0, strlen($url) - 1);
-
-		return $url;
+		return rtrim(KalturaHelpers::getOption('server_url'), '/');
 	}
 
 	public static function getCdnUrl()
 	{
-		$url = KalturaHelpers::getOption('cdn_url');
-
-		// remove the last slash from the url
-		if (substr($url, strlen($url) - 1, 1) == '/')
-			$url = substr($url, 0, strlen($url) - 1);
-
-		return $url;
+		return rtrim(KalturaHelpers::getOption('cdn_url'), '/');
 	}
 
 	public static function getLoggedUserId()
@@ -173,7 +161,6 @@ class KalturaHelpers
 
 	public static function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000)
 	{
-		$config = KalturaHelpers::getKalturaConfiguration();
 		$url    = KalturaHelpers::getCdnUrl();
 		$url .= "/p/" . KalturaHelpers::getOption("kaltura_partner_id");
 		$url .= "/sp/" . KalturaHelpers::getOption("kaltura_partner_id") * 100;
@@ -188,13 +175,6 @@ class KalturaHelpers
 		$url .= "/bgcolor/000000";
 		if ($version !== null)
 			$url .= "/version/" . $version;
-		return $url;
-	}
-
-	public static function getCommentPlaceholderThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000)
-	{
-		$url = KalturaHelpers::getThumbnailUrl($widgetId, $entryId, $width, $height, $version);
-		$url .= "/crop_provider/wordpress_comment_placeholder";
 		return $url;
 	}
 
@@ -247,30 +227,6 @@ class KalturaHelpers
 
 		// now we can restore the original shortcode list
 		$shortcode_tags = $shortcode_tags_backup;
-	}
-
-	public static function dieWithConnectionErrorMsg($errorDesc = '')
-	{
-		echo '
-		<div class="error">
-			<p>
-				<strong>Your connection has failed to reach the Kaltura servers. Please check if your web host blocks outgoing connections and then retry.</strong> (' . $errorDesc . ')
-			</p>
-		</div>';
-		die();
-	}
-
-	public static function getCloseLinkForModals()
-	{
-		return '<a href="#" onclick="((window.opener) ? window.opener : (window.parent) ? window.parent : window.top).KalturaModal.closeModal();">' . __('Close') . '</a>';
-	}
-
-	/**
-	 * sometimes wordpress thinks our url is a permalink and sets 404 header, calling this function will force back to 200
-	 */
-	public static function force200Header()
-	{
-		status_header(200);
 	}
 
 	public static function getOption($name, $default = null)
@@ -390,11 +346,6 @@ class KalturaHelpers
 			default:
 				$align = '';
 		}
-
-		if ($_SERVER['SERVER_PORT'] == 443)
-			$protocol = 'https://';
-		else
-			$protocol = 'http://';
 
 		$flashVarsStr = '';
 
