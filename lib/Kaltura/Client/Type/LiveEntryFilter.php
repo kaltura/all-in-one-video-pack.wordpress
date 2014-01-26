@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+class Kaltura_Client_Type_LiveEntryFilter extends Kaltura_Client_Type_LiveEntryBaseFilter
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaLiveStreamEntryBaseFilter';
+		return 'KalturaLiveEntryFilter';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,7 +45,16 @@ abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Cli
 		if(is_null($xml))
 			return;
 		
+		if(count($xml->isLive))
+			$this->isLive = (int)$xml->isLive;
 	}
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $isLive = null;
+
 
 }
 

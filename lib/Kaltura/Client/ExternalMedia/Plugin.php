@@ -33,15 +33,9 @@
  */
 class Kaltura_Client_ExternalMedia_Plugin extends Kaltura_Client_Plugin
 {
-	/**
-	 * @var Kaltura_Client_ExternalMedia_ExternalMediaService
-	 */
-	public $externalMedia = null;
-
 	protected function __construct(Kaltura_Client_Client $client)
 	{
 		parent::__construct($client);
-		$this->externalMedia = new Kaltura_Client_ExternalMedia_ExternalMediaService($client);
 	}
 
 	/**
@@ -58,7 +52,6 @@ class Kaltura_Client_ExternalMedia_Plugin extends Kaltura_Client_Plugin
 	public function getServices()
 	{
 		$services = array(
-			'externalMedia' => $this->externalMedia,
 		);
 		return $services;
 	}

@@ -48,7 +48,7 @@ class Kaltura_Client_Metadata_Type_MetadataListResponse extends Kaltura_Client_O
 		if(empty($xml->objects))
 			$this->objects = array();
 		else
-			$this->objects = Kaltura_Client_Client::unmarshalItem($xml->objects);
+			$this->objects = Kaltura_Client_ParseUtils::unmarshalArray($xml->objects, "KalturaMetadata");
 		if(count($xml->totalCount))
 			$this->totalCount = (int)$xml->totalCount;
 	}

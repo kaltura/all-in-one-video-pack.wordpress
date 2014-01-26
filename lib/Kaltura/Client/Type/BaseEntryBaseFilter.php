@@ -65,8 +65,12 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 		$this->adminTagsMultiLikeAnd = (string)$xml->adminTagsMultiLikeAnd;
 		$this->categoriesMatchAnd = (string)$xml->categoriesMatchAnd;
 		$this->categoriesMatchOr = (string)$xml->categoriesMatchOr;
+		$this->categoriesNotContains = (string)$xml->categoriesNotContains;
 		$this->categoriesIdsMatchAnd = (string)$xml->categoriesIdsMatchAnd;
 		$this->categoriesIdsMatchOr = (string)$xml->categoriesIdsMatchOr;
+		$this->categoriesIdsNotContains = (string)$xml->categoriesIdsNotContains;
+		if(count($xml->categoriesIdsEmpty))
+			$this->categoriesIdsEmpty = (int)$xml->categoriesIdsEmpty;
 		$this->statusEqual = (string)$xml->statusEqual;
 		$this->statusNotEqual = (string)$xml->statusNotEqual;
 		$this->statusIn = (string)$xml->statusIn;
@@ -289,6 +293,13 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 	 *
 	 * @var string
 	 */
+	public $categoriesNotContains = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
 	public $categoriesIdsMatchAnd = null;
 
 	/**
@@ -299,6 +310,20 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 	 * @var string
 	 */
 	public $categoriesIdsMatchOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $categoriesIdsNotContains = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $categoriesIdsEmpty = null;
 
 	/**
 	 * This filter should be in use for retrieving only entries, at a specific {

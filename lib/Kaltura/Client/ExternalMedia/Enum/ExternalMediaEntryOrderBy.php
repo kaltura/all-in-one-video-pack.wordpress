@@ -36,9 +36,9 @@ class Kaltura_Client_ExternalMedia_Enum_ExternalMediaEntryOrderBy
 	const CREATED_AT_ASC = "+createdAt";
 	const DURATION_ASC = "+duration";
 	const END_DATE_ASC = "+endDate";
+	const LAST_PLAYED_AT_ASC = "+lastPlayedAt";
 	const MEDIA_TYPE_ASC = "+mediaType";
 	const MODERATION_COUNT_ASC = "+moderationCount";
-	const MS_DURATION_ASC = "+msDuration";
 	const NAME_ASC = "+name";
 	const PARTNER_SORT_VALUE_ASC = "+partnerSortValue";
 	const PLAYS_ASC = "+plays";
@@ -52,9 +52,9 @@ class Kaltura_Client_ExternalMedia_Enum_ExternalMediaEntryOrderBy
 	const CREATED_AT_DESC = "-createdAt";
 	const DURATION_DESC = "-duration";
 	const END_DATE_DESC = "-endDate";
+	const LAST_PLAYED_AT_DESC = "-lastPlayedAt";
 	const MEDIA_TYPE_DESC = "-mediaType";
 	const MODERATION_COUNT_DESC = "-moderationCount";
-	const MS_DURATION_DESC = "-msDuration";
 	const NAME_DESC = "-name";
 	const PARTNER_SORT_VALUE_DESC = "-partnerSortValue";
 	const PLAYS_DESC = "-plays";

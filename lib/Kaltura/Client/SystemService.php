@@ -42,24 +42,13 @@ class Kaltura_Client_SystemService extends Kaltura_Client_ServiceBase
 	function ping()
 	{
 		$kparams = array();
-		$this->client->queueServiceActionCall("system", "ping", $kparams);
+		$this->client->queueServiceActionCall("system", "ping", null, $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$resultObject = (bool) $resultObject;
-		return $resultObject;
-	}
-
-	function getTime()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("system", "getTime", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "integer");
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = (bool)Kaltura_Client_ParseUtils::unmarshalSimpleType($resultXmlObject->result);
 		return $resultObject;
 	}
 }

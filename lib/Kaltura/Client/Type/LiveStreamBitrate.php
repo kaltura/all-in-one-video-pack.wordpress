@@ -51,6 +51,7 @@ class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase
 			$this->width = (int)$xml->width;
 		if(count($xml->height))
 			$this->height = (int)$xml->height;
+		$this->tags = (string)$xml->tags;
 	}
 	/**
 	 * 
@@ -72,6 +73,13 @@ class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase
 	 * @var int
 	 */
 	public $height = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $tags = null;
 
 
 }

@@ -31,21 +31,9 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+class Kaltura_Client_Enum_RecordStatus
 {
-	public function getKalturaObjectType()
-	{
-		return 'KalturaLiveStreamEntryBaseFilter';
-	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
-			return;
-		
-	}
-
+	const DISABLED = 0;
+	const ENABLED = 1;
 }
 

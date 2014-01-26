@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaLiveStreamEntryBaseFilter';
+		return 'KalturaLiveChannel';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,7 +45,26 @@ abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Cli
 		if(is_null($xml))
 			return;
 		
+		$this->playlistId = (string)$xml->playlistId;
+		if(count($xml->repeat))
+			$this->repeat = (int)$xml->repeat;
 	}
+	/**
+	 * Playlist id to be played
+	 * 	 
+	 *
+	 * @var string
+	 */
+	public $playlistId = null;
+
+	/**
+	 * Indicates that the segments should be repeated for ever
+	 * 	 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $repeat = null;
+
 
 }
 

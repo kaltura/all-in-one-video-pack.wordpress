@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEntry
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaLiveStreamEntryBaseFilter';
+		return 'KalturaLiveEntry';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,7 +45,70 @@ abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Cli
 		if(is_null($xml))
 			return;
 		
+		$this->offlineMessage = (string)$xml->offlineMessage;
+		if(count($xml->recordStatus))
+			$this->recordStatus = (int)$xml->recordStatus;
+		if(count($xml->dvrStatus))
+			$this->dvrStatus = (int)$xml->dvrStatus;
+		if(count($xml->dvrWindow))
+			$this->dvrWindow = (int)$xml->dvrWindow;
+		if(empty($xml->liveStreamConfigurations))
+			$this->liveStreamConfigurations = array();
+		else
+			$this->liveStreamConfigurations = Kaltura_Client_ParseUtils::unmarshalArray($xml->liveStreamConfigurations, "KalturaLiveStreamConfiguration");
+		$this->recordedEntryId = (string)$xml->recordedEntryId;
 	}
+	/**
+	 * The message to be presented when the stream is offline
+	 * 	 
+	 *
+	 * @var string
+	 */
+	public $offlineMessage = null;
+
+	/**
+	 * Recording Status Enabled/Disabled
+	 * 	 
+	 *
+	 * @var Kaltura_Client_Enum_RecordStatus
+	 * @insertonly
+	 */
+	public $recordStatus = null;
+
+	/**
+	 * DVR Status Enabled/Disabled
+	 * 	 
+	 *
+	 * @var Kaltura_Client_Enum_DVRStatus
+	 * @insertonly
+	 */
+	public $dvrStatus = null;
+
+	/**
+	 * Window of time which the DVR allows for backwards scrubbing (in minutes)
+	 * 	 
+	 *
+	 * @var int
+	 * @insertonly
+	 */
+	public $dvrWindow = null;
+
+	/**
+	 * Array of key value protocol->live stream url objects
+	 * 	 
+	 *
+	 * @var array of KalturaLiveStreamConfiguration
+	 */
+	public $liveStreamConfigurations;
+
+	/**
+	 * Recorded entry id
+	 * 	 
+	 *
+	 * @var string
+	 */
+	public $recordedEntryId = null;
+
 
 }
 

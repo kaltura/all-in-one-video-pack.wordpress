@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+class Kaltura_Client_Type_ConcatAttributes extends Kaltura_Client_Type_OperationAttributes
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaLiveStreamEntryBaseFilter';
+		return 'KalturaConcatAttributes';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,7 +45,17 @@ abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Cli
 		if(is_null($xml))
 			return;
 		
+		if(!empty($xml->resource))
+			$this->resource = Kaltura_Client_ParseUtils::unmarshalObject($xml->resource, "KalturaDataCenterContentResource");
 	}
+	/**
+	 * The resource to be concatenated
+	 * 	 
+	 *
+	 * @var Kaltura_Client_Type_DataCenterContentResource
+	 */
+	public $resource;
+
 
 }
 

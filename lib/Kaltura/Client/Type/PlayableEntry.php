@@ -49,6 +49,8 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 			$this->plays = (int)$xml->plays;
 		if(count($xml->views))
 			$this->views = (int)$xml->views;
+		if(count($xml->lastPlayedAt))
+			$this->lastPlayedAt = (int)$xml->lastPlayedAt;
 		if(count($xml->width))
 			$this->width = (int)$xml->width;
 		if(count($xml->height))
@@ -76,6 +78,15 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 	 * @readonly
 	 */
 	public $views = null;
+
+	/**
+	 * The last time the entry was played
+	 * 	 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $lastPlayedAt = null;
 
 	/**
 	 * The width in pixels

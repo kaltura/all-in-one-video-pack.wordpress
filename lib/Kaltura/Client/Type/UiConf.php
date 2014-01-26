@@ -63,6 +63,7 @@ class Kaltura_Client_Type_UiConf extends Kaltura_Client_ObjectBase
 		$this->confFilePath = (string)$xml->confFilePath;
 		$this->confFile = (string)$xml->confFile;
 		$this->confFileFeatures = (string)$xml->confFileFeatures;
+		$this->config = (string)$xml->config;
 		$this->confVars = (string)$xml->confVars;
 		if(!empty($xml->useCdn))
 			$this->useCdn = true;
@@ -75,6 +76,8 @@ class Kaltura_Client_Type_UiConf extends Kaltura_Client_ObjectBase
 		if(count($xml->creationMode))
 			$this->creationMode = (int)$xml->creationMode;
 		$this->html5Url = (string)$xml->html5Url;
+		$this->version = (string)$xml->version;
+		$this->partnerTags = (string)$xml->partnerTags;
 	}
 	/**
 	 * 
@@ -177,6 +180,13 @@ class Kaltura_Client_Type_UiConf extends Kaltura_Client_ObjectBase
 	 *
 	 * @var string
 	 */
+	public $config = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
 	public $confVars = null;
 
 	/**
@@ -231,6 +241,22 @@ class Kaltura_Client_Type_UiConf extends Kaltura_Client_ObjectBase
 	 * @var string
 	 */
 	public $html5Url = null;
+
+	/**
+	 * UiConf version
+	 * 	 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $version = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $partnerTags = null;
 
 
 }

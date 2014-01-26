@@ -37,10 +37,15 @@ class Kaltura_Client_Configuration
 	public $serviceUrl    				= "http://www.kaltura.com/";
 	public $partnerId    				= null;
 	public $format        				= Kaltura_Client_ClientBase::KALTURA_SERVICE_FORMAT_XML;
-	public $clientTag 	  				= "php5zend:13-04-09";
-	public $curlTimeout   				= 10;
+	public $clientTag 	  				= "php5zend:14-01-26";
+	public $curlTimeout   				= 120;
 	public $startZendDebuggerSession 	= false;
 	public $userAgent					= '';
+	public $proxyHost                   = null;
+	public $proxyPort                   = null;
+	public $proxyType                   = 'HTTP';
+	public $proxyUser                   = null;
+	public $proxyPassword               = '';
 	public $verifySSL 					= true;
 	public $sslCertificatePath			= null;
 	public $requestHeaders				= array();

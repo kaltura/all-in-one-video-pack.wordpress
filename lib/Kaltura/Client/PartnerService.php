@@ -46,38 +46,13 @@ class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase
 		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
 		$this->client->addParam($kparams, "templatePartnerId", $templatePartnerId);
 		$this->client->addParam($kparams, "silent", $silent);
-		$this->client->queueServiceActionCall("partner", "register", $kparams);
+		$this->client->queueServiceActionCall("partner", "register", "KalturaPartner", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
-		return $resultObject;
-	}
-
-	function update(Kaltura_Client_Type_Partner $partner, $allowEmpty = false)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "partner", $partner->toParams());
-		$this->client->addParam($kparams, "allowEmpty", $allowEmpty);
-		$this->client->queueServiceActionCall("partner", "update", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
-		return $resultObject;
-	}
-
-	function get($id = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "id", $id);
-		$this->client->queueServiceActionCall("partner", "get", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaPartner");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
 		return $resultObject;
 	}
@@ -88,109 +63,14 @@ class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase
 		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "adminEmail", $adminEmail);
 		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
-		$this->client->queueServiceActionCall("partner", "getSecrets", $kparams);
+		$this->client->queueServiceActionCall("partner", "getSecrets", "KalturaPartner", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaPartner");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
-		return $resultObject;
-	}
-
-	function getInfo()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("partner", "getInfo", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
-		return $resultObject;
-	}
-
-	function getUsage($year = "", $month = 1, $resolution = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "year", $year);
-		$this->client->addParam($kparams, "month", $month);
-		$this->client->addParam($kparams, "resolution", $resolution);
-		$this->client->queueServiceActionCall("partner", "getUsage", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_PartnerUsage");
-		return $resultObject;
-	}
-
-	function getStatistics()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("partner", "getStatistics", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_PartnerStatistics");
-		return $resultObject;
-	}
-
-	function listPartnersForUser(Kaltura_Client_Type_PartnerFilter $partnerFilter = null, Kaltura_Client_Type_FilterPager $pager = null)
-	{
-		$kparams = array();
-		if ($partnerFilter !== null)
-			$this->client->addParam($kparams, "partnerFilter", $partnerFilter->toParams());
-		if ($pager !== null)
-			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$this->client->queueServiceActionCall("partner", "listPartnersForUser", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_PartnerListResponse");
-		return $resultObject;
-	}
-
-	function listAction(Kaltura_Client_Type_PartnerFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
-	{
-		$kparams = array();
-		if ($filter !== null)
-			$this->client->addParam($kparams, "filter", $filter->toParams());
-		if ($pager !== null)
-			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$this->client->queueServiceActionCall("partner", "list", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_PartnerListResponse");
-		return $resultObject;
-	}
-
-	function listFeatureStatus()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("partner", "listFeatureStatus", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_FeatureStatusListResponse");
-		return $resultObject;
-	}
-
-	function count(Kaltura_Client_Type_PartnerFilter $filter = null)
-	{
-		$kparams = array();
-		if ($filter !== null)
-			$this->client->addParam($kparams, "filter", $filter->toParams());
-		$this->client->queueServiceActionCall("partner", "count", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "integer");
 		return $resultObject;
 	}
 }

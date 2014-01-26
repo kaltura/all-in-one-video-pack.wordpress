@@ -50,7 +50,7 @@ class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase
 		if(empty($xml->flashvars))
 			$this->flashvars = array();
 		else
-			$this->flashvars = Kaltura_Client_Client::unmarshalItem($xml->flashvars);
+			$this->flashvars = Kaltura_Client_ParseUtils::unmarshalArray($xml->flashvars, "KalturaKeyValue");
 		$this->minVersion = (string)$xml->minVersion;
 	}
 	/**

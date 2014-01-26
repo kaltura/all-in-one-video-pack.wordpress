@@ -68,6 +68,11 @@ abstract class Kaltura_Client_Type_UiConfBaseFilter extends Kaltura_Client_Type_
 		if(count($xml->creationModeEqual))
 			$this->creationModeEqual = (int)$xml->creationModeEqual;
 		$this->creationModeIn = (string)$xml->creationModeIn;
+		$this->versionEqual = (string)$xml->versionEqual;
+		$this->versionMultiLikeOr = (string)$xml->versionMultiLikeOr;
+		$this->versionMultiLikeAnd = (string)$xml->versionMultiLikeAnd;
+		$this->partnerTagsMultiLikeOr = (string)$xml->partnerTagsMultiLikeOr;
+		$this->partnerTagsMultiLikeAnd = (string)$xml->partnerTagsMultiLikeAnd;
 	}
 	/**
 	 * 
@@ -173,6 +178,41 @@ abstract class Kaltura_Client_Type_UiConfBaseFilter extends Kaltura_Client_Type_
 	 * @var string
 	 */
 	public $creationModeIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $versionEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $versionMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $versionMultiLikeAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $partnerTagsMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $partnerTagsMultiLikeAnd = null;
 
 
 }

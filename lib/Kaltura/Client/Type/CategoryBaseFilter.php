@@ -79,6 +79,8 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 			$this->inheritanceTypeEqual = (int)$xml->inheritanceTypeEqual;
 		$this->inheritanceTypeIn = (string)$xml->inheritanceTypeIn;
 		$this->referenceIdEqual = (string)$xml->referenceIdEqual;
+		if(count($xml->referenceIdEmpty))
+			$this->referenceIdEmpty = (int)$xml->referenceIdEmpty;
 		if(count($xml->contributionPolicyEqual))
 			$this->contributionPolicyEqual = (int)$xml->contributionPolicyEqual;
 		if(count($xml->membersCountGreaterThanOrEqual))
@@ -268,6 +270,13 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 	 * @var string
 	 */
 	public $referenceIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $referenceIdEmpty = null;
 
 	/**
 	 * 

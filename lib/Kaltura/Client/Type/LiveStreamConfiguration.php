@@ -47,6 +47,7 @@ class Kaltura_Client_Type_LiveStreamConfiguration extends Kaltura_Client_ObjectB
 		
 		$this->protocol = (string)$xml->protocol;
 		$this->url = (string)$xml->url;
+		$this->publishUrl = (string)$xml->publishUrl;
 	}
 	/**
 	 * 
@@ -61,6 +62,13 @@ class Kaltura_Client_Type_LiveStreamConfiguration extends Kaltura_Client_ObjectB
 	 * @var string
 	 */
 	public $url = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $publishUrl = null;
 
 
 }

@@ -52,6 +52,7 @@ class Kaltura_Client_Type_CategoryFilter extends Kaltura_Client_Type_CategoryBas
 		$this->memberEqual = (string)$xml->memberEqual;
 		$this->fullNameStartsWithIn = (string)$xml->fullNameStartsWithIn;
 		$this->ancestorIdIn = (string)$xml->ancestorIdIn;
+		$this->idOrInheritedParentIdIn = (string)$xml->idOrInheritedParentIdIn;
 	}
 	/**
 	 * 
@@ -102,6 +103,13 @@ class Kaltura_Client_Type_CategoryFilter extends Kaltura_Client_Type_CategoryBas
 	 * @var string
 	 */
 	public $ancestorIdIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $idOrInheritedParentIdIn = null;
 
 
 }

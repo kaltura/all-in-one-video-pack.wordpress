@@ -33,15 +33,9 @@
  */
 class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin
 {
-	/**
-	 * @var Kaltura_Client_Document_DocumentsService
-	 */
-	public $documents = null;
-
 	protected function __construct(Kaltura_Client_Client $client)
 	{
 		parent::__construct($client);
-		$this->documents = new Kaltura_Client_Document_DocumentsService($client);
 	}
 
 	/**
@@ -58,7 +52,6 @@ class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin
 	public function getServices()
 	{
 		$services = array(
-			'documents' => $this->documents,
 		);
 		return $services;
 	}

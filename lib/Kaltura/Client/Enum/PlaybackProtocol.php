@@ -40,6 +40,7 @@ class Kaltura_Client_Enum_PlaybackProtocol
 	const HDS = "hds";
 	const HLS = "hls";
 	const HTTP = "http";
+	const MPEG_DASH = "mpegdash";
 	const RTMP = "rtmp";
 	const RTSP = "rtsp";
 	const SILVER_LIGHT = "sl";

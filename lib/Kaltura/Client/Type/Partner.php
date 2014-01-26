@@ -97,7 +97,7 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 		if(empty($xml->additionalParams))
 			$this->additionalParams = array();
 		else
-			$this->additionalParams = Kaltura_Client_Client::unmarshalItem($xml->additionalParams);
+			$this->additionalParams = Kaltura_Client_ParseUtils::unmarshalArray($xml->additionalParams, "KalturaKeyValue");
 		if(count($xml->publishersQuota))
 			$this->publishersQuota = (int)$xml->publishersQuota;
 		if(count($xml->partnerGroupType))
@@ -109,11 +109,11 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 		if(empty($xml->deliveryTypes))
 			$this->deliveryTypes = array();
 		else
-			$this->deliveryTypes = Kaltura_Client_Client::unmarshalItem($xml->deliveryTypes);
+			$this->deliveryTypes = Kaltura_Client_ParseUtils::unmarshalArray($xml->deliveryTypes, "KalturaPlayerDeliveryType");
 		if(empty($xml->embedCodeTypes))
 			$this->embedCodeTypes = array();
 		else
-			$this->embedCodeTypes = Kaltura_Client_Client::unmarshalItem($xml->embedCodeTypes);
+			$this->embedCodeTypes = Kaltura_Client_ParseUtils::unmarshalArray($xml->embedCodeTypes, "KalturaPlayerEmbedCodeType");
 		if(count($xml->templatePartnerId))
 			$this->templatePartnerId = (int)$xml->templatePartnerId;
 		if(!empty($xml->ignoreSeoLinks))
@@ -121,10 +121,11 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 		$this->host = (string)$xml->host;
 		$this->cdnHost = (string)$xml->cdnHost;
 		$this->rtmpUrl = (string)$xml->rtmpUrl;
-		$this->language = (string)$xml->language;
 		if(!empty($xml->isFirstLogin))
 			$this->isFirstLogin = true;
 		$this->logoutUrl = (string)$xml->logoutUrl;
+		if(count($xml->partnerParentId))
+			$this->partnerParentId = (int)$xml->partnerParentId;
 	}
 	/**
 	 * 
@@ -491,14 +492,6 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	/**
 	 * 
 	 *
-	 * @var string
-	 * @readonly
-	 */
-	public $language = null;
-
-	/**
-	 * 
-	 *
 	 * @var bool
 	 * @readonly
 	 */
@@ -511,6 +504,14 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	 * @readonly
 	 */
 	public $logoutUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $partnerParentId = null;
 
 
 }

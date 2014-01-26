@@ -96,11 +96,12 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 			$this->partnerSortValue = (int)$xml->partnerSortValue;
 		if(count($xml->conversionProfileId))
 			$this->conversionProfileId = (int)$xml->conversionProfileId;
+		$this->redirectEntryId = (string)$xml->redirectEntryId;
 		$this->rootEntryId = (string)$xml->rootEntryId;
 		if(empty($xml->operationAttributes))
 			$this->operationAttributes = array();
 		else
-			$this->operationAttributes = Kaltura_Client_Client::unmarshalItem($xml->operationAttributes);
+			$this->operationAttributes = Kaltura_Client_ParseUtils::unmarshalArray($xml->operationAttributes, "KalturaOperationAttributes");
 		$this->entitledUsersEdit = (string)$xml->entitledUsersEdit;
 		$this->entitledUsersPublish = (string)$xml->entitledUsersPublish;
 	}
@@ -239,7 +240,7 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $updatedAt = null;
 
 	/**
-	 * Calculated rank
+	 * The calculated average rank. rank = totalRank / votes
 	 * 	 
 	 *
 	 * @var float
@@ -248,7 +249,7 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $rank = null;
 
 	/**
-	 * The total (sum) of all votes
+	 * The sum of all rank values submitted to the baseEntry.anonymousRank action
 	 * 	 
 	 *
 	 * @var int
@@ -257,7 +258,7 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $totalRank = null;
 
 	/**
-	 * Number of votes
+	 * A count of all requests made to the baseEntry.anonymousRank action
 	 * 	 
 	 *
 	 * @var int
@@ -400,7 +401,15 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $conversionProfileId = null;
 
 	/**
-	 * ID of source root entry, used for clipped, skipped and cropped entries that created from another entry  
+	 * IF not empty, points to an entry ID the should replace this current entry's id. 
+	 * 	 
+	 *
+	 * @var string
+	 */
+	public $redirectEntryId = null;
+
+	/**
+	 * ID of source root entry, used for clipped, skipped and cropped entries that created from another entry
 	 * 	 
 	 *
 	 * @var string

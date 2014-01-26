@@ -50,6 +50,7 @@ class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryB
 			$this->isRoot = (int)$xml->isRoot;
 		$this->categoriesFullNameIn = (string)$xml->categoriesFullNameIn;
 		$this->categoryAncestorIdIn = (string)$xml->categoryAncestorIdIn;
+		$this->redirectFromEntryId = (string)$xml->redirectFromEntryId;
 	}
 	/**
 	 * 
@@ -79,6 +80,14 @@ class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryB
 	 * @var string
 	 */
 	public $categoryAncestorIdIn = null;
+
+	/**
+	 * The id of the original entry
+	 * 	 
+	 *
+	 * @var string
+	 */
+	public $redirectFromEntryId = null;
 
 
 }

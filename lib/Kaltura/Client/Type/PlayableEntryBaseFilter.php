@@ -45,6 +45,10 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 		if(is_null($xml))
 			return;
 		
+		if(count($xml->lastPlayedAtGreaterThanOrEqual))
+			$this->lastPlayedAtGreaterThanOrEqual = (int)$xml->lastPlayedAtGreaterThanOrEqual;
+		if(count($xml->lastPlayedAtLessThanOrEqual))
+			$this->lastPlayedAtLessThanOrEqual = (int)$xml->lastPlayedAtLessThanOrEqual;
 		if(count($xml->durationLessThan))
 			$this->durationLessThan = (int)$xml->durationLessThan;
 		if(count($xml->durationGreaterThan))
@@ -53,16 +57,22 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 			$this->durationLessThanOrEqual = (int)$xml->durationLessThanOrEqual;
 		if(count($xml->durationGreaterThanOrEqual))
 			$this->durationGreaterThanOrEqual = (int)$xml->durationGreaterThanOrEqual;
-		if(count($xml->msDurationLessThan))
-			$this->msDurationLessThan = (int)$xml->msDurationLessThan;
-		if(count($xml->msDurationGreaterThan))
-			$this->msDurationGreaterThan = (int)$xml->msDurationGreaterThan;
-		if(count($xml->msDurationLessThanOrEqual))
-			$this->msDurationLessThanOrEqual = (int)$xml->msDurationLessThanOrEqual;
-		if(count($xml->msDurationGreaterThanOrEqual))
-			$this->msDurationGreaterThanOrEqual = (int)$xml->msDurationGreaterThanOrEqual;
 		$this->durationTypeMatchOr = (string)$xml->durationTypeMatchOr;
 	}
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $lastPlayedAtGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $lastPlayedAtLessThanOrEqual = null;
+
 	/**
 	 * 
 	 *
@@ -90,34 +100,6 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 	 * @var int
 	 */
 	public $durationGreaterThanOrEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	public $msDurationLessThan = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	public $msDurationGreaterThan = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	public $msDurationLessThanOrEqual = null;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	public $msDurationGreaterThanOrEqual = null;
 
 	/**
 	 * 

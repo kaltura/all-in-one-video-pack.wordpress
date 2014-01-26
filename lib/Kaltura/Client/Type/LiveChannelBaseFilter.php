@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_LiveStreamEntryBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
+abstract class Kaltura_Client_Type_LiveChannelBaseFilter extends Kaltura_Client_Type_LiveEntryFilter
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaLiveStreamEntryBaseFilter';
+		return 'KalturaLiveChannelBaseFilter';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)

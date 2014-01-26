@@ -40,6 +40,7 @@ class Kaltura_Client_Enum_EntryType
 	const PLAYLIST = "5";
 	const DATA = "6";
 	const LIVE_STREAM = "7";
+	const LIVE_CHANNEL = "8";
 	const DOCUMENT = "10";
 }
 

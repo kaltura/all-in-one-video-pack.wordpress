@@ -48,7 +48,7 @@ class Kaltura_Client_Type_BaseEntryListResponse extends Kaltura_Client_ObjectBas
 		if(empty($xml->objects))
 			$this->objects = array();
 		else
-			$this->objects = Kaltura_Client_Client::unmarshalItem($xml->objects);
+			$this->objects = Kaltura_Client_ParseUtils::unmarshalArray($xml->objects, "KalturaBaseEntry");
 		if(count($xml->totalCount))
 			$this->totalCount = (int)$xml->totalCount;
 	}

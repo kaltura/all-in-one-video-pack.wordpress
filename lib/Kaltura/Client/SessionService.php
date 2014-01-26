@@ -48,89 +48,13 @@ class Kaltura_Client_SessionService extends Kaltura_Client_ServiceBase
 		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "expiry", $expiry);
 		$this->client->addParam($kparams, "privileges", $privileges);
-		$this->client->queueServiceActionCall("session", "start", $kparams);
+		$this->client->queueServiceActionCall("session", "start", null, $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		if(!$resultObject)
-			$resultObject = array();
-		$this->client->validateObjectType($resultObject, "string");
-		return $resultObject;
-	}
-
-	function end()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("session", "end", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		return $resultObject;
-	}
-
-	function impersonate($secret, $impersonatedPartnerId, $userId = "", $type = 0, $partnerId = null, $expiry = 86400, $privileges = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "secret", $secret);
-		$this->client->addParam($kparams, "impersonatedPartnerId", $impersonatedPartnerId);
-		$this->client->addParam($kparams, "userId", $userId);
-		$this->client->addParam($kparams, "type", $type);
-		$this->client->addParam($kparams, "partnerId", $partnerId);
-		$this->client->addParam($kparams, "expiry", $expiry);
-		$this->client->addParam($kparams, "privileges", $privileges);
-		$this->client->queueServiceActionCall("session", "impersonate", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		if(!$resultObject)
-			$resultObject = array();
-		$this->client->validateObjectType($resultObject, "string");
-		return $resultObject;
-	}
-
-	function impersonateByKs($session, $type = null, $expiry = null, $privileges = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "session", $session);
-		$this->client->addParam($kparams, "type", $type);
-		$this->client->addParam($kparams, "expiry", $expiry);
-		$this->client->addParam($kparams, "privileges", $privileges);
-		$this->client->queueServiceActionCall("session", "impersonateByKs", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_SessionInfo");
-		return $resultObject;
-	}
-
-	function get($session = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "session", $session);
-		$this->client->queueServiceActionCall("session", "get", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_SessionInfo");
-		return $resultObject;
-	}
-
-	function startWidgetSession($widgetId, $expiry = 86400)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "widgetId", $widgetId);
-		$this->client->addParam($kparams, "expiry", $expiry);
-		$this->client->queueServiceActionCall("session", "startWidgetSession", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_StartWidgetSessionResponse");
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = (string)Kaltura_Client_ParseUtils::unmarshalSimpleType($resultXmlObject->result);
 		return $resultObject;
 	}
 }

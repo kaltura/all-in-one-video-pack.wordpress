@@ -39,84 +39,18 @@ class Kaltura_Client_UiConfService extends Kaltura_Client_ServiceBase
 		parent::__construct($client);
 	}
 
-	function add(Kaltura_Client_Type_UiConf $uiConf)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "uiConf", $uiConf->toParams());
-		$this->client->queueServiceActionCall("uiconf", "add", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConf");
-		return $resultObject;
-	}
-
-	function update($id, Kaltura_Client_Type_UiConf $uiConf)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "id", $id);
-		$this->client->addParam($kparams, "uiConf", $uiConf->toParams());
-		$this->client->queueServiceActionCall("uiconf", "update", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConf");
-		return $resultObject;
-	}
-
 	function get($id)
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "id", $id);
-		$this->client->queueServiceActionCall("uiconf", "get", $kparams);
+		$this->client->queueServiceActionCall("uiconf", "get", "KalturaUiConf", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaUiConf");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConf");
-		return $resultObject;
-	}
-
-	function delete($id)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "id", $id);
-		$this->client->queueServiceActionCall("uiconf", "delete", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		return $resultObject;
-	}
-
-	function cloneAction($id)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "id", $id);
-		$this->client->queueServiceActionCall("uiconf", "clone", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConf");
-		return $resultObject;
-	}
-
-	function listTemplates(Kaltura_Client_Type_UiConfFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
-	{
-		$kparams = array();
-		if ($filter !== null)
-			$this->client->addParam($kparams, "filter", $filter->toParams());
-		if ($pager !== null)
-			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$this->client->queueServiceActionCall("uiconf", "listTemplates", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConfListResponse");
 		return $resultObject;
 	}
 
@@ -127,26 +61,14 @@ class Kaltura_Client_UiConfService extends Kaltura_Client_ServiceBase
 			$this->client->addParam($kparams, "filter", $filter->toParams());
 		if ($pager !== null)
 			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$this->client->queueServiceActionCall("uiconf", "list", $kparams);
+		$this->client->queueServiceActionCall("uiconf", "list", "KalturaUiConfListResponse", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaUiConfListResponse");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConfListResponse");
-		return $resultObject;
-	}
-
-	function getAvailableTypes()
-	{
-		$kparams = array();
-		$this->client->queueServiceActionCall("uiconf", "getAvailableTypes", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultObject = $this->client->doQueue();
-		$this->client->throwExceptionIfError($resultObject);
-		if(!$resultObject)
-			$resultObject = array();
-		$this->client->validateObjectType($resultObject, "array");
 		return $resultObject;
 	}
 }

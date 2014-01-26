@@ -33,9 +33,9 @@
  */
 class Kaltura_Client_Metadata_Enum_MetadataObjectType
 {
-	const AD_CUE_POINT = "adCuePoint.AdCuePoint";
-	const ANNOTATION = "annotation.Annotation";
-	const CODE_CUE_POINT = "codeCuePoint.CodeCuePoint";
+	const AD_CUE_POINT = "adCuePointMetadata.AdCuePoint";
+	const ANNOTATION = "annotationMetadata.Annotation";
+	const CODE_CUE_POINT = "codeCuePointMetadata.CodeCuePoint";
 	const ENTRY = "1";
 	const CATEGORY = "2";
 	const USER = "3";
