@@ -8,7 +8,7 @@
 	<?php elseif ($this->numOfCreatedPosts === 0): ?>
 		<p>No videos found!</p>
 	<?php else: ?>
-		<p><?php echo $this->numOfCreatedPosts;?> video posts have been created and saved as drafts!</p>
+		<p><?php echo intval($this->numOfCreatedPosts); ?> video posts have been created and saved as drafts!</p>
 	<?php endif; ?>
 	<div class="tablenav">
 		<div class="alignleft actions">

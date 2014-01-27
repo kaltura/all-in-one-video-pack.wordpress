@@ -28,17 +28,17 @@
 					{
 						var value = jQuery("form [name=uiconf_id]").val()
 						<?php foreach($this->uiConfs->objects as $uiConf): ?>
-						if (value == "<?php echo $uiConf->id; ?>")
+						if (value == "<?php echo esc_js($uiConf->id); ?>")
 						{
-							jQuery("form [name=width]").val(<?php echo $uiConf->width; ?>);
-							jQuery("form [name=height]").val(<?php echo $uiConf->height; ?>);
+							jQuery("form [name=width]").val(<?php echo intval($uiConf->width); ?>);
+							jQuery("form [name=height]").val(<?php echo intval($uiConf->height); ?>);
 						}
 						<?php endforeach; ?>
 					}
 				</script>
 				<select name="uiconf_id" id="uiconf_id" onchange="updateWidthHeight();">
 					<?php foreach($this->uiConfs->objects as $uiConf): ?>
-					<option value="<?php echo $uiConf->id; ?>"><?php echo $uiConf->name; ?> (<?php echo $uiConf->width; ?>x<?php echo $uiConf->height; ?>)</option>
+					<option value="<?php echo esc_attr($uiConf->id); ?>"><?php echo esc_html($uiConf->name); ?> (<?php echo intval($uiConf->width); ?>x<?php echo intval($uiConf->height); ?>)</option>
 					<?php endforeach; ?>
 				</select>
 				<input type="hidden" name="width" value="" />

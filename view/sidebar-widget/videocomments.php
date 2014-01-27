@@ -12,8 +12,8 @@
 							<img src="<?php echo KalturaHelpers::getThumbnailUrl($widget["id"], $widget["entry_id"], 120, 90, null); ?>" width="120" height="90" />
 						</a>
 					</div>
-					Reply to <a href="<?php echo get_permalink($post_id); ?>"><?php echo $post->post_title; ?></a><br />
-					<?php echo $comment->comment_author . ", " . mysql2date("M j", $comment->comment_date); ?>
+					Reply to <a href="<?php echo get_permalink($post_id); ?>"><?php echo esc_html($post->post_title); ?></a><br />
+					<?php echo esc_html($comment->comment_author) . ", " . mysql2date("M j", $comment->comment_date); ?>
 				</li>
 			<?php endforeach; ?>
 		</ul>

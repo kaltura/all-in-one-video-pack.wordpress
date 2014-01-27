@@ -35,7 +35,7 @@
 			<br />
 			<div class="error">
 				<p>
-					<strong><?php echo $this->error; ?></strong>
+					<strong><?php echo esc_html($this->error); ?></strong>
 				</p>
 			</div>
 		<?php endif; ?>
@@ -50,31 +50,31 @@
 		<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e("First Name"); ?>: *</th>
-				<td><input type="text" id="first_name" name="first_name" value="<?php echo KalturaHelpers::getRequestPostParam('first_name'); ?>" /></td>
+				<td><input type="text" id="first_name" name="first_name" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('first_name')); ?>" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Last Name"); ?>: *</th>
-				<td><input type="text" id="last_name" name="last_name" value="<?php echo KalturaHelpers::getRequestPostParam('last_name'); ?>" /></td>
+				<td><input type="text" id="last_name" name="last_name" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('last_name')); ?>" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Email"); ?>: *</th>
-				<td><input type="text" id="email" name="email" value="<?php echo KalturaHelpers::getRequestPostParam('email'); ?>" size="50" /></td>
+				<td><input type="text" id="email" name="email" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('email')); ?>" size="50" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Phone"); ?>: *</th>
-				<td><input type="text" id="phone" name="phone" value="<?php echo KalturaHelpers::getRequestPostParam('phone'); ?>" size="30" /></td>
+				<td><input type="text" id="phone" name="phone" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('phone')); ?>" size="30" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Company"); ?>: *</th>
-				<td><input type="text" id="company" name="company" value="<?php echo KalturaHelpers::getRequestPostParam('company'); ?>" size="30" /></td>
+				<td><input type="text" id="company" name="company" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('company')); ?>" size="30" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Website"); ?>:</th>
-				<td><input type="text" id="website" name="website" value="<?php echo KalturaHelpers::getRequestPostParam('website'); ?>" size="50" /></td>
+				<td><input type="text" id="website" name="website" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('website')); ?>" size="50" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Job Title"); ?>: *</th>
-				<td><input type="text" id="job_title" name="job_title" value="<?php echo KalturaHelpers::getRequestPostParam('job_title'); ?>" /></td>
+				<td><input type="text" id="job_title" name="job_title" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('job_title')); ?>" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">Describe yourself: *</th>
@@ -91,7 +91,7 @@
 						);
 						?>
 						<?php foreach($selectData as $name => $value): ?>
-							<option value="<?php echo $value; ?>" <?php echo (KalturaHelpers::getRequestPostParam('describe_yourself') == $value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('describe_yourself') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -102,7 +102,7 @@
 					<select id="country" name="country">
 						<option value="">Please select...</option>
 						<?php foreach($this->countries as $value => $name): ?>
-							<option value="<?php echo $value; ?>" <?php echo (KalturaHelpers::getRequestPostParam('country') == $value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('country') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -115,7 +115,7 @@
 						<?php $statesNew[''] = ''; ?>
 						<?php $states = array_merge($statesNew, $this->states); ?>
 						<?php foreach($states as $value => $name): ?>
-							<option value="<?php echo $value; ?>" <?php echo (KalturaHelpers::getRequestPostParam('state') == $value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('state') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -132,7 +132,7 @@
 					?>
 					<select id="would_you_like" name="would_you_like">
 						<?php foreach($selectData as $value => $name): ?>
-							<option value="<?php echo $value; ?>" <?php echo (KalturaHelpers::getRequestPostParam('would_you_like') == (string)$value) ? ' selected="selected"' : ''; ?>><?php echo $name; ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('would_you_like') == (string)$value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>

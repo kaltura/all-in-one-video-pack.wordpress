@@ -1,10 +1,10 @@
 <?php KalturaHelpers::protectView($this); ?>
 <?php if ($this->uiConfId): ?>
 	<script type="text/javascript">
-		var playerWidth = "<?php echo $this->playerWidth; ?>";
-		var playerHeight = "<?php echo $this->playerHeight; ?>";
-		var uiConfId = "<?php echo $this->uiConfId; ?>";
-		var entryId = "<?php echo $this->entryId; ?>";
+		var playerWidth = "<?php echo esc_js($this->playerWidth); ?>";
+		var playerHeight = "<?php echo esc_js($this->playerHeight); ?>";
+		var uiConfId = "<?php echo esc_js($this->uiConfId); ?>";
+		var entryId = "<?php echo esc_js($this->entryId); ?>";
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -122,7 +122,7 @@
 								<td style="padding-bottom:22px;" colspan="2">
 								<?php if ($this->isLibrary)?>
 									<label for="ktitle">Title:</label>
-									<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo $this->entry->name; ?>" style="margin-left:6px;" />
+									<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo esc_attr($this->entry->name); ?>" style="margin-left:6px;" />
 									<span style="color:red; font-size: 20px; font-weight: bold; display: none; line-height: 20px">*</span>
 								</td>
 							</tr>
@@ -133,7 +133,7 @@
 										<select name="uiConfId" id="uiConfId"></select>
 										<?php if (isset($selectedPlayerName)): ?>
 										<script type="text/javascript">
-											embedPreviewPlayer('<?php echo $selectedPlayerName; ?>');
+											embedPreviewPlayer('<?php echo esc_js($selectedPlayerName); ?>');
 										</script>
 										<?php endif; ?>
 									</div>
@@ -195,10 +195,10 @@
 
 			jQuery.kalturaPlayerSelector({
 				url: ajaxurl+'?action=kaltura_ajax&kaction=getplayers',
-				defaultId: '<?php echo get_option("kaltura_default_player_type"); ?>',
-				swfBaseUrl: '<?php echo KalturaHelpers::getSwfUrlForWidget(); ?>',
+				defaultId: '<?php echo esc_js(get_option("kaltura_default_player_type")); ?>',
+				swfBaseUrl: '<?php echo esc_url(KalturaHelpers::getSwfUrlForWidget()); ?>',
 				previewId: 'divKalturaPlayer',
-				entryId: '<?php echo $this->entry->id; ?>',
+				entryId: '<?php echo esc_js($this->entry->id); ?>',
 				playersList: '#uiConfId',
 				dimensions: 'input[name=playerRatio]',
 				submit: 'input[name=sendToEditorButton]',

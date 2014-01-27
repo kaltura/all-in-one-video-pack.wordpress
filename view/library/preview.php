@@ -7,10 +7,9 @@
 <script type="text/javascript">
 		kWidget.embed({
 			"targetId": 'kplayer',
-			"wid": '<?php echo $this->widgetId; ?>',
-			"uiconf_id": '<?php echo $this->uiConfId; ?>',
+			"wid": '<?php echo esc_js($this->widgetId); ?>',
+			"uiconf_id": '<?php echo esc_js($this->uiConfId); ?>',
 			"entry_id":  '<?php echo esc_js($this->entryId); ?>',
-			"flashvars": <?php echo json_encode($this->flashVars); ?>,
-			"entry_id": '<?php echo $this->entryId; ?>'
+			"flashvars": <?php echo json_encode($this->flashVars); ?>
 		});
 </script>

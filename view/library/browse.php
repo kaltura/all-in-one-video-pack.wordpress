@@ -31,23 +31,23 @@
 					$sendToEditorUrl =  KalturaHelpers::generateTabUrl(array("tab" => "kaltura_browse", "kaction" => "sendtoeditor", "entryIds" => array($mediaEntry->id)));
 				?>
 				
-				<div id="entryId_<?php echo $mediaEntry->id?>" class="showName" title="<?php _e('Click to edit'); ?>">
-					<?php echo $mediaEntry->name ?><br />
+				<div id="entryId_<?php echo esc_attr($mediaEntry->id);?>" class="showName" title="<?php _e('Click to edit'); ?>">
+					<?php echo esc_html($mediaEntry->name); ?><br />
 				</div>
 				<div class="thumb">
 					<?php if ($this->isLibrary): ?>
 						<a href="<?php echo admin_url('upload.php') ?>?kaltura_admin_iframe_handler&kaction=preview&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=390&width=600" title="Preview" class="thickbox">
-							<img src="<?php echo $mediaEntry->thumbnailUrl; ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php $mediaEntry->name ?>" width="120" height="90" />
+							<img src="<?php echo esc_url($mediaEntry->thumbnailUrl); ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php esc_attr($mediaEntry->name); ?>" width="120" height="90" />
 						</a>
 					<?php else: ?>
-					<a href="<?php echo $sendToEditorUrl; ?>">
-						<img src="<?php echo $mediaEntry->thumbnailUrl; ?>/width/120/height/90/type/2/bgcolor/000" " alt="<?php $mediaEntry->name ?>" width="120" height="90" />
+					<a href="<?php echo esc_url($sendToEditorUrl); ?>">
+						<img src="<?php echo esc_url($mediaEntry->thumbnailUrl); ?>/width/120/height/90/type/2/bgcolor/000" " alt="<?php esc_attr($mediaEntry->name); ?>" width="120" height="90" />
 					</a>
 					<?php endif; ?>
 				</div>
 				<div class="submit">	
 					<?php if (!$this->isLibrary): ?>
-						<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo $sendToEditorUrl; ?>';" />
+						<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url($sendToEditorUrl); ?>';" />
 					<?php endif; ?>
 					<?php $isVideo = ($mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO); ?>
 					<?php if ($this->isLibrary): ?>

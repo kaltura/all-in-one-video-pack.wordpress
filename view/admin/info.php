@@ -3,9 +3,9 @@
 	<div class="wrap">
 		<h2><?php _e('All in One Video Pack Settings'); ?></h2>
 		<br />
-		<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo $this->error; ?>)</p></div>
+		<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo esc_html($this->error); ?>)</p></div>
 		<form name="form1" method="post" />
-		<p class="submit" style="text-align: left; "><input type="button" value="<?php _e('Click here to edit partner details manually'); ?>" onclick="window.location = 'options-general.php?page=kaltura_options&partner_login=true';"></input></p>
+		<p class="submit" style="text-align: left; "><input type="button" value="<?php _e('Click here to edit partner details manually'); ?>" onclick="window.location = 'options-general.php?page=kaltura_options&partner_login=true';" /></p>
 		<input type="hidden" id="manual_edit" name="manual_edit" value="true" />
 		</form>
 	</div>
@@ -38,7 +38,7 @@
 					<td><label><?php _e("Default player design:"); ?></label></td>
 					<td>
 						<?php foreach($this->players->objects as $player): ?>
-							<input type="radio" name="default_player_type" id="default_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
+							<input type="radio" name="default_player_type" id="default_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo esc_attr($player->id); ?>"><?php echo esc_html($player->name); ?></label><br />
 						<?php endforeach; ?>
 						<br />
 					</td>
@@ -64,7 +64,7 @@
 					<td><label><?php _e("Video comments player design:"); ?></label></td>
 					<td>
 						<?php foreach($this->players->objects as $player): ?>
-							<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo $player->id; ?>" value="<?php echo $player->id; ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo $player->id; ?>"><?php echo $player->name; ?></label><br />
+							<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo esc_attr($player->id); ?>"><?php echo esc_html($player->name); ?></label><br />
 						<?php endforeach; ?>
 						<br />
 					</td>
@@ -76,7 +76,7 @@
 						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo KalturaHelpers::getOption("kaltura_save_permalink",false) ? "checked=\"checked\"" : ""; ?>/>
 						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
 							<?php foreach ($this->metadataProfilesResponse->objects as $metadataProfile):?>
-								<option  value="<?php echo $metadataProfile->id;?>" <?php echo KalturaHelpers::getOption("kaltura_permalink_metadata_profile_id") == $metadataProfile->id ? "selected=\"selected\"" : ""; ?>><?php echo $metadataProfile->name;?></option>
+								<option value="<?php echo esc_attr($metadataProfile->id);?>" <?php echo KalturaHelpers::getOption("kaltura_permalink_metadata_profile_id") == $metadataProfile->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($metadataProfile->name); ?></option>
 							<?php endforeach;?>
 						</select>
 					</td>

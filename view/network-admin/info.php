@@ -3,7 +3,7 @@
 	<div class="wrap">
 		<h2><?php _e('All in One Video Pack Settings'); ?></h2>
 		<br />
-		<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo $this->error; ?>)</p></div>
+		<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo esc_html($this->error); ?>)</p></div>
 		<a href="settings.php?page=all-in-one-video-pack-mu-settings&partner_login">Change settings</a>
 	</div>
 <?php else: ?>

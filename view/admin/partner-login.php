@@ -5,7 +5,7 @@
 		<br />
 		<div class="error">
 			<p>
-				<strong><?php echo $this->error; ?></strong>
+				<strong><?php echo esc_html($this->error); ?></strong>
 			</p>
 		</div>
 		<br />

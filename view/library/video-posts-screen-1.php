@@ -46,19 +46,19 @@
 						?>
 					<?php endforeach; ?>
 					<tr class="iedit <?php echo ($alternate) ? "alternate" : ""; $alternate = !$alternate; ?>">
-						<th scope="row" class="check-column"><input type="checkbox" name="categories[]" value="<?php echo $category->name; ?>" /></th>
+						<th scope="row" class="check-column"><input type="checkbox" name="categories[]" value="<?php echo esc_attr($category->name); ?>" /></th>
 						<?php if ($wpCategory): ?>
 						<td class="post-title page-title column-name">
-							<strong><a class="row-title" href="edit-tags.php?action=edit&taxonomy=category&tag_ID=<?php echo $wpCategory->cat_ID; ?>" title="Edit"><?php echo $category->fullName; ?></a></strong>
+							<strong><a class="row-title" href="edit-tags.php?action=edit&taxonomy=category&tag_ID=<?php echo esc_attr($wpCategory->cat_ID); ?>" title="Edit"><?php echo esc_html($category->fullName); ?></a></strong>
 						</td>
-						<td class="author column-description"><?php echo $wpCategory->description; ?></td>
+						<td class="author column-description"><?php echo esc_html($wpCategory->description); ?></td>
 						<td class="comments column-slug">
-							<?php echo $wpCategory->slug; ?>
+							<?php echo esc_html($wpCategory->slug); ?>
 						</td>
-						<td class="date column-date"><?php echo $wpCategory->count; ?></td>
+						<td class="date column-date"><?php echo esc_html($wpCategory->count); ?></td>
 						<?php else: ?>
 						<td class="post-title page-title column-name">
-							<strong><?php echo $category->fullName; ?></strong>
+							<strong><?php echo esc_html($category->fullName); ?></strong>
 						</td>
 						<td class="author column-description"><?php _e("KMC Category"); ?></td>
 						<td class="comments column-slug"></td>

@@ -7,8 +7,8 @@
 	<param name="allowScriptAccess" value="always" />
 	<param name="allowNetworking" value="all" />
 	<param name="wmode" value="transparent" />
-	<param name="flashvars" value="<?php echo $flashVarsStr; ?>" />
-	<param name="movie" value="<?php echo $this->swfUrl; ?>" />
+	<param name="flashvars" value="<?php echo esc_attr($flashVarsStr); ?>" />
+	<param name="movie" value="<?php echo esc_url($this->swfUrl); ?>" />
 </object>
 
 <script type="text/javascript">
