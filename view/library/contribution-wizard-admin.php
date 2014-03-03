@@ -6,7 +6,7 @@
 <script type="text/javascript">
 	jQuery('body').css('overflow', 'hidden');
 
-	var cwWidth = 680;
+	var cwWidth = 790;
 	var cwHeight = 360;
 	var entryIds = [];
 	var topWindow = Kaltura.getTopWindow();

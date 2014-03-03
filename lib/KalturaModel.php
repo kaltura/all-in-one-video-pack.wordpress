@@ -153,6 +153,46 @@ class KalturaModel
 		return $this->listEntriesByTypes($types, $pageSize, $page);
 	}
 
+    public function listRootCategory($pageSize, $page, $categories)
+    {
+        $filter = new Kaltura_Client_Type_BaseEntryFilter();
+        $filter->orderBy = "-createdAt";
+        /** If no category queried then query the root category. */
+        if (!$categories)
+        {
+            $categories = array(KalturaHelpers::getOption("kaltura_root_category"));
+        }
+        $pager = new Kaltura_Client_Type_FilterPager();
+        $pager->pageSize = $pageSize;
+        $pager->pageIndex = $page;
+    }
+
+    public function listEntriesByCategoriesAndWord($pageSize, $page, $categories, $word)
+    {
+        $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
+        $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
+        $filter = new Kaltura_Client_Type_BaseEntryFilter();
+        $filter->orderBy = "-createdAt";
+
+        /** If no category queried then query the root category. */
+        if (!$categories && $rootCategory)
+        {
+            $categories = array($rootCategory);
+            $filter->categoryAncestorIdIn = join(', ', $categories);
+        }
+        else // Query the relevant categories.
+        {
+            $filter->categoriesIdsMatchOr = join(', ', $categories);
+        }
+        $filter->searchTextMatchOr = $word;
+
+        $pager = new Kaltura_Client_Type_FilterPager();
+        $pager->pageSize = $pageSize;
+        $pager->pageIndex = $page;
+
+        return $this->_client->baseEntry->listAction($filter, $pager);
+    }
+
 	public function listAllEntriesByCategory($category)
 	{
 		$filter  = new Kaltura_Client_Type_BaseEntryFilter();
@@ -217,13 +257,43 @@ class KalturaModel
 		return $this->_client->baseEntry->listAction($filter, $pager);
 	}
 
-	public function listCategoriesOrderByName()
+    public function listCategoriesByDepthAndParent($depth, $parentId)
+    {
+        $filter = new Kaltura_Client_Type_CategoryFilter();
+        $filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
+        $filter->depthEqual = $depth;
+        $filter->parentIdIn = $parentId;
+        return $this->_client->category->listAction($filter);
+    }
+
+	public function listRootCategoriesOrderByName()
 	{
 		$filter = new Kaltura_Client_Type_CategoryFilter();
 		$filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
 		$filter->depthEqual = 0; // for now, support only top level
 		return $this->_client->category->listAction($filter);
 	}
+
+    public function generateRootTree()
+    {
+        $filter = new Kaltura_Client_Type_CategoryFilter();
+        $filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
+        return $this->_client->category->listAction($filter);
+
+    }
+
+    public function listSelectedRootCategories()
+    {
+        $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
+        $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
+        $filter = new Kaltura_Client_Type_CategoryFilter();
+        $filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
+        if ($rootCategory && $rootCategory != '0') {
+            $filter->ancestorIdIn = $rootCategory;
+        }
+
+        return $this->_client->category->listAction($filter);
+    }
 
 	public function listUiConfs()
 	{
@@ -237,6 +307,7 @@ class KalturaModel
 		$filter = new Kaltura_Client_Type_UiConfFilter();
 		$filter->objTypeEqual = Kaltura_Client_Enum_UiConfObjType::PLAYER;
 		$filter->orderBy = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+        $filter->creationModeIn = "1,2";
 
 		try
 		{
@@ -248,28 +319,38 @@ class KalturaModel
 			$uiConfs->objects = array();
 		}
 
-		$playerIds = KalturaHelpers::getOption('default_players');
-		$uiConfs->objects = array_reverse($uiConfs->objects); // default players should be first
-		foreach ($playerIds as $playerId)
-		{
-			$name = KalturaHelpers::getOption('player.'.$playerId.'.name');
-			$width = KalturaHelpers::getOption('player.'.$playerId.'.width');
-			$height = KalturaHelpers::getOption('player.'.$playerId.'.height');
-			if (!$name)
-				$name = "Untitled player";
-
-			$tempUiConf         = new Kaltura_Client_Type_UiConf();
-			$tempUiConf->id     = $playerId;
-			$tempUiConf->name   = $name;
-			$tempUiConf->width  = $width;
-			$tempUiConf->height = $height;
-			$uiConfs->objects[] = $tempUiConf;
-			$uiConfs->totalCount++;
-		}
-		$uiConfs->objects = array_reverse($uiConfs->objects);
-
 		return $uiConfs;
 	}
+
+    public function listKCWUiConfs()
+    {
+        $filter = new Kaltura_Client_Type_UiConfFilter();
+        $filter->objTypeEqual = Kaltura_Client_Enum_UiConfObjType::CONTRIBUTION_WIZARD;
+        $pager = new Kaltura_Client_Type_FilterPager;
+        $pager->pageSize = 1000;
+
+        try
+        {
+            $uiConfs = $this->_client->uiConf->listAction($filter, $pager);
+        }
+        catch(Kaltura_Client_Exception $ex)
+        {
+            $uiConfs = new stdClass();
+            $uiConfs->objects = array();
+        }
+
+        foreach ($uiConfs->objects as $key => $kcw)
+        {
+
+            if (strpos($kcw->swfUrl, 'ContributionWizard.swf') === false)
+            {
+                unset($uiConfs->objects[$key]);
+                $uiConfs->totalCount--;
+            }
+        }
+
+        return $uiConfs;
+    }
 
 	public function getPlayerUiConf($uiConfId)
 	{

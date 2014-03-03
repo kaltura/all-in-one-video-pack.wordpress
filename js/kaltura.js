@@ -75,9 +75,9 @@ Kaltura = {
 			callback();
 			return
 		}
-		
+
 		jQuery("#TB_window").animate(
-			{ 
+			{
 		        width: width + "px",
 	        	marginTop: "-" + ((height + 27) / 2) + "px",
 	        	marginLeft: "-" + (width / 2) + "px"
@@ -97,6 +97,7 @@ Kaltura = {
 	},
 	
 	restoreModalSize: function (callback) {
+
 		// the original modal dimensions
 		//var origWidth = 669;
 		//var origHeight = 512;
@@ -137,8 +138,7 @@ Kaltura = {
 	
 	hackModalBoxWp26: function () {
 		// IMPORTANT: this code must run from the top window and not from the thickbox iframe
-		 
-		if (!Kaltura.compareWPVersion("2.6", ">=")) 
+		if (!Kaltura.compareWPVersion("2.6", ">="))
 			return;
 
 		// don't run twice
@@ -157,6 +157,7 @@ Kaltura = {
 		jQuery("#TB_window").css("top", '');
 		jQuery("#TB_window").css("margin-top", "-" + (height / 2) + "px");
 		jQuery("#TB_window").css("height", '');
+        jQuery("#TB_window").css("width", '900');
 		jQuery("#TB_window").show(); // fixes compatibility with wordpress 3.1+, see: http://www.kaltura.org/pop-video-embed-dashboard-broken
 		
 		// backup and temporary remove the tb_position function
@@ -176,7 +177,7 @@ Kaltura = {
 	},
 	
 	restoreModalBoxWp26: function () {
-		if (!Kaltura.compareWPVersion("2.6", ">=")) 
+		if (!Kaltura.compareWPVersion("2.6", ">="))
 			return;
 			
 		// clear the interval
@@ -198,7 +199,7 @@ Kaltura = {
 		var author = jQuery('#author').val();
 		var email  = jQuery('#email').val();
 		
-		KalturaModal.openModal('contribution_wizard', baseUrl + '&kaction=addcomment&postid='+postId+'&author='+author+'&email='+email, { width: 680, height: 360 } );
+		KalturaModal.openModal('contribution_wizard', baseUrl + '&kaction=addcomment&postid='+postId+'&author='+author+'&email='+email, { width: 7900, height: 360 } );
 		jQuery("#contribution_wizard").addClass("modalContributionWizard");
 	},
 	

@@ -5,7 +5,7 @@ body.wait, body.wait * { cursor: wait !important; }
 
 form.kaltura-form{ margin: 0; }
 .media_page_interactive_video_library .column-posts { width: 5em; }
-.kaltura-pager { text-align: center; }
+.kaltura-pager { text-align: center; float: left; }
 
 /* general for tabs */
 .kaltura-tab{ margin: 15px; }
@@ -23,8 +23,8 @@ a.kalturaLink:hover{ color: #6699CC; }
 #kaltura-tab-choose-videos .fixIe7 { position: relative; top: -10px; height: 4px; z-index: -1; }
 
 /* browse tab */
-div.kaltura-wrap { max-width: 810px; padding-top: 10px; }
-ul#kaltura-browse { clear: both; list-style: none; padding: 0 0 0 5px; margin: 1em 0 0 0; }
+div.kaltura-wrap { max-width: 1200px; padding-top: 10px; }
+ul#kaltura-browse { width: 72%; list-style: none; padding: 0 0 0 5px; float: right; }
 	ul#kaltura-browse li{ float: left; position: relative; width: 180px; margin: 0 10px 15px 10px; padding: 10px 0 5px 0; text-align: center; background:url("../images/entries_bg.png") center 0 no-repeat; }
 	ul#kaltura-browse li .status { display: none; position: absolute; top: 97px; left: 0; height: 25px; width: 100px; margin: 0 40px; line-height: 25px; color: #333; background-color: #e5f1fb; z-index: 5; }
 		ul#kaltura-browse li .thumb{ height:100px; border:none; }
@@ -84,7 +84,7 @@ ul#kaltura-browse { clear: both; list-style: none; padding: 0 0 0 5px; margin: 1
 #kaltura-cms-login .kalturaFirstRow th{ padding-top: 10px; }
 #kaltura-cms-login th{ font-weight:normal; padding-left: 10px; }
 #kaltura-cms-login .kalturaLastRow td{ padding-right: 10px; padding-bottom: 10px; }
-.kaltura-wrap #kaltura-cms-login { float: right; }
+.kaltura-wrap #kaltura-cms-login { float: right; margin-right: 6%; }
 
 /* entries page */
 .entries p.info { margin: 0 0 12px; float: left; }
@@ -128,3 +128,31 @@ ul#kaltura-browse { clear: both; list-style: none; padding: 0 0 0 5px; margin: 1
 	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li { float: left; width: 50%; text-align: center; margin: 0; padding: 0; background: none; }
 	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li:before { content: ""; }
 	#all-in-one-video-pack-widget ul.kaltura-sidebar-pager a { cursor: pointer; }
+
+
+#kaltura-wrap
+
+#root_category { width: 450px;}
+.filter-category-label { top: -6px; position: relative; }
+.filter-category-input:checked { -webkit-box-shadow: 0 0 12px #CCCC00; -moz-box-shadow: 0 0 12px #CCCC00; box-shadow: 0 0 12px #CCCC00; }
+.filter-categories-header { float: left; width: 29%; }
+.entry-search-filter {float: right; width: 30%; }
+.kaltura-caret{ float: left; position: relative; cursor: pointer; top: -6px; }
+#filter-categories { clear: both; padding: 15px; height: 100%; max-height: 500px; width: 20%; overflow: auto; float: left; border: 2px solid grey; }
+#filter-categories-title { float: left; }
+#kaltura-filter-categories { margin: 0px; float: left; min-width: 100%; }
+#kaltura-filter-categories p.info { width: 31%; text-align: center; float: left; margin: 0px;}
+#filter-categories-button { float: right; right: 20%; position: relative; }
+
+
+/** CSS for iframe when uploading media to post. */
+.kaltura-tab #filter-categories { height: 240px; width: 36%; }
+.kaltura-tab #kaltura-browse { width: 56%; }
+.kaltura-tab .filter-category-input { width: 16px; height: 16px; }
+.kaltura-tab .filter-category-input:checked { width: 16px; height: 16px; }
+.kaltura-tab .filter-categories-header { width: 45%; }
+.kaltura-tab #filter-categories-button { right: 9%; }
+.kaltura-tab .entry-search-filter { width: 34%; }
+.kaltura-tab .entry-search-filter > input[name="search"] { width: 130px; }
+.kaltura-tab input { font-size: 12px; }
+.kaltura-tab .filter-category-div-wrapper { margin-bottom: 4px; }

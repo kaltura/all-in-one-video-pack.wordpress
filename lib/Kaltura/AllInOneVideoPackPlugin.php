@@ -152,7 +152,7 @@ class Kaltura_AllInOneVideoPackPlugin
 		$kaltura_title = __('Add Kaltura Media');
 		$kaltura_button_src = KalturaHelpers::getPluginUrl() . '/images/kaltura_button.png';
 		$content .= <<<EOF
-		<a href="{$kaltura_iframe_src}&amp;TB_iframe=true&amp;height=500&amp;width=640" class="thickbox" title='$kaltura_title'><img src='$kaltura_button_src' alt='$kaltura_title' /></a>
+		<a href="{$kaltura_iframe_src}&amp;TB_iframe=true&amp;height=500&amp;width=840" class="thickbox" title='$kaltura_title'><img src='$kaltura_button_src' alt='$kaltura_title' /></a>
 EOF;
 
 		return $content;

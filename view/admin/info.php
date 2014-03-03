@@ -34,6 +34,29 @@
 				</tr>
 			</table>
 			<table>
+
+                <tr valign="top">
+                    <td><label for="root_category"><?php _e("Root Category:"); ?></label></td>
+                    <td>
+                        <select name="root_category" id="root_category" multiple size="10">
+                            <option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption("kaltura_root_category") == '0' ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
+                        <?php foreach($this->categories->objects as $category): ?>
+                            <option id="root_category<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_root_category") == $category->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($category->fullName); ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <td><label><?php _e("Default KCW design:"); ?></label></td>
+                    <td>
+                        <?php foreach($this->kcws->objects as $kcw): ?>
+                            <input type="radio" name="default_kcw_type" id="default_kcw_type_<?php echo esc_attr($kcw->id); ?>" value="<?php echo esc_attr($kcw->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_default_kcw_type") == $kcw->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_kcw_type_<?php echo esc_attr($kcw->id); ?>"><?php echo esc_html($kcw->name); ?></label><br/>
+                        <?php endforeach; ?>
+                        <br />
+                    </td>
+                </tr>
+
 				<tr valign="top">
 					<td><label><?php _e("Default player design:"); ?></label></td>
 					<td>
@@ -155,6 +178,7 @@
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();
 			});
+
 		</script>
 	</div>
 <?php endif;

@@ -48,12 +48,17 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 			$this->renderView('connection-error.php');
 			return;
 		}
-		$kcwUiConfId = KalturaHelpers::getOption('kcw_ui_conf_id_admin');
-		$ks = $kmodel->getClientSideSession();
+
+		$kcwUiConfId = KalturaHelpers::getOption('kaltura_default_kcw_type') ? KalturaHelpers::getOption('kaltura_default_kcw_type') : KalturaHelpers::getOption('kcw_ui_conf_id_admin') ;
+		$rootCategory = KalturaHelpers::getOption("kaltura_root_category");
+        $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
+
+        $ks = $kmodel->getClientSideSession();
 		$params['flashVars'] = KalturaHelpers::getContributionWizardFlashVars($ks);
 		$params['flashVars']['showCloseButton'] = 'false';
 		$params['swfUrl'] = KalturaHelpers::getContributionWizardUrl($kcwUiConfId);
-		$this->renderView('library/contribution-wizard-admin.php', $params);
+        $params['rootCategory'] = $rootCategory;
+        $this->renderView('library/contribution-wizard-admin.php', $params);
 	}
 
 	public function deleteAction()
@@ -138,7 +143,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		else
 			$pageSize = 18;
 		$page = isset($_GET['paged']) ? $_GET['paged'] : 1;
-		$result = $kmodel->listEntries($pageSize, $page);
+        $result = $this->searchvideosAction($pageSize, $page);
 		$totalCount = $result->totalCount;
 		$params['page'] 		= $page;
 		$params['pageSize'] 	= $pageSize;
@@ -146,8 +151,22 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		$params['totalPages'] = ceil($totalCount / $pageSize);
 		$params['result'] 	= $result;
 		$params['isLibrary'] = $isLibrary;
+        $params['filters'] 	= $kmodel->listSelectedRootCategories();
+        $params['selectedCategories'] = isset($_GET['categoryvar']) ? $_GET['categoryvar'] : null;
+        $params['searchWord'] = isset($_GET['search']) ? $_GET['search'] : null;
+        $params['postId'] = isset($_GET['post_id']) ? $_GET['post_id'] : null;
 		$this->renderView('library/browse.php', $params);
 	}
+
+    public function searchvideosAction($pageSize, $page)
+    {
+        $kmodel = KalturaModel::getInstance();
+        $queryString = isset($_GET['search']) ? $_GET['search'] : null;
+        $categories = isset($_GET['categoryvar']) ? $_GET['categoryvar'] : null;
+        $result = $kmodel->listEntriesByCategoriesAndWord($pageSize, $page, $categories, $queryString);
+
+        return $result;
+    }
 
 	public function choosevideosAction()
 	{
@@ -258,7 +277,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 	protected function videopostsStep1()
 	{
 		$kmodel = KalturaModel::getInstance();
-		$categories = $kmodel->listCategoriesOrderByName();
+		$categories = $kmodel->listRootCategoriesOrderByName();
 		$params['categories'] = $categories->objects;
 		$params['wpCategories'] = get_categories('get=all');
 		$this->renderView('library/video-posts-screen-1.php', $params);

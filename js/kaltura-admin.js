@@ -1,4 +1,57 @@
 (function($){
+    $(document).ready(function() {
+        /** Collapse categories */
+        $('.kaltura-caret').on('click', function() {
+            var parentDiv = $(this).parent();
+            var searchId = this.parentElement.id;
+            /** Open siblings*/
+            if(this.className == 'kaltura-caret kaltura-caret-right') {
+                $(parentDiv).siblings().each(function(){
+                    var siblingId = this.id;
+                    debugger;
+                    var caret = $(this).find('span');
+                    if (siblingId.indexOf(searchId) != -1) {
+                        $(this).show();
+                        if ($(caret).attr('class') == 'kaltura-caret kaltura-caret-right') {
+                            return false;
+                        }
+                    }
+                });
+                /**Change class name and html.*/
+                this.className = 'kaltura-caret kaltura-caret-down';
+                $(this).html('&#9660');
+            } else { /** Close siblings*/
+                $(parentDiv).siblings().each(function(){
+                    var siblingId = this.id;
+
+                    if (siblingId.indexOf(searchId) != -1) {
+                        $(this).hide();
+                    }
+                });
+                /**Change class name and html.*/
+                this.className = 'kaltura-caret kaltura-caret-right';
+                $(this).html('&#9658');
+            }
+
+        });
+        /** Check sub categories checkboxes. */
+        $('.filter-category-input').on('click', function() {
+            var parentDiv = $(this).parent().closest('div');
+            var searchId = this.id;
+            /** If we checked the checkbox then check the other checkboxes. */
+            if ($(this).prop('checked')) {
+                $(parentDiv).siblings().each(function() {
+                    var inputElement = $(this).find('input');
+                    var inputElementId = inputElement.attr('id');
+                    if (inputElementId.indexOf(searchId) != -1) {
+                        $(inputElement).prop('checked', true);
+                    }
+                });
+            }
+        });
+    });
+
+
 	function enableWaitCursor() {
 		$('body').addClass('wait');
 	}

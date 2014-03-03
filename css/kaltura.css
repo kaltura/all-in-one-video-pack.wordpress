@@ -38,3 +38,6 @@ input#kaltura_video_comment{ margin-top: 0; }
 #all-in-one-video-pack-widget ul.kaltura-sidebar-pager li { float: left; width: 50%; text-align: center; margin: 0; padding: 0; background: none; }
 #all-in-one-video-pack-widget ul.kaltura-sidebar-pager li:before { content: ""; }
 #all-in-one-video-pack-widget ul.kaltura-sidebar-pager a { cursor: pointer; }
+
+
+#TB_window {width: 880px;}

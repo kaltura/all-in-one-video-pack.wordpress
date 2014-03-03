@@ -183,18 +183,24 @@ class Kaltura_AdminController extends Kaltura_BaseController
 			$enableVideoComments = KalturaHelpers::getRequestPostParam('enable_video_comments') ? true : false;
 			$allowAnonymousComments = KalturaHelpers::getRequestPostParam('allow_anonymous_comments') ? true : false;
 			$defaultPlayerType = KalturaHelpers::getRequestPostParam('default_player_type');
-			$commentsPlayerType = KalturaHelpers::getRequestPostParam('comments_player_type');
+            $defaultKCWType = KalturaHelpers::getRequestPostParam('default_kcw_type');
+            $defaultKCWType = !empty($defaultKCWType) ? $defaultKCWType : KalturaHelpers::getOption('kcw_ui_conf_id_admin');
+            $commentsPlayerType = KalturaHelpers::getRequestPostParam('comments_player_type');
 			$userIdentifier = KalturaHelpers::getRequestPostParam('kaltura_user_identifier');
 			$permalinkMetadataProfileId = KalturaHelpers::getRequestPostParam('permalink_metadata_profile_id');
-			$savePermalink = KalturaHelpers::getRequestPostParam('save_permalink');
+            $savePermalink = KalturaHelpers::getRequestPostParam('save_permalink');
+            $rootCategory = KalturaHelpers::getRequestPostParam('root_category');
+            $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
 
 			update_option('kaltura_enable_video_comments', $enableVideoComments);
 			update_option('kaltura_allow_anonymous_comments', $allowAnonymousComments);
 			update_option('kaltura_default_player_type', $defaultPlayerType);
+            update_option('kaltura_default_kcw_type', $defaultKCWType);
 			update_option('kaltura_comments_player_type', $commentsPlayerType);
 			update_option('kaltura_user_identifier', $userIdentifier);
 			update_option('kaltura_permalink_metadata_profile_id', $permalinkMetadataProfileId);
-			update_option('kaltura_save_permalink', $savePermalink);
+            update_option('kaltura_save_permalink', $savePermalink);
+            update_option('kaltura_root_category', $rootCategory);
 
 			$params['showMessage'] = true;
 		}
@@ -213,9 +219,13 @@ class Kaltura_AdminController extends Kaltura_BaseController
 
 		$kmodel = KalturaModel::getInstance();
 		$players = $kmodel->listPlayersUiConfs();
-		$metadataProfilesResponse = $kmodel->getMetadataProfilesTypeEntry();
+        $kcws = $kmodel->listKCWUiConfs();
+        $metadataProfilesResponse = $kmodel->getMetadataProfilesTypeEntry();
+        $categories = $kmodel->generateRootTree();
 
-		$params['players'] = $players;
+        $params['players'] = $players;
+        $params['kcws'] = $kcws;
+        $params['categories'] = $categories;
 		$params['metadataProfilesResponse'] = $metadataProfilesResponse;
 		$this->renderView('admin/info.php', $params);
 	}
