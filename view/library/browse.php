@@ -42,7 +42,7 @@
 
                 <div class="entry-search-filter">
                     <input name="search" value="<?php echo $this->searchWord?>"/>
-                    <input type="submit" value="Search entries"></button>
+                    <input type="submit" value="Search Entries"></button>
                 </div>
 
                 <?php if (!count($this->result->objects)): ?>
@@ -59,7 +59,9 @@
                 <?php endif; ?>
 
             </ul>
-
+            <div>
+                <a href="javascript:;" id="clear_categories"><?php _e('clear categories');?></a>
+            </div>
             <ul id="filter-categories">
             <?php
             $categories = $this->filters->objects;
@@ -95,14 +97,14 @@
                 }
 
                 ?>
-                <div class="filter-category-div-wrapper" id="<?php echo $fullNameWithoutRoot ?>" style="margin-left: <?php echo $widthStyle ?>px">
+                <li class="filter-category-div-wrapper" id="<?php echo $fullNameWithoutRoot ?>" style="margin-left: <?php echo $widthStyle ?>px">
                     <?php if($hasChildren) echo '<span class="kaltura-caret kaltura-caret-down">&#9660</span>';?>
                     <label class="filter-category-label">
                         <input id="<?php echo $category->fullIds;?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id?>" <?php echo in_array($category->id, $this->selectedCategories)? "checked=\"checked\"" : ""; ?>/>
                         <?php echo $category->name?>
                     </label>
                     <br>
-                </div>
+                </li>
 
             <?php endforeach; ?>
             </ul>
@@ -111,29 +113,38 @@
             <ul id="kaltura-browse">
             <?php foreach($this->result->objects as $mediaEntry):
                 /** Create string of media categories that assigned to the entry. */
-                $mediaCategories = explode(',', $mediaEntry->categories);
-                $mediaCategories = array_slice($mediaCategories , 0, 14);
-                foreach ($mediaCategories as $key => $mediaCategory)
+                if($mediaEntry->categories)
                 {
-
-                    if ($rootCategory)
+                    $mediaCategories = explode(',', $mediaEntry->categories);
+                    $mediaCategories = array_slice($mediaCategories , 0, 14);
+                    foreach ($mediaCategories as $key => $mediaCategory)
                     {
-                        $pos = strpos($mediaCategory, '>');
-                        if ($pos !== false)
+
+                        if ($rootCategory)
                         {
-                            $fullEntryCategoryWithoutRoot = substr($mediaCategory, $pos+1);
+                            $pos = strpos($mediaCategory, '>');
+                            if ($pos !== false)
+                            {
+                                $fullEntryCategoryWithoutRoot = substr($mediaCategory, $pos+1);
+                            }
                         }
-                    }
-                    else
-                    {
-                        $fullEntryCategoryWithoutRoot = $mediaCategory;
-                    }
-                    $fullEntryCategoryWithoutRoot = str_replace('>', ' > ', $fullEntryCategoryWithoutRoot);
-                    $fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; '. $fullEntryCategoryWithoutRoot;
-                    $mediaCategories[$key] = $fullEntryCategoryWithoutRoot;
+                        else
+                        {
+                            $fullEntryCategoryWithoutRoot = $mediaCategory;
+                        }
 
+                        $fullEntryCategoryWithoutRoot = str_replace('>', ' > ', $fullEntryCategoryWithoutRoot);
+                        $fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; '. $fullEntryCategoryWithoutRoot;
+                        $mediaCategories[$key] = $fullEntryCategoryWithoutRoot;
+
+                    }
+                    $mediaCategories = join('&#10;', $mediaCategories);
                 }
-                $mediaCategories = join('&#10;', $mediaCategories);
+
+                else
+                {
+                    $mediaCategories = 'No Category';
+                }
                 ?>
                 <li>
                     <?php
@@ -150,7 +161,7 @@
                             </a>
                         <?php else: ?>
                         <a href="<?php echo esc_url($sendToEditorUrl); ?>">
-                            <img src="<?php echo esc_url($mediaEntry->thumbnailUrl); ?>/width/120/height/90/type/2/bgcolor/000" " alt="<?php esc_attr($mediaEntry->name); ?>" width="120" height="90" />
+                            <img src="<?php echo esc_url($mediaEntry->thumbnailUrl); ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php esc_attr($mediaEntry->name); ?>" title="Categories&#10;<?php echo $mediaCategories; ?>" width="120" height="90" />
                         </a>
                         <?php endif; ?>
                     </div>

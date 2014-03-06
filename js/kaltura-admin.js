@@ -8,7 +8,6 @@
             if(this.className == 'kaltura-caret kaltura-caret-right') {
                 $(parentDiv).siblings().each(function(){
                     var siblingId = this.id;
-                    debugger;
                     var caret = $(this).find('span');
                     if (siblingId.indexOf(searchId) != -1) {
                         $(this).show();
@@ -34,20 +33,25 @@
             }
 
         });
+
+        $('#clear_categories').on('click', function() {
+            $('#filter-categories .filter-category-input').removeAttr('checked');
+            $('#filter-categories-button').click();
+        });
+
         /** Check sub categories checkboxes. */
         $('.filter-category-input').on('click', function() {
-            var parentDiv = $(this).parent().closest('div');
+            var parentDiv = $(this).parent().closest('li');
             var searchId = this.id;
+            var that = this;
             /** If we checked the checkbox then check the other checkboxes. */
-            if ($(this).prop('checked')) {
-                $(parentDiv).siblings().each(function() {
-                    var inputElement = $(this).find('input');
-                    var inputElementId = inputElement.attr('id');
-                    if (inputElementId.indexOf(searchId) != -1) {
-                        $(inputElement).prop('checked', true);
-                    }
-                });
-            }
+            $(parentDiv).siblings().each(function() {
+                var inputElement = $(this).find('input');
+                var inputElementId = inputElement.attr('id');
+                if (inputElementId.indexOf(searchId) != -1) {
+                    $(inputElement).prop('checked', $(that).prop('checked'));
+                }
+            });
         });
     });
 

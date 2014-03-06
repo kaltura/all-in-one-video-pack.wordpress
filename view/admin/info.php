@@ -38,31 +38,24 @@
                 <tr valign="top">
                     <td><label for="root_category"><?php _e("Root Category:"); ?></label></td>
                     <td>
-                        <select name="root_category" id="root_category" multiple size="10">
-                            <option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption("kaltura_root_category") == '0' ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
+                        <select name="root_category" id="root_category"  size="1">
+                            <option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption("kaltura_root_category")  ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
                         <?php foreach($this->categories->objects as $category): ?>
-                            <option id="root_category<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_root_category") == $category->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($category->fullName); ?></option>
+                            <option id="root_category<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_root_category") == $category->id ? "selected=\"selected\"" : ""; ?> ><?php echo esc_html($category->fullName); ?></option>
                         <?php endforeach; ?>
                         </select>
-                    </td>
-                </tr>
-
-                <tr valign="top">
-                    <td><label><?php _e("Default KCW design:"); ?></label></td>
-                    <td>
-                        <?php foreach($this->kcws->objects as $kcw): ?>
-                            <input type="radio" name="default_kcw_type" id="default_kcw_type_<?php echo esc_attr($kcw->id); ?>" value="<?php echo esc_attr($kcw->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_default_kcw_type") == $kcw->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_kcw_type_<?php echo esc_attr($kcw->id); ?>"><?php echo esc_html($kcw->name); ?></label><br/>
-                        <?php endforeach; ?>
-                        <br />
                     </td>
                 </tr>
 
 				<tr valign="top">
 					<td><label><?php _e("Default player design:"); ?></label></td>
 					<td>
-						<?php foreach($this->players->objects as $player): ?>
-							<input type="radio" name="default_player_type" id="default_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="default_player_type_<?php echo esc_attr($player->id); ?>"><?php echo esc_html($player->name); ?></label><br />
+                        <select name="default_player_type" id="default_player_type">
+
+                        <?php foreach($this->players->objects as $player): ?>
+							<option id="default_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_default_player_type") == $player->id ? "selected=\"selected\"" : ""; ?>/><?php echo esc_html($player->name); ?>
 						<?php endforeach; ?>
+                        </select>
 						<br />
 					</td>
 				</tr>
@@ -86,9 +79,11 @@
 				<tr valign="top">
 					<td><label><?php _e("Video comments player design:"); ?></label></td>
 					<td>
+                        <select name="comments_player_type" id="comments_player_type">
 						<?php foreach($this->players->objects as $player): ?>
-							<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo esc_attr($player->id); ?>"><?php echo esc_html($player->name); ?></label><br />
+							<option id="comments_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($player->name); ?></option>
 						<?php endforeach; ?>
+                        </select>
 						<br />
 					</td>
 				</tr>
@@ -127,7 +122,16 @@
 						<br />
 						<br />
 					</td>
-				</tr>
+
+                <tr valign="top" class="advanced">
+                    <td><label><?php _e("UICONF for Kaltura Contribution Wizard:"); ?></label></td>
+                    <td>
+                        <input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr(KalturaHelpers::getOption('kaltura_default_kcw_type') ? KalturaHelpers::getOption('kaltura_default_kcw_type') : KalturaHelpers::getOption('kcw_ui_conf_id_admin'));?>" />
+                        <br />
+                    </td>
+                </tr>
+
+                </tr>
 				<tr>
 					<td colspan="2">
 						<br />
