@@ -346,7 +346,10 @@ EOF;
 			ob_start();
 			$controller->execute();
 			$this->controllerOutput = ob_get_clean();
-			wp_iframe(create_function('', 'global $kalturaPlugin; echo $kalturaPlugin->controllerOutput;'));
+			wp_iframe(function() {
+                global $kalturaPlugin;
+                echo $kalturaPlugin->controllerOutput;
+            });
 			die;
 		}
 	}

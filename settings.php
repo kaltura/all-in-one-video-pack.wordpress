@@ -13,7 +13,7 @@ return array(
 	'kaltura_comments_player_type' => 11958362, // default player if comments player was not chosen in plugin admin screen
 	'kaltura_default_player_type' => 11958362, // default player if player was not chosen in plugin admin screen
 
-	'default_players' => array(11958362, 11958342),
+	'default_players' => array(),
 
 	'player.11958362.name' => 'Light Skin',
 	'player.11958362.width' => 400,

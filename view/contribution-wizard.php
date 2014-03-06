@@ -9,7 +9,6 @@
 	<param name="wmode" value="transparent" />
 	<param name="flashvars" value="<?php echo esc_attr($flashVarsStr); ?>" />
 	<param name="movie" value="<?php echo esc_url($this->swfUrl); ?>" />
-    <param name="categoriesRootId" value="<?php echo esc_url($this->rootCategory); ?>" />
 </object>
 
 <script type="text/javascript">

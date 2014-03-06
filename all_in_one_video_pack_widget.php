@@ -32,14 +32,18 @@ function kaltura_initialize_widget_plugin()
 	// initialize only if the main plugin is loadeded
 	if (!defined('KALTURA_PLUGIN_FILE'))
 	{
-		$msg    = __("Please activate \"All in One Video Pack\" before using the sidebar widget");
-		$notice = '<div class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
-		add_action('admin_notices', create_function("", 'echo \'' . $notice . '\';'));
+		add_action('admin_notices', function() {
+            $msg    = __("Please activate \"All in One Video Pack\" before using the sidebar widget");
+            $notice = '<div class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
+            echo $notice;
+        });
 		return;
 	}
 
 	new Kaltura_AllInOneVideoWidgetPlugin();
 }
+
+
 
 function kaltura_activate_widget_plugin()
 {

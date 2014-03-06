@@ -56,6 +56,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
         $ks = $kmodel->getClientSideSession();
 		$params['flashVars'] = KalturaHelpers::getContributionWizardFlashVars($ks);
 		$params['flashVars']['showCloseButton'] = 'false';
+        $params['flashVars']['categoriesRootId'] = $rootCategory;
 		$params['swfUrl'] = KalturaHelpers::getContributionWizardUrl($kcwUiConfId);
         $params['rootCategory'] = $rootCategory;
         $this->renderView('library/contribution-wizard-admin.php', $params);

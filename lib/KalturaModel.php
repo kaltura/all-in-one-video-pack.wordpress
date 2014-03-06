@@ -319,7 +319,27 @@ class KalturaModel
 			$uiConfs->objects = array();
 		}
 
-		return $uiConfs;
+        $playerIds = KalturaHelpers::getOption('default_players');
+        $uiConfs->objects = array_reverse($uiConfs->objects); // default players should be first
+        foreach ($playerIds as $playerId)
+        {
+            $name = KalturaHelpers::getOption('player.'.$playerId.'.name');
+            $width = KalturaHelpers::getOption('player.'.$playerId.'.width');
+            $height = KalturaHelpers::getOption('player.'.$playerId.'.height');
+            if (!$name)
+                $name = "Untitled player";
+
+            $tempUiConf         = new Kaltura_Client_Type_UiConf();
+            $tempUiConf->id     = $playerId;
+            $tempUiConf->name   = $name;
+            $tempUiConf->width  = $width;
+            $tempUiConf->height = $height;
+            $uiConfs->objects[] = $tempUiConf;
+            $uiConfs->totalCount++;
+        }
+        $uiConfs->objects = array_reverse($uiConfs->objects);
+
+        return $uiConfs;
 	}
 
     public function listKCWUiConfs()
