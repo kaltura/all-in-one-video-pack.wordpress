@@ -8,7 +8,7 @@
 		<?php $this->renderView('library/library_menu.php'); ?>
 		<br clear="all" />
 	<?php endif; ?>
-        <form id="kaltura-browse-form" action="/wordpress_kaltura/wp-admin/<?php echo $kaction == "browse" ? 'media-upload.php': 'upload.php'; ?>?" method="get">
+        <form id="kaltura-browse-form" action="<?php echo get_site_url(); ?>/wp-admin/<?php echo $kaction == "browse" ? 'media-upload.php': 'upload.php'; ?>?" method="get">
 
             <ul id="kaltura-filter-categories">
 
