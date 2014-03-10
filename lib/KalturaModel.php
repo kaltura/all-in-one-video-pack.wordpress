@@ -174,9 +174,13 @@ class KalturaModel
         $filter = new Kaltura_Client_Type_BaseEntryFilter();
         $filter->orderBy = "-createdAt";
 
+
         /** If no category queried then query the root category. */
-        if (!$categories && $rootCategory)
+        if (!$categories)
         {
+            if(!$rootCategory) {
+                $rootCategory = 0;
+            }
             $categories = array($rootCategory);
             $filter->categoryAncestorIdIn = join(', ', $categories);
         }
