@@ -178,11 +178,10 @@ class KalturaModel
         /** If no category queried then query the root category. */
         if (!$categories)
         {
-            if(!$rootCategory) {
-                $rootCategory = 0;
+            if($rootCategory) {
+                $categories = array($rootCategory);
+                $filter->categoryAncestorIdIn = join(', ', $categories);
             }
-            $categories = array($rootCategory);
-            $filter->categoryAncestorIdIn = join(', ', $categories);
         }
         else // Query the relevant categories.
         {
