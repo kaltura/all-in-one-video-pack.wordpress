@@ -100,7 +100,7 @@
                 <li class="filter-category-div-wrapper" id="<?php echo $fullNameWithoutRoot ?>" style="margin-left: <?php echo $widthStyle ?>px">
                     <?php if($hasChildren) echo '<span class="kaltura-caret kaltura-caret-down">&#9660</span>';?>
                     <label class="filter-category-label">
-                        <input id="<?php echo $category->fullIds;?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id?>" <?php echo in_array($category->id, $this->selectedCategories)? "checked=\"checked\"" : ""; ?>/>
+                        <input id="<?php echo $category->fullIds;?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id?>" <?php echo is_array($this->selectedCategories) && in_array($category->id, $this->selectedCategories)? "checked=\"checked\"" : ""; ?>/>
                         <?php echo $category->name?>
                     </label>
                     <br>

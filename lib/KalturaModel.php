@@ -173,7 +173,11 @@ class KalturaModel
         $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
         $filter = new Kaltura_Client_Type_BaseEntryFilter();
         $filter->orderBy = "-createdAt";
+        $filter->typeIn = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
 
+
+        $filter->categoryAncestorIdIn = '';
+        $filter->categoriesIdsMatchOr = '';
 
         /** If no category queried then query the root category. */
         if (!$categories)
@@ -200,8 +204,9 @@ class KalturaModel
 	{
 		$filter  = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = Kaltura_Client_Enum_BaseEntryOrderBy::CREATED_AT_DESC;
-		$filter->typeEqual = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
 		$filter->categoriesMatchOr = $category;
+
+        $filter->typeIn = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
 
 		$pager = new Kaltura_Client_Type_FilterPager();
 		$pager->pageSize = 500;
