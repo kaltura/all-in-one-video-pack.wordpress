@@ -176,7 +176,7 @@ class KalturaModel
         $filter->typeIn = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
 
 
-        $filter->categoryAncestorIdIn = '';
+        $filter->categoryAncestorIdIn = null;
         $filter->categoriesIdsMatchOr = '';
 
         /** If no category queried then query the root category. */

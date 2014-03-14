@@ -5,7 +5,8 @@
 		<br />
 		<div id="message" class="updated"><p><strong><?php _e('Failed to verify partner details'); ?></strong> (<?php echo esc_html($this->error); ?>)</p></div>
 		<form name="form1" method="post" />
-		<p class="submit" style="text-align: left; "><input type="button" value="<?php _e('Click here to edit partner details manually'); ?>" onclick="window.location = 'options-general.php?page=kaltura_options&partner_login=true';" /></p>
+
+        <p class="submit" style="text-align: left; "><input type="button" value="<?php _e('Click here to edit partner details manually'); ?>" onclick="window.location = 'options-general.php?page=kaltura_options&partner_login=true';" /></p>
 		<input type="hidden" id="manual_edit" name="manual_edit" value="true" />
 		</form>
 	</div>
@@ -16,6 +17,7 @@
 		<?php endif; ?>
 		<h2><?php _e('All in One Video Pack Settings'); ?></h2>
 		<form name="form1" method="post">
+            <?php wp_nonce_field('info', 'kaltura'); ?>
 			<br />
 			<table id="kaltura-cms-login">
 				<tr class="kalturaFirstRow">
@@ -127,6 +129,13 @@
                     <td><label><?php _e("UICONF for Kaltura Contribution Wizard:"); ?></label></td>
                     <td>
                         <input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr(KalturaHelpers::getOption('kaltura_default_kcw_type') ? KalturaHelpers::getOption('kaltura_default_kcw_type') : KalturaHelpers::getOption('kcw_ui_conf_id_admin'));?>" />
+                        <br />
+                    </td>
+                </tr>
+                <tr valign="top" class="advanced">
+                    <td><label><?php _e("UICONF for Video Comments Contrubution Wizard:"); ?></label></td>
+                    <td>
+                        <input name="comments_kcw_type" id="comments_kcw_type" value="<?php echo esc_attr(KalturaHelpers::getOption('kaltura_comments_kcw_type') ? KalturaHelpers::getOption('kaltura_comments_kcw_type') : KalturaHelpers::getOption('kcw_ui_conf_comments'));?>" />
                         <br />
                     </td>
                 </tr>

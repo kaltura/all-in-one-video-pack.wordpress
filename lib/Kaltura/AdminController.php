@@ -14,8 +14,8 @@ class Kaltura_AdminController extends Kaltura_BaseController
 		wp_enqueue_script('kaltura-admin');
 		wp_enqueue_script('kaltura-jquery-validate');
 		$kalturaPartnerId = KalturaHelpers::getOption('kaltura_partner_id');
-		$partnerLogin = isset($_GET['partner_login']) ? $_GET['partner_login'] : null;
-		$forceRegistration = isset($_GET['force_registration']) ? $_GET['force_registration'] : null;
+		$partnerLogin = KalturaHelpers::getRequestParam('partner_login');
+		$forceRegistration = KalturaHelpers::getRequestParam('force_registration');
 		if ($partnerLogin == "true")
 			$this->partnerLoginAction();
 		else if (!$kalturaPartnerId || $forceRegistration)
@@ -31,6 +31,7 @@ class Kaltura_AdminController extends Kaltura_BaseController
 		$params['error'] = false;
 		if (count($_POST))
 		{
+            KalturaHelpers::verifyNonce('partnerLogin');
 			$email = KalturaHelpers::getRequestPostParam('email');
 			$password = KalturaHelpers::getRequestPostParam('password');
 			$partnerId = KalturaHelpers::getRequestPostParam('partner_id');
@@ -70,42 +71,43 @@ class Kaltura_AdminController extends Kaltura_BaseController
 		);
 		if (count($_POST))
 		{
-			if ($_POST['agree_to_terms'])
+            KalturaHelpers::verifyNonce('register');
+			if (KalturaHelpers::getRequestPostParam('agree_to_terms'))
 			{
 				global $wp_version;
 				$partner = new Kaltura_Client_Type_Partner();
-				$partner->name = ($_POST['company']) ? $_POST['company'] : $_POST['first_name'] . ' ' . $_POST['last_name'];
-				$partner->adminEmail = $_POST['email'];
-				$partner->firstName = $_POST['first_name'];
-				$partner->lastName = $_POST['last_name'];
-				$partner->website = $_POST['website'];
-				$partner->description = $_POST['description'] . "\nWordpress all-in-one plugin|" . $wp_version;
-				$partner->country = strlen($_POST['country']) == 2 ? $_POST['country'] : null;
-				$partner->state = strlen($_POST['state']) == 2 ? $_POST['state'] : null;
+				$partner->name = KalturaHelpers::getRequestPostParam('company', KalturaHelpers::getRequestPostParam('first_name') . ' ' . KalturaHelpers::getRequestPostParam('last_name'));
+				$partner->adminEmail = KalturaHelpers::getRequestPostParam('email');
+				$partner->firstName = KalturaHelpers::getRequestPostParam('first_name');
+				$partner->lastName = KalturaHelpers::getRequestPostParam('last_name');
+				$partner->website = KalturaHelpers::getRequestPostParam('website');
+				$partner->description = KalturaHelpers::getRequestPostParam('description') . "\nWordpress all-in-one plugin|" . $wp_version;
+				$partner->country = strlen(KalturaHelpers::getRequestPostParam('country')) == 2 ? KalturaHelpers::getRequestPostParam('country') : null;
+				$partner->state = strlen(KalturaHelpers::getRequestPostParam('state')) == 2 ? KalturaHelpers::getRequestPostParam('state') : null;
 				$partner->commercialUse = Kaltura_Client_Enum_CommercialUseType::NON_COMMERCIAL_USE;
-				$partner->phone = $_POST['phone'];
+				$partner->phone = KalturaHelpers::getRequestPostParam('phone');
 				$partner->type = Kaltura_Client_Enum_PartnerType::WORDPRESS;
 				$partner->defConversionProfileType = 'wp_default';
 				$partner->additionalParams = array();
 
 				$keyValue = new Kaltura_Client_Type_KeyValue();
 				$keyValue->key = 'company';
-				$keyValue->value = $_POST['company'];
+				$keyValue->value = KalturaHelpers::getRequestPostParam('company');
 				$partner->additionalParams[] = $keyValue;
 
 				$keyValue = new Kaltura_Client_Type_KeyValue();
 				$keyValue->key = 'title';
-				$keyValue->value = $_POST['job_title'];
+				$keyValue->value = KalturaHelpers::getRequestPostParam('job_title');
 				$partner->additionalParams[] = $keyValue;
 
 				$keyValue = new Kaltura_Client_Type_KeyValue();
 				$keyValue->key = 'would_you_like_to_be_contacted';
-				$keyValue->value = $_POST['would_you_like'];
+				$keyValue->value = KalturaHelpers::getRequestPostParam('would_you_like');
 				$partner->additionalParams[] = $keyValue;
 
 				$keyValue = new Kaltura_Client_Type_KeyValue();
 				$keyValue->key = 'vertical';
-				$keyValue->value = $_POST['describe_yourself'];
+				$keyValue->value = KalturaHelpers::getRequestPostParam('describe_yourself');
 				$partner->additionalParams[] = $keyValue;
 
 				$kmodel = KalturaModel::getInstance();
@@ -175,16 +177,23 @@ class Kaltura_AdminController extends Kaltura_BaseController
 
 	public function infoAction()
 	{
+
 		$params = array();
 		$params['error'] = null;
 		$params['showMessage'] = false;
 		if (count($_POST))
 		{
+            KalturaHelpers::verifyNonce('info');
+
 			$enableVideoComments = KalturaHelpers::getRequestPostParam('enable_video_comments') ? true : false;
 			$allowAnonymousComments = KalturaHelpers::getRequestPostParam('allow_anonymous_comments') ? true : false;
 			$defaultPlayerType = KalturaHelpers::getRequestPostParam('default_player_type');
             $defaultKCWType = KalturaHelpers::getRequestPostParam('default_kcw_type');
             $defaultKCWType = !empty($defaultKCWType) ? $defaultKCWType : KalturaHelpers::getOption('kcw_ui_conf_id_admin');
+
+            $commentsKCWType = KalturaHelpers::getRequestPostParam('comments_kcw_type');
+            $commentsKCWType = !empty($commentsKCWType) ? $commentsKCWType : KalturaHelpers::getOption('kcw_ui_conf_comments');
+
             $commentsPlayerType = KalturaHelpers::getRequestPostParam('comments_player_type');
 			$userIdentifier = KalturaHelpers::getRequestPostParam('kaltura_user_identifier');
 			$permalinkMetadataProfileId = KalturaHelpers::getRequestPostParam('permalink_metadata_profile_id');
@@ -196,6 +205,7 @@ class Kaltura_AdminController extends Kaltura_BaseController
 			update_option('kaltura_allow_anonymous_comments', $allowAnonymousComments);
 			update_option('kaltura_default_player_type', $defaultPlayerType);
             update_option('kaltura_default_kcw_type', $defaultKCWType);
+            update_option('kaltura_comments_kcw_type', $commentsKCWType);
 			update_option('kaltura_comments_player_type', $commentsPlayerType);
 			update_option('kaltura_user_identifier', $userIdentifier);
 			update_option('kaltura_permalink_metadata_profile_id', $permalinkMetadataProfileId);

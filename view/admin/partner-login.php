@@ -39,7 +39,9 @@
 	    Please enter your Kaltura Management Console (KMC) Email & password
     </p>
 	<form name="form1" method="post" />
-		<table class="form-table">
+        <?php wp_nonce_field('partnerLogin', 'kaltura'); ?>
+
+        <table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e("Partner ID"); ?>:</th>
 				<td><input type="text" id="partner_id" name="partner_id" value="" size="10" /></td>

@@ -47,7 +47,9 @@
 		</p>
 		<h3><?php _e("Get a Partner ID"); ?></h3>
 		<form name="form1" method="post" class="registration" />
-		<table class="form-table">
+        <?php wp_nonce_field('info', 'register'); ?>
+
+        <table class="form-table">
 			<tr valign="top">
 				<th scope="row"><?php _e("First Name"); ?>: *</th>
 				<td><input type="text" id="first_name" name="first_name" value="<?php echo esc_attr(KalturaHelpers::getRequestPostParam('first_name')); ?>" /></td>

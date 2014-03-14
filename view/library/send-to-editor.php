@@ -89,11 +89,11 @@
 	?>
 
 	<div id="send-to-editor" class="kaltura-tab">
-		<?php if (!isset($_GET["firstedit"]) || $_GET["firstedit"] != "true"): ?>
+		<?php if (KalturaHelpers::getRequestParam("firstedit") != "true"){ ?>
 		<div class="backDiv">
 			<a href="<?php echo KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_browse')); ?>"><img src="<?php echo KalturaHelpers::getPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
 		</div>
-		<?php endif; ?>
+		<?php } ?>
 		<form method="post" class="kaltura-form" action="<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $this->nextEntryIds)); ?>">
 			<table class="form-table">
 				<tr>

@@ -1,5 +1,5 @@
 <?php KalturaHelpers::protectView($this); ?>
-<?php $kaction = isset($_GET["kaction"]) ? $_GET["kaction"] : "browse"; ?>
+<?php $kaction = KalturaHelpers::getRequestParam("kaction", "browse"); ?>
 <?php $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
       $rootCategory = !empty($rootCategory) ? $rootCategory : 0; ?>
 <div class="<?php echo ($this->isLibrary) ? "wrap kaltura-wrap ".esc_attr($kaction) : "kaltura-tab"?>">

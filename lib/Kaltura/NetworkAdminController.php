@@ -13,7 +13,7 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController
 
 		wp_enqueue_script('kaltura-admin');
 		$kalturaPartnerId = get_site_option('kaltura_partner_id');
-		$partnerLogin = isset($_GET['partner_login']) ? true : false;
+		$partnerLogin = KalturaHelpers::getRequestParam('partner_login', false);
 		if (!$kalturaPartnerId || $partnerLogin)
 			$this->loginAction();
 		else

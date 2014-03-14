@@ -34,6 +34,6 @@ abstract class Kaltura_BaseController
 
 	protected function getKAction()
 	{
-		return isset($_GET['kaction']) ? $_GET['kaction'] : null;
+		return KalturaHelpers::getRequestParam('kaction');
 	}
 }

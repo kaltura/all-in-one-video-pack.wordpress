@@ -290,6 +290,9 @@ EOF;
 			//$html .= 'alert(document.getElementById("'.$playerId.'_wrapper").innerHTML);jQuery("#'.$playerId.'_wrapper").append("'.str_replace("\"", "\\\"", $powerdByBox).'");';
 			$html .= '</script>';
 		}
+
+        $html = apply_filters( 'kaltura_player_html', $html, $attrs );
+
 		return $html;
 	}
 
@@ -346,10 +349,7 @@ EOF;
 			ob_start();
 			$controller->execute();
 			$this->controllerOutput = ob_get_clean();
-			wp_iframe(function() {
-                global $kalturaPlugin;
-                echo $kalturaPlugin->controllerOutput;
-            });
+			wp_iframe('getControllerOutput');
 			die;
 		}
 	}
@@ -361,3 +361,9 @@ EOF;
 		media_upload_header(); // will add the tabs menu
 	}
 }
+
+function getControllerOutput() {
+    global $kalturaPlugin;
+    echo $kalturaPlugin->controllerOutput;
+}
+

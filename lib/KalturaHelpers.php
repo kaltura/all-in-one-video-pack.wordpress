@@ -64,12 +64,30 @@ class KalturaHelpers
 
 	public static function getRequestPostParam($param, $default = null)
 	{
-		return isset($_POST[$param]) ? $_POST[$param] : $default;
+        if(isset($_POST[$param])) {
+            if(is_array($_POST[$param])) {
+                return array_map('esc_js', $_POST[$param]);
+            } else {
+                return esc_js($_POST[$param]);
+            }
+        }
+        else {
+            return $default;
+        }
 	}
 
 	public static function getRequestParam($param, $default = null)
 	{
-		return isset($_GET[$param]) ? $_GET[$param] : $default;
+        if(isset($_GET[$param])) {
+            if(is_array($_GET[$param])) {
+                return array_map('esc_js', $_GET[$param]);
+            } else {
+                return esc_js($_GET[$param]);
+            }
+        }
+        else {
+            return $default;
+        }
 	}
 
 	public static function protectView($view)
@@ -667,4 +685,20 @@ class KalturaHelpers
 			'WY' => 'WY',
 		);
 	}
+
+
+    public static function verifyNonce($action)
+    {
+        // verify nonce
+        if (
+            ! isset( $_POST['kaltura'] )
+            || ! wp_verify_nonce( $_POST['kaltura'], $action )
+        ) {
+
+            print 'Sorry, your nonce did not verify.';
+            exit;
+
+        }
+
+    }
 }

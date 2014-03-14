@@ -1,6 +1,6 @@
 <?php KalturaHelpers::protectView($this); ?>
 <?php
-$kaction = isset($_GET['kaction']) ? $_GET['kaction'] : 'library';
+$kaction = KalturaHelpers::getRequestParam('kaction', 'library');
 
 $menu = array(
 	"Entries" => array('kaction' => 'library', 'screen' => null, 'paged' => null, 'step' => null),

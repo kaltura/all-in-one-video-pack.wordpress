@@ -33,7 +33,7 @@ class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 
 	public function videopostsAction()
 	{
-		$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+		$page = KalturaHelpers::getRequestParam("page",  1);
 		$pageSize = 5;
 
 		$widgets 	= Kaltura_WPModel::getLastPublishedPostWidgets($page, $pageSize);

@@ -28,9 +28,9 @@ class Kaltura_FrontEndController extends Kaltura_BaseController
 			}
 			else
 			{
-				$params['swfUrl'] = KalturaHelpers::getContributionWizardUrl(KalturaHelpers::getOption('kcw_ui_conf_comments'));
+				$params['swfUrl'] = KalturaHelpers::getContributionWizardUrl(KalturaHelpers::getOption('kaltura_comments_kcw_type') ? KalturaHelpers::getOption('kaltura_comments_kcw_type') : KalturaHelpers::getOption('kcw_ui_conf_comments') );
 				$params['flashVars'] = KalturaHelpers::getContributionWizardFlashVars($ks);
-				$params['postId'] = $_GET['postid'];
+				$params['postId'] = KalturaHelpers::getRequestParam('postid');
 			}
 		}
 		$params['jsError'] = $jsError;
@@ -42,8 +42,8 @@ class Kaltura_FrontEndController extends Kaltura_BaseController
 		$js_error = '';
 
 		// wordpress validation code from wp-comments-post (with slight changes)
-		$comment_author       = trim(strip_tags($_GET['author']));
-		$comment_author_email = trim($_GET['email']);
+		$comment_author       = trim(strip_tags(KalturaHelpers::getRequestParam('author')));
+		$comment_author_email = trim(KalturaHelpers::getRequestParam('email'));
 
 		$user = wp_get_current_user();
 		if ( $user->ID ) {
@@ -72,7 +72,7 @@ class Kaltura_FrontEndController extends Kaltura_BaseController
 			return __('You must be logged in to post a comment.');
 		}
 
-		$post_id = $_GET['postid'];
+		$post_id = KalturaHelpers::getRequestParam('postid');
 
 		if (!$post_id)
 		{

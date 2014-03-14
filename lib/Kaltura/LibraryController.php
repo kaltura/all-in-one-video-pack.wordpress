@@ -64,7 +64,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function deleteAction()
 	{
-		$entryId = isset($_GET['entryid']) ? $_GET['entryid'] : null;
+		$entryId = KalturaHelpers::getRequestParam('entryid');
 		$kmodel = KalturaModel::getInstance();
 		$kmodel->deleteEntry($entryId);
 		echo 'ok';
@@ -76,7 +76,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_style('media');
 		wp_enqueue_script('kaltura-player-selector');
 
-		$entryIds = (isset($_GET['entryIds'])) ? $_GET['entryIds'] : array();
+		$entryIds = KalturaHelpers::getRequestParam('entryIds', array());
 		$entryId = null;
 		if (is_array($entryIds) && count($entryIds) > 0)
 			$entryId = $entryIds[0];
@@ -109,13 +109,13 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 			$kmodel = KalturaModel::getInstance();
 
 			$baseEntry = new Kaltura_Client_Type_BaseEntry();
-			$baseEntry->name = $_POST['ktitle'];
+			$baseEntry->name = KalturaHelpers::getRequestPostParam('ktitle');
 			$kmodel->updateBaseEntry($entryId, $baseEntry);
 
 			array_shift($entryIds); // done with 1 entry, maybe we have more
-			$width = $_POST['playerWidth'];
-			$uiConfId = $_POST['uiConfId'];
-			$playerRatio = $_POST['playerRatio'];
+			$width = KalturaHelpers::getRequestPostParam('playerWidth');
+			$uiConfId = KalturaHelpers::getRequestPostParam('uiConfId');
+			$playerRatio = KalturaHelpers::getRequestPostParam('playerRatio');
 
 			$params['entryId'] = $entryId;
 			$params['nextEntryIds'] = $entryIds;
@@ -138,12 +138,12 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_style('media');
 		wp_enqueue_script('kaltura-editable-name');
 		$kmodel = KalturaModel::getInstance();
-		$isLibrary = isset($_GET['isLibrary']) ? esc_js($_GET['isLibrary']) : false;
+		$isLibrary = KalturaHelpers::getRequestParam('isLibrary', false);
 		if ($isLibrary)
 			$pageSize = 16;
 		else
 			$pageSize = 18;
-		$page = isset($_GET['paged']) ? $_GET['paged'] : 1;
+		$page = KalturaHelpers::getRequestParam('paged', 2);
         $result = $this->searchvideosAction($pageSize, $page);
 		$totalCount = $result->totalCount;
 		$params['page'] 		= $page;
@@ -153,17 +153,19 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		$params['result'] 	= $result;
 		$params['isLibrary'] = $isLibrary;
         $params['filters'] 	= $kmodel->listSelectedRootCategories();
-        $params['selectedCategories'] = isset($_GET['categoryvar']) ? $_GET['categoryvar'] : null;
-        $params['searchWord'] = isset($_GET['search']) ? $_GET['search'] : null;
-        $params['postId'] = isset($_GET['post_id']) ? $_GET['post_id'] : null;
+        $params['selectedCategories'] = KalturaHelpers::getRequestParam('categoryvar');
+        $params['searchWord'] = KalturaHelpers::getRequestParam('search');
+        $params['postId'] = KalturaHelpers::getRequestParam('post_id');
 		$this->renderView('library/browse.php', $params);
 	}
 
     public function searchvideosAction($pageSize, $page)
     {
         $kmodel = KalturaModel::getInstance();
-        $queryString = isset($_GET['search']) ? $_GET['search'] : null;
-        $categories = isset($_GET['categoryvar']) ? $_GET['categoryvar'] : null;
+        $queryString = KalturaHelpers::getRequestParam('search');
+        $categories = KalturaHelpers::getRequestParam('categoryvar');
+
+
         $result = $kmodel->listEntriesByCategoriesAndWord($pageSize, $page, $categories, $queryString);
 
         return $result;
@@ -174,7 +176,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		wp_enqueue_style('media');
 		wp_enqueue_script('kaltura-editable-name');
 		wp_enqueue_script('kaltura-entry-status-checker');
-		$entryIds = (isset($_GET['entryIds'])) ? $_GET['entryIds'] : array();
+		$entryIds = KalturaHelpers::getRequestParam('entryIds', array());
 		$kmodel = KalturaModel::getInstance();
 		$entries = $kmodel->getEntriesByIds($entryIds);
 		$params['entries'] = $entries;
@@ -183,7 +185,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function previewAction()
 	{
-		$entryId = isset($_GET['entryid']) ? $_GET['entryid'] : null;
+		$entryId = KalturaHelpers::getRequestParam('entryid');
 		if (!$entryId)
 			wp_die(__('The video is missing or invalid.'));
 
@@ -204,7 +206,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function updatethumbnailAction()
 	{
-		$entryId = isset($_GET['entryid']) ? $_GET['entryid'] : null;
+		$entryId = KalturaHelpers::getRequestParam('entryid');
 		if (!$entryId)
 			wp_die(__('The video is missing or invalid.'));
 
@@ -236,8 +238,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function saveentrynameAction()
 	{
-		$entryId = isset($_POST['entryId']) ? $_POST['entryId'] : null;
-		$entryName = isset($_POST['entryName']) ? $_POST['entryName'] : null;
+		$entryId = KalturaHelpers::getRequestPostParam('entryId');
+		$entryName = KalturaHelpers::getRequestPostParam('entryName');
 
 		if ($entryId && $entryName)
 		{
@@ -252,7 +254,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function videopostsAction()
 	{
-		$step = isset($_GET['step']) ? $_GET['step'] : 1;
+		$step = KalturaHelpers::getRequestParam('step', 1);
 		if ($step == 1)
 			$this->videopostsStep1();
 		elseif ($step == 2)
@@ -263,7 +265,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	public function getentriesstatusAction()
 	{
-		$entryIds = isset($_GET["entryIds"]) && is_array($_GET["entryIds"]) ? $_GET["entryIds"] : array();
+		$entryIds = KalturaHelpers::getRequestParam("entryIds", array());
 		$kmodel = KalturaModel::getInstance();
 		$entries = $kmodel->getEntriesByIds($entryIds);
 
@@ -286,11 +288,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	protected function videopostsStep2()
 	{
-		$categories = array();
 		$hasEntries = false;
-		$_POST['categories'] = isset($_POST['categories']) && is_array($_POST['categories']) ? $_POST['categories'] : array();
+        $categories = KalturaHelpers::getRequestPostParam('categories', array());
 		$kmodel = KalturaModel::getInstance();
-		foreach($_POST['categories'] as $category)
+		foreach($categories as $category)
 		{
 			$entries = $kmodel->listAllEntriesByCategory($category);
 
@@ -313,11 +314,11 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 	protected function videopostsStep3()
 	{
-		$entries = $_POST['entries'];
+		$entries = KalturaHelpers::getRequestPostParam('entries', array());
 		$createdPosts = 0;
-		$uiConfId = $_POST['uiconf_id'];
-		$width = $_POST['width'];
-		$height = $_POST['height'];
+		$uiConfId = KalturaHelpers::getRequestPostParam('uiconf_id');
+		$width = KalturaHelpers::getRequestPostParam('width');
+		$height = KalturaHelpers::getRequestPostParam('height');
 		foreach($entries as $entryCat)
 		{
 			$arr = unserialize(base64_decode($entryCat));
