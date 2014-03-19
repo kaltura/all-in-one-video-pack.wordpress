@@ -156,7 +156,7 @@
 
 		<script type="text/javascript">
 
-			function updateFormState() {
+			function kaltura_updateFormState() {
 				// video comments settings
 				var enableVideoComments = jQuery("input[type=checkbox][id=enable_video_comments]").attr('checked');
 				if (enableVideoComments)
@@ -184,9 +184,9 @@
 			});
 
 
-			jQuery("input[type=checkbox]").click(updateFormState);
+			jQuery("input[type=checkbox]").click(kaltura_updateFormState);
 
-			updateFormState();
+			kaltura_updateFormState();
 			jQuery('#advanced-button').click(function(){
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();

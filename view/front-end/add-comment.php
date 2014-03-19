@@ -18,7 +18,7 @@
 			<script type="text/javascript">
 				var entryId = "";
 				var topWindow = Kaltura.getTopWindow();
-				function onContributionWizardAfterAddEntry(obj)
+				function kaltura_onContributionWizardAfterAddEntry(obj)
 				{
 					if (obj && obj.length > 0)
 					{
@@ -26,12 +26,12 @@
 					}
 				}
 
-				function onContributionWizardClose(modified)
+				function kaltura_onContributionWizardClose(modified)
 				{
-					setTimeout("onContributionWizardCloseTimeouted("+modified+");");
+					setTimeout("kaltura_onContributionWizardCloseTimeouted("+modified+");");
 				}
 
-				function onContributionWizardCloseTimeouted(modified)
+				function kaltura_onContributionWizardCloseTimeouted(modified)
 				{
 					if (modified)
 					{

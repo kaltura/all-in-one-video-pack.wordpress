@@ -24,7 +24,7 @@
 			<th scope="row"><label for="uiconf_id"> Select player:</label></th>
 			<td>
 				<script type="text/javascript">
-					function updateWidthHeight()
+					function kaltura_updateWidthHeight()
 					{
 						var value = jQuery("form [name=uiconf_id]").val()
 						<?php foreach($this->uiConfs->objects as $uiConf): ?>
@@ -36,7 +36,7 @@
 						<?php endforeach; ?>
 					}
 				</script>
-				<select name="uiconf_id" id="uiconf_id" onchange="updateWidthHeight();">
+				<select name="uiconf_id" id="uiconf_id" onchange="kaltura_updateWidthHeight();">
 					<?php foreach($this->uiConfs->objects as $uiConf): ?>
 					<option value="<?php echo esc_attr($uiConf->id); ?>"><?php echo esc_html($uiConf->name); ?> (<?php echo intval($uiConf->width); ?>x<?php echo intval($uiConf->height); ?>)</option>
 					<?php endforeach; ?>
@@ -44,7 +44,7 @@
 				<input type="hidden" name="width" value="" />
 				<input type="hidden" name="height" value="" />
 				<script type="text/javascript">
-					updateWidthHeight();
+					kaltura_updateWidthHeight();
 				</script>
 			</td>
 		</tr>
@@ -69,13 +69,15 @@
 		<tbody>
 			<?php $alternate = true; ?>
 			<?php foreach($this->categories as $category => $entries): ?>
-				<?php foreach($entries as $entry): ?>
+                <?php if (is_array($entries)): ?>
+    				<?php foreach($entries as $entry): ?>
 					<tr class="iedit <?php echo ($alternate) ? "alternate" : ""; $alternate = !$alternate; ?>">
-						<th scope="row" class="check-column"><input type="checkbox" name="entries[]" value="<?php echo base64_encode(serialize(array($entry->id, $entry->name, $category))); ?>" /></th>
-						<td class="post-title page-title column-name"><?php echo $entry->name; ?></td>
-						<td class="author column-description"><?php echo $category; ?></td>
+						<th scope="row" class="check-column"><input type="checkbox" name="entries[]" value="<?php echo esc_attr(base64_encode(serialize(array($entry->id, $entry->name, $category)))); ?>" /></th>
+						<td class="post-title page-title column-name"><?php echo esc_html($entry->name); ?></td>
+						<td class="author column-description"><?php echo esc_html($category); ?></td>
 					</tr>
-				<?php endforeach; ?>
+	    			<?php endforeach; ?>
+                <?php endif;?>
 			<?php endforeach; ?>
 		</<tbody>
 	</table>

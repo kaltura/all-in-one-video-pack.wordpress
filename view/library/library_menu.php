@@ -18,7 +18,7 @@ $menu = array(
 				$current = ''; 
 		?>
 		<li>
-			<a <?php echo $current; ?>href="<?php echo add_query_arg($params); ?>"><?php echo $name; ?></a>
+			<a <?php echo $current; ?>href="<?php echo add_query_arg($params); ?>"><?php echo esc_html($name); ?></a>
 			<?php if (!$last): ?>
 			|
 			<?php endif; ?>
@@ -28,11 +28,11 @@ $menu = array(
 <table id="kaltura-cms-login">
 	<tr class="kalturaFirstRow">
 		<th align="left"><?php _e('Partner ID'); ?>:</th>
-		<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_partner_id"); ?></strong></td>
+		<td style="padding-right: 90px;"><strong><?php echo esc_html(KalturaHelpers::getOption("kaltura_partner_id")); ?></strong></td>
 	</tr>
 	<tr>
 		<th align="left"><?php _e('KMC username'); ?>:</th>
-		<td style="padding-right: 90px;"><strong><?php echo KalturaHelpers::getOption("kaltura_cms_user"); ?></strong></td>
+		<td style="padding-right: 90px;"><strong><?php echo esc_html(KalturaHelpers::getOption("kaltura_cms_user")); ?></strong></td>
 	</tr>
 	<tr class="kalturaLastRow">
 		<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">

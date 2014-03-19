@@ -46,7 +46,7 @@
 			}
 
 			<?php if (count($this->nextEntryIds) > 0): ?>
-			var url =  "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $this->nextEntryIds)); ?>";
+			var url =  "<?php echo esc_js(KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $this->nextEntryIds))); ?>";
 			window.location.href = url;
 			<?php else: ?>
 			setTimeout('topWindow.tb_remove()', 0);
@@ -91,17 +91,17 @@
 	<div id="send-to-editor" class="kaltura-tab">
 		<?php if (KalturaHelpers::getRequestParam("firstedit") != "true"){ ?>
 		<div class="backDiv">
-			<a href="<?php echo KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_browse')); ?>"><img src="<?php echo KalturaHelpers::getPluginUrl(); ?>/images/back.gif" alt="Back"/></a>
+			<a href="<?php echo esc_attr(KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_browse'))); ?>"><img src="<?php echo esc_attr(KalturaHelpers::getPluginUrl()); ?>/images/back.gif" alt="Back"/></a>
 		</div>
 		<?php } ?>
-		<form method="post" class="kaltura-form" action="<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $this->nextEntryIds)); ?>">
+		<form method="post" class="kaltura-form" action="<?php echo esc_attr(KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true", "entryIds" => $this->nextEntryIds))); ?>">
 			<table class="form-table">
 				<tr>
 					<td valign="top" width="240">
 						<div class="kaltura-loader"></div>
 						<div id="divKalturaPlayer"></div>
 						<script type="text/javascript">
-							function updateRatio() {
+							function kaltura_updateRatio() {
 								var ratio = jQuery("input[name=playerRatio]:checked").val();
 								if (ratio == "16:9")
 								{
@@ -141,8 +141,8 @@
 								<td valign="top" style="padding-left:25px;">
 									<strong>Player Dimensions:</strong>
 									<div class="playerRatioDiv">
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="updateRatio();" value="16:9" /><label for="playerRatioWide">Widescreen</label></span>
+										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
+										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" /><label for="playerRatioWide">Widescreen</label></span>
 									</div>
 									<strong>Select player size:</strong>
 									<div class="radioBox">
@@ -168,7 +168,7 @@
 	</div>
 	<script type="text/javascript">
 		jQuery(function() {
-			updateRatio();
+			kaltura_updateRatio();
 
 			jQuery("#playerCustomWidth").click(function(){
 				jQuery(this).siblings("[type=radio]").attr("checked", "checked");
@@ -203,16 +203,16 @@
 				dimensions: 'input[name=playerRatio]',
 				submit: 'input[name=sendToEditorButton]',
 				onSelect: function() {
-					fixHeight();
+					kaltura_fixHeight();
 				}
 			});
 
-			function fixHeight() {
+			function kaltura_fixHeight() {
 				var topWindow = Kaltura.getTopWindow();
 				topWindow.Kaltura.animateModalSize(680,jQuery("#send-to-editor").height() + 70);
 			}
 
-			fixHeight();
+			kaltura_fixHeight();
 		});
 	</script>
 <?php endif;

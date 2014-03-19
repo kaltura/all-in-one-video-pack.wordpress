@@ -8,7 +8,7 @@
 				<li>
 					<div class="thumb">
 						<a href="<?php echo get_permalink($post_id); ?>">
-							<img src="<?php echo KalturaHelpers::getThumbnailUrl($widget["id"], $widget["entry_id"], 120, 90, null); ?>" width="120" height="90" />
+							<img src="<?php echo esc_attr(KalturaHelpers::getThumbnailUrl($widget["id"], $widget["entry_id"], 120, 90, null)); ?>" width="120" height="90" />
 						</a>
 					</div>
 					<a href="<?php echo get_permalink($post_id); ?>"><?php echo esc_html($post->post_title); ?></a><br />

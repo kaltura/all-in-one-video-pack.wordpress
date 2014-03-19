@@ -25,7 +25,7 @@
 		}
 	);
 	
-	function onContributionWizardAfterAddEntry(obj) {
+	function kaltura_onContributionWizardAfterAddEntry(obj) {
 		if (obj && obj.length > 0) {
 			for(var i = 0; i < obj.length; i++) {
 				var entryId = (obj[i].entryId) ? obj[i].entryId : obj[i].uniqueID;
@@ -33,21 +33,21 @@
 			}
 		}
 
-		setTimeout("onContributionWizardAfterAddEntryTimeouted()", 0); // because we are going to remove the flash from the dom
+		setTimeout("kaltura_onContributionWizardAfterAddEntryTimeouted()", 0); // because we are going to remove the flash from the dom
 	}
 
-	function onContributionWizardAfterAddEntryTimeouted() {
+	function kaltura_onContributionWizardAfterAddEntryTimeouted() {
 		jQuery("#kaltura_contribution_wizard_wrapper").empty();
 
 		var url;
 		if (entryIds.length > 1) {
-			url = "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "choosevideos")); ?>";
+			url = "<?php echo esc_js(KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "choosevideos"))); ?>";
 			var entryIdsParams = '&entryIds[]=';
 			entryIdsParams += entryIds.join('&entryIds[]=');
 			url += entryIdsParams;
 		}
 		else if (entryIds.length == 1) {
-			url = "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>&entryIds[]=" + entryIds[0];
+			url = "<?php echo esc_js(KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true"))); ?>&entryIds[]=" + entryIds[0];
 		}
 		else {
 			alert("<?php _e('No Entries Uploaded'); ?>");

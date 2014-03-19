@@ -15,19 +15,19 @@
 				if (in_array($entry->status, array(Kaltura_Client_Enum_EntryStatus::IMPORT, Kaltura_Client_Enum_EntryStatus::PRECONVERT)))
 					$status = "statusConverting";
 			?>
-			<li class="<?php echo $status; ?>">
-				<div id="entryId_<?php echo $entry->id?>" class="entryId showName" title="<?php _e('Click to edit'); ?>">
-					<?php echo $entry->name ?><br />
+			<li class="<?php echo esc_attr($status); ?>">
+				<div id="entryId_<?php echo esc_attr($entry->id)?>" class="entryId showName" title="<?php _e('Click to edit'); ?>">
+					<?php echo esc_html($entry->name) ?><br />
 				</div>
 				<div class="thumb">
-					<img src="<?php echo $entry->thumbnailUrl; ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php $entry->name ?>" width="120" height="90" />
+					<img src="<?php echo esc_attr($entry->thumbnailUrl); ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php esc_attr($entry->name) ?>" width="120" height="90" />
 					<div class="status convertingMsg">Converting</div>
 					<div class="status errorMsg">Error</div>
 					<div class="overlay"></div>
 				</div>
 				<div class="submit">
-					<input id="ckbEntryId_<?php echo $entry->id?>" name="entryIds" type="checkbox" value="<?php echo $entry->id; ?>" class="checkbox" />
-					<label for="ckbEntryId_<?php echo $entry->id?>"><?php _e('Add to player'); ?></label>
+					<input id="ckbEntryId_<?php echo esc_attr($entry->id)?>" name="entryIds" type="checkbox" value="<?php echo esc_attr($entry->id); ?>" class="checkbox" />
+					<label for="ckbEntryId_<?php echo esc_attr($entry->id)?>"><?php _e('Add to player'); ?></label>
 					<br clear="all" />
 				</div>
 			</li>
@@ -36,7 +36,7 @@
 		<br class="clear" />
 	</div>
 	<div class="options">
-		<a class="button" disabled="disabled" onclick="sendToEditor();"><?php _e("Create a player for each selected"); ?></a>
+		<a class="button" disabled="disabled" onclick="kaltura_sendToEditor();"><?php _e("Create a player for each selected"); ?></a>
 	</div>
 	<div class="fixIe7">&nbsp;</div>
 </div>
@@ -44,7 +44,7 @@
 <script type="text/javascript">
 	
 
-	function getSelectedIds() {
+	function kaltura_getSelectedIds() {
 		var entryIds = [];
 		jQuery('input[type=checkbox]:checked').each(function(index, element) {
 			entryIds.push(element.value);
@@ -52,9 +52,9 @@
 		return entryIds;
 	}
 
-	function sendToEditor(entryIds, ignoreStatus) {
+	function kaltura_sendToEditor(entryIds, ignoreStatus) {
 		if (!entryIds) {
-			entryIds = getSelectedIds();
+			entryIds = kaltura_getSelectedIds();
 		}
 		
 		if (entryIds.length == 0)
@@ -63,7 +63,7 @@
 			return;
 		}
 
-		var url =  "<?php echo KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true")); ?>";
+		var url =  "<?php echo esc_js(KalturaHelpers::generateTabUrl(array("tab" => "kaltura_upload", "kaction" => "sendtoeditor", "firstedit" => "true"))); ?>";
 		var entryIdsParams = '&entryIds[]=';
 		entryIdsParams += entryIds.join('&entryIds[]=');
 		url += entryIdsParams;
@@ -71,7 +71,7 @@
 		window.location.href = url;
 	}
 
-	function refreshButtonsState() {
+	function kaltura_refreshButtonsState() {
 		if (jQuery('ul li input[type=checkbox]:checked').size() == 0) {
 			jQuery('.options a').attr('disabled', true);
 		}
@@ -98,7 +98,7 @@
 			loader: jQuery('.loader')
 		});
 
-		jQuery('ul li input[type=checkbox]').click(refreshButtonsState);
-		refreshButtonsState();
+		jQuery('ul li input[type=checkbox]').click(kaltura_refreshButtonsState);
+		kaltura_refreshButtonsState();
 	});
 </script>

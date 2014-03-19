@@ -4,7 +4,7 @@
 	<?php $this->renderView('library/library_menu.php'); ?>
 	<br clear="all" />
 	<?php if ($this->numOfCreatedPosts === 1): ?>
-		<p><?php echo $this->numOfCreatedPosts;?> video post have been created and saved as draft!</p>
+		<p><?php echo esc_html($this->numOfCreatedPosts);?> video post have been created and saved as draft!</p>
 	<?php elseif ($this->numOfCreatedPosts === 0): ?>
 		<p>No videos found!</p>
 	<?php else: ?>
