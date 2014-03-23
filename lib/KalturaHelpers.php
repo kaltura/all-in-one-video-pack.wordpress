@@ -214,7 +214,7 @@ class KalturaHelpers
 	{
 		global $wp_version;
 		echo("<script type='text/javascript'>\n");
-		echo('var Kaltura_WPVersion = "' . $wp_version . '";' . "\n");
+		echo('var Kaltura_WPVersion = "' . esc_js($wp_version) . '";' . "\n");
 		echo("</script>\n");
 	}
 
