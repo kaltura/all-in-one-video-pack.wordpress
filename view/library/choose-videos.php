@@ -82,7 +82,7 @@
 	
 	jQuery(function () {
 		var topWindow = Kaltura.getTopWindow();
-		topWindow.Kaltura.animateModalSize(680, 394);
+		topWindow.Kaltura.animateModalSize(790, 394);
 		
 		jQuery('li div.showName').kalturaEditableName({
 			namePostParam: 'entryName',

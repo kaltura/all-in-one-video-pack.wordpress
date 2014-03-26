@@ -143,7 +143,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 			$pageSize = 16;
 		else
 			$pageSize = 18;
-		$page = KalturaHelpers::getRequestParam('paged', 2);
+		$page = KalturaHelpers::getRequestParam('paged', 1);
         $result = $this->searchvideosAction($pageSize, $page);
 		$totalCount = $result->totalCount;
 		$params['page'] 		= $page;
