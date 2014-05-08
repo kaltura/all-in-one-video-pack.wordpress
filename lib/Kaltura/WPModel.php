@@ -47,7 +47,12 @@ class Kaltura_WPModel
 
 	public static function getWidget($widgetId, $entryId)
 	{
-		global $wpdb;
+        $sanitizer = new KalturaSanitizer();
+
+        $widgetId = $sanitizer->sanitizer($widgetId, 'string');
+        $entryId = $sanitizer->sanitizer($entryId, 'string');
+
+        global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 		$sql = $wpdb->prepare("SELECT * FROM " . $table . " WHERE id = %s AND entry_id = %s", $widgetId, $entryId);
 		return $wpdb->get_row($sql, ARRAY_A);
@@ -80,7 +85,10 @@ class Kaltura_WPModel
 
 	public static function getWidgetsByPost($post_id)
 	{
+        $sanitizer = new KalturaSanitizer();
 		global $wpdb;
+        $post_id = $sanitizer->sanitizer($post_id, 'int');
+
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 		$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $table . " WHERE post_id = %d", $post_id), ARRAY_A);
 		if (!is_array($result))
@@ -202,12 +210,18 @@ class Kaltura_WPModel
 
 	public static function isCategoryExists($name)
 	{
-		return term_exists($name, 'category');
+        $sanitizer = new KalturaSanitizer();
+        $name = $sanitizer->sanitizer($name, 'string');
+
+        return term_exists($name, 'category');
 	}
 
 	public static function getCategoryByName($name)
 	{
-		if ($term = get_term_by('name', $name, 'category'))
+        $sanitizer = new KalturaSanitizer();
+        $name = $sanitizer->sanitizer($name, 'string');
+
+        if ($term = get_term_by('name', $name, 'category'))
 		{
 			$cat = get_category($term->term_id);
 			if (is_wp_error($cat))
@@ -223,7 +237,10 @@ class Kaltura_WPModel
 
 	public static function getPostByTitle($title)
 	{
-		$post_arr = sanitize_post(array("post_title" => $title), 'db');
+        $sanitizer = new KalturaSanitizer();
+        $title = $sanitizer->sanitizer($title, 'string');
+
+        $post_arr = sanitize_post(array("post_title" => $title), 'db');
 		$post_arr = $post_arr["post_title"];
 		global $wpdb;
 		$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type='post'", $title ));

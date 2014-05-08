@@ -52,7 +52,7 @@
 			</tr>
 			<tr valign="top">
 				<th scope="row"><?php _e("Password"); ?>:</th>
-				<td><input type="password" id="password" name="password" value="" size="20" /> <a href="<?php echo KalturaHelpers::getServerUrl(); ?>/index.php/kmc">forgot password?</a></td>
+				<td><input type="password" id="password" name="password" value="" size="20" /> <a href="<?php echo esc_url(KalturaHelpers::getServerUrl()); ?>/index.php/kmc">forgot password?</a></td>
 			</tr>
 		</table>
 		

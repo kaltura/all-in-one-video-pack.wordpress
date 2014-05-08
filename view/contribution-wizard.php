@@ -1,9 +1,13 @@
 <?php KalturaHelpers::protectView($this); ?>
 <?php
-	$flashVarsStr = KalturaHelpers::flashVarsToString($this->flashVars);
+    $flashVarsStr = "";
+    if(is_array($this->flashVars))
+    {
+        $flashVarsStr = KalturaHelpers::flashVarsToString($this->flashVars);
+    }
 ?>
 
-<object id="kcw" type="application/x-shockwave-flash" data="<?php echo $this->swfUrl; ?>" width="100%" height="360">
+<object id="kcw" type="application/x-shockwave-flash" data="<?php echo esc_url($this->swfUrl); ?>" width="100%" height="360">
 	<param name="allowScriptAccess" value="always" />
 	<param name="allowNetworking" value="all" />
 	<param name="wmode" value="transparent" />

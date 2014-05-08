@@ -1,6 +1,7 @@
 <?php
 class Kaltura_LibraryController extends Kaltura_BaseController
 {
+
 	protected function allowedActions()
 	{
 		return array(
@@ -94,7 +95,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 
 			$entry = $kmodel->getEntry($entryId);
 			$clientSideSession = $kmodel->getClientSideSession();
-			$flashVars = KalturaHelpers::getKalturaPlayerFlashVars(null, $clientSideSession, $entryId);
+			$flashVars = KalturaHelpers::getKalturaPlayerFlashVars($clientSideSession, $entryId);
 			$thumbnail = KalturaHelpers::getPluginUrl() . '/thumbnails/get_preview_thumbnail.php?thumbnail_url=' . $entry->thumbnailUrl;
 			$params['entry'] = $entry;
 			$params['entryId'] = $entryId;
@@ -143,7 +144,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 			$pageSize = 16;
 		else
 			$pageSize = 18;
-		$page = KalturaHelpers::getRequestParam('paged', 1);
+		$page = KalturaHelpers::getRequestParam('paged', '1');
         $result = $this->searchvideosAction($pageSize, $page);
 		$totalCount = $result->totalCount;
 		$params['page'] 		= $page;
@@ -151,7 +152,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController
 		$params['totalCount'] = $totalCount;
 		$params['totalPages'] = ceil($totalCount / $pageSize);
 		$params['result'] 	= $result;
-		$params['isLibrary'] = $isLibrary;
+		$params['isLibrary'] = (bool) $isLibrary;
         $params['filters'] 	= $kmodel->listSelectedRootCategories();
         $params['selectedCategories'] = KalturaHelpers::getRequestParam('categoryvar');
         $params['searchWord'] = KalturaHelpers::getRequestParam('search');
@@ -162,9 +163,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController
     public function searchvideosAction($pageSize, $page)
     {
         $kmodel = KalturaModel::getInstance();
-        $queryString = KalturaHelpers::getRequestParam('search');
-        $categories = KalturaHelpers::getRequestParam('categoryvar');
-
+        $page = $kmodel->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $kmodel->_sanitizer->sanitizer($pageSize, 'int');
+        $queryString = $kmodel->_sanitizer->sanitizer(KalturaHelpers::getRequestParam('search'), 'string');
+        $categories = $kmodel->_sanitizer->sanitizer(KalturaHelpers::getRequestParam('categoryvar'), 'arr');
 
         $result = $kmodel->listEntriesByCategoriesAndWord($pageSize, $page, $categories, $queryString);
 

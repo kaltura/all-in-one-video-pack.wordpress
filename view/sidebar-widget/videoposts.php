@@ -2,7 +2,7 @@
 	<?php if ($this->widgets): ?>
 		<ul id="kaltura-items">
 			<?php foreach($this->widgets as $widget): ?>
-				<?php $post_id = $widget["post_id"]; ?>
+				<?php $post_id = intval($widget["post_id"]); ?>
 				<?php $post = get_post($post_id); ?>
 				<?php $user = get_userdata($post->post_author); ?>
 				<li>

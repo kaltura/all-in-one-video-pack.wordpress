@@ -93,7 +93,7 @@
 						);
 						?>
 						<?php foreach($selectData as $name => $value): ?>
-							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('describe_yourself') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('describe_yourself') == esc_attr($value)) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -104,7 +104,7 @@
 					<select id="country" name="country">
 						<option value="">Please select...</option>
 						<?php foreach($this->countries as $value => $name): ?>
-							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('country') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('country') == esc_attr($value)) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -117,7 +117,7 @@
 						<?php $statesNew[''] = ''; ?>
 						<?php $states = array_merge($statesNew, $this->states); ?>
 						<?php foreach($states as $value => $name): ?>
-							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('state') == $value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('state') == esc_attr($value)) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -134,7 +134,7 @@
 					?>
 					<select id="would_you_like" name="would_you_like">
 						<?php foreach($selectData as $value => $name): ?>
-							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('would_you_like') == (string)$value) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
+							<option value="<?php echo esc_attr($value); ?>" <?php echo (KalturaHelpers::getRequestPostParam('would_you_like') == esc_attr((string)$value)) ? ' selected="selected"' : ''; ?>><?php echo esc_html($name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -142,7 +142,7 @@
 			<tr valign="top">
 				<th scope="row">How do you plan to use Kaltura's video platform?</th>
 				<td>
-					<textarea id="description" name="description"><?php echo(KalturaHelpers::getRequestPostParam('description')) ?></textarea>
+					<textarea id="description" name="description"><?php echo sanitize_text_field( ( KalturaHelpers::getRequestPostParam('description') ) ) ?></textarea>
 				</td>
 			</tr>
 			<tr class="agree_to_terms">

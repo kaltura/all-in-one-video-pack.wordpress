@@ -2,9 +2,14 @@
 
 class Kaltura_AllInOneVideoPackPlugin
 {
+    /**
+     * @var KalturaSanitizer
+     */
+    public $_sanitizer = null;
+
 	public function __construct()
 	{
-
+        $this->_sanitizer = new KalturaSanitizer();
 	}
 
 	public function init()
@@ -64,7 +69,8 @@ class Kaltura_AllInOneVideoPackPlugin
 
 	public function mceExternalPluginsFilter($content)
 	{
-		$pluginUrl = KalturaHelpers::getPluginUrl();
+        $content = $this->_sanitizer->sanitizer($content, 'arr');
+        $pluginUrl = KalturaHelpers::getPluginUrl();
 		$content['kaltura'] = $pluginUrl . '/tinymce/kaltura_tinymce.js?v'.KalturaHelpers::getPluginVersion();
 		return $content;
 	}
@@ -145,7 +151,9 @@ class Kaltura_AllInOneVideoPackPlugin
 	public function mediaButtonsContextFilter($content)
 	{
 		global $post_ID, $temp_ID;
-		$uploading_iframe_ID = (int) (0 == $post_ID ? $temp_ID : $post_ID);
+        $content = $this->_sanitizer->sanitizer($content, 'string');
+
+        $uploading_iframe_ID = (int) (0 == $post_ID ? $temp_ID : $post_ID);
 		$media_upload_iframe_src = "media-upload.php?post_id=$uploading_iframe_ID";
 		$kaltura_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_upload");
 		$kaltura_browse_iframe_src = apply_filters('kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_browse");
@@ -160,12 +168,14 @@ EOF;
 
 	public function mediaUploadTabsFilter($content)
 	{
+        $content = $this->_sanitizer->sanitizer($content, 'arr');
+
 		$content['kaltura_upload'] = __('Add Media');
 		$content['kaltura_browse'] = __('Browse Existing Media');
 		return $content;
 	}
 
-	public function mediaUploadTabsFilterOnlyKaltura($content)
+	public function mediaUploadTabsFilterOnlyKaltura()
 	{
 		$content = array();
 		return $this->mediaUploadTabsFilter($content);

@@ -40,9 +40,13 @@
 					<?php foreach($this->wpCategories as $wpCategory): ?>
 						<?php
 							if (strtolower($wpCategory->name) == strtolower($category->name))
-								break;
+                            {
+                                break;
+                            }
 							else
-								$wpCategory = null;
+                            {
+                                $wpCategory = null;
+                            }
 						?>
 					<?php endforeach; ?>
 					<tr class="iedit <?php echo ($alternate) ? "alternate" : ""; $alternate = !$alternate; ?>">

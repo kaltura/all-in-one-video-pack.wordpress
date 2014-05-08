@@ -8,8 +8,12 @@ class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 
 	public function videocommentsAction()
 	{
-		$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $sanitizer = new KalturaSanitizer();
+		$page = isset($_GET["page"]) ? $_GET["page"] : '1';
 		$pageSize = 5;
+
+        $page = $sanitizer->sanitizer($page, 'string');
+        $pageSize = $sanitizer->sanitizer($pageSize, 'int');
 
 		$widgets 	= Kaltura_WPModel::getLastPublishedCommentWidgets($page, $pageSize);
 		$totalCount = Kaltura_WPModel::getLastPublishedCommentWidgetsCount();
@@ -33,8 +37,12 @@ class Kaltura_SidebarWidgetController extends Kaltura_BaseController
 
 	public function videopostsAction()
 	{
-		$page = KalturaHelpers::getRequestParam("page",  1);
+        $sanitizer = new KalturaSanitizer();
+		$page = KalturaHelpers::getRequestParam("page",  '1');
 		$pageSize = 5;
+
+        $page = $sanitizer->sanitizer($page, 'string');
+        $pageSize = $sanitizer->sanitizer($pageSize, 'int');
 
 		$widgets 	= Kaltura_WPModel::getLastPublishedPostWidgets($page, $pageSize);
 		$totalCount = Kaltura_WPModel::getLastPublishedPostWidgetsCount();

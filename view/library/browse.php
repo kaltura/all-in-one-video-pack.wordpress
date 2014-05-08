@@ -2,7 +2,7 @@
 <?php $kaction = KalturaHelpers::getRequestParam("kaction", "browse"); ?>
 <?php $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
       $rootCategory = !empty($rootCategory) ? $rootCategory : 0; ?>
-<div class="<?php echo ($this->isLibrary) ? "wrap kaltura-wrap ".esc_attr($kaction) : "kaltura-tab"?>">
+<div class="<?php echo (is_bool($this->isLibrary)) ? "wrap kaltura-wrap ".esc_attr($kaction) : "kaltura-tab"?>">
 	<?php if ($this->isLibrary): ?>
 		<h2>All in One Video</h2>
 		<?php $this->renderView('library/library_menu.php'); ?>
@@ -22,7 +22,7 @@
 
                 <ul class="filter-categories-header">
                     <li id="filter-categories-title">
-                        <label for="filter-categories"><b>Categories (<?php echo count($this->filters->objects)?>)</b></label>
+                        <label for="filter-categories"><b>Categories (<?php echo esc_html(count($this->filters->objects))?>)</b></label>
                     </li>
                     <input id="filter-categories-button" type="submit" value="Filter"></button>
                 </ul>
@@ -32,8 +32,8 @@
                     array(
                         'base' => add_query_arg( 'paged', '%#%' ),
                         'format' => '',
-                        'total' => $this->totalPages,
-                        'current' => $this->page
+                        'total' => intval($this->totalPages),
+                        'current' => intval($this->page)
                     )
                 );
                 if ($page_links)
@@ -41,7 +41,7 @@
                 ?>
 
                 <div class="entry-search-filter">
-                    <input name="search" value="<?php echo $this->searchWord?>"/>
+                    <input name="search" value="<?php echo esc_attr($this->searchWord)?>"/>
                     <input type="submit" value="Search Entries"></button>
                 </div>
 

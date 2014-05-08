@@ -16,10 +16,29 @@ class KalturaModel
 	 */
 	protected $_client = null;
 
-	private function KalturaModel()
+    /**
+     * @var KalturaSanitizer
+     */
+    public $_sanitizer = null;
+
+    /**
+     * @var string
+     */
+    protected $_userId = null;
+
+    /**
+     * @var string
+     */
+    protected $_partnerId = null;
+
+
+    private function KalturaModel()
 	{
 		$config = KalturaHelpers::getKalturaConfiguration();
 		$this->_client = new Kaltura_Client_Client($config);
+        $this->_sanitizer = new KalturaSanitizer();
+        $this->_userId = $this->_sanitizer->sanitizer(KalturaHelpers::getLoggedUserId(), 'string');
+        $this->_partnerId = $this->_sanitizer->sanitizer(KalturaHelpers::getOption("kaltura_partner_id"), 'string');
 		$this->startSession();
 	}
 
@@ -43,40 +62,50 @@ class KalturaModel
 
 	public function getAdminSession($privileges = "")
 	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
-		return $this->createKS($partnerId, $userId, Kaltura_Client_Enum_SessionType::ADMIN, $privileges);
+        $privileges = $this->_sanitizer->sanitizer($privileges, 'string');
+
+        return $this->createKS($this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::ADMIN, $privileges);
 	}
 
 	public function getClientSideSession($privileges = "", $expiry = 86400)
 	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
-		return $this->createKS($partnerId, $userId, Kaltura_Client_Enum_SessionType::USER, $privileges, $expiry);
+        $privileges = $this->_sanitizer->sanitizer($privileges, 'string');
+        $expiry = $this->_sanitizer->sanitizer($expiry, 'int');
+
+		return $this->createKS($this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::USER, $privileges, $expiry);
 	}
 
 	public function getAdminSessionUsingApi($privileges = "", $expiry = 86400)
 	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
-		$adminSecret = KalturaHelpers::getOption("kaltura_admin_secret");
+        $privileges = $this->_sanitizer->sanitizer($privileges, 'string');
+        $expiry = $this->_sanitizer->sanitizer($expiry, 'int');
+        $adminSecret = $this->_sanitizer->sanitizer(KalturaHelpers::getOption("kaltura_admin_secret"), 'string');
+
 		$this->_client->setKs(null);
 		$this->_client->getConfig()->partnerId = null;
-		return $this->_client->session->start($adminSecret, $userId, Kaltura_Client_Enum_SessionType::ADMIN, $partnerId, $expiry, $privileges);
+
+		return $this->_client->session->start($adminSecret, $this->_userId, Kaltura_Client_Enum_SessionType::ADMIN, $this->_partnerId, $expiry, $privileges);
 	}
 
 	public function getClientSideSessionUsingApi($privileges = "", $expiry = 86400)
 	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$partnerId = KalturaHelpers::getOption("kaltura_partner_id");
-		$secret    = KalturaHelpers::getOption("kaltura_secret");
+        $privileges = $this->_sanitizer->sanitizer($privileges, 'string');
+        $expiry = $this->_sanitizer->sanitizer($expiry, 'int');
+        $secret = $this->_sanitizer->sanitizer(KalturaHelpers::getOption("kaltura_secret"), 'string');
+
 		$this->_client->setKs(null);
 		$this->_client->getConfig()->partnerId = null;
-		return $this->_client->session->start($secret, $userId, Kaltura_Client_Enum_SessionType::USER, $partnerId, $expiry, $privileges);
+
+		return $this->_client->session->start($secret, $this->_userId, Kaltura_Client_Enum_SessionType::USER, $this->_partnerId, $expiry, $privileges);
 	}
 
 	public function createKS($partnerId, $userId, $sessionType = Kaltura_Client_Enum_SessionType::USER, $privileges = "", $expiry = 86400)
 	{
+        $privileges = $this->_sanitizer->sanitizer($privileges, 'string');
+        $expiry = $this->_sanitizer->sanitizer($expiry, 'int');
+        $userId = $this->_sanitizer->sanitizer($userId , 'string');
+        $partnerId = $this->_sanitizer->sanitizer($partnerId, 'string');
+
 		$rand   = microtime(true);
 		$expiry = time() + $expiry;
 		$fields = array($partnerId, '', $expiry, $sessionType, $rand, $userId, $privileges);
@@ -91,18 +120,26 @@ class KalturaModel
 
 	public function getSecrets($partnerId, $email, $password)
 	{
+        $email = $this->_sanitizer->sanitizer($email, 'email');
+        $password = $this->_sanitizer->sanitizer($password, 'string');
+        $partnerId = $this->_sanitizer->sanitizer($partnerId, 'string');
+
 		$this->_client->setKs(null);
 		$this->_client->getConfig()->partnerId = null;
-		return $this->_client->partner->getSecrets($partnerId, $email, $password);
+
+        return $this->_client->partner->getSecrets($partnerId, $email, $password);
 	}
 
 	public function getEntry($entryId)
 	{
-		return $this->_client->baseEntry->get($entryId);
+        $entryId = $this->_sanitizer->sanitizer($entryId, 'string');
+
+        return $this->_client->baseEntry->get($entryId);
 	}
 
 	public function getEntriesByIds($ids)
 	{
+        $ids = $this->_sanitizer->sanitizer($ids, 'arr');
 		$statuses = array(
 			Kaltura_Client_Enum_EntryStatus::ERROR_CONVERTING,
 			Kaltura_Client_Enum_EntryStatus::ERROR_IMPORTING,
@@ -116,21 +153,29 @@ class KalturaModel
 		else
 			return array();
 		$result = $this->_client->baseEntry->listAction($filter);
-		return $result->objects;
+
+        return $result->objects;
 	}
 
-	public function updateBaseEntry($baseEntryId, $baseEntry)
+	public function updateBaseEntry($baseEntryId, Kaltura_Client_Type_BaseEntry $baseEntry)
 	{
-		return $this->_client->baseEntry->update($baseEntryId, $baseEntry);
+        $baseEntryId = $this->_sanitizer->sanitizer($baseEntryId, 'string');
+
+        return $this->_client->baseEntry->update($baseEntryId, $baseEntry);
 	}
 
 	public function updateMediaEntry($mediaEntryId, $mediaEntry)
 	{
+        $mediaEntryId = $this->_sanitizer->sanitizer($mediaEntryId, 'string');
+
 		return $this->_client->media->update($mediaEntryId, $mediaEntry);
 	}
 
 	public function listEntriesByTypes($types, $pageSize, $page)
 	{
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+
 		$filter = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = Kaltura_Client_Enum_BaseEntryOrderBy::CREATED_AT_DESC;
 		$filter->typeIn = $types;
@@ -144,17 +189,26 @@ class KalturaModel
 
 	public function listMediaEntries($pageSize, $page)
 	{
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+
 		return $this->listEntriesByTypes(Kaltura_Client_Enum_EntryType::MEDIA_CLIP, $pageSize, $page);
 	}
 
 	public function listEntries($pageSize, $page)
 	{
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+
 		$types = implode(",", array(Kaltura_Client_Enum_EntryType::MEDIA_CLIP));
 		return $this->listEntriesByTypes($types, $pageSize, $page);
 	}
 
     public function listRootCategory($pageSize, $page, $categories)
     {
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+
         $filter = new Kaltura_Client_Type_BaseEntryFilter();
         $filter->orderBy = "-createdAt";
         /** If no category queried then query the root category. */
@@ -169,7 +223,12 @@ class KalturaModel
 
     public function listEntriesByCategoriesAndWord($pageSize, $page, $categories, $word)
     {
-        $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+        $word = $this->_sanitizer->sanitizer($word, 'string');
+        $categories = $this->_sanitizer->sanitizer($categories, 'arr');
+
+        $rootCategory = $this->_sanitizer->sanitizer(KalturaHelpers::getOption("kaltura_root_category"), 'string');
         $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
         $filter = new Kaltura_Client_Type_BaseEntryFilter();
         $filter->orderBy = "-createdAt";
@@ -225,7 +284,9 @@ class KalturaModel
 
 	public function deleteEntry($mediaEntryId)
 	{
-		return $this->_client->baseEntry->delete($mediaEntryId);
+        $mediaEntryId = $this->_sanitizer->sanitizer($mediaEntryId, 'string');
+
+        return $this->_client->baseEntry->delete($mediaEntryId);
 	}
 
 	public function pingTest()
@@ -254,6 +315,10 @@ class KalturaModel
 
 	public function listUserEntries($userId, $pageSize, $page)
 	{
+        $page = $this->_sanitizer->sanitizer($page, 'string');
+        $pageSize = $this->_sanitizer->sanitizer($pageSize, 'int');
+        $userId = $this->_sanitizer->sanitizer($userId , 'string');
+
 		$filter = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = "-createdAt";
 		$filter->userIdEqual = $userId;
@@ -264,15 +329,6 @@ class KalturaModel
 
 		return $this->_client->baseEntry->listAction($filter, $pager);
 	}
-
-    public function listCategoriesByDepthAndParent($depth, $parentId)
-    {
-        $filter = new Kaltura_Client_Type_CategoryFilter();
-        $filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
-        $filter->depthEqual = $depth;
-        $filter->parentIdIn = $parentId;
-        return $this->_client->category->listAction($filter);
-    }
 
 	public function listRootCategoriesOrderByName()
 	{
@@ -292,7 +348,6 @@ class KalturaModel
 
     public function listSelectedRootCategories()
     {
-        $rootCategory = KalturaHelpers::getOption("kaltura_root_category");
         $rootCategory = !empty($rootCategory) ? $rootCategory : 0;
         $filter = new Kaltura_Client_Type_CategoryFilter();
         $filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
@@ -382,28 +437,39 @@ class KalturaModel
 
 	public function getPlayerUiConf($uiConfId)
 	{
+        $uiConfId = $this->_sanitizer->sanitizer($uiConfId, 'string');
+
 		return $this->_client->uiConf->get($uiConfId);
 	}
 
 	public function getEntryMetadata($entryId, $metadataProfileId)
 	{
+        $metadataProfileId = $this->_sanitizer->sanitizer($metadataProfileId, 'string');
+        $entryId = $this->_sanitizer->sanitizer($entryId, 'string');
+
 		$filter = new Kaltura_Client_Metadata_Type_MetadataFilter();
 		$filter->objectIdEqual = $entryId;
 		$filter->metadataProfileIdEqual = $metadataProfileId;
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
+
 		return $metadataPlugin->metadata->listAction($filter);
 	}
 
 	public function updateEntryMetadata($metadataId, $xmlData)
 	{
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
-		return $metadataPlugin->metadata->update($metadataId, $xmlData);
+
+        return $metadataPlugin->metadata->update($metadataId, $xmlData);
 	}
 
 	public function addEntryMetadata($metadataProfileId, $entryId, $xmlData)
 	{
-		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
+        $metadataProfileId = $this->_sanitizer->sanitizer($metadataProfileId, 'string');
+        $entryId = $this->_sanitizer->sanitizer($entryId, 'string');
+
+        $metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
 		$objectType = Kaltura_Client_Metadata_Enum_MetadataObjectType::ENTRY;
+
 		return $metadataPlugin->metadata->add($metadataProfileId, $objectType, $entryId, $xmlData);
 	}
 
@@ -412,18 +478,27 @@ class KalturaModel
 		$filter = new Kaltura_Client_Metadata_Type_MetadataProfileFilter();
 		$filter->metadataObjectTypeEqual = Kaltura_Client_Metadata_Enum_MetadataObjectType::ENTRY;
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
-		return $metadataPlugin->metadataProfile->listAction($filter);
+
+        return $metadataPlugin->metadataProfile->listAction($filter);
 	}
 
 	public function getMetadataProfileFields($metadataProfileId)
 	{
+        $metadataProfileId = $this->_sanitizer->sanitizer($metadataProfileId, 'string');
+
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get($this->_client);
-		return $metadataPlugin->metadataProfile->listFields($metadataProfileId);
+
+        return $metadataPlugin->metadataProfile->listFields($metadataProfileId);
 	}
 
 	public function updateEntryPermalinkMetadata($entryId, $permalink, $metadataProfileId, $metadataFieldName)
 	{
-		$result = $this->getEntryMetadata($entryId, $metadataProfileId);
+        $entryId = $this->_sanitizer->sanitizer($entryId, 'string');
+        $permalink = $this->_sanitizer->sanitizer($permalink, 'string');
+        $metadataProfileId = $this->_sanitizer->sanitizer($metadataProfileId, 'string');
+        $metadataFieldName = $this->_sanitizer->sanitizer($metadataFieldName, 'string');
+
+        $result = $this->getEntryMetadata($entryId, $metadataProfileId);
 		$xmlData = '<metadata><'.$metadataFieldName.'>'.$permalink.'</'.$metadataFieldName.'></metadata>';
 		if($result->totalCount == 0)
 		{
@@ -439,6 +514,7 @@ class KalturaModel
 
 	public function updateEntryPermalink($postId)
 	{
+        $postId = $this->_sanitizer->sanitizer($postId, 'int');
 		$metadataProfileId = KalturaHelpers::getOption('kaltura_permalink_metadata_profile_id');
 		$metadataFieldsResponse = $this->getMetadataProfileFields($metadataProfileId);
 

@@ -43,7 +43,7 @@
                         <select name="root_category" id="root_category"  size="1">
                             <option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption("kaltura_root_category")  ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
                         <?php foreach($this->categories->objects as $category): ?>
-                            <option id="root_category<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_root_category") == $category->id ? "selected=\"selected\"" : ""; ?> ><?php echo esc_html($category->fullName); ?></option>
+                            <option id="root_category<?php echo esc_attr($category->id); ?>" value="<?php echo esc_attr($category->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_root_category") == esc_attr($category->id) ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($category->fullName); ?></option>
                         <?php endforeach; ?>
                         </select>
                     </td>
@@ -83,7 +83,7 @@
 					<td>
                         <select name="comments_player_type" id="comments_player_type">
 						<?php foreach($this->players->objects as $player): ?>
-							<option id="comments_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == $player->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($player->name); ?></option>
+							<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo esc_attr($player->id); ?>" value="<?php echo esc_attr($player->id); ?>" <?php echo KalturaHelpers::getOption("kaltura_comments_player_type") == esc_attr($player->id) ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;<label for="comments_player_type_<?php echo esc_attr($player->id); ?>"><?php echo esc_html($player->name); ?></label><br />
 						<?php endforeach; ?>
                         </select>
 						<br />
@@ -96,7 +96,7 @@
 						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo KalturaHelpers::getOption("kaltura_save_permalink",false) ? "checked=\"checked\"" : ""; ?>/>
 						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
 							<?php foreach ($this->metadataProfilesResponse->objects as $metadataProfile):?>
-								<option value="<?php echo esc_attr($metadataProfile->id);?>" <?php echo KalturaHelpers::getOption("kaltura_permalink_metadata_profile_id") == $metadataProfile->id ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($metadataProfile->name); ?></option>
+								<option value="<?php echo esc_attr($metadataProfile->id);?>" <?php echo KalturaHelpers::getOption("kaltura_permalink_metadata_profile_id") == esc_attr($metadataProfile->id) ? "selected=\"selected\"" : ""; ?>><?php echo esc_html($metadataProfile->name); ?></option>
 							<?php endforeach;?>
 						</select>
 					</td>

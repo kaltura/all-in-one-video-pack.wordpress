@@ -12,7 +12,9 @@ class KalturaHelpers
 
 	public static function getServerUrl()
 	{
-		return rtrim(KalturaHelpers::getOption('server_url'), '/');
+        $sanitizer = new KalturaSanitizer();
+        $url = $sanitizer->sanitizer(KalturaHelpers::getOption('server_url'), 'url');
+		return rtrim($url, '/');
 	}
 
 	public static function getCdnUrl()
@@ -49,9 +51,13 @@ class KalturaHelpers
 
 	public static function generateTabUrl($params)
 	{
+        $sanitizer = new KalturaSanitizer();
+        $params = $sanitizer->sanitizer($params, 'generateTabUrl');
+
 		$query = $_SERVER["REQUEST_URI"];
-		foreach ($_GET as $k => $v)
-			$query = add_query_arg($k, false, $query);
+		foreach ($_GET as $k => $v) {
+            $query = add_query_arg($k, false, $query);
+        }
 
 		$query = add_query_arg($params, $query);
 		return $query;
@@ -90,17 +96,20 @@ class KalturaHelpers
         }
 	}
 
-	public static function protectView($view)
+	public static function protectView(Kaltura_ViewRenderer $view)
 	{
-		if (!isset($view->allowViewRendering) || $view->allowViewRendering !== true)
+		if ( !isset($view->allowViewRendering) || $view->allowViewRendering !== true )
 			wp_die('Access denied');
 	}
 
-	public static function getContributionWizardFlashVars($ks, $entryId = null)
+	public static function getContributionWizardFlashVars($ks)
 	{
+        $kmodel = KalturaModel::getInstance();
+        $ks = $kmodel->_sanitizer->sanitizer($ks, 'string');
+
 		$flashVars                  = array();
 		$flashVars["userId"]        = KalturaHelpers::getLoggedUserId();
-		$flashVars["sessionId"]     = $ks;
+		$flashVars["sessionId"]     = sanitize_text_field($ks);
 		$flashVars["partnerId"]     = KalturaHelpers::getOption("kaltura_partner_id");
 		$flashVars["subPartnerId"]  = KalturaHelpers::getOption("kaltura_partner_id") * 100;
 		$flashVars["afterAddentry"] = "kaltura_onContributionWizardAfterAddEntry";
@@ -110,18 +119,20 @@ class KalturaHelpers
 		return $flashVars;
 	}
 
-	public static function getKalturaPlayerFlashVars($uiConfId = null, $ks = null, $entryId = null)
+	public static function getKalturaPlayerFlashVars($ks = null, $entryId = null)
 	{
-		$flashVars              = array();
+        $kmodel = KalturaModel::getInstance();
+        $ks = $kmodel->_sanitizer->sanitizer($ks, 'string');
+        $entryId = $kmodel->_sanitizer->sanitizer($entryId, 'string');
+
+        $flashVars              = array();
 		$flashVars["partnerId"] = KalturaHelpers::getOption("kaltura_partner_id");
 		$flashVars["subpId"]    = KalturaHelpers::getOption("kaltura_partner_id") * 100;
 		$flashVars["uid"]       = KalturaHelpers::getLoggedUserId();
 
-		if ($ks)
-			$flashVars["ks"] = $ks;
-		if ($uiConfId)
-			$flashVars["uiConfId"] = $ks;
-		if ($entryId)
+		if (is_string($ks))
+			$flashVars["ks"] = sanitize_text_field($ks);
+		if (is_string($entryId))
 			$flashVars["entryId"] = $entryId;
 
 		return $flashVars;
@@ -129,7 +140,10 @@ class KalturaHelpers
 
 	public static function flashVarsToString($flashVars = array())
 	{
-		$flashVarsStr = "";
+        $kmodel = KalturaModel::getInstance();
+        $flashVars = $kmodel->_sanitizer->sanitizer($flashVars, 'flashVarsToString');
+
+        $flashVarsStr = "";
 		foreach ($flashVars as $key => $value)
 		{
 			$flashVarsStr .= ($key . "=" . $value . "&");
@@ -139,6 +153,10 @@ class KalturaHelpers
 
 	public static function getSwfUrlForWidget($widgetId = null, $uiConfId = null)
 	{
+        $kmodel = KalturaModel::getInstance();
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+        $widgetId = $kmodel->_sanitizer->sanitizer($widgetId, 'string');
+
 		if (!$widgetId)
 			$widgetId = "_" . KalturaHelpers::getOption("kaltura_partner_id");
 
@@ -151,7 +169,10 @@ class KalturaHelpers
 
 	public static function enqueueHtml5Lib($uiConfId)
 	{
-		$html5LibUrl = ''.
+        $kmodel = KalturaModel::getInstance();
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+
+        $html5LibUrl = ''.
 			self::getServerUrl().
 			'/p/'.KalturaHelpers::getOption("kaltura_partner_id").
 			'/sp/'.KalturaHelpers::getOption("kaltura_partner_id").'00'.
@@ -164,6 +185,9 @@ class KalturaHelpers
 
 	public static function getContributionWizardUrl($uiConfId)
 	{
+        $kmodel = KalturaModel::getInstance();
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+
 		return KalturaHelpers::getServerUrl() . "/kcw/ui_conf_id/" . $uiConfId;
 	}
 
@@ -179,6 +203,12 @@ class KalturaHelpers
 
 	public static function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000)
 	{
+        $kmodel = KalturaModel::getInstance();
+        $widgetId = $kmodel->_sanitizer->sanitizer($widgetId, 'string');
+        $width = $kmodel->_sanitizer->sanitizer($width, 'int');
+        $height = $kmodel->_sanitizer->sanitizer($height, 'int');
+        $version = $kmodel->_sanitizer->sanitizer($version, 'int');
+
 		$url    = KalturaHelpers::getCdnUrl();
 		$url .= "/p/" . KalturaHelpers::getOption("kaltura_partner_id");
 		$url .= "/sp/" . KalturaHelpers::getOption("kaltura_partner_id") * 100;
@@ -198,13 +228,21 @@ class KalturaHelpers
 
 	public static function compareWPVersion($compareVersion, $operator)
 	{
-		global $wp_version;
+        $kmodel = KalturaModel::getInstance();
+        $compareVersion = $kmodel->_sanitizer->sanitizer($compareVersion, 'string');
+        $operator = $kmodel->_sanitizer->sanitizer($operator, 'string');
+
+        global $wp_version;
 
 		return version_compare($wp_version, $compareVersion, $operator);
 	}
 
 	public static function compareKalturaVersion($compareVersion, $operator)
 	{
+        $kmodel = KalturaModel::getInstance();
+        $compareVersion = $kmodel->_sanitizer->sanitizer($compareVersion, 'string');
+        $operator = $kmodel->_sanitizer->sanitizer($operator, 'string');
+
 		$kversion = self::getPluginVersion();
 
 		return version_compare($kversion, $compareVersion, $operator);
@@ -221,7 +259,19 @@ class KalturaHelpers
 	public static function calculatePlayerHeight($uiConfId, $width, $playerRatio = '4:3')
 	{
 		$kmodel = KalturaModel::getInstance();
+        $width = $kmodel->_sanitizer->sanitizer($width, 'int');
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+
 		$player = $kmodel->getPlayerUiConf($uiConfId);
+        if (empty($width))
+        {
+            $width = 400;
+        }
+        $playerRatio = $kmodel->_sanitizer->sanitizer($playerRatio, 'playerRatio');
+        if (empty($playerRatio))
+        {
+            $playerRatio = '4:3';
+        }
 
 		$spacer = $player->height - ($player->width / 4) * 3; // assume the width and height saved in kaltura is 4/3
 		if ($playerRatio == '16:9')
@@ -249,6 +299,9 @@ class KalturaHelpers
 
 	public static function getOption($name, $default = null)
 	{
+        $name = is_string($name) ? $name : null;
+        $default = is_bool($default) ? $default : null;
+
 		$value = get_option($name, $default);
 		if (!is_null($value))
 			return $value;

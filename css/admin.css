@@ -44,14 +44,14 @@ ul#kaltura-browse { width: 72%; list-style: none; padding: 0 0 0 5px; float: rig
 	ul#kaltura-browse li input.sendButton{ width: 9em; }
 
 /* update thumbnail page */
-#update-thumbnail-page { overflow: hidden; }
+#update-thumbnail-page { overflow: hidden; height: 100%; }
 #update-thumbnail-page .page-wrapper { background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
 #update-thumbnail-page .player-wrapper { min-height: 330px; margin-top: 20px; }
 #update-thumbnail-page .player-wrapper #kplayer { width: 400px; height: 330px; margin: 0 auto; }
 #update-thumbnail-page p { text-align: center; padding: 0 30px; }
 
 /* preview page */
-#preview-page { overflow: hidden; }
+#preview-page { overflow: hidden; height: 100%; }
 #preview-page .player-wrapper { min-height: 380px; background-color: #EAF3FA; border: solid 1px #B0D1E0; margin: 10px; }
 #preview-page .player-wrapper #kplayer { width: 350px; height: 320px; margin: 30px auto; }
 
