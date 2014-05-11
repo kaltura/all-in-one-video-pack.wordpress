@@ -109,7 +109,7 @@ class KalturaSanitizer extends Kaltura_BaseController
             'kaction' => 'string',
             'isLibrary' => 'boolean',
             "tab" => "string",
-            "firstedit" => "boolean",
+            "firstedit" => "string",
             'entryIds' => 'arr'
         );
         foreach ($params as $key => $value)
@@ -154,7 +154,7 @@ class KalturaSanitizer extends Kaltura_BaseController
             'ks' => 'string',
             'uid' => 'intOrString',
             'subpId' => 'intOrString',
-            'autoPlay' => 'boolean'
+            'autoPlay' => 'string'
         );
         foreach ($params as $key => $value)
         {

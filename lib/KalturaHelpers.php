@@ -259,8 +259,8 @@ class KalturaHelpers
 	public static function calculatePlayerHeight($uiConfId, $width, $playerRatio = '4:3')
 	{
 		$kmodel = KalturaModel::getInstance();
-        $width = $kmodel->_sanitizer->sanitizer($width, 'int');
-        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+        $width = $kmodel->_sanitizer->sanitizer($width, 'intOrString');
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
 
 		$player = $kmodel->getPlayerUiConf($uiConfId);
         if (empty($width))
