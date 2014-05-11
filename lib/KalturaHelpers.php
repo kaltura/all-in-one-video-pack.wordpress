@@ -170,7 +170,7 @@ class KalturaHelpers
 	public static function enqueueHtml5Lib($uiConfId)
 	{
         $kmodel = KalturaModel::getInstance();
-        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'string');
+        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
 
         $html5LibUrl = ''.
 			self::getServerUrl().
