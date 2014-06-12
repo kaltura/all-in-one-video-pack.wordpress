@@ -3,8 +3,8 @@ Contributors: Kaltura
 Donate link: http://www.kaltura.org/
 Tags: admin, advertising, all in one,  audio, camera,  collaboration, comments, , Encoding, Facebook, flickr, gallery, images, interactive, kaltura, media, media library, participate, photo, picture, player, playlist, plugin,podcast, Post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video comments, video gallery, video responses, video-ads, vlog, webcam, widget, mobile
 Requires at least: 2.5.2
-Tested up to: 3.5.2
-Stable tag: 2.4.4
+Tested up to: 3.9.1
+Stable tag: 2.4.5
 
 Easily add full video capabilities to your blog.
 
@@ -13,7 +13,7 @@ Easily add full video capabilities to your blog.
 This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos and publish them directly to your post, enable video comments, centrally manage and track your video content. 
 You will instantly enhance user engagement on your WordPress site by enriching it with video. Leverage the full power of our Online Video Platform: superb playback, audience engagement, monetization, video management, social sharing, mobile and tablet delivery and more. Kaltura will handle all the heavy lifting in the back-end, including transcoding, storing, and streaming of your video content.
 
-It’s simple to install, use and customize -  [download the Kaltura All-in-One Video Plugin](http://downloads.wordpress.org/plugin/all-in-one-video-pack.2.5.zip) and choose one of two options to host and manage your Kaltura back-end:
+Itï¿½s simple to install, use and customize -  [download the Kaltura All-in-One Video Plugin](http://downloads.wordpress.org/plugin/all-in-one-video-pack.2.5.zip) and choose one of two options to host and manage your Kaltura back-end:
 
 **Kaltura Hosted Solution (Kaltura SaaS) - Free Trial and Affordable Packages**
 -------------
@@ -21,26 +21,26 @@ When you sign up with Kaltura.com you get 10GB free hosting and streaming using 
 
 **Self-Hosted Solution**
 -------------
-You can also connect your Kaltura Video plugin to Kaltura’s Community Edition- the self-hosted, community supported version of Kaltura's Open Source Online Video Platform - all behind your own firewall and on your own server for free.
+You can also connect your Kaltura Video plugin to Kalturaï¿½s Community Edition- the self-hosted, community supported version of Kaltura's Open Source Online Video Platform - all behind your own firewall and on your own server for free.
 
 **Features and Benefits**
 -------------
 * Easy video upload - import rich-media directly to your blog post or record from webcam
-* Central media management – through the Kaltura Management Console. Includes video analytics and reports
+* Central media management ï¿½ through the Kaltura Management Console. Includes video analytics and reports
 * Complete administrative capabilities - you decide who can contribute and access videos
 * Configurable player branding and features
 * Visitor Engagement - allow readers and subscribers to add video and audio comments, and to participate in collaborative videos
 * Support for Advertising & Monetization
-* Social Sharing – easily share across social networks, blogs, and sites 
-* Optimal Playback Experience – with our adaptive bitrate technology, on any device
+* Social Sharing ï¿½ easily share across social networks, blogs, and sites 
+* Optimal Playback Experience ï¿½ with our adaptive bitrate technology, on any device
 * Sidebar widget displaying all recent videos and video comments posted
 * Update thumbnail of video by selecting frame from video
 
-**What’s New in Version 2.5?**
+**Whatï¿½s New in Version 2.5?**
 -------------
 * Full support for WordPress 3.5.2
 * MultiUser Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
-* Mobile playback support – reach anyone on any device (including iOS, Android), web, and set-top boxes.
+* Mobile playback support ï¿½ reach anyone on any device (including iOS, Android), web, and set-top boxes.
 
 See release notes [here](http://knowledge.kaltura.com/node/905).
 

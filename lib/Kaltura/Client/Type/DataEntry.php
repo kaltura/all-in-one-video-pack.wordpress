@@ -28,30 +28,30 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaDataEntry';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->dataContent = (string)$xml->dataContent;
-		if(!empty($xml->retrieveDataContentByGet))
+		}
+
+		$this->dataContent = (string) $xml->dataContent;
+		if ( ! empty( $xml->retrieveDataContentByGet ) ) {
 			$this->retrieveDataContentByGet = true;
+		}
 	}
+
 	/**
 	 * The data of the entry
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -59,7 +59,7 @@ class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * indicator whether to return the object for get action with the dataContent field.
-	 * 	 
+	 *
 	 *
 	 * @var bool
 	 * @insertonly

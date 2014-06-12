@@ -28,69 +28,68 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_CategoryFilter extends Kaltura_Client_Type_CategoryBaseFilter
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_CategoryFilter extends Kaltura_Client_Type_CategoryBaseFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaCategoryFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->freeText = (string)$xml->freeText;
-		$this->membersIn = (string)$xml->membersIn;
-		$this->nameOrReferenceIdStartsWith = (string)$xml->nameOrReferenceIdStartsWith;
-		$this->managerEqual = (string)$xml->managerEqual;
-		$this->memberEqual = (string)$xml->memberEqual;
-		$this->fullNameStartsWithIn = (string)$xml->fullNameStartsWithIn;
-		$this->ancestorIdIn = (string)$xml->ancestorIdIn;
-		$this->idOrInheritedParentIdIn = (string)$xml->idOrInheritedParentIdIn;
+		}
+
+		$this->freeText                    = (string) $xml->freeText;
+		$this->membersIn                   = (string) $xml->membersIn;
+		$this->nameOrReferenceIdStartsWith = (string) $xml->nameOrReferenceIdStartsWith;
+		$this->managerEqual                = (string) $xml->managerEqual;
+		$this->memberEqual                 = (string) $xml->memberEqual;
+		$this->fullNameStartsWithIn        = (string) $xml->fullNameStartsWithIn;
+		$this->ancestorIdIn                = (string) $xml->ancestorIdIn;
+		$this->idOrInheritedParentIdIn     = (string) $xml->idOrInheritedParentIdIn;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $freeText = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $membersIn = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $nameOrReferenceIdStartsWith = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $managerEqual = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $memberEqual = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
@@ -98,14 +97,14 @@ class Kaltura_Client_Type_CategoryFilter extends Kaltura_Client_Type_CategoryBas
 
 	/**
 	 * not includes the category itself (only sub categories)
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
 	public $ancestorIdIn = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

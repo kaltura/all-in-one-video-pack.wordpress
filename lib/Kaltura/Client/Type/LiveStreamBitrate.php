@@ -28,54 +28,56 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaLiveStreamBitrate';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(count($xml->bitrate))
-			$this->bitrate = (int)$xml->bitrate;
-		if(count($xml->width))
-			$this->width = (int)$xml->width;
-		if(count($xml->height))
-			$this->height = (int)$xml->height;
-		$this->tags = (string)$xml->tags;
+		}
+
+		if ( count( $xml->bitrate ) ) {
+			$this->bitrate = (int) $xml->bitrate;
+		}
+		if ( count( $xml->width ) ) {
+			$this->width = (int) $xml->width;
+		}
+		if ( count( $xml->height ) ) {
+			$this->height = (int) $xml->height;
+		}
+		$this->tags = (string) $xml->tags;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 */
 	public $bitrate = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 */
 	public $width = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 */
 	public $height = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

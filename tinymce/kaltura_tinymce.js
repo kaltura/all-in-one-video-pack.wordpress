@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	tinymce.create('tinymce.plugins.Kaltura', {
 		/**
 		 * Initializes the plugin, this will be executed after the plugin has been created.
@@ -8,16 +8,16 @@
 		 * @param {tinymce.Editor} ed Editor instance that the plugin is initialized in.
 		 * @param {string} url Absolute URL to where the plugin is located.
 		 */
-		init : function(ed, url) {
+		init: function (ed, url) {
 			this._url = url
 
-			ed.onInit.add(function() {
+			ed.onInit.add(function () {
 				ed.dom.loadCSS(url + "/css/tinymce.css");
 			});
-			
+
 			var onBeforeSetContentDelegate = Kaltura.Delegate.create(this, this._onBeforeSetContent);
 			ed.onBeforeSetContent.add(onBeforeSetContentDelegate);
-			
+
 			var onGetContentDelegate = Kaltura.Delegate.create(this, this._onGetContent);
 			ed.onGetContent.add(onGetContentDelegate);
 		},
@@ -32,7 +32,7 @@
 		 * @param {tinymce.ControlManager} cm Control manager to use inorder to create new control.
 		 * @return {tinymce.ui.Control} New control instance or null if no control was created.
 		 */
-		createControl : function(n, cm) {
+		createControl: function (n, cm) {
 			return null;
 		},
 
@@ -42,76 +42,72 @@
 		 *
 		 * @return {Object} Name/value array containing information about the plugin.
 		 */
-		getInfo : function() {
+		getInfo: function () {
 			return {
 				longname : 'All in One Video Pack',
-				author : 'Kaltura',
-				authorurl : 'http://www.kaltura.com',
-				infourl : 'http://corp.kaltura.com',
-				version : "1.0"
+				author   : 'Kaltura',
+				authorurl: 'http://www.kaltura.com',
+				infourl  : 'http://corp.kaltura.com',
+				version  : "1.0"
 			};
 		},
-		
-		_tagStart : '[kaltura-widget',
-		
-		_tagEnd : '/]',
-		
-		_replaceTagStart : '<img',
-		
-		_replaceTagEnd : '/>',
-		
+
+		_tagStart: '[kaltura-widget',
+
+		_tagEnd: '/]',
+
+		_replaceTagStart: '<img',
+
+		_replaceTagEnd: '/>',
+
 		_originalHeight: 0,
-		
+
 		_originalWidth: 0,
-		
-		_onBeforeSetContent : function(ed, obj) {
+
+		_onBeforeSetContent: function (ed, obj) {
 			if (!obj.content)
 				return;
-				
+
 			var contentData = obj.content;
 			var startPos = 0;
 
 			while ((startPos = contentData.indexOf(this._tagStart, startPos)) != -1) {
 				var endPos = contentData.indexOf(this._tagEnd, startPos);
 				var attribs = this._parseAttributes(contentData.substring(startPos + this._tagStart.length, endPos));
-				
+
 				// set defaults if not found
 				if (!attribs['wid'])
 					attribs['wid'] = '';
-				
-				
-				
+
+
 				if (!attribs['size'])
 					attribs['size'] = 'custom';
 
 				if (!attribs['align'])
 					attribs['align'] = '';
-				
-				if (!attribs['width'] || !attribs['height'])
-				{
+
+				if (!attribs['width'] || !attribs['height']) {
 					attribs['width'] = '410';
 					attribs['height'] = '364';
 				}
-				
+
 				// for backward compatibility, when we used specific size
-				if (attribs['size'] == 'large') 
-				{
+				if (attribs['size'] == 'large') {
 					attribs['width'] = '410';
 					attribs['height'] = '364';
 				}
-				
-				if (attribs['size'] == 'small')
-				{
+
+				if (attribs['size'] == 'small') {
 					attribs['width'] = '250';
 					attribs['height'] = '244';
 				}
-				
+
 				if (attribs['width'] == '410' && attribs['height'] == '364')
 					attribs['size'] = 'large';
-				
+
 				if (attribs['width'] == '250' && attribs['height'] == '244')
 					attribs['size'] = 'small';
-				
+
 				endPos += this._tagEnd.length;
 				var contentDataEnd = contentData.substr(endPos);
 				contentData = contentData.substr(0, startPos);
@@ -129,23 +125,23 @@
 					contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
 				if (attribs['entryid'])
 					contentData += 'kaltura_entryid_' + attribs['entryid'] + ' ';
-				contentData += '" '; 
+				contentData += '" ';
 				contentData += 'name="mce_plugin_kaltura_desc" ';
 				contentData += 'width="' + attribs['width'] + '" ';
 				contentData += 'height="' + attribs['height'] + '" ';
-				
+
 				if (attribs['style'])
 					contentData += 'style="' + attribs['style'] + '" ';
-				
+
 				contentData += '/>';
-				
+
 				contentData += contentDataEnd;
 			}
-			
+
 			obj.content = contentData;
 		},
-		
-		_onGetContent : function(ed, obj) {
+
+		_onGetContent: function (ed, obj) {
 			if (!obj.content)
 				return;
 
@@ -155,22 +151,21 @@
 				var endPos = contentData.indexOf(this._replaceTagEnd, startPos);
 				if (endPos > -1) {
 					var attribs = this._parseAttributes(contentData.substring(startPos + this._replaceTagStart.length, endPos));
-				
+
 					var className = attribs['class'];
 					if (!className || className.indexOf('kaltura_item') == -1) {
 						startPos++;
 						continue;
 					}
-					
+
 					var wid = "";
 					var uiconfid = "";
 					var entryid = "";
-					
+
 					// get the attribs that we saved in the class name
-					var classAttribs = className.split(" "); 
-					for(var j = 0; j < classAttribs.length; j++) {
-						switch (classAttribs[j])
-						{
+					var classAttribs = className.split(" ");
+					for (var j = 0; j < classAttribs.length; j++) {
+						switch (classAttribs[j]) {
 							case 'alignright':
 								attribs['align'] = 'right';
 								break;
@@ -183,7 +178,7 @@
 							default:
 								classAttrArr = classAttribs[j].match(/kaltura_([a-zA-Z]*)_([\w]*)/);
 								if (classAttrArr && classAttrArr.length == 3) {
-									switch(classAttrArr[1]) {
+									switch (classAttrArr[1]) {
 										case 'id':
 											if (classAttrArr[2] != "")
 												wid = classAttrArr[2];
@@ -201,87 +196,87 @@
 								break;
 						}
 					}
-					
+
 					endPos += this._replaceTagEnd.length;
 					var contentDataEnd = contentData.substr(endPos);
 					contentData = contentData.substr(0, startPos);
-					
+
 
 					contentData += this._tagStart + ' ';
 					if (wid)
 						contentData += 'wid="' + wid + '" ';
-					
+
 					if (uiconfid)
 						contentData += 'uiconfid="' + uiconfid + '" ';
-					
+
 					if (entryid)
 						contentData += 'entryid="' + entryid + '" ';
-						
+
 					contentData += 'width="' + attribs['width'] + '" ';
 					contentData += 'height="' + attribs['height'] + '" ';
-					
+
 					if (attribs['style'])
 						contentData += 'style="' + attribs['style'] + '" ';
-					
+
 					if (attribs['align'])
 						contentData += 'align="' + attribs['align'] + '" '; // align
-					
+
 					contentData += this._tagEnd;
 					contentData += contentDataEnd;
 				}
-				else { 
+				else {
 					startPos++;
 				}
 			}
-			
+
 			obj.content = contentData;
 		},
-		
-		_parseAttributes : function(attribute_string) {
+
+		_parseAttributes: function (attribute_string) {
 			var attributeName = '';
 			var attributeValue = '';
 			var withInName;
 			var withInValue;
 			var attributes = new Array();
 			var whiteSpaceRegExp = new RegExp('^[ \n\r\t]+', 'g');
-	
+
 			if (attribute_string == null || attribute_string.length < 2)
 				return null;
-	
+
 			withInName = withInValue = false;
-	
-			for (var i=0; i<attribute_string.length; i++) {
+
+			for (var i = 0; i < attribute_string.length; i++) {
 				var chr = attribute_string.charAt(i);
-	
+
 				if ((chr == '"' || chr == "'") && !withInValue)
 					withInValue = true;
 				else if ((chr == '"' || chr == "'") && withInValue) {
 					withInValue = false;
-	
+
 					var pos = attributeName.lastIndexOf(' ');
 					if (pos != -1)
-						attributeName = attributeName.substring(pos+1);
-	
+						attributeName = attributeName.substring(pos + 1);
+
 					attributes[attributeName.toLowerCase()] = attributeValue.substring(1);
-	
+
 					attributeName = '';
 					attributeValue = '';
 				} else if (!whiteSpaceRegExp.test(chr) && !withInName && !withInValue)
 					withInName = true;
-	
+
 				if (chr == '=' && withInName)
 					withInName = false;
-	
+
 				if (withInName)
 					attributeName += chr;
-	
+
 				if (withInValue)
 					attributeValue += chr;
 			}
 			return attributes;
 		}
 	});
-	
+
 	// Register plugin
 	tinymce.PluginManager.add('kaltura', tinymce.plugins.Kaltura);
 })();

@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EditorType
-{
-	const SIMPLE = 1;
+class Kaltura_Client_Enum_EditorType {
+	const SIMPLE   = 1;
 	const ADVANCED = 2;
 }
 

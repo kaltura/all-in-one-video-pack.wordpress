@@ -29,31 +29,32 @@
 
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_CategoryService extends Kaltura_Client_ServiceBase
-{
-	function __construct(Kaltura_Client_Client $client = null)
-	{
-		parent::__construct($client);
+class Kaltura_Client_CategoryService extends Kaltura_Client_ServiceBase {
+	function __construct( Kaltura_Client_Client $client = null ) {
+		parent::__construct( $client );
 	}
 
-	function listAction(Kaltura_Client_Type_CategoryFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
-	{
+	function listAction( Kaltura_Client_Type_CategoryFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null ) {
 		$kparams = array();
-		if ($filter !== null)
-			$this->client->addParam($kparams, "filter", $filter->toParams());
-		if ($pager !== null)
-			$this->client->addParam($kparams, "pager", $pager->toParams());
-		$this->client->queueServiceActionCall("category", "list", "KalturaCategoryListResponse", $kparams);
-		if ($this->client->isMultiRequest())
+		if ( $filter !== null ) {
+			$this->client->addParam( $kparams, 'filter', $filter->toParams() );
+		}
+		if ( $pager !== null ) {
+			$this->client->addParam( $kparams, 'pager', $pager->toParams() );
+		}
+		$this->client->queueServiceActionCall( 'category', 'list', 'KalturaCategoryListResponse', $kparams );
+		if ( $this->client->isMultiRequest() ) {
 			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaCategoryListResponse");
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_CategoryListResponse");
+		}
+		$resultXml       = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement( $resultXml );
+		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaCategoryListResponse' );
+		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Type_CategoryListResponse' );
+
 		return $resultObject;
 	}
 }

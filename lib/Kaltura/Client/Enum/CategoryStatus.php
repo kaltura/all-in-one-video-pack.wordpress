@@ -28,14 +28,13 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_CategoryStatus
-{
+class Kaltura_Client_Enum_CategoryStatus {
 	const UPDATING = 1;
-	const ACTIVE = 2;
-	const DELETED = 3;
-	const PURGED = 4;
+	const ACTIVE   = 2;
+	const DELETED  = 3;
+	const PURGED   = 4;
 }
 
