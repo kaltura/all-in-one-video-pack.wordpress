@@ -14,12 +14,18 @@ class Kaltura_AllInOneVideoPackPlugin
 
 	public function init()
 	{
-		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE && apply_filters('kaltura_use_network_settings', true))
-			add_action('network_admin_menu', $this->callback('networkAdminMenuAction'));
+		/*if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE && apply_filters('kaltura_use_network_settings', true))*/
+        if (
+            is_multisite()
+            && ! ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() )
+            && apply_filters( 'kaltura_use_network_settings', true )
+        )
+            add_action('network_admin_menu', $this->callback('networkAdminMenuAction'));
 
 		if (!KalturaHelpers::getOption('kaltura_partner_id') &&
 			!isset($_POST['submit']) &&
-			!strpos($_SERVER['REQUEST_URI'], 'page=kaltura_options'))
+			/*!strpos($_SERVER['REQUEST_URI'], 'page=kaltura_options')*/
+            isset( $_GET['page'] ) && 'kaltura_options' === $_GET['page'] )
 		{
 			add_action('admin_notices', $this->callback('adminWarning'));
 			return;
