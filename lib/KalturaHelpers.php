@@ -19,7 +19,9 @@ class KalturaHelpers
 
 	public static function getCdnUrl()
 	{
-		return rtrim(KalturaHelpers::getOption('cdn_url'), '/');
+        $sanitizer = new KalturaSanitizer();
+        $url = $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
+		return rtrim($url, '/');
 	}
 
 	public static function getLoggedUserId()
