@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_InheritanceType
-{
+class Kaltura_Client_Enum_InheritanceType {
 	const INHERIT = 1;
-	const MANUAL = 2;
+	const MANUAL  = 2;
 }
 

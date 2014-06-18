@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_CommercialUseType
-{
+class Kaltura_Client_Enum_CommercialUseType {
 	const NON_COMMERCIAL_USE = 0;
-	const COMMERCIAL_USE = 1;
+	const COMMERCIAL_USE     = 1;
 }
 

@@ -28,35 +28,34 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_KeyValue extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_KeyValue extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaKeyValue';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->key = (string)$xml->key;
-		$this->value = (string)$xml->value;
+		}
+
+		$this->key   = (string) $xml->key;
+		$this->value = (string) $xml->value;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $key = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

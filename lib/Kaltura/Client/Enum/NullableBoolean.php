@@ -28,13 +28,12 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_NullableBoolean
-{
-	const NULL_VALUE = -1;
+class Kaltura_Client_Enum_NullableBoolean {
+	const NULL_VALUE  = - 1;
 	const FALSE_VALUE = 0;
-	const TRUE_VALUE = 1;
+	const TRUE_VALUE  = 1;
 }
 

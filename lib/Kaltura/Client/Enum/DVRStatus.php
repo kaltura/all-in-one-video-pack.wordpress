@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_DVRStatus
-{
+class Kaltura_Client_Enum_DVRStatus {
 	const DISABLED = 0;
-	const ENABLED = 1;
+	const ENABLED  = 1;
 }
 

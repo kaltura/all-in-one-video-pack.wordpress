@@ -29,29 +29,28 @@
 
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_MediaService extends Kaltura_Client_ServiceBase
-{
-	function __construct(Kaltura_Client_Client $client = null)
-	{
-		parent::__construct($client);
+class Kaltura_Client_MediaService extends Kaltura_Client_ServiceBase {
+	function __construct( Kaltura_Client_Client $client = null ) {
+		parent::__construct( $client );
 	}
 
-	function update($entryId, Kaltura_Client_Type_MediaEntry $mediaEntry)
-	{
+	function update( $entryId, Kaltura_Client_Type_MediaEntry $mediaEntry ) {
 		$kparams = array();
-		$this->client->addParam($kparams, "entryId", $entryId);
-		$this->client->addParam($kparams, "mediaEntry", $mediaEntry->toParams());
-		$this->client->queueServiceActionCall("media", "update", "KalturaMediaEntry", $kparams);
-		if ($this->client->isMultiRequest())
+		$this->client->addParam( $kparams, 'entryId', $entryId );
+		$this->client->addParam( $kparams, 'mediaEntry', $mediaEntry->toParams() );
+		$this->client->queueServiceActionCall( 'media', 'update', 'KalturaMediaEntry', $kparams );
+		if ( $this->client->isMultiRequest() ) {
 			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMediaEntry");
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_MediaEntry");
+		}
+		$resultXml       = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement( $resultXml );
+		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMediaEntry' );
+		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Type_MediaEntry' );
+
 		return $resultObject;
 	}
 }

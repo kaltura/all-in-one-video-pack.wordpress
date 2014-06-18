@@ -28,15 +28,14 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_CategoryUserPermissionLevel
-{
-	const MANAGER = 0;
-	const MODERATOR = 1;
+class Kaltura_Client_Enum_CategoryUserPermissionLevel {
+	const MANAGER     = 0;
+	const MODERATOR   = 1;
 	const CONTRIBUTOR = 2;
-	const MEMBER = 3;
-	const NONE = 4;
+	const MEMBER      = 3;
+	const NONE        = 4;
 }
 

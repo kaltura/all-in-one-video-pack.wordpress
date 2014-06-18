@@ -28,29 +28,28 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntry extends Kaltura_Client_Type_MediaEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntry extends Kaltura_Client_Type_MediaEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaExternalMediaEntry';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->externalSourceType = (string)$xml->externalSourceType;
-		$this->assetParamsIds = (string)$xml->assetParamsIds;
+		}
+
+		$this->externalSourceType = (string) $xml->externalSourceType;
+		$this->assetParamsIds     = (string) $xml->assetParamsIds;
 	}
+
 	/**
 	 * The source type of the external media
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType
 	 * @insertonly
@@ -59,7 +58,7 @@ class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntry extends Kaltura_Clien
 
 	/**
 	 * Comma separated asset params ids that exists for this external media entry
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly

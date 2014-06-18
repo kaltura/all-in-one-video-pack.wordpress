@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_ContributionPolicyType
-{
-	const ALL = 1;
+class Kaltura_Client_Enum_ContributionPolicyType {
+	const ALL                                  = 1;
 	const MEMBERS_WITH_CONTRIBUTION_PERMISSION = 2;
 }
 

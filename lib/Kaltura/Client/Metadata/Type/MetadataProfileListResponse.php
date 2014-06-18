@@ -28,32 +28,33 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Type_MetadataProfileListResponse extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Metadata_Type_MetadataProfileListResponse extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaMetadataProfileListResponse';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(empty($xml->objects))
+		}
+
+		if ( empty( $xml->objects ) ) {
 			$this->objects = array();
-		else
-			$this->objects = Kaltura_Client_ParseUtils::unmarshalArray($xml->objects, "KalturaMetadataProfile");
-		if(count($xml->totalCount))
-			$this->totalCount = (int)$xml->totalCount;
+		} else {
+			$this->objects = Kaltura_Client_ParseUtils::unmarshalArray( $xml->objects, 'KalturaMetadataProfile' );
+		}
+		if ( count( $xml->totalCount ) ) {
+			$this->totalCount = (int) $xml->totalCount;
+		}
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var array of KalturaMetadataProfile
 	 * @readonly
@@ -61,7 +62,7 @@ class Kaltura_Client_Metadata_Type_MetadataProfileListResponse extends Kaltura_C
 	public $objects;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 * @readonly

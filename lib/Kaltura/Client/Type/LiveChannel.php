@@ -28,30 +28,30 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaLiveChannel';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->playlistId = (string)$xml->playlistId;
-		if(count($xml->repeat))
-			$this->repeat = (int)$xml->repeat;
+		}
+
+		$this->playlistId = (string) $xml->playlistId;
+		if ( count( $xml->repeat ) ) {
+			$this->repeat = (int) $xml->repeat;
+		}
 	}
+
 	/**
 	 * Playlist id to be played
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -59,7 +59,7 @@ class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
 
 	/**
 	 * Indicates that the segments should be repeated for ever
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */

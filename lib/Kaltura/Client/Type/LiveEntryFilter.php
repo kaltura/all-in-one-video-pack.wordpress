@@ -28,28 +28,28 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveEntryFilter extends Kaltura_Client_Type_LiveEntryBaseFilter
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_LiveEntryFilter extends Kaltura_Client_Type_LiveEntryBaseFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaLiveEntryFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(count($xml->isLive))
-			$this->isLive = (int)$xml->isLive;
+		}
+
+		if ( count( $xml->isLive ) ) {
+			$this->isLive = (int) $xml->isLive;
+		}
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */

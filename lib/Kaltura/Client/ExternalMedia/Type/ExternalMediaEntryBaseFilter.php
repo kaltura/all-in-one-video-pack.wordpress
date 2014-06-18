@@ -28,51 +28,50 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntryBaseFilter extends Kaltura_Client_Type_MediaEntryFilter
-{
-	public function getKalturaObjectType()
-	{
+abstract class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntryBaseFilter extends Kaltura_Client_Type_MediaEntryFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaExternalMediaEntryBaseFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->externalSourceTypeEqual = (string)$xml->externalSourceTypeEqual;
-		$this->externalSourceTypeIn = (string)$xml->externalSourceTypeIn;
-		$this->assetParamsIdsMatchOr = (string)$xml->assetParamsIdsMatchOr;
-		$this->assetParamsIdsMatchAnd = (string)$xml->assetParamsIdsMatchAnd;
+		}
+
+		$this->externalSourceTypeEqual = (string) $xml->externalSourceTypeEqual;
+		$this->externalSourceTypeIn    = (string) $xml->externalSourceTypeIn;
+		$this->assetParamsIdsMatchOr   = (string) $xml->assetParamsIdsMatchOr;
+		$this->assetParamsIdsMatchAnd  = (string) $xml->assetParamsIdsMatchAnd;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType
 	 */
 	public $externalSourceTypeEqual = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $externalSourceTypeIn = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $assetParamsIdsMatchOr = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

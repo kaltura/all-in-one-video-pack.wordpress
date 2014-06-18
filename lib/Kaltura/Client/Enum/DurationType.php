@@ -28,14 +28,13 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_DurationType
-{
-	const LONG = "long";
-	const MEDIUM = "medium";
-	const NOT_AVAILABLE = "notavailable";
-	const SHORT = "short";
+class Kaltura_Client_Enum_DurationType {
+	const LONG          = 'long';
+	const MEDIUM        = 'medium';
+	const NOT_AVAILABLE = 'notavailable';
+	const SHORT         = 'short';
 }
 

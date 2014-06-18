@@ -29,32 +29,31 @@
 
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_SessionService extends Kaltura_Client_ServiceBase
-{
-	function __construct(Kaltura_Client_Client $client = null)
-	{
-		parent::__construct($client);
+class Kaltura_Client_SessionService extends Kaltura_Client_ServiceBase {
+	function __construct( Kaltura_Client_Client $client = null ) {
+		parent::__construct( $client );
 	}
 
-	function start($secret, $userId = "", $type = 0, $partnerId = null, $expiry = 86400, $privileges = null)
-	{
+	function start( $secret, $userId = '', $type = 0, $partnerId = null, $expiry = 86400, $privileges = null ) {
 		$kparams = array();
-		$this->client->addParam($kparams, "secret", $secret);
-		$this->client->addParam($kparams, "userId", $userId);
-		$this->client->addParam($kparams, "type", $type);
-		$this->client->addParam($kparams, "partnerId", $partnerId);
-		$this->client->addParam($kparams, "expiry", $expiry);
-		$this->client->addParam($kparams, "privileges", $privileges);
-		$this->client->queueServiceActionCall("session", "start", null, $kparams);
-		if ($this->client->isMultiRequest())
+		$this->client->addParam( $kparams, 'secret', $secret );
+		$this->client->addParam( $kparams, 'userId', $userId );
+		$this->client->addParam( $kparams, 'type', $type );
+		$this->client->addParam( $kparams, 'partnerId', $partnerId );
+		$this->client->addParam( $kparams, 'expiry', $expiry );
+		$this->client->addParam( $kparams, 'privileges', $privileges );
+		$this->client->queueServiceActionCall( 'session', 'start', null, $kparams );
+		if ( $this->client->isMultiRequest() ) {
 			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = (string)Kaltura_Client_ParseUtils::unmarshalSimpleType($resultXmlObject->result);
+		}
+		$resultXml       = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement( $resultXml );
+		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
+		$resultObject = (string) Kaltura_Client_ParseUtils::unmarshalSimpleType( $resultXmlObject->result );
+
 		return $resultObject;
 	}
 }
