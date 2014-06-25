@@ -28,30 +28,30 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Document_Type_DocumentEntry extends Kaltura_Client_Type_BaseEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Document_Type_DocumentEntry extends Kaltura_Client_Type_BaseEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaDocumentEntry';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(count($xml->documentType))
-			$this->documentType = (int)$xml->documentType;
-		$this->assetParamsIds = (string)$xml->assetParamsIds;
+		}
+
+		if ( count( $xml->documentType ) ) {
+			$this->documentType = (int) $xml->documentType;
+		}
+		$this->assetParamsIds = (string) $xml->assetParamsIds;
 	}
+
 	/**
 	 * The type of the document
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Document_Enum_DocumentType
 	 * @insertonly
@@ -60,7 +60,7 @@ class Kaltura_Client_Document_Type_DocumentEntry extends Kaltura_Client_Type_Bas
 
 	/**
 	 * Comma separated asset params ids that exists for this media entry
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly

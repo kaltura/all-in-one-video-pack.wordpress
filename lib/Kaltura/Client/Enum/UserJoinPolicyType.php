@@ -28,13 +28,12 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_UserJoinPolicyType
-{
-	const AUTO_JOIN = 1;
+class Kaltura_Client_Enum_UserJoinPolicyType {
+	const AUTO_JOIN       = 1;
 	const REQUEST_TO_JOIN = 2;
-	const NOT_ALLOWED = 3;
+	const NOT_ALLOWED     = 3;
 }
 

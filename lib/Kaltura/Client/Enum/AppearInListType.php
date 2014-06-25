@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_AppearInListType
-{
-	const PARTNER_ONLY = 1;
+class Kaltura_Client_Enum_AppearInListType {
+	const PARTNER_ONLY          = 1;
 	const CATEGORY_MEMBERS_ONLY = 3;
 }
 

@@ -28,28 +28,28 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_MediaEntryFilterForPlaylist extends Kaltura_Client_Type_MediaEntryFilter
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_MediaEntryFilterForPlaylist extends Kaltura_Client_Type_MediaEntryFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaMediaEntryFilterForPlaylist';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(count($xml->limit))
-			$this->limit = (int)$xml->limit;
+		}
+
+		if ( count( $xml->limit ) ) {
+			$this->limit = (int) $xml->limit;
+		}
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 */

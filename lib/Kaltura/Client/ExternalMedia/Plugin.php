@@ -28,39 +28,34 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_ExternalMedia_Plugin extends Kaltura_Client_Plugin
-{
-	protected function __construct(Kaltura_Client_Client $client)
-	{
-		parent::__construct($client);
+class Kaltura_Client_ExternalMedia_Plugin extends Kaltura_Client_Plugin {
+	protected function __construct( Kaltura_Client_Client $client ) {
+		parent::__construct( $client );
 	}
 
 	/**
 	 * @return Kaltura_Client_ExternalMedia_Plugin
 	 */
-	public static function get(Kaltura_Client_Client $client)
-	{
-		return new Kaltura_Client_ExternalMedia_Plugin($client);
+	public static function get( Kaltura_Client_Client $client ) {
+		return new Kaltura_Client_ExternalMedia_Plugin( $client );
 	}
 
 	/**
 	 * @return array<Kaltura_Client_ServiceBase>
 	 */
-	public function getServices()
-	{
-		$services = array(
-		);
+	public function getServices() {
+		$services = array();
+
 		return $services;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName()
-	{
+	public function getName() {
 		return 'externalMedia';
 	}
 }

@@ -28,14 +28,13 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_UiConfOrderBy
-{
-	const CREATED_AT_ASC = "+createdAt";
-	const UPDATED_AT_ASC = "+updatedAt";
-	const CREATED_AT_DESC = "-createdAt";
-	const UPDATED_AT_DESC = "-updatedAt";
+class Kaltura_Client_Enum_UiConfOrderBy {
+	const CREATED_AT_ASC  = '+createdAt';
+	const UPDATED_AT_ASC  = '+updatedAt';
+	const CREATED_AT_DESC = '-createdAt';
+	const UPDATED_AT_DESC = '-updatedAt';
 }
 

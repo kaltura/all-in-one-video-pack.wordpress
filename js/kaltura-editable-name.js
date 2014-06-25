@@ -1,8 +1,8 @@
-(function($){
-	$.fn.kalturaEditableName = function(opts) {
+(function ($) {
+	$.fn.kalturaEditableName = function (opts) {
 		// support mutltiple elements
-		if (this.length > 1){
-			this.each(function() {
+		if (this.length > 1) {
+			this.each(function () {
 				$(this).kalturaEditableName(opts)
 			});
 			return this;
@@ -15,7 +15,7 @@
 		var self = this, $self = jQuery(this);
 
 		// private function;
-		var _onNameClick = function(args) {
+		var _onNameClick = function (args) {
 			jQuery(self).unbind('click');
 
 			_$wait = jQuery('<span>Saving...</span>');
@@ -32,18 +32,18 @@
 			_$inputBox.focus();
 		}
 
-		var _onInputBlur = function(args) {
+		var _onInputBlur = function (args) {
 			_save();
 		}
 
-		var _onInputKeyPress = function(args) {
+		var _onInputKeyPress = function (args) {
 			if (args.keyCode == 13)
 				_save();
 			if (args.keyCode == 27)
 				_finishEditing();
 		}
 
-		var _save = function() {
+		var _save = function () {
 			if (_currentContent != _$inputBox.val()) // if changed
 			{
 				var params = {};
@@ -52,20 +52,19 @@
 				_$inputBox.hide();
 				_$wait.show();
 				jQuery.ajax({
-					url: options.url,
-					data: params,
-					type: 'POST',
+					url    : options.url,
+					data   : params,
+					type   : 'POST',
 					success: _onSaveHandler,
-					error: _onErrorHandler
+					error  : _onErrorHandler
 				});
 			}
-			else
-			{
+			else {
 				_finishEditing();
 			}
 		}
 
-		var _onSaveHandler = function(data) {
+		var _onSaveHandler = function (data) {
 			if (data != 'ok')
 				return _onErrorHandler();
 
@@ -77,7 +76,7 @@
 			_finishEditing();
 		}
 
-		var _finishEditing = function() {
+		var _finishEditing = function () {
 			jQuery(self).click(_onNameClick).empty().append(_currentContent);
 		}
 
@@ -85,7 +84,7 @@
 		var defaultOptions = { name: 'name' };
 		var options = $.extend({}, defaultOptions, opts);
 
-		this.intialize = function() {
+		this.intialize = function () {
 			this.click(_onNameClick);
 			return $self;
 		};

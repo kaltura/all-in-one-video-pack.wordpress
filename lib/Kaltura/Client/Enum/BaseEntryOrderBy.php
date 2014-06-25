@@ -28,32 +28,31 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_BaseEntryOrderBy
-{
-	const CREATED_AT_ASC = "+createdAt";
-	const END_DATE_ASC = "+endDate";
-	const MODERATION_COUNT_ASC = "+moderationCount";
-	const NAME_ASC = "+name";
-	const PARTNER_SORT_VALUE_ASC = "+partnerSortValue";
-	const RANK_ASC = "+rank";
-	const RECENT_ASC = "+recent";
-	const START_DATE_ASC = "+startDate";
-	const TOTAL_RANK_ASC = "+totalRank";
-	const UPDATED_AT_ASC = "+updatedAt";
-	const WEIGHT_ASC = "+weight";
-	const CREATED_AT_DESC = "-createdAt";
-	const END_DATE_DESC = "-endDate";
-	const MODERATION_COUNT_DESC = "-moderationCount";
-	const NAME_DESC = "-name";
-	const PARTNER_SORT_VALUE_DESC = "-partnerSortValue";
-	const RANK_DESC = "-rank";
-	const RECENT_DESC = "-recent";
-	const START_DATE_DESC = "-startDate";
-	const TOTAL_RANK_DESC = "-totalRank";
-	const UPDATED_AT_DESC = "-updatedAt";
-	const WEIGHT_DESC = "-weight";
+class Kaltura_Client_Enum_BaseEntryOrderBy {
+	const CREATED_AT_ASC          = '+createdAt';
+	const END_DATE_ASC            = '+endDate';
+	const MODERATION_COUNT_ASC    = '+moderationCount';
+	const NAME_ASC                = '+name';
+	const PARTNER_SORT_VALUE_ASC  = '+partnerSortValue';
+	const RANK_ASC                = '+rank';
+	const RECENT_ASC              = '+recent';
+	const START_DATE_ASC          = '+startDate';
+	const TOTAL_RANK_ASC          = '+totalRank';
+	const UPDATED_AT_ASC          = '+updatedAt';
+	const WEIGHT_ASC              = '+weight';
+	const CREATED_AT_DESC         = '-createdAt';
+	const END_DATE_DESC           = '-endDate';
+	const MODERATION_COUNT_DESC   = '-moderationCount';
+	const NAME_DESC               = '-name';
+	const PARTNER_SORT_VALUE_DESC = '-partnerSortValue';
+	const RANK_DESC               = '-rank';
+	const RECENT_DESC             = '-recent';
+	const START_DATE_DESC         = '-startDate';
+	const TOTAL_RANK_DESC         = '-totalRank';
+	const UPDATED_AT_DESC         = '-updatedAt';
+	const WEIGHT_DESC             = '-weight';
 }
 

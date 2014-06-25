@@ -28,43 +28,42 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveStreamConfiguration extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_LiveStreamConfiguration extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaLiveStreamConfiguration';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->protocol = (string)$xml->protocol;
-		$this->url = (string)$xml->url;
-		$this->publishUrl = (string)$xml->publishUrl;
+		}
+
+		$this->protocol   = (string) $xml->protocol;
+		$this->url        = (string) $xml->url;
+		$this->publishUrl = (string) $xml->publishUrl;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_PlaybackProtocol
 	 */
 	public $protocol = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $url = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

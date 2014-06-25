@@ -1,251 +1,233 @@
-<?php 
-class Kaltura_WPModel
-{
+<?php
+
+class Kaltura_WPModel {
 	const WIDGET_STATUS_UNPUBLISHED = 0;
-	const WIDGET_STATUS_PUBLISHED = 1;
+	const WIDGET_STATUS_PUBLISHED   = 1;
 
 	const WIDGET_TYPE_COMMENT = 'comment';
-	const WIDGET_TYPE_POST = 'post';
+	const WIDGET_TYPE_POST    = 'post';
 
-	public static function insertWidget($widget)
-	{
+	public static function insertWidget( $widget ) {
 		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 
-		$data = array();
-		$data["id"] 				= $widget["id"];
-		$data["entry_id"] 			= $widget["entry_id"];
-		$data["type"] 				= $widget["type"];
-		$data["status"] 			= $widget["status"];
-		$data["post_id"] 			= $widget["post_id"];
-		$data["comment_id"] 		= $widget["comment_id"];
-		$data["add_permissions"] 	= $widget["add_permissions"];
-		$data["edit_permissions"] 	= $widget["edit_permissions"];
-		$data["created_at"] 		= current_time('mysql');
-		$wpdb->insert($table, $data);
+		$data                     = array();
+		$data['id']               = $widget['id'];
+		$data['entry_id']         = $widget['entry_id'];
+		$data['type']             = $widget['type'];
+		$data['status']           = $widget['status'];
+		$data['post_id']          = $widget['post_id'];
+		$data['comment_id']       = $widget['comment_id'];
+		$data['add_permissions']  = $widget['add_permissions'];
+		$data['edit_permissions'] = $widget['edit_permissions'];
+		$data['created_at']       = current_time( 'mysql' );
+		$wpdb->insert( $table, $data );
 	}
 
-	public static function updateWidget($widget)
-	{
+	public static function updateWidget( $widget ) {
 		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 
-		$data = array();
-		$data["type"] 				= $widget["type"];
-		$data["status"] 			= $widget["status"];
-		$data["post_id"] 			= $widget["post_id"];
-		$data["comment_id"] 		= $widget["comment_id"];
-		$data["add_permissions"] 	= $widget["add_permissions"];
-		$data["edit_permissions"] 	= $widget["edit_permissions"];
+		$data                     = array();
+		$data['type']             = $widget['type'];
+		$data['status']           = $widget['status'];
+		$data['post_id']          = $widget['post_id'];
+		$data['comment_id']       = $widget['comment_id'];
+		$data['add_permissions']  = $widget['add_permissions'];
+		$data['edit_permissions'] = $widget['edit_permissions'];
 
-		$where = array();
-		$where["id"] 		= $widget["id"];
-		$where["entry_id"] 	= $widget["entry_id"];
+		$where             = array();
+		$where['id']       = $widget['id'];
+		$where['entry_id'] = $widget['entry_id'];
 
-		$wpdb->update($table, $data, $where);
+		$wpdb->update( $table, $data, $where );
 	}
 
-	public static function getWidget($widgetId, $entryId)
-	{
-        $sanitizer = new KalturaSanitizer();
+	public static function getWidget( $widgetId, $entryId ) {
+		$sanitizer = new KalturaSanitizer();
 
-        $widgetId = $sanitizer->sanitizer($widgetId, 'string');
-        $entryId = $sanitizer->sanitizer($entryId, 'string');
+		$widgetId = $sanitizer->sanitizer( $widgetId, 'string' );
+		$entryId  = $sanitizer->sanitizer( $entryId, 'string' );
 
-        global $wpdb;
+		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
-		$sql = $wpdb->prepare("SELECT * FROM " . $table . " WHERE id = %s AND entry_id = %s", $widgetId, $entryId);
-		return $wpdb->get_row($sql, ARRAY_A);
+		$sql   = $wpdb->prepare( 'SELECT * FROM ' . $table . ' WHERE id = %s AND entry_id = %s', $widgetId, $entryId );
+
+		return $wpdb->get_row( $sql, ARRAY_A );
 	}
 
-	public static function unpublishWidget()
-	{
+	public static function unpublishWidget() {
 
 	}
 
-	public static function insertOrUpdateWidget($widget)
-	{
+	public static function insertOrUpdateWidget( $widget ) {
 		// set the defaults
-		if (!isset($widget["post_id"]))
-			$widget["post_id"] = 0;
-
-		if (!isset($widget["comment_id"]))
-			$widget["comment_id"] = 0;
-
-		$widgetFromDb = Kaltura_WPModel::getWidget($widget["id"], $widget["entry_id"]);
-		if (!$widgetFromDb)
-		{
-			Kaltura_WPModel::insertWidget($widget);
+		if ( ! isset( $widget['post_id'] ) ) {
+			$widget['post_id'] = 0;
 		}
-		else
-		{
-			Kaltura_WPModel::updateWidget($widget);
+
+		if ( ! isset( $widget['comment_id'] ) ) {
+			$widget['comment_id'] = 0;
+		}
+
+		$widgetFromDb = Kaltura_WPModel::getWidget( $widget['id'], $widget['entry_id'] );
+		if ( ! $widgetFromDb ) {
+			Kaltura_WPModel::insertWidget( $widget );
+		} else {
+			Kaltura_WPModel::updateWidget( $widget );
 		}
 	}
 
-	public static function getWidgetsByPost($post_id)
-	{
-        $sanitizer = new KalturaSanitizer();
+	public static function getWidgetsByPost( $post_id ) {
+		$sanitizer = new KalturaSanitizer();
 		global $wpdb;
-        $post_id = $sanitizer->sanitizer($post_id, 'int');
+		$post_id = $sanitizer->sanitizer( $post_id, 'int' );
 
-		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
-		$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $table . " WHERE post_id = %d", $post_id), ARRAY_A);
-		if (!is_array($result))
+		$table  = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
+		$result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $table . ' WHERE post_id = %d', $post_id ), ARRAY_A );
+		if ( ! is_array( $result ) ) {
 			$result = array();
+		}
+
 		return $result;
 	}
 
-	public static function unpublishWidgets($widgets)
-	{
+	public static function unpublishWidgets( $widgets ) {
 		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 
 		// check if one widget was passed and its not in an array
-		if (!is_array($widgets))
-		{
+		if ( ! is_array( $widgets ) ) {
 			$widgetsTemp = $widgets;
-			$widgets = array($widgetsTemp);
+			$widgets     = array( $widgetsTemp );
 		}
-		foreach($widgets as $widget)
-		{
-			$data = array("status" => Kaltura_WPModel::WIDGET_STATUS_UNPUBLISHED);
-			$where = array("id" => $widget["id"], "entry_id" => $widget["entry_id"]);
-			$wpdb->update($table, $data, $where);
+		foreach ( $widgets as $widget ) {
+			$data  = array( 'status' => Kaltura_WPModel::WIDGET_STATUS_UNPUBLISHED );
+			$where = array( 'id' => $widget['id'], 'entry_id' => $widget['entry_id'] );
+			$wpdb->update( $table, $data, $where );
 		}
 	}
 
-	public static function deleteUnusedWidgetsByPost($post_id, $used_widgets)
-	{
+	public static function deleteUnusedWidgetsByPost( $post_id, $used_widgets ) {
 		global $wpdb;
-		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
-		$wid_ids = array();
+		$table     = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
+		$wid_ids   = array();
 		$entry_ids = array();
 
-		$current_widgets = Kaltura_WPModel::getWidgetsByPost($post_id);
-		foreach($current_widgets as $temp_widget)
-		{
+		$current_widgets = Kaltura_WPModel::getWidgetsByPost( $post_id );
+		foreach ( $current_widgets as $temp_widget ) {
 			$should_delete = true;
-			foreach($used_widgets as $wid_entry_id)
-			{
-				$wid = $wid_entry_id[0];
+			foreach ( $used_widgets as $wid_entry_id ) {
+				$wid      = $wid_entry_id[0];
 				$entry_id = $wid_entry_id[1];
 
-				if ($temp_widget["id"] == $wid && $temp_widget["entry_id"] == $entry_id)
+				if ( $temp_widget['id'] == $wid && $temp_widget['entry_id'] == $entry_id ) {
 					$should_delete = false;
+				}
 			}
 
-			if ($should_delete)
-			{
-				$query = $wpdb->prepare("DELETE FROM " . $table . " WHERE post_id = %d AND id = %s and entry_id = %s", $post_id, $temp_widget["id"], $temp_widget["entry_id"]);
-				$wpdb->query($query);
+			if ( $should_delete ) {
+				$query = $wpdb->prepare( 'DELETE FROM ' . $table . ' WHERE post_id = %d AND id = %s and entry_id = %s', $post_id, $temp_widget['id'], $temp_widget['entry_id'] );
+				$wpdb->query( $query );
 			}
 		}
 	}
 
-	public static function deleteWidgetsByComment($comment_id)
-	{
+	public static function deleteWidgetsByComment( $comment_id ) {
 		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 
-		$query = $wpdb->prepare("DELETE FROM " . $table . " WHERE comment_id = %d", $comment_id);
+		$query = $wpdb->prepare( 'DELETE FROM ' . $table . ' WHERE comment_id = %d', $comment_id );
 
-		$wpdb->query($query);
+		$wpdb->query( $query );
 	}
 
-	public static function getLastPublishedPostWidgets($page, $page_size)
-	{
-		return Kaltura_WPModel::getPublishedWidgetsByType(Kaltura_WPModel::WIDGET_TYPE_POST, $page, $page_size);
+	public static function getLastPublishedPostWidgets( $page, $page_size ) {
+		return Kaltura_WPModel::getPublishedWidgetsByType( Kaltura_WPModel::WIDGET_TYPE_POST, $page, $page_size );
 	}
 
-	public static function getLastPublishedCommentWidgets($page, $page_size)
-	{
-		return Kaltura_WPModel::getPublishedWidgetsByType(Kaltura_WPModel::WIDGET_TYPE_COMMENT, $page, $page_size);
+	public static function getLastPublishedCommentWidgets( $page, $page_size ) {
+		return Kaltura_WPModel::getPublishedWidgetsByType( Kaltura_WPModel::WIDGET_TYPE_COMMENT, $page, $page_size );
 	}
 
-	public static function getPublishedWidgetsByType($type, $page, $page_size)
-	{
+	public static function getPublishedWidgetsByType( $type, $page, $page_size ) {
 		global $wpdb;
-		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
-		$offset = ($page - 1) * $page_size;
-		$query = $wpdb->prepare(
-			"SELECT *
-			FROM ".$table."
+		$table  = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
+		$offset = ( $page - 1 ) * $page_size;
+		$query  = $wpdb->prepare(
+			'SELECT *
+			FROM ' . $table . '
 			WHERE
 				status = %d AND
-				type = '" . $wpdb->escape($type) . "'
+				type = \'' . $wpdb->escape( $type ) . '\'
 			ORDER BY created_at DESC
-			LIMIT %d, %d",
+			LIMIT %d, %d',
 			Kaltura_WPModel::WIDGET_STATUS_PUBLISHED,
 			$offset,
-			$page_size);
+			$page_size
+		);
 
-		return $wpdb->get_results($query, ARRAY_A);
+		return $wpdb->get_results( $query, ARRAY_A );
 	}
 
-	public static function getLastPublishedPostWidgetsCount()
-	{
-		return Kaltura_WPModel::getPublishedWidgetsByTypeCount(Kaltura_WPModel::WIDGET_TYPE_POST);
+	public static function getLastPublishedPostWidgetsCount() {
+		return Kaltura_WPModel::getPublishedWidgetsByTypeCount( Kaltura_WPModel::WIDGET_TYPE_POST );
 	}
 
-	public static function getLastPublishedCommentWidgetsCount()
-	{
-		return Kaltura_WPModel::getPublishedWidgetsByTypeCount(Kaltura_WPModel::WIDGET_TYPE_COMMENT);
+	public static function getLastPublishedCommentWidgetsCount() {
+		return Kaltura_WPModel::getPublishedWidgetsByTypeCount( Kaltura_WPModel::WIDGET_TYPE_COMMENT );
 	}
 
-	public static function getPublishedWidgetsByTypeCount($type)
-	{
+	public static function getPublishedWidgetsByTypeCount( $type ) {
 		global $wpdb;
 		$table = $wpdb->prefix . Kaltura_WPDB::WIDGET_TABLE;
 		$query = $wpdb->prepare(
-			"SELECT count(*)
-			FROM ".$table."
+			'SELECT count(*)
+			FROM ' . $table . '
 			WHERE
 				status = %d AND
-				type = '" . $wpdb->escape($type) . "'",
-			Kaltura_WPModel::WIDGET_STATUS_PUBLISHED);
+				type = \'' . $wpdb->escape( $type ) . '\'',
+			Kaltura_WPModel::WIDGET_STATUS_PUBLISHED
+		);
 
-		return $wpdb->get_var($query);
+		return $wpdb->get_var( $query );
 	}
 
-	public static function isCategoryExists($name)
-	{
-        $sanitizer = new KalturaSanitizer();
-        $name = $sanitizer->sanitizer($name, 'string');
+	public static function isCategoryExists( $name ) {
+		$sanitizer = new KalturaSanitizer();
+		$name      = $sanitizer->sanitizer( $name, 'string' );
 
-        return term_exists($name, 'category');
+		return term_exists( $name, 'category' );
 	}
 
-	public static function getCategoryByName($name)
-	{
-        $sanitizer = new KalturaSanitizer();
-        $name = $sanitizer->sanitizer($name, 'string');
+	public static function getCategoryByName( $name ) {
+		$sanitizer = new KalturaSanitizer();
+		$name      = $sanitizer->sanitizer( $name, 'string' );
 
-        if ($term = get_term_by('name', $name, 'category'))
-		{
-			$cat = get_category($term->term_id);
-			if (is_wp_error($cat))
+		if ( $term = get_term_by( 'name', $name, 'category' ) ) {
+			$cat = get_category( $term->term_id );
+			if ( is_wp_error( $cat ) ) {
 				return null;
-			else
+			} else {
 				return $cat;
-		}
-		else
-		{
+			}
+		} else {
 			return null;
 		}
 	}
 
-	public static function getPostByTitle($title)
-	{
-        $sanitizer = new KalturaSanitizer();
-        $title = $sanitizer->sanitizer($title, 'string');
+	public static function getPostByTitle( $title ) {
+		$sanitizer = new KalturaSanitizer();
+		$title     = $sanitizer->sanitizer( $title, 'string' );
 
-        $post_arr = sanitize_post(array("post_title" => $title), 'db');
-		$post_arr = $post_arr["post_title"];
+		$post_arr = sanitize_post( array( 'post_title' => $title ), 'db' );
+		$post_arr = $post_arr['post_title'];
 		global $wpdb;
-		$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type='post'", $title ));
-		if ($post)
-			return get_post($post, OBJECT);
+		$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type='post'", $title ) );
+		if ( $post ) {
+			return get_post( $post, OBJECT );
+		}
+
 		return null;
 	}
 }

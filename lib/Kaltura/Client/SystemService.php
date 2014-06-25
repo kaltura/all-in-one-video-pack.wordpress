@@ -29,26 +29,25 @@
 
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_SystemService extends Kaltura_Client_ServiceBase
-{
-	function __construct(Kaltura_Client_Client $client = null)
-	{
-		parent::__construct($client);
+class Kaltura_Client_SystemService extends Kaltura_Client_ServiceBase {
+	function __construct( Kaltura_Client_Client $client = null ) {
+		parent::__construct( $client );
 	}
 
-	function ping()
-	{
+	function ping() {
 		$kparams = array();
-		$this->client->queueServiceActionCall("system", "ping", null, $kparams);
-		if ($this->client->isMultiRequest())
+		$this->client->queueServiceActionCall( 'system', 'ping', null, $kparams );
+		if ( $this->client->isMultiRequest() ) {
 			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = (bool)Kaltura_Client_ParseUtils::unmarshalSimpleType($resultXmlObject->result);
+		}
+		$resultXml       = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement( $resultXml );
+		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
+		$resultObject = (bool) Kaltura_Client_ParseUtils::unmarshalSimpleType( $resultXmlObject->result );
+
 		return $resultObject;
 	}
 }

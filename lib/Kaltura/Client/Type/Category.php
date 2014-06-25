@@ -28,82 +28,103 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaCategory';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(count($xml->id))
-			$this->id = (int)$xml->id;
-		if(count($xml->parentId))
-			$this->parentId = (int)$xml->parentId;
-		if(count($xml->depth))
-			$this->depth = (int)$xml->depth;
-		if(count($xml->partnerId))
-			$this->partnerId = (int)$xml->partnerId;
-		$this->name = (string)$xml->name;
-		$this->fullName = (string)$xml->fullName;
-		$this->fullIds = (string)$xml->fullIds;
-		if(count($xml->entriesCount))
-			$this->entriesCount = (int)$xml->entriesCount;
-		if(count($xml->createdAt))
-			$this->createdAt = (int)$xml->createdAt;
-		if(count($xml->updatedAt))
-			$this->updatedAt = (int)$xml->updatedAt;
-		$this->description = (string)$xml->description;
-		$this->tags = (string)$xml->tags;
-		if(count($xml->appearInList))
-			$this->appearInList = (int)$xml->appearInList;
-		if(count($xml->privacy))
-			$this->privacy = (int)$xml->privacy;
-		if(count($xml->inheritanceType))
-			$this->inheritanceType = (int)$xml->inheritanceType;
-		if(count($xml->userJoinPolicy))
-			$this->userJoinPolicy = (int)$xml->userJoinPolicy;
-		if(count($xml->defaultPermissionLevel))
-			$this->defaultPermissionLevel = (int)$xml->defaultPermissionLevel;
-		$this->owner = (string)$xml->owner;
-		if(count($xml->directEntriesCount))
-			$this->directEntriesCount = (int)$xml->directEntriesCount;
-		$this->referenceId = (string)$xml->referenceId;
-		if(count($xml->contributionPolicy))
-			$this->contributionPolicy = (int)$xml->contributionPolicy;
-		if(count($xml->membersCount))
-			$this->membersCount = (int)$xml->membersCount;
-		if(count($xml->pendingMembersCount))
-			$this->pendingMembersCount = (int)$xml->pendingMembersCount;
-		$this->privacyContext = (string)$xml->privacyContext;
-		$this->privacyContexts = (string)$xml->privacyContexts;
-		if(count($xml->status))
-			$this->status = (int)$xml->status;
-		if(count($xml->inheritedParentId))
-			$this->inheritedParentId = (int)$xml->inheritedParentId;
-		if(count($xml->partnerSortValue))
-			$this->partnerSortValue = (int)$xml->partnerSortValue;
-		$this->partnerData = (string)$xml->partnerData;
-		$this->defaultOrderBy = (string)$xml->defaultOrderBy;
-		if(count($xml->directSubCategoriesCount))
-			$this->directSubCategoriesCount = (int)$xml->directSubCategoriesCount;
-		if(count($xml->moderation))
-			$this->moderation = (int)$xml->moderation;
-		if(count($xml->pendingEntriesCount))
-			$this->pendingEntriesCount = (int)$xml->pendingEntriesCount;
+		}
+
+		if ( count( $xml->id ) ) {
+			$this->id = (int) $xml->id;
+		}
+		if ( count( $xml->parentId ) ) {
+			$this->parentId = (int) $xml->parentId;
+		}
+		if ( count( $xml->depth ) ) {
+			$this->depth = (int) $xml->depth;
+		}
+		if ( count( $xml->partnerId ) ) {
+			$this->partnerId = (int) $xml->partnerId;
+		}
+		$this->name     = (string) $xml->name;
+		$this->fullName = (string) $xml->fullName;
+		$this->fullIds  = (string) $xml->fullIds;
+		if ( count( $xml->entriesCount ) ) {
+			$this->entriesCount = (int) $xml->entriesCount;
+		}
+		if ( count( $xml->createdAt ) ) {
+			$this->createdAt = (int) $xml->createdAt;
+		}
+		if ( count( $xml->updatedAt ) ) {
+			$this->updatedAt = (int) $xml->updatedAt;
+		}
+		$this->description = (string) $xml->description;
+		$this->tags        = (string) $xml->tags;
+		if ( count( $xml->appearInList ) ) {
+			$this->appearInList = (int) $xml->appearInList;
+		}
+		if ( count( $xml->privacy ) ) {
+			$this->privacy = (int) $xml->privacy;
+		}
+		if ( count( $xml->inheritanceType ) ) {
+			$this->inheritanceType = (int) $xml->inheritanceType;
+		}
+		if ( count( $xml->userJoinPolicy ) ) {
+			$this->userJoinPolicy = (int) $xml->userJoinPolicy;
+		}
+		if ( count( $xml->defaultPermissionLevel ) ) {
+			$this->defaultPermissionLevel = (int) $xml->defaultPermissionLevel;
+		}
+		$this->owner = (string) $xml->owner;
+		if ( count( $xml->directEntriesCount ) ) {
+			$this->directEntriesCount = (int) $xml->directEntriesCount;
+		}
+		$this->referenceId = (string) $xml->referenceId;
+		if ( count( $xml->contributionPolicy ) ) {
+			$this->contributionPolicy = (int) $xml->contributionPolicy;
+		}
+		if ( count( $xml->membersCount ) ) {
+			$this->membersCount = (int) $xml->membersCount;
+		}
+		if ( count( $xml->pendingMembersCount ) ) {
+			$this->pendingMembersCount = (int) $xml->pendingMembersCount;
+		}
+		$this->privacyContext  = (string) $xml->privacyContext;
+		$this->privacyContexts = (string) $xml->privacyContexts;
+		if ( count( $xml->status ) ) {
+			$this->status = (int) $xml->status;
+		}
+		if ( count( $xml->inheritedParentId ) ) {
+			$this->inheritedParentId = (int) $xml->inheritedParentId;
+		}
+		if ( count( $xml->partnerSortValue ) ) {
+			$this->partnerSortValue = (int) $xml->partnerSortValue;
+		}
+		$this->partnerData    = (string) $xml->partnerData;
+		$this->defaultOrderBy = (string) $xml->defaultOrderBy;
+		if ( count( $xml->directSubCategoriesCount ) ) {
+			$this->directSubCategoriesCount = (int) $xml->directSubCategoriesCount;
+		}
+		if ( count( $xml->moderation ) ) {
+			$this->moderation = (int) $xml->moderation;
+		}
+		if ( count( $xml->pendingEntriesCount ) ) {
+			$this->pendingEntriesCount = (int) $xml->pendingEntriesCount;
+		}
 	}
+
 	/**
 	 * The id of the Category
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -111,14 +132,14 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 	public $id = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 */
 	public $parentId = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -126,7 +147,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 	public $depth = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -134,9 +155,9 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 	public $partnerId = null;
 
 	/**
-	 * The name of the Category. 
-	 * 	 The following characters are not allowed: '<', '>', ','
-	 * 	 
+	 * The name of the Category.
+	 *     The following characters are not allowed: '<', '>', ','
+	 *
 	 *
 	 * @var string
 	 */
@@ -144,7 +165,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The full name of the Category
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly
@@ -153,7 +174,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The full ids of the Category
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly
@@ -162,7 +183,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of entries in this Category (including child categories)
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -171,7 +192,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Creation date as Unix timestamp (In seconds)
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -180,7 +201,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Update date as Unix timestamp (In seconds)
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -189,7 +210,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Category description
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -197,7 +218,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Category tags
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -205,7 +226,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * If category will be returned for list action.
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_AppearInListType
 	 */
@@ -213,15 +234,15 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * defines the privacy of the entries that assigned to this category
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_PrivacyType
 	 */
 	public $privacy = null;
 
 	/**
-	 * If Category members are inherited from parent category or set manualy. 
-	 * 	 
+	 * If Category members are inherited from parent category or set manualy.
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_InheritanceType
 	 */
@@ -229,7 +250,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Who can ask to join this category
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_UserJoinPolicyType
 	 * @readonly
@@ -238,7 +259,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Default permissionLevel for new users
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_CategoryUserPermissionLevel
 	 */
@@ -246,7 +267,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Category Owner (User id)
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -254,7 +275,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of entries that belong to this category directly
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -263,7 +284,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Category external id, controlled and managed by the partner.
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -271,7 +292,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * who can assign entries to this category
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_ContributionPolicyType
 	 */
@@ -279,7 +300,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of active members for this category
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -288,7 +309,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of pending members for this category
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -297,7 +318,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Set privacy context for search entries that assiged to private and public categories. the entries will be private if the search context is set with those categories.
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -305,7 +326,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * comma separated parents that defines a privacyContext for search
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly
@@ -314,7 +335,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Status
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_CategoryStatus
 	 * @readonly
@@ -323,7 +344,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The category id that this category inherit its members and members permission (for contribution and join)
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -332,23 +353,23 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Can be used to store various partner related data as a numeric value
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 */
 	public $partnerSortValue = null;
 
 	/**
-	 * Can be used to store various partner related data as a string 
-	 * 	 
+	 * Can be used to store various partner related data as a string
+	 *
 	 *
 	 * @var string
 	 */
 	public $partnerData = null;
 
 	/**
-	 * Enable client side applications to define how to sort the category child categories 
-	 * 	 
+	 * Enable client side applications to define how to sort the category child categories
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_CategoryOrderBy
 	 */
@@ -356,7 +377,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of direct children categories
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -364,8 +385,8 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 	public $directSubCategoriesCount = null;
 
 	/**
-	 * Moderation to add entries to this category by users that are not of permission level Manager or Moderator.  
-	 * 	 
+	 * Moderation to add entries to this category by users that are not of permission level Manager or Moderator.
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */
@@ -373,7 +394,7 @@ class Kaltura_Client_Type_Category extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Nunber of pending moderation entries
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly

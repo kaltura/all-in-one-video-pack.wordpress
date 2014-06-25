@@ -28,53 +28,58 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaPlaylist';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->playlistContent = (string)$xml->playlistContent;
-		if(empty($xml->filters))
+		}
+
+		$this->playlistContent = (string) $xml->playlistContent;
+		if ( empty( $xml->filters ) ) {
 			$this->filters = array();
-		else
-			$this->filters = Kaltura_Client_ParseUtils::unmarshalArray($xml->filters, "KalturaMediaEntryFilterForPlaylist");
-		if(count($xml->totalResults))
-			$this->totalResults = (int)$xml->totalResults;
-		if(count($xml->playlistType))
-			$this->playlistType = (int)$xml->playlistType;
-		if(count($xml->plays))
-			$this->plays = (int)$xml->plays;
-		if(count($xml->views))
-			$this->views = (int)$xml->views;
-		if(count($xml->duration))
-			$this->duration = (int)$xml->duration;
-		$this->executeUrl = (string)$xml->executeUrl;
+		} else {
+			$this->filters = Kaltura_Client_ParseUtils::unmarshalArray( $xml->filters, 'KalturaMediaEntryFilterForPlaylist' );
+		}
+		if ( count( $xml->totalResults ) ) {
+			$this->totalResults = (int) $xml->totalResults;
+		}
+		if ( count( $xml->playlistType ) ) {
+			$this->playlistType = (int) $xml->playlistType;
+		}
+		if ( count( $xml->plays ) ) {
+			$this->plays = (int) $xml->plays;
+		}
+		if ( count( $xml->views ) ) {
+			$this->views = (int) $xml->views;
+		}
+		if ( count( $xml->duration ) ) {
+			$this->duration = (int) $xml->duration;
+		}
+		$this->executeUrl = (string) $xml->executeUrl;
 	}
+
 	/**
-	 * Content of the playlist - 
-	 * 	 XML if the playlistType is dynamic 
-	 * 	 text if the playlistType is static 
-	 * 	 url if the playlistType is mRss 
-	 * 	 
+	 * Content of the playlist -
+	 *     XML if the playlistType is dynamic
+	 *     text if the playlistType is static
+	 *     url if the playlistType is mRss
+	 *
 	 *
 	 * @var string
 	 */
 	public $playlistContent = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var array of KalturaMediaEntryFilterForPlaylist
 	 */
@@ -82,7 +87,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Maximum count of results to be returned in playlist execution
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 */
@@ -90,7 +95,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Type of playlist
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_PlaylistType
 	 */
@@ -98,7 +103,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Number of plays
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -107,7 +112,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Number of views
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -116,7 +121,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The duration in seconds
-	 * 	 
+	 *
 	 *
 	 * @var int
 	 * @readonly
@@ -125,7 +130,7 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The url for this playlist
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly

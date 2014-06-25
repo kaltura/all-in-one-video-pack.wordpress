@@ -28,11 +28,10 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Plugin extends Kaltura_Client_Plugin
-{
+class Kaltura_Client_Metadata_Plugin extends Kaltura_Client_Plugin {
 	/**
 	 * @var Kaltura_Client_Metadata_MetadataService
 	 */
@@ -43,38 +42,35 @@ class Kaltura_Client_Metadata_Plugin extends Kaltura_Client_Plugin
 	 */
 	public $metadataProfile = null;
 
-	protected function __construct(Kaltura_Client_Client $client)
-	{
-		parent::__construct($client);
-		$this->metadata = new Kaltura_Client_Metadata_MetadataService($client);
-		$this->metadataProfile = new Kaltura_Client_Metadata_MetadataProfileService($client);
+	protected function __construct( Kaltura_Client_Client $client ) {
+		parent::__construct( $client );
+		$this->metadata        = new Kaltura_Client_Metadata_MetadataService( $client );
+		$this->metadataProfile = new Kaltura_Client_Metadata_MetadataProfileService( $client );
 	}
 
 	/**
 	 * @return Kaltura_Client_Metadata_Plugin
 	 */
-	public static function get(Kaltura_Client_Client $client)
-	{
-		return new Kaltura_Client_Metadata_Plugin($client);
+	public static function get( Kaltura_Client_Client $client ) {
+		return new Kaltura_Client_Metadata_Plugin( $client );
 	}
 
 	/**
 	 * @return array<Kaltura_Client_ServiceBase>
 	 */
-	public function getServices()
-	{
+	public function getServices() {
 		$services = array(
-			'metadata' => $this->metadata,
+			'metadata'        => $this->metadata,
 			'metadataProfile' => $this->metadataProfile,
 		);
+
 		return $services;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName()
-	{
+	public function getName() {
 		return 'metadata';
 	}
 }

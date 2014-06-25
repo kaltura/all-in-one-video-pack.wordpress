@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Enum_MetadataStatus
-{
-	const VALID = 1;
+class Kaltura_Client_Metadata_Enum_MetadataStatus {
+	const VALID   = 1;
 	const INVALID = 2;
 	const DELETED = 3;
 }

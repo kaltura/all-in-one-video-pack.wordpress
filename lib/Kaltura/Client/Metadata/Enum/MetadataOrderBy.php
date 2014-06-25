@@ -28,18 +28,17 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Enum_MetadataOrderBy
-{
-	const CREATED_AT_ASC = "+createdAt";
-	const METADATA_PROFILE_VERSION_ASC = "+metadataProfileVersion";
-	const UPDATED_AT_ASC = "+updatedAt";
-	const VERSION_ASC = "+version";
-	const CREATED_AT_DESC = "-createdAt";
-	const METADATA_PROFILE_VERSION_DESC = "-metadataProfileVersion";
-	const UPDATED_AT_DESC = "-updatedAt";
-	const VERSION_DESC = "-version";
+class Kaltura_Client_Metadata_Enum_MetadataOrderBy {
+	const CREATED_AT_ASC                = '+createdAt';
+	const METADATA_PROFILE_VERSION_ASC  = '+metadataProfileVersion';
+	const UPDATED_AT_ASC                = '+updatedAt';
+	const VERSION_ASC                   = '+version';
+	const CREATED_AT_DESC               = '-createdAt';
+	const METADATA_PROFILE_VERSION_DESC = '-metadataProfileVersion';
+	const UPDATED_AT_DESC               = '-updatedAt';
+	const VERSION_DESC                  = '-version';
 }
 
