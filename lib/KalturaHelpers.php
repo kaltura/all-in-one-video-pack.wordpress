@@ -170,7 +170,7 @@ class KalturaHelpers
 	public static function enqueueHtml5Lib($uiConfId)
 	{
         $kmodel = KalturaModel::getInstance();
-        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
+        $uiConfId = (int)$kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
 
         $html5LibUrl = ''.
 			self::getServerUrl().
@@ -259,8 +259,9 @@ class KalturaHelpers
 	public static function calculatePlayerHeight($uiConfId, $width, $playerRatio = '4:3')
 	{
 		$kmodel = KalturaModel::getInstance();
-        $width = $kmodel->_sanitizer->sanitizer($width, 'intOrString');
-        $uiConfId = $kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
+        $width = (int)$kmodel->_sanitizer->sanitizer($width, 'intOrString');
+        $uiConfId = (int)$kmodel->_sanitizer->sanitizer($uiConfId, 'intOrString');
+
 
 		$player = $kmodel->getPlayerUiConf($uiConfId);
         if (empty($width))
@@ -288,6 +289,7 @@ class KalturaHelpers
 
 		// we will backup the shortcode array, and run only our shortcode
 		$shortcode_tags_backup = $shortcode_tags;
+        $shortcode_tags = array();
 
 		add_shortcode('kaltura-widget', $callback);
 
@@ -324,7 +326,7 @@ class KalturaHelpers
 	{
 		$defaultSettings = require(dirname(__FILE__).'/../settings.php');
 
-		if (function_exists('wpcom_is_vip'))
+        if ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() )
 			return $defaultSettings;
 
 		// on non vip enviroments, try to load settings.ini for backward compatibility
