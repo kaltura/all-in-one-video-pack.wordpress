@@ -72,7 +72,7 @@ class KalturaSanitizer extends Kaltura_BaseController {
 	}
 
 	private function email( $value ) {
-		return filter_var( $value, FILTER_VALIDATE_EMAIL );
+		return sanitize_email(filter_var( $value, FILTER_VALIDATE_EMAIL ));
 	}
 
 	private function playerRatio( $value ) {
