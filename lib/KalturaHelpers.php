@@ -12,7 +12,7 @@ class KalturaHelpers {
 
 	public static function getServerUrl() {
 		$sanitizer = new KalturaSanitizer();
-		$url       = $sanitizer->sanitizer( KalturaHelpers::getOption( 'server_url' ), 'url' );
+		$url       = (string)$sanitizer->sanitizer( KalturaHelpers::getOption( 'server_url' ), 'url' );
 
 		return rtrim( $url, '/' );
 	}
@@ -20,7 +20,7 @@ class KalturaHelpers {
 	public static function getCdnUrl()
 	{
         $sanitizer = new KalturaSanitizer();
-        $url = $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
+        $url = (string) $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
 		return rtrim($url, '/');
 	}
 
@@ -100,7 +100,7 @@ class KalturaHelpers {
 
 	public static function getContributionWizardFlashVars( $ks ) {
 		$kmodel = KalturaModel::getInstance();
-		$ks     = $kmodel->_sanitizer->sanitizer( $ks, 'string' );
+		$ks     = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
 
 		$flashVars                  = array();
 		$flashVars['userId']        = KalturaHelpers::getLoggedUserId();
@@ -116,8 +116,8 @@ class KalturaHelpers {
 
 	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null ) {
 		$kmodel  = KalturaModel::getInstance();
-		$ks      = $kmodel->_sanitizer->sanitizer( $ks, 'string' );
-		$entryId = $kmodel->_sanitizer->sanitizer( $entryId, 'string' );
+		$ks      = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
+		$entryId = (string)$kmodel->_sanitizer->sanitizer( $entryId, 'string' );
 
 		$flashVars              = array();
 		$flashVars['partnerId'] = KalturaHelpers::getOption( 'kaltura_partner_id' );
@@ -148,8 +148,8 @@ class KalturaHelpers {
 
 	public static function getSwfUrlForWidget( $widgetId = null, $uiConfId = null ) {
 		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = $kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
-		$widgetId = $kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
+		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
+		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
 
 		if ( ! $widgetId ) {
 			$widgetId = '_' . KalturaHelpers::getOption( 'kaltura_partner_id' );
@@ -165,7 +165,7 @@ class KalturaHelpers {
 
 	public static function enqueueHtml5Lib( $uiConfId ) {
 		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = $kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
+		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
 
 		$html5LibUrl = '' .
 			self::getServerUrl() .
@@ -179,7 +179,7 @@ class KalturaHelpers {
 
 	public static function getContributionWizardUrl( $uiConfId ) {
 		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = $kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
+		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
 
 		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . $uiConfId;
 	}
@@ -194,10 +194,10 @@ class KalturaHelpers {
 
 	public static function getThumbnailUrl( $widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000 ) {
 		$kmodel   = KalturaModel::getInstance();
-		$widgetId = $kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
-		$width    = $kmodel->_sanitizer->sanitizer( $width, 'int' );
-		$height   = $kmodel->_sanitizer->sanitizer( $height, 'int' );
-		$version  = $kmodel->_sanitizer->sanitizer( $version, 'int' );
+		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
+		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'int' );
+		$height   = (int)$kmodel->_sanitizer->sanitizer( $height, 'int' );
+		$version  = (int)$kmodel->_sanitizer->sanitizer( $version, 'int' );
 
 		$url  = KalturaHelpers::getCdnUrl();
 		$url .= '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
@@ -222,8 +222,8 @@ class KalturaHelpers {
 
 	public static function compareWPVersion( $compareVersion, $operator ) {
 		$kmodel         = KalturaModel::getInstance();
-		$compareVersion = $kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
-		$operator       = $kmodel->_sanitizer->sanitizer( $operator, 'string' );
+		$compareVersion = (string)$kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
+		$operator       = (string)$kmodel->_sanitizer->sanitizer( $operator, 'string' );
 
 		global $wp_version;
 
@@ -232,8 +232,8 @@ class KalturaHelpers {
 
 	public static function compareKalturaVersion( $compareVersion, $operator ) {
 		$kmodel         = KalturaModel::getInstance();
-		$compareVersion = $kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
-		$operator       = $kmodel->_sanitizer->sanitizer( $operator, 'string' );
+		$compareVersion = (string)$kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
+		$operator       = (string)$kmodel->_sanitizer->sanitizer( $operator, 'string' );
 
 		$kversion = self::getPluginVersion();
 
@@ -249,8 +249,8 @@ class KalturaHelpers {
 
 	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
 		$kmodel   = KalturaModel::getInstance();
-		$width    = $kmodel->_sanitizer->sanitizer( $width, 'intOrString' );
-		$uiConfId = $kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
+		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'intOrString' );
+		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
 
 		$player = $kmodel->getPlayerUiConf( $uiConfId );
 		if ( empty( $width ) ) {
@@ -274,8 +274,9 @@ class KalturaHelpers {
 	public static function runKalturaShortcode( $content, $callback ) {
 		global $shortcode_tags;
 
-		// we will backup the shortcode array, and run only our shortcode
+        // we will backup the shortcode array, and run only our shortcode
 		$shortcode_tags_backup = $shortcode_tags;
+        $shortcode_tags = array();
 
 		add_shortcode( 'kaltura-widget', $callback );
 

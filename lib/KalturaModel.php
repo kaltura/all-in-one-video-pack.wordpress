@@ -60,7 +60,7 @@ class KalturaModel {
 	}
 
 	public function getAdminSession( $privileges = '' ) {
-		$privileges = $this->_sanitizer->sanitizer( $privileges, 'string' );
+		$privileges = (string)$this->_sanitizer->sanitizer( $privileges, 'string' );
 
 		return $this->createKS( $this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::ADMIN, $privileges );
 	}
@@ -150,7 +150,7 @@ class KalturaModel {
 	}
 
 	public function updateBaseEntry( $baseEntryId, Kaltura_Client_Type_BaseEntry $baseEntry ) {
-		$baseEntryId = $this->_sanitizer->sanitizer( $baseEntryId, 'string' );
+		$baseEntryId = (string)$this->_sanitizer->sanitizer( $baseEntryId, 'string' );
 
 		return $this->_client->baseEntry->update( $baseEntryId, $baseEntry );
 	}
@@ -184,8 +184,8 @@ class KalturaModel {
 	}
 
 	public function listEntries( $pageSize, $page ) {
-		$page     = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = $this->_sanitizer->sanitizer( $pageSize, 'int' );
+		$page     = (string)$this->_sanitizer->sanitizer( $page, 'string' );
+		$pageSize = (int)$this->_sanitizer->sanitizer( $pageSize, 'int' );
 
 		$types = implode( ',', array( Kaltura_Client_Enum_EntryType::MEDIA_CLIP ) );
 
@@ -193,8 +193,8 @@ class KalturaModel {
 	}
 
 	public function listRootCategory( $pageSize, $page, $categories ) {
-		$page     = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = $this->_sanitizer->sanitizer( $pageSize, 'int' );
+		$page     = (string)$this->_sanitizer->sanitizer( $page, 'string' );
+		$pageSize = (int)$this->_sanitizer->sanitizer( $pageSize, 'int' );
 
 		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = '-createdAt';
@@ -208,9 +208,9 @@ class KalturaModel {
 	}
 
 	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categories, $word ) {
-		$page       = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize   = $this->_sanitizer->sanitizer( $pageSize, 'int' );
-		$word       = $this->_sanitizer->sanitizer( $word, 'string' );
+		$page       = (string)$this->_sanitizer->sanitizer( $page, 'string' );
+		$pageSize   = (int)$this->_sanitizer->sanitizer( $pageSize, 'int' );
+		$word       = (string)$this->_sanitizer->sanitizer( $word, 'string' );
 		$categories = $this->_sanitizer->sanitizer( $categories, 'arr' );
 
 		$rootCategory    = $this->_sanitizer->sanitizer( KalturaHelpers::getOption( 'kaltura_root_category' ), 'string' );
@@ -401,7 +401,7 @@ class KalturaModel {
 	}
 
 	public function getPlayerUiConf( $uiConfId ) {
-		$uiConfId = $this->_sanitizer->sanitizer( $uiConfId, 'string' );
+		$uiConfId = (string)$this->_sanitizer->sanitizer( $uiConfId, 'string' );
 
 		return $this->_client->uiConf->get( $uiConfId );
 	}
@@ -425,8 +425,8 @@ class KalturaModel {
 	}
 
 	public function addEntryMetadata( $metadataProfileId, $entryId, $xmlData ) {
-		$metadataProfileId = $this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
-		$entryId           = $this->_sanitizer->sanitizer( $entryId, 'string' );
+		$metadataProfileId = (string)$this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
+		$entryId           = (string)$this->_sanitizer->sanitizer( $entryId, 'string' );
 
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get( $this->_client );
 		$objectType     = Kaltura_Client_Metadata_Enum_MetadataObjectType::ENTRY;
@@ -443,7 +443,7 @@ class KalturaModel {
 	}
 
 	public function getMetadataProfileFields( $metadataProfileId ) {
-		$metadataProfileId = $this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
+		$metadataProfileId = (string)$this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
 
 		$metadataPlugin = Kaltura_Client_Metadata_Plugin::get( $this->_client );
 
@@ -451,10 +451,10 @@ class KalturaModel {
 	}
 
 	public function updateEntryPermalinkMetadata( $entryId, $permalink, $metadataProfileId, $metadataFieldName ) {
-		$entryId           = $this->_sanitizer->sanitizer( $entryId, 'string' );
-		$permalink         = $this->_sanitizer->sanitizer( $permalink, 'string' );
-		$metadataProfileId = $this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
-		$metadataFieldName = $this->_sanitizer->sanitizer( $metadataFieldName, 'string' );
+		$entryId           = (string)$this->_sanitizer->sanitizer( $entryId, 'string' );
+		$permalink         = (string)$this->_sanitizer->sanitizer( $permalink, 'string' );
+		$metadataProfileId = (string)$this->_sanitizer->sanitizer( $metadataProfileId, 'string' );
+		$metadataFieldName = (string)$this->_sanitizer->sanitizer( $metadataFieldName, 'string' );
 
 		$result  = $this->getEntryMetadata( $entryId, $metadataProfileId );
 		$xmlData = '<metadata><' . $metadataFieldName . '>' . $permalink . '</' . $metadataFieldName . '></metadata>';
@@ -468,7 +468,7 @@ class KalturaModel {
 	}
 
 	public function updateEntryPermalink( $postId ) {
-		$postId                 = $this->_sanitizer->sanitizer( $postId, 'int' );
+		$postId                 = (int)$this->_sanitizer->sanitizer( $postId, 'int' );
 		$metadataProfileId      = KalturaHelpers::getOption( 'kaltura_permalink_metadata_profile_id' );
 		$metadataFieldsResponse = $this->getMetadataProfileFields( $metadataProfileId );
 

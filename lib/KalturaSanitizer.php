@@ -84,7 +84,7 @@ class KalturaSanitizer extends Kaltura_BaseController {
 	private function url( $value ) {
 		$regex = '/^((?:http(?:s)?\:\/\/)?[a-zA-Z0-9_-]+(?:.[a-zA-Z0-9_-]+)*.[a-zA-Z]{2,4}(?:\/[a-zA-Z0-9_]+)*(?:\/[a-zA-Z0-9_]+.[a-zA-Z]{2,4}(?:\?[a-zA-Z0-9_]+\=[a-zA-Z0-9_]+)?)?(?:\&[a-zA-Z0-9_]+\=[a-zA-Z0-9_]+)*)$/';
 
-		return preg_match( $regex, $value );
+		return esc_url(preg_match( $regex, $value ));
 	}
 
 	private function generateTabUrl( $params ) {
