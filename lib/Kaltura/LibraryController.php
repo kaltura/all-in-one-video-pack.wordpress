@@ -301,9 +301,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	protected function videopostsStep3() {
 		$entries      = KalturaHelpers::getRequestPostParam( 'entries', array() );
 		$createdPosts = 0;
-		$uiConfId     = KalturaHelpers::getRequestPostParam( 'uiconf_id' );
-		$width        = KalturaHelpers::getRequestPostParam( 'width' );
-		$height       = KalturaHelpers::getRequestPostParam( 'height' );
+		$uiConfId     = (string)KalturaHelpers::getRequestPostParam( 'uiconf_id' );
+		$width        = (string)KalturaHelpers::getRequestPostParam( 'width' );
+		$height       = (string)KalturaHelpers::getRequestPostParam( 'height' );
+
 		foreach ( $entries as $entryCat ) {
 			$arr          = unserialize( base64_decode( $entryCat ) );
 			$entryId      = $arr[0];

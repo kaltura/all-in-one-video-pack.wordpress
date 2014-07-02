@@ -10,6 +10,7 @@
 			</p>
 		</div>
 		<br />
+        adminWarning(), mediaButtonsContextFilter(), commentFormAction(), shortcodeHandler(), savePost(), videopostsStep3()
 
 		<div class="wrap">
 			<a href="#" onclick="history.go(-1);"><?php esc_html( 'Back' ); ?></a>

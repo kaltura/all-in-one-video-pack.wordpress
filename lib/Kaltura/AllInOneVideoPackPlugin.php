@@ -62,9 +62,9 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function adminWarning() {
-		echo '
+		echo esc_html('
 		<div class="updated fade"><p><strong>' . __( 'To complete the All in One Video Pack installation, <a href="' . get_option( 'siteurl' ) . '/wp-admin/options-general.php?page=kaltura_options">you must get a Partner ID.</a>' ) . '</strong></p></div>
-		';
+		');
 	}
 
 	public function mceExternalPluginsFilter( $content ) {
@@ -207,10 +207,10 @@ EOF;
 
 		$user = wp_get_current_user();
 		if ( ! $user->ID && ! KalturaHelpers::anonymousCommentsAllowed() ) {
-			echo 'You must be <a href=' . get_option( 'siteurl' ) . '/wp-login.php?redirect_to=' . urlencode( get_permalink() ) . '>logged in</a> to post a <br /> video comment.';
+			echo esc_html('You must be <a href=' . get_option( 'siteurl' ) . '/wp-login.php?redirect_to=' . urlencode( get_permalink() ) . '>logged in</a> to post a <br /> video comment.');
 		} else {
 			$js_click_code = 'Kaltura.openCommentCW(\'' . site_url() . '?kaltura_iframe_handler' . '\'); ';
-			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . $js_click_code . '" />';
+			echo esc_html('<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . $js_click_code . '" />');
 		}
 	}
 
@@ -288,7 +288,7 @@ EOF;
 
 		$html = apply_filters( 'kaltura_player_html', $html, $attrs );
 
-		return $html;
+		return esc_html($html);
 	}
 
 	public function savePost( $postId ) {
