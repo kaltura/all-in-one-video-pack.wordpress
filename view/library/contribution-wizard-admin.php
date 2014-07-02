@@ -51,7 +51,7 @@ $this->renderView( 'contribution-wizard.php' );
 			url = "<?php echo esc_js( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true' ) ) ); ?>&entryIds[]=" + entryIds[0];
 		}
 		else {
-			alert("<?php _e( 'No Entries Uploaded' ); ?>");
+			alert("<?php esc_html( 'No Entries Uploaded' ); ?>");
 		}
 
 		window.location.href = url

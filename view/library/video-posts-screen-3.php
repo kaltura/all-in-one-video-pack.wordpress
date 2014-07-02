@@ -1,6 +1,6 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <div class="wrap kaltura-wrap">
-	<h2><?php _e( 'Creating Video Post from Category' ); ?></h2>
+	<h2><?php esc_html( 'Creating Video Post from Category' ); ?></h2>
 	<?php $this->renderView( 'library/library-menu.php' ); ?>
 	<br clear="all" />
 	<?php if ( $this->numOfCreatedPosts === 1 ): ?>
@@ -13,7 +13,7 @@
 	<?php endif; ?>
 	<div class="tablenav">
 		<div class="alignleft actions">
-			<input type="button" value="<?php _e( 'View Posts' ); ?>" onclick="window.location.href = 'edit.php';" name="doaction2" id="doaction2" class="button-secondary action" />
+			<input type="button" value="<?php esc_html( 'View Posts' ); ?>" onclick="window.location.href = 'edit.php';" name="doaction2" id="doaction2" class="button-secondary action" />
 			<br class="clear" />
 		</div>
 		<br class="clear" />

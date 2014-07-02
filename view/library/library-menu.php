@@ -29,12 +29,12 @@ $menu = array(
 </ul>
 <table id="kaltura-cms-login">
 	<tr class="kalturaFirstRow">
-		<th align="left"><?php _e( 'Partner ID' ); ?>:</th>
+		<th align="left"><?php esc_html( 'Partner ID' ); ?>:</th>
 		<td style="padding-right: 90px;">
 			<strong><?php echo esc_html( KalturaHelpers::getOption( 'kaltura_partner_id' ) ); ?></strong></td>
 	</tr>
 	<tr>
-		<th align="left"><?php _e( 'KMC username' ); ?>:</th>
+		<th align="left"><?php esc_html( 'KMC username' ); ?>:</th>
 		<td style="padding-right: 90px;">
 			<strong><?php echo esc_html( KalturaHelpers::getOption( 'kaltura_cms_user' ) ); ?></strong></td>
 	</tr>

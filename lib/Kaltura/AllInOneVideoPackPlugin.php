@@ -153,7 +153,8 @@ class Kaltura_AllInOneVideoPackPlugin {
 		<a href="{$kaltura_iframe_src}&amp;TB_iframe=true&amp;height=500&amp;width=840" class="thickbox" title='$kaltura_title'><img src='$kaltura_button_src' alt='$kaltura_title' /></a>
 EOF;
 
-		return $content;
+
+		return esc_html($content);
 	}
 
 	public function mediaUploadTabsFilter( $content ) {
