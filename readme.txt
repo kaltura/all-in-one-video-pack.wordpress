@@ -36,8 +36,9 @@ You can also connect your Kaltura Video plugin to Kaltura�s Community Edition-
 * Sidebar widget displaying all recent videos and video comments posted
 * Update thumbnail of video by selecting frame from video
 
-**What�s New in Version 2.5?**
+**What�s New in Version 2.6?**
 -------------
+* WordPress VIP certification including: sanitization, escaping and many other improvements.
 * Full support for WordPress 3.5.2
 * MultiUser Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
 * Mobile playback support � reach anyone on any device (including iOS, Android), web, and set-top boxes.
