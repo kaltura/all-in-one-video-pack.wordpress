@@ -19,7 +19,7 @@ class Kaltura_FrontEndController extends Kaltura_BaseController {
 			$kmodel = KalturaModel::getInstance();
 			$ks     = $kmodel->getClientSideSession();
 			if ( ! $ks ) {
-				$jsError = __( 'Failed to start new session.' );
+				$jsError = esc_html__( 'Failed to start new session.' );
 			} else {
 				$params['swfUrl']    = KalturaHelpers::getContributionWizardUrl( KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) ? KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) : KalturaHelpers::getOption( 'kcw_ui_conf_comments' ) );
 				$params['flashVars'] = KalturaHelpers::getContributionWizardFlashVars( $ks );
@@ -45,30 +45,30 @@ class Kaltura_FrontEndController extends Kaltura_BaseController {
 			$comment_author_email = $wpdb->escape( $user->user_email );
 		} else {
 			if ( get_option( 'comment_registration' ) ) {
-				return __( 'Sorry, you must be logged in to post a comment.' );
+				return esc_html__( 'Sorry, you must be logged in to post a comment.' );
 			}
 		}
 
 		if ( get_option( 'require_name_email' ) && ! $user->ID ) {
 			if ( 6 > strlen( $comment_author_email ) || '' == $comment_author ) {
-				return __( 'Error: please fill the required fields (name, email).' );
+				return esc_html__( 'Error: please fill the required fields (name, email).' );
 			} elseif ( ! is_email( $comment_author_email ) ) {
-				return __( 'Error: please enter a valid email address.' );
+				return esc_html__( 'Error: please enter a valid email address.' );
 			}
 		}
 		// end of wordpress validation code
 
 		if ( ! KalturaHelpers::videoCommentsEnabled() ) {
-			return __( 'You do not have sufficient permissions to access this page.' );
+			return esc_html__( 'You do not have sufficient permissions to access this page.' );
 		}
 		if ( ! KalturaHelpers::anonymousCommentsAllowed() && ! $user->ID ) {
-			return __( 'You must be logged in to post a comment.' );
+			return esc_html__( 'You must be logged in to post a comment.' );
 		}
 
 		$post_id = KalturaHelpers::getRequestParam( 'postid' );
 
 		if ( ! $post_id ) {
-			return __( 'Invalid post id.' );
+			return esc_html__( 'Invalid post id.' );
 		}
 
 		return '';

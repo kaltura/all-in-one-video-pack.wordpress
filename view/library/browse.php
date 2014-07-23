@@ -61,7 +61,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 
 		</ul>
 		<div>
-			<a href="javascript:;" id="clear_categories"><?php esc_html( 'clear categories' ); ?></a>
+			<a href="javascript:;" id="clear_categories"><?php echo esc_html( 'clear categories' ); ?></a>
 		</div>
 		<ul id="filter-categories">
 			<?php
@@ -140,7 +140,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 					$sendToEditorUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'kaction' => 'sendtoeditor', 'entryIds' => array( $mediaEntry->id ) ) );
 					?>
 
-					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="showName" title="<?php esc_html( 'Click to edit' ); ?>">
+					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="showName" title="<?php echo esc_attr( 'Click to edit' ); ?>">
 						<?php echo esc_html( $mediaEntry->name ); ?><br />
 					</div>
 					<div class="thumb">

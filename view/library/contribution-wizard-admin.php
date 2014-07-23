@@ -9,7 +9,7 @@ $this->renderView( 'contribution-wizard.php' );
 	var cwWidth = 790;
 	var cwHeight = 360;
 	var entryIds = [];
-	debugger;
+	//debugger;
 	var topWindow = Kaltura.getTopWindow();
 	topWindow.Kaltura.unbindOverlayClick();
 
@@ -51,7 +51,7 @@ $this->renderView( 'contribution-wizard.php' );
 			url = "<?php echo esc_js( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true' ) ) ); ?>&entryIds[]=" + entryIds[0];
 		}
 		else {
-			alert("<?php esc_html( 'No Entries Uploaded' ); ?>");
+			alert("<?php echo esc_html( 'No Entries Uploaded' ); ?>");
 		}
 
 		window.location.href = url

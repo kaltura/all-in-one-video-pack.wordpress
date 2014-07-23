@@ -1,7 +1,7 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( $this->error ): ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
 		<br />
 
 		<div class="error">
@@ -12,12 +12,12 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="history.go(-1);"><?php esc_html( 'Back' ); ?></a>
+			<a href="#" onclick="history.go(-1);"><?php echo esc_html( 'Back' ); ?></a>
 		</div>
 	</div>
 <?php elseif ( $this->success === true ): ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'Congratulations!' ); ?></h2>
+		<h2><?php echo esc_html( 'Congratulations!' ); ?></h2>
 		<br />
 
 		<div class="updated fade">
@@ -34,13 +34,13 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = 'options-general.php?page=kaltura_options'"><?php esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = 'options-general.php?page=kaltura_options'"><?php echo esc_html( 'Continue...' ); ?></a>
 		</div>
 	</div>
 <?php
 else: ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
 
 		<p>
 			Please enter your Kaltura Management Console (KMC) Email & password
@@ -51,15 +51,15 @@ else: ?>
 
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Partner ID' ); ?>:</th>
+				<th scope="row"><?php echo esc_html( 'Partner ID' ); ?>:</th>
 				<td><input type="text" id="partner_id" name="partner_id" value="" size="10" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Email' ); ?>:</th>
+				<th scope="row"><?php echo esc_html( 'Email' ); ?>:</th>
 				<td><input type="text" id="email" name="email" value="" size="40" /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Password' ); ?>:</th>
+				<th scope="row"><?php echo esc_html( 'Password' ); ?>:</th>
 				<td><input type="password" id="password" name="password" value="" size="20" />
 					<a href="<?php echo esc_url( KalturaHelpers::getServerUrl() ); ?>/index.php/kmc">forgot password?</a>
 				</td>
@@ -67,7 +67,7 @@ else: ?>
 		</table>
 
 		<p class="submit" style="text-align: left;">
-			<input type="submit" name="Submit" value="<?php esc_html( 'Complete installation' ) ?>" /></p>
+			<input type="submit" name="Submit" value="<?php echo esc_html( 'Complete installation' ) ?>" /></p>
 		</form>
 	</div>
 <?php endif;

@@ -18,7 +18,7 @@
 				}
 				?>
 				<li class="<?php echo esc_attr( $status ); ?>">
-					<div id="entryId_<?php echo esc_attr( $entry->id ) ?>" class="entryId showName" title="<?php esc_html( 'Click to edit' ); ?>">
+					<div id="entryId_<?php echo esc_attr( $entry->id ) ?>" class="entryId showName" title="<?php echo esc_attr( 'Click to edit' ); ?>">
 						<?php echo esc_html( $entry->name ) ?><br />
 					</div>
 					<div class="thumb">
@@ -39,7 +39,7 @@
 		<br class="clear" />
 	</div>
 	<div class="options">
-		<a class="button" disabled="disabled" onclick="kaltura_sendToEditor();"><?php esc_html( 'Create a player for each selected' ); ?></a>
+		<a class="button" disabled="disabled" onclick="kaltura_sendToEditor();"><?php echo esc_html( 'Create a player for each selected' ); ?></a>
 	</div>
 	<div class="fixIe7">&nbsp;</div>
 </div>
@@ -61,7 +61,7 @@
 		}
 
 		if (entryIds.length == 0) {
-			alert('<?php esc_html('Please select at least one item'); ?>');
+			alert('<?php echo esc_html('Please select at least one item'); ?>');
 			return;
 		}
 

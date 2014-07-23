@@ -286,7 +286,7 @@ class Kaltura_Client_ClientBase {
 	 *
 	 * @return array of result and error
 	 */
-	private function doHttpRequest( $url, $params = array(), $files = array() ) {
+	protected function doHttpRequest( $url, $params = array(), $files = array() ) {
 		if ( function_exists( 'curl_init' ) ) {
 			return $this->doCurl( $url, $params, $files );
 		} else {
