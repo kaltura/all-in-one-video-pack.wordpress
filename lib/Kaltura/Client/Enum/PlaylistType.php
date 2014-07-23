@@ -28,13 +28,12 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PlaylistType
-{
+class Kaltura_Client_Enum_PlaylistType {
 	const STATIC_LIST = 3;
-	const DYNAMIC = 10;
-	const EXTERNAL = 101;
+	const DYNAMIC     = 10;
+	const EXTERNAL    = 101;
 }
 

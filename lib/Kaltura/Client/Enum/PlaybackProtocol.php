@@ -28,20 +28,20 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PlaybackProtocol
-{
-	const APPLE_HTTP = "applehttp";
-	const AUTO = "auto";
-	const AKAMAI_HD = "hdnetwork";
-	const AKAMAI_HDS = "hdnetworkmanifest";
-	const HDS = "hds";
-	const HLS = "hls";
-	const HTTP = "http";
-	const RTMP = "rtmp";
-	const RTSP = "rtsp";
-	const SILVER_LIGHT = "sl";
+class Kaltura_Client_Enum_PlaybackProtocol {
+	const APPLE_HTTP   = 'applehttp';
+	const AUTO         = 'auto';
+	const AKAMAI_HD    = 'hdnetwork';
+	const AKAMAI_HDS   = 'hdnetworkmanifest';
+	const HDS          = 'hds';
+	const HLS          = 'hls';
+	const HTTP         = 'http';
+	const MPEG_DASH    = 'mpegdash';
+	const RTMP         = 'rtmp';
+	const RTSP         = 'rtsp';
+	const SILVER_LIGHT = 'sl';
 }
 

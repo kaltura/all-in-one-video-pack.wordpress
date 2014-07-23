@@ -27,23 +27,33 @@
 // @ignore
 // ===================================================================================================
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_MultiRequestSubResult
-{
-    function __construct($value)
-	{
-        $this->value = $value;
-	}
-	
-    function __toString()
-	{
-        return '{' . $this->value . '}';
+class Kaltura_Client_MultiRequestSubResult implements ArrayAccess {
+	function __construct( $value ) {
+		$this->value = $value;
 	}
 
-    function __get($name)
-	{
-        return new Kaltura_Client_MultiRequestSubResult($this->value . ':' . $name);
+	function __toString() {
+		return '{' . $this->value . '}';
+	}
+
+	function __get( $name ) {
+		return new Kaltura_Client_MultiRequestSubResult( $this->value . ':' . $name );
+	}
+
+	public function offsetExists( $offset ) {
+		return true;
+	}
+
+	public function offsetGet( $offset ) {
+		return new Kaltura_Client_MultiRequestSubResult( $this->value . ':' . $offset );
+	}
+
+	public function offsetSet( $offset, $value ) {
+	}
+
+	public function offsetUnset( $offset ) {
 	}
 }

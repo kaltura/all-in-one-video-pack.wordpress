@@ -28,57 +28,66 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryBaseFilter
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryBaseFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaBaseEntryFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->freeText = (string)$xml->freeText;
-		if(count($xml->isRoot))
-			$this->isRoot = (int)$xml->isRoot;
-		$this->categoriesFullNameIn = (string)$xml->categoriesFullNameIn;
-		$this->categoryAncestorIdIn = (string)$xml->categoryAncestorIdIn;
+		}
+
+		$this->freeText = (string) $xml->freeText;
+		if ( count( $xml->isRoot ) ) {
+			$this->isRoot = (int) $xml->isRoot;
+		}
+		$this->categoriesFullNameIn = (string) $xml->categoriesFullNameIn;
+		$this->categoryAncestorIdIn = (string) $xml->categoryAncestorIdIn;
+		$this->redirectFromEntryId  = (string) $xml->redirectFromEntryId;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $freeText = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */
 	public $isRoot = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $categoriesFullNameIn = null;
 
 	/**
-	 * All entries within this categoy or in child categories  
-	 * 	 
+	 * All entries within this categoy or in child categories
+	 *
 	 *
 	 * @var string
 	 */
 	public $categoryAncestorIdIn = null;
+
+	/**
+	 * The id of the original entry
+	 *
+	 *
+	 * @var string
+	 */
+	public $redirectFromEntryId = null;
 
 
 }

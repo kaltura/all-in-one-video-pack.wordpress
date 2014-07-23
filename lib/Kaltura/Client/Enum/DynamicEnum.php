@@ -28,10 +28,9 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_DynamicEnum
-{
+class Kaltura_Client_Enum_DynamicEnum {
 }
 

@@ -28,56 +28,43 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_MediaEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaLiveStreamEntry';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->offlineMessage = (string)$xml->offlineMessage;
-		$this->streamRemoteId = (string)$xml->streamRemoteId;
-		$this->streamRemoteBackupId = (string)$xml->streamRemoteBackupId;
-		if(empty($xml->bitrates))
+		}
+
+		$this->streamRemoteId       = (string) $xml->streamRemoteId;
+		$this->streamRemoteBackupId = (string) $xml->streamRemoteBackupId;
+		if ( empty( $xml->bitrates ) ) {
 			$this->bitrates = array();
-		else
-			$this->bitrates = Kaltura_Client_Client::unmarshalItem($xml->bitrates);
-		$this->primaryBroadcastingUrl = (string)$xml->primaryBroadcastingUrl;
-		$this->secondaryBroadcastingUrl = (string)$xml->secondaryBroadcastingUrl;
-		$this->streamName = (string)$xml->streamName;
-		$this->streamUrl = (string)$xml->streamUrl;
-		$this->hlsStreamUrl = (string)$xml->hlsStreamUrl;
-		if(count($xml->dvrStatus))
-			$this->dvrStatus = (int)$xml->dvrStatus;
-		if(count($xml->dvrWindow))
-			$this->dvrWindow = (int)$xml->dvrWindow;
-		$this->urlManager = (string)$xml->urlManager;
-		if(empty($xml->liveStreamConfigurations))
-			$this->liveStreamConfigurations = array();
-		else
-			$this->liveStreamConfigurations = Kaltura_Client_Client::unmarshalItem($xml->liveStreamConfigurations);
+		} else {
+			$this->bitrates = Kaltura_Client_ParseUtils::unmarshalArray( $xml->bitrates, 'KalturaLiveStreamBitrate' );
+		}
+		$this->primaryBroadcastingUrl   = (string) $xml->primaryBroadcastingUrl;
+		$this->secondaryBroadcastingUrl = (string) $xml->secondaryBroadcastingUrl;
+		$this->streamName               = (string) $xml->streamName;
+		$this->streamUrl                = (string) $xml->streamUrl;
+		$this->hlsStreamUrl             = (string) $xml->hlsStreamUrl;
+		$this->urlManager               = (string) $xml->urlManager;
+		$this->encodingIP1              = (string) $xml->encodingIP1;
+		$this->encodingIP2              = (string) $xml->encodingIP2;
+		$this->streamPassword           = (string) $xml->streamPassword;
+		$this->streamUsername           = (string) $xml->streamUsername;
 	}
-	/**
-	 * The message to be presented when the stream is offline
-	 * 	 
-	 *
-	 * @var string
-	 */
-	public $offlineMessage = null;
 
 	/**
 	 * The stream id as provided by the provider
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly
@@ -86,7 +73,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_MediaEntry
 
 	/**
 	 * The backup stream id as provided by the provider
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 * @readonly
@@ -95,28 +82,28 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_MediaEntry
 
 	/**
 	 * Array of supported bitrates
-	 * 	 
+	 *
 	 *
 	 * @var array of KalturaLiveStreamBitrate
 	 */
 	public $bitrates;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $primaryBroadcastingUrl = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $secondaryBroadcastingUrl = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
@@ -124,7 +111,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_MediaEntry
 
 	/**
 	 * The stream url
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
@@ -132,45 +119,52 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_MediaEntry
 
 	/**
 	 * HLS URL - URL for live stream playback on mobile device
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
 	public $hlsStreamUrl = null;
 
 	/**
-	 * DVR Status Enabled/Disabled
-	 * 	 
-	 *
-	 * @var Kaltura_Client_Enum_DVRStatus
-	 * @insertonly
-	 */
-	public $dvrStatus = null;
-
-	/**
-	 * Window of time which the DVR allows for backwards scrubbing (in minutes)
-	 * 	 
-	 *
-	 * @var int
-	 * @insertonly
-	 */
-	public $dvrWindow = null;
-
-	/**
 	 * URL Manager to handle the live stream URL (for instance, add token)
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */
 	public $urlManager = null;
 
 	/**
-	 * Array of key value protocol->live stream url objects
-	 * 	 
+	 * The broadcast primary ip
 	 *
-	 * @var array of KalturaLiveStreamConfiguration
+	 *
+	 * @var string
 	 */
-	public $liveStreamConfigurations;
+	public $encodingIP1 = null;
+
+	/**
+	 * The broadcast secondary ip
+	 *
+	 *
+	 * @var string
+	 */
+	public $encodingIP2 = null;
+
+	/**
+	 * The broadcast password
+	 *
+	 *
+	 * @var string
+	 */
+	public $streamPassword = null;
+
+	/**
+	 * The broadcast username
+	 *
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $streamUsername = null;
 
 
 }

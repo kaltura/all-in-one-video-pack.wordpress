@@ -28,54 +28,54 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaPlayerDeliveryType';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->id = (string)$xml->id;
-		$this->label = (string)$xml->label;
-		if(empty($xml->flashvars))
+		}
+
+		$this->id    = (string) $xml->id;
+		$this->label = (string) $xml->label;
+		if ( empty( $xml->flashvars ) ) {
 			$this->flashvars = array();
-		else
-			$this->flashvars = Kaltura_Client_Client::unmarshalItem($xml->flashvars);
-		$this->minVersion = (string)$xml->minVersion;
+		} else {
+			$this->flashvars = Kaltura_Client_ParseUtils::unmarshalArray( $xml->flashvars, 'KalturaKeyValue' );
+		}
+		$this->minVersion = (string) $xml->minVersion;
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $id = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $label = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var array of KalturaKeyValue
 	 */
 	public $flashvars;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */

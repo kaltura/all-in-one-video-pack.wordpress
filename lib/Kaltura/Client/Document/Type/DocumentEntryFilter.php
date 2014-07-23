@@ -28,23 +28,21 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Document_Type_DocumentEntryFilter extends Kaltura_Client_Document_Type_DocumentEntryBaseFilter
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Document_Type_DocumentEntryFilter extends Kaltura_Client_Document_Type_DocumentEntryBaseFilter {
+	public function get_kaltura_object_type() {
 		return 'KalturaDocumentEntryFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
+		}
+
 	}
 
 }

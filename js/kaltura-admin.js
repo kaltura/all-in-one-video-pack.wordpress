@@ -1,4 +1,62 @@
-(function($){
+(function ($) {
+	$(document).ready(function () {
+		/** Collapse categories */
+		$('.kaltura-caret').on('click', function () {
+			var parentDiv = $(this).parent();
+			var searchId = this.parentElement.id;
+			/** Open siblings*/
+			if (this.className == 'kaltura-caret kaltura-caret-right') {
+				$(parentDiv).siblings().each(function () {
+					var siblingId = this.id;
+					var caret = $(this).find('span');
+					if (siblingId.indexOf(searchId) != -1) {
+						$(this).show();
+						if ($(caret).attr('class') == 'kaltura-caret kaltura-caret-right') {
+							return false;
+						}
+					}
+				});
+				/**Change class name and html.*/
+				this.className = 'kaltura-caret kaltura-caret-down';
+				$(this).html('&#9660');
+			} else {
+				/** Close siblings*/
+				$(parentDiv).siblings().each(function () {
+					var siblingId = this.id;
+
+					if (siblingId.indexOf(searchId) != -1) {
+						$(this).hide();
+					}
+				});
+				/**Change class name and html.*/
+				this.className = 'kaltura-caret kaltura-caret-right';
+				$(this).html('&#9658');
+			}
+
+		});
+
+		$('#clear_categories').on('click', function () {
+			$('#filter-categories .filter-category-input').removeAttr('checked');
+			$('#filter-categories-button').click();
+		});
+
+		/** Check sub categories checkboxes. */
+		$('.filter-category-input').on('click', function () {
+			var parentDiv = $(this).parent().closest('li');
+			var searchId = this.id;
+			var that = this;
+			/** If we checked the checkbox then check the other checkboxes. */
+			$(parentDiv).siblings().each(function () {
+				var inputElement = $(this).find('input');
+				var inputElementId = inputElement.attr('id');
+				if (inputElementId.indexOf(searchId) != -1) {
+					$(inputElement).prop('checked', $(that).prop('checked'));
+				}
+			});
+		});
+	});
+
+
 	function enableWaitCursor() {
 		$('body').addClass('wait');
 	}
@@ -12,15 +70,15 @@
 		if (res) {
 			enableWaitCursor();
 			var params = {
-				action: 'kaltura_ajax',
+				action : 'kaltura_ajax',
 				kaction: 'delete',
 				entryid: entryId
 			};
 			$.ajax({
-				url: ajaxurl,
-				data: params,
+				url    : ajaxurl,
+				data   : params,
 				success: onDeleteSuccess,
-				error: onDeleteError
+				error  : onDeleteError
 			});
 		}
 	}
@@ -38,30 +96,30 @@
 		window.location.reload();
 	}
 
-	$(function() {
+	$(function () {
 		if ($('body').hasClass('settings_page_kaltura_options')) {
 			$.validator.messages.required = "";
 			var validator = $("form.registration").validate({
-				rules: {
-					first_name: "required",
-					last_name: "required",
-					email: {
+				rules         : {
+					first_name       : "required",
+					last_name        : "required",
+					email            : {
 						required: true,
-						email: true
+						email   : true
 					},
-					phone: "required",
-					company: "required",
-					job_title: "required",
+					phone            : "required",
+					company          : "required",
+					job_title        : "required",
 					describe_yourself: "required",
-					country: "required",
-					state: "required",
-					would_you_like: "required",
-					agree_to_terms: "required"
+					country          : "required",
+					state            : "required",
+					would_you_like   : "required",
+					agree_to_terms   : "required"
 				},
-				messages: {
+				messages      : {
 					agree_to_terms: "You must agree to the Kaltura Terms of Use"
 				},
-				invalidHandler: function(form, validator) {
+				invalidHandler: function (form, validator) {
 					var errors = validator.numberOfInvalids();
 					if (errors) {
 
@@ -69,7 +127,7 @@
 
 					}
 				},
-				errorPlacement: function(error, element) {
+				errorPlacement: function (error, element) {
 					if (element.attr('name') == 'agree_to_terms')
 						error.appendTo(element.parent());
 					//error.appendTo( element.parent("td").next("td") );
@@ -78,7 +136,7 @@
 
 			$('select[name=country]').change();
 
-			$('select[name=country]').change(function() {
+			$('select[name=country]').change(function () {
 				var notApplicable = 'Not Applicable';
 				if ($(this).val() == 'US') {
 					if ($('select[name=state]').val() == notApplicable) {
@@ -94,7 +152,7 @@
 		}
 
 		if ($('body').hasClass('media_page_kaltura_library')) {
-			$('.delete').click(function() {
+			$('.delete').click(function () {
 				var entryId = $(this).data('id');
 				deleteEntry(entryId);
 			});

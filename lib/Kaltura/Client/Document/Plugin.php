@@ -28,46 +28,34 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin
-{
-	/**
-	 * @var Kaltura_Client_Document_DocumentsService
-	 */
-	public $documents = null;
-
-	protected function __construct(Kaltura_Client_Client $client)
-	{
-		parent::__construct($client);
-		$this->documents = new Kaltura_Client_Document_DocumentsService($client);
+class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin {
+	protected function __construct( Kaltura_Client_Client $client ) {
+		parent::__construct( $client );
 	}
 
 	/**
 	 * @return Kaltura_Client_Document_Plugin
 	 */
-	public static function get(Kaltura_Client_Client $client)
-	{
-		return new Kaltura_Client_Document_Plugin($client);
+	public static function get( Kaltura_Client_Client $client ) {
+		return new Kaltura_Client_Document_Plugin( $client );
 	}
 
 	/**
 	 * @return array<Kaltura_Client_ServiceBase>
 	 */
-	public function getServices()
-	{
-		$services = array(
-			'documents' => $this->documents,
-		);
+	public function getServices() {
+		$services = array();
+
 		return $services;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName()
-	{
+	public function getName() {
 		return 'document';
 	}
 }

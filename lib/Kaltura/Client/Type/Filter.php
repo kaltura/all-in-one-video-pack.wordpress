@@ -28,36 +28,36 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_Filter extends Kaltura_Client_ObjectBase
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_Filter extends Kaltura_Client_ObjectBase {
+	public function get_kaltura_object_type() {
 		return 'KalturaFilter';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		$this->orderBy = (string)$xml->orderBy;
-		if(!empty($xml->advancedSearch))
-			$this->advancedSearch = Kaltura_Client_Client::unmarshalItem($xml->advancedSearch);
+		}
+
+		$this->orderBy = (string) $xml->orderBy;
+		if ( ! empty( $xml->advancedSearch ) ) {
+			$this->advancedSearch = Kaltura_Client_ParseUtils::unmarshalObject( $xml->advancedSearch, 'KalturaSearchItem' );
+		}
 	}
+
 	/**
-	 * 
+	 *
 	 *
 	 * @var string
 	 */
 	public $orderBy = null;
 
 	/**
-	 * 
+	 *
 	 *
 	 * @var Kaltura_Client_Type_SearchItem
 	 */

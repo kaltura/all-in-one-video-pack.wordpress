@@ -28,18 +28,18 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EntryType
-{
-	const AUTOMATIC = "-1";
-	const EXTERNAL_MEDIA = "externalMedia.externalMedia";
-	const MEDIA_CLIP = "1";
-	const MIX = "2";
-	const PLAYLIST = "5";
-	const DATA = "6";
-	const LIVE_STREAM = "7";
-	const DOCUMENT = "10";
+class Kaltura_Client_Enum_EntryType {
+	const AUTOMATIC      = '-1';
+	const EXTERNAL_MEDIA = 'externalMedia.externalMedia';
+	const MEDIA_CLIP     = '1';
+	const MIX            = '2';
+	const PLAYLIST       = '5';
+	const DATA           = '6';
+	const LIVE_STREAM    = '7';
+	const LIVE_CHANNEL   = '8';
+	const DOCUMENT       = '10';
 }
 

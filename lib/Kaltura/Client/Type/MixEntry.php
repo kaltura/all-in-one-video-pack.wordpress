@@ -28,32 +28,33 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry
-{
-	public function getKalturaObjectType()
-	{
+class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry {
+	public function get_kaltura_object_type() {
 		return 'KalturaMixEntry';
 	}
-	
-	public function __construct(SimpleXMLElement $xml = null)
-	{
-		parent::__construct($xml);
-		
-		if(is_null($xml))
+
+	public function __construct( SimpleXMLElement $xml = null ) {
+		parent::__construct( $xml );
+
+		if ( is_null( $xml ) ) {
 			return;
-		
-		if(!empty($xml->hasRealThumbnail))
+		}
+
+		if ( ! empty( $xml->hasRealThumbnail ) ) {
 			$this->hasRealThumbnail = true;
-		if(count($xml->editorType))
-			$this->editorType = (int)$xml->editorType;
-		$this->dataContent = (string)$xml->dataContent;
+		}
+		if ( count( $xml->editorType ) ) {
+			$this->editorType = (int) $xml->editorType;
+		}
+		$this->dataContent = (string) $xml->dataContent;
 	}
+
 	/**
 	 * Indicates whether the user has submited a real thumbnail to the mix (Not the one that was generated automaticaly)
-	 * 	 
+	 *
 	 *
 	 * @var bool
 	 * @readonly
@@ -62,7 +63,7 @@ class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The editor type used to edit the metadata
-	 * 	 
+	 *
 	 *
 	 * @var Kaltura_Client_Enum_EditorType
 	 */
@@ -70,7 +71,7 @@ class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The xml data of the mix
-	 * 	 
+	 *
 	 *
 	 * @var string
 	 */

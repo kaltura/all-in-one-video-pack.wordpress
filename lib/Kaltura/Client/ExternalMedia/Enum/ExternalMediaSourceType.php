@@ -28,12 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType
-{
-	const INTERCALL = "InterCall";
-	const YOUTUBE = "YouTube";
+class Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType {
+	const INTERCALL = 'InterCall';
+	const YOUTUBE   = 'YouTube';
 }
 

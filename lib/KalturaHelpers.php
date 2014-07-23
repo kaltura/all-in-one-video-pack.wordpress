@@ -1,362 +1,387 @@
 <?php
-class KalturaHelpers
-{
+
+class KalturaHelpers {
 	private static $_settings = null;
 
-	public static function getKalturaConfiguration()
-	{
-		$config = new Kaltura_Client_Configuration(KalturaHelpers::getOption("kaltura_partner_id"));
+	public static function getKalturaConfiguration() {
+		$config             = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
 		$config->serviceUrl = KalturaHelpers::getServerUrl();
+
 		return $config;
 	}
 
-	public static function getServerUrl()
-	{
-		$url = KalturaHelpers::getOption('server_url');
+	public static function getServerUrl() {
+		$sanitizer = new KalturaSanitizer();
+		$url       = (string)$sanitizer->sanitizer( KalturaHelpers::getOption( 'server_url' ), 'url' );
 
-		// remove the last slash from the url
-		if (substr($url, strlen($url) - 1, 1) == '/')
-			$url = substr($url, 0, strlen($url) - 1);
-
-		return $url;
+		return rtrim( $url, '/' );
 	}
 
 	public static function getCdnUrl()
 	{
-		$url = KalturaHelpers::getOption('cdn_url');
-
-		// remove the last slash from the url
-		if (substr($url, strlen($url) - 1, 1) == '/')
-			$url = substr($url, 0, strlen($url) - 1);
-
-		return $url;
+        $sanitizer = new KalturaSanitizer();
+        $url = (string) $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
+		return rtrim($url, '/');
 	}
 
-	public static function getLoggedUserId()
-	{
+	public static function getLoggedUserId() {
 		global $user_ID, $user_login;
-		if (!$user_ID && !$user_login)
-			return KalturaHelpers::getOption('anonymous_user_id');
-		elseif (get_option('kaltura_user_identifier', 'user_login') == 'user_id')
+		if ( ! $user_ID && ! $user_login ) {
+			return KalturaHelpers::getOption( 'anonymous_user_id' );
+		} elseif ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
 			return $user_ID;
-		else
+		} else {
 			return $user_login;
+		}
 	}
 
-	public static function getPluginUrl()
-	{
-		return self::pluginUrl('');
+	public static function getPluginUrl() {
+		return self::pluginUrl( '' );
 	}
 
-	public static function getPluginVersion()
-	{
-		$pluginFileData = file_get_contents(KALTURA_PLUGIN_FILE);
-		if (preg_match("|Version:(.*)|i", $pluginFileData, $version))
-			$version = trim($version[1]);
-		else
-			$version = '';
+	public static function getPluginVersion() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$all_plugins = get_plugins();
+		foreach ( $all_plugins as $plugin ) {
+			if ( $plugin['Name'] == 'All in One Video Pack' ) {
 
-		return $version;
+				return $plugin['Version'];
+			}
+		}
+		return '';
 	}
 
-	public static function generateTabUrl($params)
-	{
-		$query = $_SERVER["REQUEST_URI"];
-		foreach ($_GET as $k => $v)
-			$query = add_query_arg($k, false, $query);
+	public static function generateTabUrl( $params ) {
+		$sanitizer = new KalturaSanitizer();
+		$params    = $sanitizer->sanitizer( $params, 'generateTabUrl' );
 
-		$query = add_query_arg($params, $query);
+		$query = remove_query_arg( $_GET, $_SERVER['REQUEST_URI'] );
+
+		$query = add_query_arg( $params, $query );
+
 		return $query;
 	}
 
-	public static function getRequestUrl()
-	{
-		return $_SERVER["REQUEST_URI"];
+	public static function getRequestUrl() {
+		return $_SERVER['REQUEST_URI'];
 	}
 
-	public static function getRequestPostParam($param, $default = null)
-	{
-		return isset($_POST[$param]) ? $_POST[$param] : $default;
-	}
-
-	public static function getRequestParam($param, $default = null)
-	{
-		return isset($_GET[$param]) ? $_GET[$param] : $default;
-	}
-
-	public static function protectView($view)
-	{
-		if (!isset($view->allowViewRendering) || $view->allowViewRendering !== true)
-			wp_die('Access denied');
-	}
-
-	public static function getContributionWizardFlashVars($ks, $entryId = null)
-	{
-		$flashVars                  = array();
-		$flashVars["userId"]        = KalturaHelpers::getLoggedUserId();
-		$flashVars["sessionId"]     = $ks;
-		$flashVars["partnerId"]     = KalturaHelpers::getOption("kaltura_partner_id");
-		$flashVars["subPartnerId"]  = KalturaHelpers::getOption("kaltura_partner_id") * 100;
-		$flashVars["afterAddentry"] = "onContributionWizardAfterAddEntry";
-		$flashVars["close"]         = "onContributionWizardClose";
-		$flashVars["termsOfUse"]    = "http://corp.kaltura.com/static/tandc";
-
-		return $flashVars;
-	}
-
-	public static function getKalturaPlayerFlashVars($uiConfId = null, $ks = null, $entryId = null)
-	{
-		$flashVars              = array();
-		$flashVars["partnerId"] = KalturaHelpers::getOption("kaltura_partner_id");
-		$flashVars["subpId"]    = KalturaHelpers::getOption("kaltura_partner_id") * 100;
-		$flashVars["uid"]       = KalturaHelpers::getLoggedUserId();
-
-		if ($ks)
-			$flashVars["ks"] = $ks;
-		if ($uiConfId)
-			$flashVars["uiConfId"] = $ks;
-		if ($entryId)
-			$flashVars["entryId"] = $entryId;
-
-		return $flashVars;
-	}
-
-	public static function flashVarsToString($flashVars = array())
-	{
-		$flashVarsStr = "";
-		foreach ($flashVars as $key => $value)
-		{
-			$flashVarsStr .= ($key . "=" . $value . "&");
+	public static function getRequestPostParam( $param, $default = null ) {
+		if ( isset( $_POST[$param] ) ) {
+			if ( is_array( $_POST[$param] ) ) {
+				return array_map( 'esc_js', $_POST[$param] );
+			} else {
+				return esc_js( $_POST[$param] );
+			}
+		} else {
+			return $default;
 		}
-		return substr($flashVarsStr, 0, strlen($flashVarsStr) - 1);
 	}
 
-	public static function getSwfUrlForWidget($widgetId = null, $uiConfId = null)
-	{
-		if (!$widgetId)
-			$widgetId = "_" . KalturaHelpers::getOption("kaltura_partner_id");
+	public static function getRequestParam( $param, $default = null ) {
+		if ( isset( $_GET[$param] ) ) {
+			if ( is_array( $_GET[$param] ) ) {
+				return array_map( 'esc_js', $_GET[$param] );
+			} else {
+				return esc_js( $_GET[$param] );
+			}
+		} else {
+			return $default;
+		}
+	}
 
-		$url = KalturaHelpers::getServerUrl() . "/index.php/kwidget/wid/" . $widgetId;
-		if ($uiConfId)
-			$url .= ("/ui_conf_id/" . $uiConfId);
+	public static function protectView( Kaltura_ViewRenderer $view ) {
+		if ( ! isset( $view->allowViewRendering ) || $view->allowViewRendering !== true ) {
+			wp_die( 'Access denied' );
+		}
+	}
+
+	public static function getContributionWizardFlashVars( $ks ) {
+		$kmodel = KalturaModel::getInstance();
+		$ks     = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
+
+		$flashVars                  = array();
+		$flashVars['userId']        = KalturaHelpers::getLoggedUserId();
+		$flashVars['sessionId']     = sanitize_text_field( $ks );
+		$flashVars['partnerId']     = KalturaHelpers::getOption( 'kaltura_partner_id' );
+		$flashVars['subPartnerId']  = KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
+		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
+		$flashVars['close']         = 'onContributionWizardClose';
+		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
+
+		return $flashVars;
+	}
+
+	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null ) {
+		$kmodel  = KalturaModel::getInstance();
+		$ks      = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
+		$entryId = (string)$kmodel->_sanitizer->sanitizer( $entryId, 'string' );
+
+		$flashVars              = array();
+		$flashVars['partnerId'] = KalturaHelpers::getOption( 'kaltura_partner_id' );
+		$flashVars['subpId']    = KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
+		$flashVars['uid']       = KalturaHelpers::getLoggedUserId();
+
+		if ( is_string( $ks ) ) {
+			$flashVars['ks'] = sanitize_text_field( $ks );
+		}
+		if ( is_string( $entryId ) ) {
+			$flashVars['entryId'] = $entryId;
+		}
+
+		return $flashVars;
+	}
+
+	public static function flashVarsToString( $flashVars = array() ) {
+		$kmodel    = KalturaModel::getInstance();
+		$flashVars = $kmodel->_sanitizer->sanitizer( $flashVars, 'flashVarsToString' );
+
+		$flashVarsStr = '';
+		foreach ( $flashVars as $key => $value ) {
+			$flashVarsStr .= ( $key . '=' . $value . '&' );
+		}
+
+		return substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 );
+	}
+
+	public static function getSwfUrlForWidget( $widgetId = null, $uiConfId = null ) {
+		$kmodel   = KalturaModel::getInstance();
+		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
+		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
+
+		if ( ! $widgetId ) {
+			$widgetId = '_' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		}
+
+		$url = KalturaHelpers::getServerUrl() . '/index.php/kwidget/wid/' . $widgetId;
+		if ( $uiConfId ) {
+			$url .= ( '/ui_conf_id/' . $uiConfId );
+		}
 
 		return $url;
 	}
 
-	public static function enqueueHtml5Lib($uiConfId)
-	{
-		$html5LibUrl = ''.
-			self::getServerUrl().
-			'/p/'.KalturaHelpers::getOption("kaltura_partner_id").
-			'/sp/'.KalturaHelpers::getOption("kaltura_partner_id").'00'.
-			'/embedIframeJs'.
-			'/uiconf_id/'.$uiConfId.
-			'/partner_id/'.KalturaHelpers::getOption("kaltura_partner_id");
-		wp_register_script('kaltura-html5lib-'.$uiConfId, $html5LibUrl);
-		wp_enqueue_script('kaltura-html5lib-'.$uiConfId);
+	public static function enqueueHtml5Lib( $uiConfId ) {
+		$kmodel   = KalturaModel::getInstance();
+		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
+
+		$html5LibUrl = '' .
+			self::getServerUrl() .
+			'/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) .
+			'/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00' .
+			'/embedIframeJs' .
+			'/uiconf_id/' . $uiConfId .
+			'/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		wp_enqueue_script( 'kaltura-html5lib-' . $uiConfId, $html5LibUrl );
 	}
 
-	public static function getContributionWizardUrl($uiConfId)
-	{
-		return KalturaHelpers::getServerUrl() . "/kcw/ui_conf_id/" . $uiConfId;
+	public static function getContributionWizardUrl( $uiConfId ) {
+		$kmodel   = KalturaModel::getInstance();
+		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
+
+		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . $uiConfId;
 	}
 
-	public static function anonymousCommentsAllowed()
-	{
-		return KalturaHelpers::getOption("kaltura_allow_anonymous_comments", true) == true ? true : false;
+	public static function anonymousCommentsAllowed() {
+		return KalturaHelpers::getOption( 'kaltura_allow_anonymous_comments', true ) == true ? true : false;
 	}
 
-	public static function videoCommentsEnabled()
-	{
-		return KalturaHelpers::getOption("kaltura_enable_video_comments", true) == true ? true : false;
+	public static function videoCommentsEnabled() {
+		return KalturaHelpers::getOption( 'kaltura_enable_video_comments', true ) == true ? true : false;
 	}
 
-	public static function getThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000)
-	{
-		$config = KalturaHelpers::getKalturaConfiguration();
-		$url    = KalturaHelpers::getCdnUrl();
-		$url .= "/p/" . KalturaHelpers::getOption("kaltura_partner_id");
-		$url .= "/sp/" . KalturaHelpers::getOption("kaltura_partner_id") * 100;
-		$url .= "/thumbnail";
-		if ($widgetId)
-			$url .= "/widget_id/" . $widgetId;
-		if ($entryId)
-			$url .= "/entry_id/" . $entryId;
-		$url .= "/width/" . $width;
-		$url .= "/height/" . $height;
-		$url .= "/type/2";
-		$url .= "/bgcolor/000000";
-		if ($version !== null)
-			$url .= "/version/" . $version;
+	public static function getThumbnailUrl( $widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000 ) {
+		$kmodel   = KalturaModel::getInstance();
+		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
+		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'int' );
+		$height   = (int)$kmodel->_sanitizer->sanitizer( $height, 'int' );
+		$version  = (int)$kmodel->_sanitizer->sanitizer( $version, 'int' );
+
+		$url  = KalturaHelpers::getCdnUrl();
+		$url .= '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		$url .= '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
+		$url .= '/thumbnail';
+		if ( $widgetId ) {
+			$url .= '/widget_id/' . $widgetId;
+		}
+		if ( $entryId ) {
+			$url .= '/entry_id/' . $entryId;
+		}
+		$url .= '/width/' . $width;
+		$url .= '/height/' . $height;
+		$url .= '/type/2';
+		$url .= '/bgcolor/000000';
+		if ( $version !== null ) {
+			$url .= '/version/' . $version;
+		}
+
 		return $url;
 	}
 
-	public static function getCommentPlaceholderThumbnailUrl($widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000)
-	{
-		$url = KalturaHelpers::getThumbnailUrl($widgetId, $entryId, $width, $height, $version);
-		$url .= "/crop_provider/wordpress_comment_placeholder";
-		return $url;
-	}
+	public static function compareWPVersion( $compareVersion, $operator ) {
+		$kmodel         = KalturaModel::getInstance();
+		$compareVersion = (string)$kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
+		$operator       = (string)$kmodel->_sanitizer->sanitizer( $operator, 'string' );
 
-	public static function compareWPVersion($compareVersion, $operator)
-	{
 		global $wp_version;
 
-		return version_compare($wp_version, $compareVersion, $operator);
+		return version_compare( $wp_version, $compareVersion, $operator );
 	}
 
-	public static function compareKalturaVersion($compareVersion, $operator)
-	{
+	public static function compareKalturaVersion( $compareVersion, $operator ) {
+		$kmodel         = KalturaModel::getInstance();
+		$compareVersion = (string)$kmodel->_sanitizer->sanitizer( $compareVersion, 'string' );
+		$operator       = (string)$kmodel->_sanitizer->sanitizer( $operator, 'string' );
+
 		$kversion = self::getPluginVersion();
 
-		return version_compare($kversion, $compareVersion, $operator);
+		return version_compare( $kversion, $compareVersion, $operator );
 	}
 
-	public static function addWPVersionJS()
-	{
+	public static function addWPVersionJS() {
 		global $wp_version;
-		echo("<script type='text/javascript'>\n");
-		echo('var Kaltura_WPVersion = "' . $wp_version . '";' . "\n");
-		echo("</script>\n");
+		echo "<script type='text/javascript'>\n";
+		echo 'var Kaltura_WPVersion = "' . esc_js( $wp_version ) . '";' . "\n";
+		echo  "</script>\n";
 	}
 
-	public static function calculatePlayerHeight($uiConfId, $width, $playerRatio = '4:3')
-	{
-		$kmodel = KalturaModel::getInstance();
-		$player = $kmodel->getPlayerUiConf($uiConfId);
+	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
+		$kmodel   = KalturaModel::getInstance();
+		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'intOrString' );
+		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
 
-		$spacer = $player->height - ($player->width / 4) * 3; // assume the width and height saved in kaltura is 4/3
-		if ($playerRatio == '16:9')
-			$height = ($width / 16) * 9 + $spacer;
-		else
-			$height = ($width / 4) * 3 + $spacer;
+		$player = $kmodel->getPlayerUiConf( $uiConfId );
+		if ( empty( $width ) ) {
+			$width = 400;
+		}
+		$playerRatio = $kmodel->_sanitizer->sanitizer( $playerRatio, 'playerRatio' );
+		if ( empty( $playerRatio ) ) {
+			$playerRatio = '4:3';
+		}
 
-		return (int)$height;
+		$spacer = $player->height - ( $player->width / 4 ) * 3; // assume the width and height saved in kaltura is 4/3
+		if ( $playerRatio == '16:9' ) {
+			$height = ( $width / 16 ) * 9 + $spacer;
+		} else {
+			$height = ( $width / 4 ) * 3 + $spacer;
+		}
+
+		return (int) $height;
 	}
 
-	public static function runKalturaShortcode($content, $callback)
-	{
+	public static function runKalturaShortcode( $content, $callback ) {
 		global $shortcode_tags;
 
-		// we will backup the shortcode array, and run only our shortcode
+        // we will backup the shortcode array, and run only our shortcode
 		$shortcode_tags_backup = $shortcode_tags;
+        $shortcode_tags = array();
 
-		add_shortcode('kaltura-widget', $callback);
+		add_shortcode( 'kaltura-widget', $callback );
 
-		$content = do_shortcode($content);
+		$content = do_shortcode( $content );
 
 		// now we can restore the original shortcode list
 		$shortcode_tags = $shortcode_tags_backup;
 	}
 
-	public static function dieWithConnectionErrorMsg($errorDesc = '')
-	{
-		echo '
-		<div class="error">
-			<p>
-				<strong>Your connection has failed to reach the Kaltura servers. Please check if your web host blocks outgoing connections and then retry.</strong> (' . $errorDesc . ')
-			</p>
-		</div>';
-		die();
-	}
+	public static function getOption( $name, $default = null ) {
+		$name    = is_string( $name ) ? $name : null;
+		$default = is_bool( $default ) ? $default : null;
 
-	public static function getCloseLinkForModals()
-	{
-		return '<a href="#" onclick="((window.opener) ? window.opener : (window.parent) ? window.parent : window.top).KalturaModal.closeModal();">' . __('Close') . '</a>';
-	}
-
-	/**
-	 * sometimes wordpress thinks our url is a permalink and sets 404 header, calling this function will force back to 200
-	 */
-	public static function force200Header()
-	{
-		status_header(200);
-	}
-
-	public static function getOption($name, $default = null)
-	{
-		$value = get_option($name, $default);
-		if (!is_null($value))
+		$value = get_option( $name, $default );
+		if ( ! is_null( $value ) ) {
 			return $value;
+		}
 
-		$value = get_site_option($name, $default);
-		if (!is_null($value))
+		$value = get_site_option( $name, $default );
+		if ( ! is_null( $value ) ) {
 			return $value;
+		}
 
-		if (is_null(self::$_settings))
-			self::$_settings = parse_ini_file(dirname(__FILE__).'/../settings.ini');
+		if ( is_null( self::$_settings ) ) {
+			self::$_settings = self::getDefaultSettings();
+		}
 		$settings = self::$_settings;
 
-		if (isset($settings[$name]))
+		if ( isset( $settings[$name] ) ) {
 			return $settings[$name];
-		else
+		} else {
 			return $default;
+		}
 	}
 
-	public static function pluginUrl($uri = '')
-	{
+	public static function getDefaultSettings() {
+		$defaultSettings = require( dirname( __FILE__ ) . '/../settings.php' );
+
+		if ( function_exists( 'wpcom_is_vip' ) ) {
+			return $defaultSettings;
+		}
+
+		// on non vip enviroments, try to load settings.ini for backward compatibility
+		$iniFilePath = dirname( __FILE__ ) . '/../settings.ini';
+		if ( file_exists( $iniFilePath ) ) {
+			$iniSettings     = parse_ini_file( $iniFilePath );
+			$defaultSettings = array_merge( $defaultSettings, $iniSettings );
+		}
+
+		return $defaultSettings;
+	}
+
+	public static function pluginUrl( $uri = '' ) {
 		// In addition to providing the produced url, also provide the $uri
-		return apply_filters('all_in_one_video_pack_plugin_url', plugins_url($uri, KALTURA_PLUGIN_FILE), $uri);
+		return apply_filters( 'all_in_one_video_pack_plugin_url', plugins_url( $uri, KALTURA_PLUGIN_FILE ), $uri );
 	}
 
-	public static function jsUrl($uri = '')
-	{
-		$version = self::getPluginVersion();
-		return self::pluginUrl($uri.'?kversion='.$version);
+	public static function jsUrl( $uri = '' ) {
+		return self::pluginUrl( $uri );
 	}
 
-	public static function cssUrl($uri = '')
-	{
-		$version = self::getPluginVersion();
-		return self::pluginUrl($uri.'?kversion='.$version);
+	public static function cssUrl( $uri = '' ) {
+		return self::pluginUrl( $uri );
 	}
 
-	public static function getEmbedOptions($params)
-	{
+	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array('size', 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style');
-		foreach($arrayKeys as $key)
-		{
-			if (!isset($params[$key]))
+		$arrayKeys = array( 'size', 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style' );
+		foreach ( $arrayKeys as $key ) {
+			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
+			}
 		}
 
-		if ($params['size'] == 'comments') // comments player
-		{
-			$type = KalturaHelpers::getOption('kaltura_comments_player_type');
+		if ( $params['size'] == 'comments' ) { // comments player
+			$type               = KalturaHelpers::getOption( 'kaltura_comments_player_type' );
 			$params['uiconfid'] = $type;
-			$params['width'] = 250;
-			$params['height'] = 244;
-		}
-		else
-		{
+			$params['width']    = 250;
+			$params['height']   = 244;
+		} else {
 			// backward compatibility
-			switch($params['size'])
-			{
+			switch ( $params['size'] ) {
 				case 'large':
-					$params['width'] = 410;
+					$params['width']  = 410;
 					$params['height'] = 364;
 					break;
 				case 'small':
-					$params['width'] = 250;
+					$params['width']  = 250;
 					$params['height'] = 244;
 					break;
 			}
 
 			// if width is missing set some default
-			if (!$params['width'])
+			if ( ! $params['width'] ) {
 				$params['width'] = 400;
+			}
 
 			// if height is missing, recalculate it
-			if (!$params['height'])
-			{
-				$params['height'] = KalturaHelpers::calculatePlayerHeight($params['uiconfid'], $params['width']);
+			if ( ! $params['height'] ) {
+				$params['height'] = KalturaHelpers::calculatePlayerHeight( $params['uiconfid'], $params['width'] );
 			}
 		}
 
 		// align
-		switch ($params['align'])
-		{
+		switch ( $params['align'] ) {
 			case 'r':
 			case 'right':
 				$align = 'right';
@@ -373,27 +398,21 @@ class KalturaHelpers
 				$align = '';
 		}
 
-		if ($_SERVER['SERVER_PORT'] == 443)
-			$protocol = 'https://';
-		else
-			$protocol = 'http://';
-
 		$flashVarsStr = '';
 
 		return array(
 			'flashVars' => $flashVarsStr,
-			'height' => $params['height'],
-			'width' => $params['width'],
-			'align' => $align,
-			'style' => $params['style'],
-			'wid' => $params['wid'],
-			'entryId' => $params['entryid'],
-			'uiconfid'=> $params['uiconfid'],
+			'height'    => $params['height'],
+			'width'     => $params['width'],
+			'align'     => $align,
+			'style'     => $params['style'],
+			'wid'       => $params['wid'],
+			'entryId'   => $params['entryid'],
+			'uiconfid'  => $params['uiconfid'],
 		);
 	}
 
-	public static function getCountries()
-	{
+	public static function getCountries() {
 		return array(
 			'AF' => 'Afghanistan (افغانستان)',
 			'AX' => 'Aland Islands',
@@ -639,12 +658,11 @@ class KalturaHelpers
 			'EH' => 'Western Sahara (الصحراء الغربية)',
 			'YE' => 'Yemen (اليمن)',
 			'ZM' => 'Zambia',
-			'ZW' => 'Zimbabwe'
+			'ZW' => 'Zimbabwe',
 		);
 	}
 
-	public static function getStates()
-	{
+	public static function getStates() {
 		return array(
 			'AK' => 'AK',
 			'AL' => 'AL',
@@ -697,5 +715,19 @@ class KalturaHelpers
 			'WV' => 'WV',
 			'WY' => 'WY',
 		);
+	}
+
+
+	public static function verifyNonce( $action ) {
+		// verify nonce
+		if ( ! isset( $_POST['kaltura'] )
+			|| ! wp_verify_nonce( $_POST['kaltura'], $action )
+		) {
+
+			print 'Sorry, your nonce did not verify.';
+			exit;
+
+		}
+
 	}
 }

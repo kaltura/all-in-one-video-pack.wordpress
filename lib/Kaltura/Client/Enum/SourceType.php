@@ -28,18 +28,22 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_SourceType
-{
-	const LIMELIGHT_LIVE = "limeLight.LIVE_STREAM";
-	const FILE = "1";
-	const WEBCAM = "2";
-	const URL = "5";
-	const SEARCH_PROVIDER = "6";
-	const AKAMAI_LIVE = "29";
-	const MANUAL_LIVE_STREAM = "30";
-	const AKAMAI_UNIVERSAL_LIVE = "31";
+class Kaltura_Client_Enum_SourceType {
+	const LIMELIGHT_LIVE        = 'limeLight.LIVE_STREAM';
+	const VELOCIX_LIVE          = 'velocix.VELOCIX_LIVE';
+	const FILE                  = '1';
+	const WEBCAM                = '2';
+	const URL                   = '5';
+	const SEARCH_PROVIDER       = '6';
+	const AKAMAI_LIVE           = '29';
+	const MANUAL_LIVE_STREAM    = '30';
+	const AKAMAI_UNIVERSAL_LIVE = '31';
+	const LIVE_STREAM           = '32';
+	const LIVE_CHANNEL          = '33';
+	const RECORDED_LIVE         = '34';
+	const CLIP                  = '35';
 }
 

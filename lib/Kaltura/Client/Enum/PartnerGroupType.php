@@ -28,14 +28,13 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PartnerGroupType
-{
+class Kaltura_Client_Enum_PartnerGroupType {
 	const PUBLISHER = 1;
 	const VAR_GROUP = 2;
-	const GROUP = 3;
-	const TEMPLATE = 4;
+	const GROUP     = 3;
+	const TEMPLATE  = 4;
 }
 

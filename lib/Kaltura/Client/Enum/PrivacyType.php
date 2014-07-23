@@ -28,13 +28,12 @@
 // ===================================================================================================
 
 /**
- * @package Kaltura
+ * @package    Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PrivacyType
-{
-	const ALL = 1;
+class Kaltura_Client_Enum_PrivacyType {
+	const ALL                 = 1;
 	const AUTHENTICATED_USERS = 2;
-	const MEMBERS_ONLY = 3;
+	const MEMBERS_ONLY        = 3;
 }
 
