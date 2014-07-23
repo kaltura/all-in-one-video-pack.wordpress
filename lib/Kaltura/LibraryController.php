@@ -179,7 +179,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function previewAction() {
 		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
 		if ( ! $entryId ) {
-			wp_die( __( 'The video is missing or invalid.' ) );
+			wp_die( esc_html__( 'The video is missing or invalid.' ) );
 		}
 
 		$uiConfId = KalturaHelpers::getOption( 'kaltura_default_player_type' );
@@ -200,7 +200,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function updatethumbnailAction() {
 		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
 		if ( ! $entryId ) {
-			wp_die( __( 'The video is missing or invalid.' ) );
+			wp_die( esc_html__( 'The video is missing or invalid.' ) );
 		}
 
 		$uiConfId = KalturaHelpers::getOption( 'thumbnail_player_ui_conf_id' );
@@ -310,6 +310,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$entryId      = $arr[0];
 			$entryName    = $arr[1];
 			$categoryName = $arr[2];
+			$categoryName = esc_html($categoryName);
 
 			// do we need to create new category?
 			if ( ! Kaltura_WPModel::isCategoryExists( $categoryName ) ) {
@@ -321,9 +322,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$category = Kaltura_WPModel::getCategoryByName( $categoryName );
 
 			// create the post for the video
-			$shortCode = "[kaltura-widget uiconfid=\"$uiConfId\" entryid=\"$entryId\" width=\"$width\" height=\"$height\" /]";
+			$shortCode = '[kaltura-widget uiconfid="' . esc_attr($uiConfId) . '" entryid="' . esc_attr($entryId) . '" width="' . esc_attr($width) . '" height="' . esc_attr($height) . '" /]';
 			$newPost   = array(
-				'post_title'   => $entryName,
+				'post_title'   => esc_html($entryName),
 				'post_content' => $shortCode,
 			);
 			$postId = wp_insert_post( $newPost );

@@ -1,7 +1,7 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( ! $this->pingOk ): ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
 		<br />
 
 		<div class="error">
@@ -12,7 +12,7 @@
 	</div>
 <?php elseif ( $this->success === true ): ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'Congratulations!' ); ?></h2>
+		<h2><?php echo esc_html( 'Congratulations!' ); ?></h2>
 		<br />
 
 		<div class="updated fade">
@@ -29,13 +29,13 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = 'options-general.php?page=kaltura_options'"><?php esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = 'options-general.php?page=kaltura_options'"><?php echo esc_html( 'Continue...' ); ?></a>
 		</div>
 	</div>
 <?php
 else: ?>
 	<div class="wrap">
-		<h2><?php esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
 		<?php if ( isset( $this->error ) ): ?>
 			<br />
 			<div class="error">
@@ -52,50 +52,50 @@ else: ?>
 			Once you complete the form below and click "Complete installation", the All in One Video Pack will be fully installed and ready to use.
 		</p>
 
-		<h3><?php esc_html( 'Get a Partner ID' ); ?></h3>
+		<h3><?php echo esc_html( 'Get a Partner ID' ); ?></h3>
 
 		<form name="form1" method="post" class="registration" />
 		<?php wp_nonce_field( 'info', 'register' ); ?>
 
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'First Name' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'First Name' ); ?>: *</th>
 				<td>
 					<input type="text" id="first_name" name="first_name" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'first_name' ) ); ?>" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Last Name' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'Last Name' ); ?>: *</th>
 				<td>
 					<input type="text" id="last_name" name="last_name" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'last_name' ) ); ?>" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Email' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'Email' ); ?>: *</th>
 				<td>
 					<input type="text" id="email" name="email" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'email' ) ); ?>" size="50" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Phone' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'Phone' ); ?>: *</th>
 				<td>
 					<input type="text" id="phone" name="phone" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'phone' ) ); ?>" size="30" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Company' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'Company' ); ?>: *</th>
 				<td>
 					<input type="text" id="company" name="company" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'company' ) ); ?>" size="30" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Website' ); ?>:</th>
+				<th scope="row"><?php echo esc_html( 'Website' ); ?>:</th>
 				<td>
 					<input type="text" id="website" name="website" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'website' ) ); ?>" size="50" />
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php esc_html( 'Job Title' ); ?>: *</th>
+				<th scope="row"><?php echo esc_html( 'Job Title' ); ?>: *</th>
 				<td>
 					<input type="text" id="job_title" name="job_title" value="<?php echo esc_attr( KalturaHelpers::getRequestPostParam( 'job_title' ) ); ?>" />
 				</td>
@@ -179,7 +179,7 @@ else: ?>
 		</table>
 
 		<p class="submit" style="text-align: left; ">
-			<input type="submit" name="Submit" value="<?php esc_html( 'Complete installation' ) ?>" /></p>
+			<input type="submit" name="Submit" value="<?php echo esc_html( 'Complete installation' ) ?>" /></p>
 		</form>
 	</div>
 <?php endif;

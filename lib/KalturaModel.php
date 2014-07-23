@@ -34,9 +34,9 @@ class KalturaModel {
 
 	private function KalturaModel() {
 		$config           = KalturaHelpers::getKalturaConfiguration();
-		$this->_client    = new Kaltura_Client_Client( $config );
+		$this->_client    = new KalturaVipClientBase( $config );
 		$this->_sanitizer = new KalturaSanitizer();
-		$this->_userId    = $this->_sanitizer->sanitizer( KalturaHelpers::getLoggedUserId(), 'string' );
+		$this->_userId    = $this->_sanitizer->sanitizer( KalturaHelpers::getLoggedUserId(), 'intOrString' );
 		$this->_partnerId = $this->_sanitizer->sanitizer( KalturaHelpers::getOption( 'kaltura_partner_id' ), 'string' );
 		$this->startSession();
 	}
@@ -97,7 +97,7 @@ class KalturaModel {
 	public function createKS( $partnerId, $userId, $sessionType = Kaltura_Client_Enum_SessionType::USER, $privileges = '', $expiry = 86400 ) {
 		$privileges = $this->_sanitizer->sanitizer( $privileges, 'string' );
 		$expiry     = $this->_sanitizer->sanitizer( $expiry, 'int' );
-		$userId     = $this->_sanitizer->sanitizer( $userId, 'string' );
+		$userId     = $this->_sanitizer->sanitizer( $userId, 'intOrString' );
 		$partnerId  = $this->_sanitizer->sanitizer( $partnerId, 'string' );
 
 		$rand   = microtime( true );
@@ -401,7 +401,7 @@ class KalturaModel {
 	}
 
 	public function getPlayerUiConf( $uiConfId ) {
-		$uiConfId = (string)$this->_sanitizer->sanitizer( $uiConfId, 'string' );
+		$uiConfId = (string)$this->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
 
 		return $this->_client->uiConf->get( $uiConfId );
 	}

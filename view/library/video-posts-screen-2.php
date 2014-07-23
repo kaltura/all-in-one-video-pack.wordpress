@@ -1,22 +1,22 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <div class="wrap kaltura-wrap">
-	<h2><?php esc_html( 'Creating Video Post from Category' ); ?></h2>
+	<h2><?php echo esc_html( 'Creating Video Post from Category' ); ?></h2>
 	<?php $this->renderView( 'library/library-menu.php' ); ?>
 	<br clear="all" />
 	<?php if ( ! $this->hasEntries ): ?>
 		<div class="tablenav">
-			<?php esc_html( "No videos found. There might not be any videos in your KMC or you have previously created video posts from these categories (you can create a video post once)." ); ?>
+			<?php echo esc_html( "No videos found. There might not be any videos in your KMC or you have previously created video posts from these categories (you can create a video post once)." ); ?>
 		</div>
 		<div class="tablenav">
 			<div class="alignleft actions">
-				<input type="submit" value="<?php esc_html( 'Back' ); ?>" onclick="history.go(-1);" name="doaction2" id="doaction2" class="button-secondary action" />
+				<input type="submit" value="<?php echo esc_html( 'Back' ); ?>" onclick="history.go(-1);" name="doaction2" id="doaction2" class="button-secondary action" />
 				<br class="clear" />
 			</div>
 			<br class="clear" />
 		</div>
 	<?php else: ?>
 		<div class="tablenav">
-			<?php esc_html( 'Here are the videos found in your KMC categories that match your WordPress categories. Select player and videos to create posts.' ); ?>
+			<?php echo esc_html( 'Here are the videos found in your KMC categories that match your WordPress categories. Select player and videos to create posts.' ); ?>
 		</div>
 		<form action="?page=kaltura_library&kaction=videoposts&step=3" method="post">
 			<table class="form-table">
@@ -53,15 +53,15 @@
 					<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 						<input type="checkbox" />
 					</th>
-					<th scope="col" id="name" class="manage-column column-name" style=""><?php esc_html( 'Name' ); ?></th>
-					<th scope="col" id="posts" class="manage-column column-description" style=""><?php esc_html( 'Category' ); ?></th>
+					<th scope="col" id="name" class="manage-column column-name" style=""><?php echo esc_html( 'Name' ); ?></th>
+					<th scope="col" id="posts" class="manage-column column-description" style=""><?php echo esc_html( 'Category' ); ?></th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
 					<th scope="col" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
-					<th scope="col" class="manage-column column-name" style=""><?php esc_html( 'Name' ); ?></th>
-					<th scope="col" class="manage-column column-description" style=""><?php esc_html( 'Category' ); ?></th>
+					<th scope="col" class="manage-column column-name" style=""><?php echo esc_html( 'Name' ); ?></th>
+					<th scope="col" class="manage-column column-description" style=""><?php echo esc_html( 'Category' ); ?></th>
 				</tr>
 				</tfoot>
 				<tbody>
@@ -85,7 +85,7 @@
 			</table>
 			<div class="tablenav">
 				<div class="alignleft actions">
-					<input type="submit" value="<?php esc_html( 'Create Posts' ); ?>" name="doaction2" id="doaction2" class="button-secondary action" />
+					<input type="submit" value="<?php echo esc_html( 'Create Posts' ); ?>" name="doaction2" id="doaction2" class="button-secondary action" />
 					<br class="clear" />
 				</div>
 				<br class="clear" />

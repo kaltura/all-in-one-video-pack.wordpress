@@ -5,11 +5,11 @@
 	<br clear="all" />
 
 	<p>
-		<?php esc_html( 'If you have created categories in your Kaltura Management Console (KMC), this page allows you to automatically generate a post that includes videos from your KMC, by category. These posts will be saved as drafts. ' ); ?>
+		<?php echo esc_html( 'If you have created categories in your Kaltura Management Console (KMC), this page allows you to automatically generate a post that includes videos from your KMC, by category. These posts will be saved as drafts. ' ); ?>
 	</p>
 	<?php if ( count( $this->categories ) == 0 ): ?>
 		<p>
-			<?php esc_html( 'To begin, go to your KMC and assign categories to your content. When you return to your WordPress admin panel, these categories will be displayed in this table.' ); ?>
+			<?php echo esc_html( 'To begin, go to your KMC and assign categories to your content. When you return to your WordPress admin panel, these categories will be displayed in this table.' ); ?>
 		</p>
 	<?php else: ?>
 		<form action="?page=kaltura_library&kaction=videoposts&step=2" method="post">
@@ -19,19 +19,19 @@
 					<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
 						<input type="checkbox" />
 					</th>
-					<th scope="col" id="name" class="manage-column column-name" style=""><?php esc_html( 'Name' ); ?></th>
-					<th scope="col" id="description" class="manage-column column-description" style=""><?php esc_html( 'Description' ); ?></th>
-					<th scope="col" id="slug" class="manage-column column-slug" style=""><?php esc_html( 'Slug' ); ?></th>
-					<th scope="col" id="posts" class="manage-column column-posts num" style=""><?php esc_html( 'Posts' ); ?></th>
+					<th scope="col" id="name" class="manage-column column-name" style=""><?php echo esc_html( 'Name' ); ?></th>
+					<th scope="col" id="description" class="manage-column column-description" style=""><?php echo esc_html( 'Description' ); ?></th>
+					<th scope="col" id="slug" class="manage-column column-slug" style=""><?php echo esc_html( 'Slug' ); ?></th>
+					<th scope="col" id="posts" class="manage-column column-posts num" style=""><?php echo esc_html( 'Posts' ); ?></th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
 					<th scope="col" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
-					<th scope="col" class="manage-column column-name" style=""><?php esc_html( 'Name' ); ?></th>
-					<th scope="col" class="manage-column column-description" style=""><?php esc_html( 'Description' ); ?></th>
-					<th scope="col" class="manage-column column-slug" style=""><?php esc_html( 'Slug' ); ?></th>
-					<th scope="col" class="manage-column column-posts num" style=""><?php esc_html( 'Posts' ); ?></th>
+					<th scope="col" class="manage-column column-name" style=""><?php echo esc_html( 'Name' ); ?></th>
+					<th scope="col" class="manage-column column-description" style=""><?php echo esc_html( 'Description' ); ?></th>
+					<th scope="col" class="manage-column column-slug" style=""><?php echo esc_html( 'Slug' ); ?></th>
+					<th scope="col" class="manage-column column-posts num" style=""><?php echo esc_html( 'Posts' ); ?></th>
 				</tr>
 				</tfoot>
 				<tbody>
@@ -65,7 +65,7 @@
 							<td class="post-title page-title column-name">
 								<strong><?php echo esc_html( $category->fullName ); ?></strong>
 							</td>
-							<td class="author column-description"><?php esc_html( 'KMC Category' ); ?></td>
+							<td class="author column-description"><?php echo esc_html( 'KMC Category' ); ?></td>
 							<td class="comments column-slug"></td>
 							<td class="date column-date"></td>
 						<?php endif; ?>

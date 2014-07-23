@@ -121,7 +121,7 @@ class KalturaSanitizer extends Kaltura_BaseController {
 	private function flashVarsToString( $params ) {
 		$valid         = true;
 		$allowedParams = array(
-			'userId'           => 'string',
+			'userId'           => 'intOrString',
 			'sessionId'        => 'string',
 			'partnerId'        => 'string',
 			'subPartnerId'     => 'int',

@@ -63,7 +63,7 @@
 						<br />
 						<br />
 						<center>
-							<input type="button" value="<?php echo esc_attr( __( 'Close' ) ); ?>" onclick="setTimeout('topWindow.tb_remove()', 0);" name="close" class="button-secondary" />
+							<input type="button" value="<?php echo esc_attr__( 'Close' ); ?>" onclick="setTimeout('topWindow.tb_remove()', 0);" name="close" class="button-secondary" />
 						</center>
 					</td>
 				</tr>
@@ -155,7 +155,7 @@
 				</tr>
 			</table>
 			<p class="submit">
-				<input type="submit" value="<?php echo esc_attr( __( 'Insert into Post' ) ); ?>" name="sendToEditorButton" class="button-secondary" />
+				<input type="submit" value="<?php echo esc_attr__( 'Insert into Post' ); ?>" name="sendToEditorButton" class="button-secondary" />
 			</p>
 		</form>
 	</div>
