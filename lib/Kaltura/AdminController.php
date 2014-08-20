@@ -52,10 +52,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$cmsUser     = $partner->adminEmail;
 
 			// save partner details
-			update_option( 'kaltura_partner_id', $partnerId );
-			update_option( 'kaltura_secret', $secret );
-			update_option( 'kaltura_admin_secret', $adminSecret );
-			update_option( 'kaltura_cms_user', $cmsUser );
+			update_option( 'kaltura_partner_id', (string)$partnerId );
+			update_option( 'kaltura_secret', (string)$secret );
+			update_option( 'kaltura_admin_secret', (string)$adminSecret );
+			update_option( 'kaltura_cms_user', (string)$cmsUser );
 
 			$params['success'] = true;
 		}
@@ -149,7 +149,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$config               = KalturaHelpers::getKalturaConfiguration();
 			$config->partnerId    = 0; // no need to pass partner id for ping
 			$config->subPartnerId = 0;
-			$kalturaClient        = new KalturaVipClientBase( $config );
+			$kalturaClient        = new KalturaWordpressClientBase( $config );
 			$kmodel               = KalturaModel::getInstance();
 			$params['pingOk']     = $kmodel->pingTest( $kalturaClient );
 		}
