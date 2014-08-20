@@ -1,6 +1,6 @@
 (function ($) {
 	$.fn.kalturaEditableName = function (opts) {
-		// support mutltiple elements
+		// support multiple elements
 		if (this.length > 1) {
 			this.each(function () {
 				$(this).kalturaEditableName(opts)
