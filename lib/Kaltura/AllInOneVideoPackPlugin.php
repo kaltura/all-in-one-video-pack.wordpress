@@ -38,7 +38,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_action( 'admin_menu', array($this, 'adminMenuAction' ) );
 		add_action( 'wp_print_scripts', array($this, 'printScripts' ) );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueueScripts' ) );
-		add_action( 'wp_enqueue_styles', array($this, 'enqueueStyles' ) );
 		add_action( 'admin_enqueue_scripts', array($this, 'adminEnqueueScripts' ) );
 
 		// media upload actions
@@ -56,10 +55,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_shortcode( 'kaltura-widget', array($this, 'shortcodeHandler' ) );
 
 		add_filter( 'parse_request', array($this, 'parseRequest' ) );
-	}
-
-	private function callback( $functionName ) {
-		return array( $this, $functionName );
 	}
 
 	public function adminWarning() {
@@ -92,13 +87,9 @@ class Kaltura_AllInOneVideoPackPlugin {
 		KalturaHelpers::addWPVersionJS();
 	}
 
-	public function enqueueStyles() {
-	}
-
 	public function enqueueScripts() {
 		wp_enqueue_style( 'kaltura', KalturaHelpers::cssUrl( 'css/kaltura.css' ), array(), KalturaHelpers::getPluginVersion());
-		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KalturaHelpers::getPluginVersion(), false );
-		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array('jquery'), KalturaHelpers::getPluginVersion(), false );
 	}
 
 	public function adminEnqueueScripts() {
@@ -297,7 +288,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 					"flashvars": {' . $embedOptions['flashVars'] . '},
 					"entry_id": "' . $entryId . '"
 				});';
-			//$html .= 'alert(document.getElementById("'.$playerId.'_wrapper").innerHTML);jQuery("#'.$playerId.'_wrapper").append("'.str_replace("\"", "\\\"", $powerdByBox).'");';
 			$html .= '</script>';
 		}
 
@@ -320,7 +310,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$kmodel = KalturaModel::getInstance();
 			$kmodel->updateEntryPermalink( $postId );
 		} catch ( Exception $ex ) {
-			error_log( esc_html('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString()) );
 		}
 	}
 

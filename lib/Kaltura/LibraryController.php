@@ -9,6 +9,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'sendtoeditor',
 			'library',
 			'browse',
+            'searchvideos',
 			'choosevideos',
 			'preview',
 			'updatethumbnail',
