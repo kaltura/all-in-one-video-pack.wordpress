@@ -5,7 +5,8 @@ input#kaltura_video_comment{ margin-top: 0; }
 .entry-content .kaltura-player-wrapper object,
 .entry-content .kaltura-player-wrapper video { margin: 0; }
 
-.kaltura-powered-by { font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; font-size: 9px; text-align: right; overflow: hidden; line-height: 11px; }
+.kWidgetIframeContainer { max-width: 100%; }
+.kaltura-powered-by { max-width: 100%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; font-size: 9px; text-align: right; overflow: hidden; line-height: 11px; }
 .kaltura-powered-by div { padding: 2px 0px; }
 .kaltura-powered-by div a { text-decoration: none; }
 
