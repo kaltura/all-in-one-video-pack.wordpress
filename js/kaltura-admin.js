@@ -32,9 +32,8 @@
 				/**Change class name and html.*/
                 $(this).addClass('kaltura-caret-right');
                 $(this).removeClass('kaltura-caret-down');
-				$(this).html('&#9658');
+                $(this).html('&#9658');
 			}
-
 		});
 
 		$('#clear_categories').on('click', function () {
