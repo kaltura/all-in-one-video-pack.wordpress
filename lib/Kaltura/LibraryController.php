@@ -4,19 +4,19 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 
 	protected function allowedActions() {
 		return array(
-            'upload',
-            'delete',
-            'sendtoeditor',
-            'library',
-            'browse',
-            'searchvideos',
-            'choosevideos',
-            'preview',
-            'updatethumbnail',
-            'getplayers',
-            'saveentryname',
-            'videoposts',
-            'getentriesstatus',
+			'upload',
+			'delete',
+			'sendtoeditor',
+			'library',
+			'browse',
+			'searchvideos',
+			'choosevideos',
+			'preview',
+			'updatethumbnail',
+			'getplayers',
+			'saveentryname',
+			'videoposts',
+			'getentriesstatus',
 		);
 	}
 

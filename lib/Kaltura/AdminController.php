@@ -2,10 +2,10 @@
 
 class Kaltura_AdminController extends Kaltura_BaseController {
 	public function allowedActions() {
-        return array(
-            'partnerLogin',
-            'info',
-            'register'
+		return array(
+			'partnerLogin',
+			'info',
+			'register'
 		);
 	}
 

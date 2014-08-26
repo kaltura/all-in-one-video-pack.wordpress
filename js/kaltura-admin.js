@@ -10,15 +10,15 @@
 					var siblingId = this.id;
 					var caret = $(this).find('span');
 					if (siblingId.indexOf(searchId) != -1) {
-                        $(this).show();
-                        if ($(caret).hasClass('kaltura-caret-right')) {
-                            return false;
+						$(this).show();
+						if ($(caret).hasClass('kaltura-caret-right')) {
+							return false;
 						}
 					}
 				});
 				/**Change class name and html.*/
-                $(this).addClass('kaltura-caret-down');
-                $(this).removeClass('kaltura-caret-right');
+				$(this).addClass('kaltura-caret-down');
+				$(this).removeClass('kaltura-caret-right');
 				$(this).html('&#9660');
 			} else {
 				/** Close siblings*/
@@ -30,9 +30,9 @@
 					}
 				});
 				/**Change class name and html.*/
-                $(this).addClass('kaltura-caret-right');
-                $(this).removeClass('kaltura-caret-down');
-                $(this).html('&#9658');
+				$(this).addClass('kaltura-caret-right');
+				$(this).removeClass('kaltura-caret-down');
+				$(this).html('&#9658');
 			}
 		});
 

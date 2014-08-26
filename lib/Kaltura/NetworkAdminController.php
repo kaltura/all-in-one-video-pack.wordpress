@@ -3,9 +3,9 @@
 class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 	protected function allowedActions() {
 		return array(
-            'login',
-            'info'
-        );
+			'login',
+			'info'
+		);
 	}
 
 	public function execute() {
