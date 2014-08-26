@@ -11,7 +11,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function init() {
-		if (
+        if (
 			is_multisite()
 			&& ! ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() )
 			&& apply_filters( 'kaltura_use_network_settings', true )
@@ -310,6 +310,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$kmodel = KalturaModel::getInstance();
 			$kmodel->updateEntryPermalink( $postId );
 		} catch ( Exception $ex ) {
+            trigger_error('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(), E_USER_NOTICE);
 		}
 	}
 

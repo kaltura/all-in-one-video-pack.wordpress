@@ -4,7 +4,7 @@ class KalturaHelpers {
 	private static $_settings = null;
 
 	public static function getKalturaConfiguration() {
-		$config             = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+        $config = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
 		$config->serviceUrl = KalturaHelpers::getServerUrl();
 
 		return $config;
@@ -157,7 +157,7 @@ class KalturaHelpers {
 
 		$url = KalturaHelpers::getServerUrl() . '/index.php/kwidget/wid/' . $widgetId;
 		if ( $uiConfId ) {
-			$url .= ( '/ui_conf_id/' . $uiConfId );
+            $url .= ( '/ui_conf_id/' . $uiConfId );
 		}
 
 		return $url;
@@ -168,21 +168,18 @@ class KalturaHelpers {
 		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
         $kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
 
-		$html5LibUrl = '' .
-			self::getServerUrl() .
-			'/p/' . $kalturaPartnerId .
-			'/sp/' . $kalturaPartnerId . '00' .
-			'/embedIframeJs' .
-			'/uiconf_id/' . $uiConfId .
-			'/partner_id/' . $kalturaPartnerId;
+        $html5LibUrl = '' .
+            self::getServerUrl() .
+            '/p/' . $kalturaPartnerId .
+            '/sp/' . $kalturaPartnerId . '00' .
+            '/embedIframeJs' .
+            '/uiconf_id/' . $uiConfId .
+            '/partner_id/' . $kalturaPartnerId;
 		wp_enqueue_script( 'kaltura-html5lib-' . $uiConfId, $html5LibUrl );
 	}
 
 	public static function getContributionWizardUrl( $uiConfId ) {
-		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
-
-		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . $uiConfId;
+		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . (int)$uiConfId;
 	}
 
 	public static function anonymousCommentsAllowed() {
@@ -201,22 +198,22 @@ class KalturaHelpers {
 		$version  = (int)$kmodel->_sanitizer->sanitizer( $version, 'int' );
 
         $kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
-		$url  = KalturaHelpers::getCdnUrl();
-		$url .= '/p/' . $kalturaPartnerId;
-		$url .= '/sp/' . $kalturaPartnerId * 100;
-		$url .= '/thumbnail';
+        $url  = KalturaHelpers::getCdnUrl();
+        $url .= '/p/' . $kalturaPartnerId;
+        $url .= '/sp/' . $kalturaPartnerId * 100;
+        $url .= '/thumbnail';
 		if ( $widgetId ) {
-			$url .= '/widget_id/' . $widgetId;
+            $url .= '/widget_id/' . $widgetId;
 		}
 		if ( $entryId ) {
 			$url .= '/entry_id/' . $entryId;
 		}
-		$url .= '/width/' . $width;
-		$url .= '/height/' . $height;
-		$url .= '/type/2';
-		$url .= '/bgcolor/000000';
+        $url .= '/width/' . $width;
+        $url .= '/height/' . $height;
+        $url .= '/type/2';
+        $url .= '/bgcolor/000000';
 		if ( $version !== null ) {
-			$url .= '/version/' . $version;
+            $url .= '/version/' . $version;
 		}
 
 		return $url;

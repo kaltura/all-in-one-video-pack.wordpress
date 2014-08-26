@@ -10,9 +10,9 @@
 					var siblingId = this.id;
 					var caret = $(this).find('span');
 					if (siblingId.indexOf(searchId) != -1) {
-						$(this).show();
-						if ($(caret).hasClass('kaltura-caret-right')) {
-							return false;
+                        $(this).show();
+                        if ($(caret).hasClass('kaltura-caret-right')) {
+                            return false;
 						}
 					}
 				});
