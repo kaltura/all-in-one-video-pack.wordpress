@@ -202,7 +202,12 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function commentFormAction( $post_id ) {
-		if ( wp_is_mobile() ) {
+		if (function_exists('jetpack_is_mobile')&& jetpack_is_mobile()) {
+
+            return;
+        }
+
+        else if ( wp_is_mobile() ) {
 			return;
 		}
 
@@ -214,7 +219,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		} else {
             $openComment_url = site_url() . '?kaltura_iframe_handler';
 			$js_click_code = 'Kaltura.openCommentCW(\'' . esc_url($openComment_url)  . '\'); ';
-			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . _js($js_click_code) . '" />';
+			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . esc_js($js_click_code) . '" />';
 		}
 	}
 
