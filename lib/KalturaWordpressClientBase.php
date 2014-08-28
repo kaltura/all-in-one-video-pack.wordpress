@@ -6,7 +6,7 @@
  * Time:    17:30
  */
 
-class KalturaVipClientBase extends Kaltura_Client_Client {
+class KalturaWordpressClientBase extends Kaltura_Client_Client {
 
 
     /**

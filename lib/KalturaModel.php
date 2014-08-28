@@ -34,7 +34,7 @@ class KalturaModel {
 
 	private function KalturaModel() {
 		$config           = KalturaHelpers::getKalturaConfiguration();
-		$this->_client    = new KalturaVipClientBase( $config );
+		$this->_client    = new KalturaWordpressClientBase( $config );
 		$this->_sanitizer = new KalturaSanitizer();
 		$this->_userId    = $this->_sanitizer->sanitizer( KalturaHelpers::getLoggedUserId(), 'intOrString' );
 		$this->_partnerId = $this->_sanitizer->sanitizer( KalturaHelpers::getOption( 'kaltura_partner_id' ), 'string' );

@@ -4,7 +4,7 @@ class KalturaHelpers {
 	private static $_settings = null;
 
 	public static function getKalturaConfiguration() {
-		$config             = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$config = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
 		$config->serviceUrl = KalturaHelpers::getServerUrl();
 
 		return $config;
@@ -19,8 +19,8 @@ class KalturaHelpers {
 
 	public static function getCdnUrl()
 	{
-        $sanitizer = new KalturaSanitizer();
-        $url = (string) $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
+		$sanitizer = new KalturaSanitizer();
+		$url = (string) $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
 		return rtrim($url, '/');
 	}
 
@@ -57,7 +57,7 @@ class KalturaHelpers {
 		$sanitizer = new KalturaSanitizer();
 		$params    = $sanitizer->sanitizer( $params, 'generateTabUrl' );
 
-		$query = remove_query_arg( $_GET, $_SERVER['REQUEST_URI'] );
+		$query = remove_query_arg(array_keys($_GET), $_SERVER['REQUEST_URI'] );
 
 		$query = add_query_arg( $params, $query );
 
@@ -166,22 +166,20 @@ class KalturaHelpers {
 	public static function enqueueHtml5Lib( $uiConfId ) {
 		$kmodel   = KalturaModel::getInstance();
 		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
+		$kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
 
 		$html5LibUrl = '' .
 			self::getServerUrl() .
-			'/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) .
-			'/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00' .
+			'/p/' . $kalturaPartnerId .
+			'/sp/' . $kalturaPartnerId . '00' .
 			'/embedIframeJs' .
 			'/uiconf_id/' . $uiConfId .
-			'/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+			'/partner_id/' . $kalturaPartnerId;
 		wp_enqueue_script( 'kaltura-html5lib-' . $uiConfId, $html5LibUrl );
 	}
 
 	public static function getContributionWizardUrl( $uiConfId ) {
-		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
-
-		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . $uiConfId;
+		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . (int)$uiConfId;
 	}
 
 	public static function anonymousCommentsAllowed() {
@@ -199,9 +197,10 @@ class KalturaHelpers {
 		$height   = (int)$kmodel->_sanitizer->sanitizer( $height, 'int' );
 		$version  = (int)$kmodel->_sanitizer->sanitizer( $version, 'int' );
 
+		$kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
 		$url  = KalturaHelpers::getCdnUrl();
-		$url .= '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
-		$url .= '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
+		$url .= '/p/' . $kalturaPartnerId;
+		$url .= '/sp/' . $kalturaPartnerId * 100;
 		$url .= '/thumbnail';
 		if ( $widgetId ) {
 			$url .= '/widget_id/' . $widgetId;
@@ -274,9 +273,9 @@ class KalturaHelpers {
 	public static function runKalturaShortcode( $content, $callback ) {
 		global $shortcode_tags;
 
-        // we will backup the shortcode array, and run only our shortcode
+		// we will backup the shortcode array, and run only our shortcode
 		$shortcode_tags_backup = $shortcode_tags;
-        $shortcode_tags = array();
+		$shortcode_tags = array();
 
 		add_shortcode( 'kaltura-widget', $callback );
 

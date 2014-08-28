@@ -11,55 +11,50 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function init() {
-		if (
+        if (
 			is_multisite()
 			&& ! ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() )
 			&& apply_filters( 'kaltura_use_network_settings', true )
 		) {
-			add_action( 'network_admin_menu', $this->callback( 'networkAdminMenuAction' ) );
+			add_action( 'network_admin_menu', array($this, 'networkAdminMenuAction' ) );
 		}
 
         // show notice on admin pages except for kaltura_options
 		if ( ! KalturaHelpers::getOption( 'kaltura_partner_id' ) &&	! isset( $_POST['submit'] ) &&	(!isset( $_GET['page'] ) || 'kaltura_options' !== $_GET['page'])
 		) {
-			add_action( 'admin_notices', $this->callback( 'adminWarning' ) );
+			add_action( 'admin_notices', array($this, 'adminWarning' ) );
 
 			return;
 		}
 
 		// filters
-		add_filter( 'comment_text', $this->callback( 'commentTextFilter' ) );
-		add_filter( 'media_buttons_context', $this->callback( 'mediaButtonsContextFilter' ) );
-		add_filter( 'media_upload_tabs', $this->callback( 'mediaUploadTabsFilter' ) );
-		add_filter( 'mce_external_plugins', $this->callback( 'mceExternalPluginsFilter' ) );
-		add_filter( 'tiny_mce_version', $this->callback( 'tinyMceVersionFilter' ) );
+		add_filter( 'comment_text', array($this, 'commentTextFilter' ) );
+		add_filter( 'media_buttons_context', array($this, 'mediaButtonsContextFilter' ) );
+		add_filter( 'media_upload_tabs', array($this, 'mediaUploadTabsFilter' ) );
+		add_filter( 'mce_external_plugins', array($this, 'mceExternalPluginsFilter' ) );
+		add_filter( 'tiny_mce_version', array($this, 'tinyMceVersionFilter' ) );
 
 		// actions
-		add_action( 'admin_menu', $this->callback( 'adminMenuAction' ) );
-		add_action( 'wp_print_scripts', $this->callback( 'printScripts' ) );
-		add_action( 'wp_enqueue_scripts', $this->callback( 'enqueueScripts' ) );
-		add_action( 'wp_enqueue_styles', $this->callback( 'enqueueStyles' ) );
-		add_action( 'admin_enqueue_scripts', $this->callback( 'adminEnqueueScripts' ) );
+		add_action( 'admin_menu', array($this, 'adminMenuAction' ) );
+		add_action( 'wp_print_scripts', array($this, 'printScripts' ) );
+		add_action( 'wp_enqueue_scripts', array($this, 'enqueueScripts' ) );
+		add_action( 'admin_enqueue_scripts', array($this, 'adminEnqueueScripts' ) );
 
 		// media upload actions
-		add_action( 'media_upload_kaltura_upload', $this->callback( 'mediaUploadAction' ) );
-		add_action( 'media_upload_kaltura_browse', $this->callback( 'mediaBrowseAction' ) );
-		add_action( 'admin_print_scripts-media-upload-popup', $this->callback( 'mediaUploadPrintScriptsAction' ) );
+		add_action( 'media_upload_kaltura_upload', array($this, 'mediaUploadAction' ) );
+		add_action( 'media_upload_kaltura_browse', array($this, 'mediaBrowseAction' ) );
+		add_action( 'admin_print_scripts-media-upload-popup', array($this, 'mediaUploadPrintScriptsAction' ) );
 
-		add_action( 'save_post', $this->callback( 'savePost' ) );
-		add_action( 'wp_ajax_kaltura_ajax', $this->callback( 'executeLibraryController' ) );
+		add_action( 'save_post', array($this, 'savePost' ) );
+		add_action( 'wp_ajax_kaltura_ajax', array($this, 'executeLibraryController' ) );
 
 		if ( KalturaHelpers::videoCommentsEnabled() ) {
-			add_action( 'comment_form', $this->callback( 'commentFormAction' ) );
+			add_action( 'comment_form', array($this, 'commentFormAction' ) );
 		}
 
-		add_shortcode( 'kaltura-widget', $this->callback( 'shortcodeHandler' ) );
+		add_shortcode( 'kaltura-widget', array($this, 'shortcodeHandler' ) );
 
-		add_filter( 'parse_request', $this->callback( 'parseRequest' ) );
-	}
-
-	private function callback( $functionName ) {
-		return array( $this, $functionName );
+		add_filter( 'parse_request', array($this, 'parseRequest' ) );
 	}
 
 	public function adminWarning() {
@@ -84,21 +79,17 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function adminMenuAction() {
-		add_options_page( 'All in One Video', 'All in One Video', 'manage_options', 'kaltura_options', $this->callback( 'executeAdminController' ) );
-		add_media_page( 'All in One Video', 'All in One Video', 'edit_posts', 'kaltura_library', $this->callback( 'executeLibraryController' ) );
+		add_options_page( 'All in One Video', 'All in One Video', 'manage_options', 'kaltura_options', array($this, 'executeAdminController' ) );
+		add_media_page( 'All in One Video', 'All in One Video', 'edit_posts', 'kaltura_library', array($this, 'executeLibraryController' ) );
 	}
 
 	public function printScripts() {
 		KalturaHelpers::addWPVersionJS();
 	}
 
-	public function enqueueStyles() {
-	}
-
 	public function enqueueScripts() {
 		wp_enqueue_style( 'kaltura', KalturaHelpers::cssUrl( 'css/kaltura.css' ), array(), KalturaHelpers::getPluginVersion());
-		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KalturaHelpers::getPluginVersion(), false );
-		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array('jquery'), KalturaHelpers::getPluginVersion(), false );
 	}
 
 	public function adminEnqueueScripts() {
@@ -158,9 +149,9 @@ class Kaltura_AllInOneVideoPackPlugin {
         $content .= '<a
 		    href="' . esc_url($kaltura_iframe_src_final) . '"
 		    class="thickbox"
-		    title="' . ($kaltura_title) . '">
+		    title="' . esc_attr__($kaltura_title) . '">
 		        <img src="' . esc_url($kaltura_button_src) . '"
-		        alt="' . ($kaltura_title) . '" />
+		        alt="' . esc_attr__($kaltura_title) . '" />
 		    </a>';
 
 
@@ -211,7 +202,12 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function commentFormAction( $post_id ) {
-		if ( wp_is_mobile() ) {
+		if (function_exists('jetpack_is_mobile')&& jetpack_is_mobile()) {
+
+            return;
+        }
+
+        else if ( wp_is_mobile() ) {
 			return;
 		}
 
@@ -223,7 +219,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		} else {
             $openComment_url = site_url() . '?kaltura_iframe_handler';
 			$js_click_code = 'Kaltura.openCommentCW(\'' . esc_url($openComment_url)  . '\'); ';
-			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . $js_click_code . '" />';
+			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . esc_js($js_click_code) . '" />';
 		}
 	}
 
@@ -258,7 +254,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 
         $scriptSrc = esc_url(KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . $embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' ));
 		$html         = '<script src="' . $scriptSrc . '"></script>';
-		$poweredByBox = '<div class="kaltura-powered-by" style="width: ' . $embedOptions['width'] . 'px; "><div><a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Player') . '" target="_blank">Video Player</a> by <a href="' . esc_url('http://corp.kaltura.com/') . '" target="_blank">Kaltura</a></div></div>';
+		$poweredByBox = '<div class="kaltura-powered-by" style="width: ' . esc_attr($embedOptions['width']) . 'px; "><div><a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Player') . '" target="_blank">Video Player</a> by <a href="' . esc_url('http://corp.kaltura.com/') . '" target="_blank">Kaltura</a></div></div>';
 
 		if ( $isComment ) {
 			$embedOptions['flashVars'] .= '"autoPlay":"true",';
@@ -297,7 +293,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 					"flashvars": {' . $embedOptions['flashVars'] . '},
 					"entry_id": "' . $entryId . '"
 				});';
-			//$html .= 'alert(document.getElementById("'.$playerId.'_wrapper").innerHTML);jQuery("#'.$playerId.'_wrapper").append("'.str_replace("\"", "\\\"", $powerdByBox).'");';
 			$html .= '</script>';
 		}
 
@@ -320,12 +315,12 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$kmodel = KalturaModel::getInstance();
 			$kmodel->updateEntryPermalink( $postId );
 		} catch ( Exception $ex ) {
-			error_log( esc_html('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString()) );
+            trigger_error('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(), E_USER_NOTICE);
 		}
 	}
 
 	public function networkAdminMenuAction() {
-		add_submenu_page( 'settings.php', 'All in One Video', 'All in One Video', 'manage_network_options', 'all-in-one-video-pack-mu-settings', $this->callback( 'networkSettings' ) );
+		add_submenu_page( 'settings.php', 'All in One Video', 'All in One Video', 'manage_network_options', 'all-in-one-video-pack-mu-settings', array($this, 'networkSettings' ) );
 	}
 
 	public function networkSettings() {
@@ -350,19 +345,19 @@ class Kaltura_AllInOneVideoPackPlugin {
 			ob_start();
 			$controller->execute();
 			$this->controllerOutput = ob_get_clean();
-			wp_iframe( 'getControllerOutput' );
+			wp_iframe( 'kalturaGetControllerOutput' );
 			die;
 		}
 	}
 
 	private function setKalturaOnlyMediaTabs() {
 		unset( $GLOBALS['wp_filter']['media_upload_tabs'] ); // remove all registerd filters for the tabs
-		add_filter( 'media_upload_tabs', $this->callback( 'mediaUploadTabsFilterOnlyKaltura' ) ); // register our filter for the tabs
+		add_filter( 'media_upload_tabs', array($this, 'mediaUploadTabsFilterOnlyKaltura' ) ); // register our filter for the tabs
 		media_upload_header(); // will add the tabs menu
 	}
 }
 
-function getControllerOutput() {
+function kalturaGetControllerOutput() {
 	global $kalturaPlugin;
 	echo $kalturaPlugin->controllerOutput;
 }

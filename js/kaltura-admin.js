@@ -5,19 +5,20 @@
 			var parentDiv = $(this).parent();
 			var searchId = this.parentElement.id;
 			/** Open siblings*/
-			if (this.className == 'kaltura-caret kaltura-caret-right') {
+			if ($(this).hasClass('kaltura-caret-right')) {
 				$(parentDiv).siblings().each(function () {
 					var siblingId = this.id;
 					var caret = $(this).find('span');
 					if (siblingId.indexOf(searchId) != -1) {
 						$(this).show();
-						if ($(caret).attr('class') == 'kaltura-caret kaltura-caret-right') {
+						if ($(caret).hasClass('kaltura-caret-right')) {
 							return false;
 						}
 					}
 				});
 				/**Change class name and html.*/
-				this.className = 'kaltura-caret kaltura-caret-down';
+				$(this).addClass('kaltura-caret-down');
+				$(this).removeClass('kaltura-caret-right');
 				$(this).html('&#9660');
 			} else {
 				/** Close siblings*/
@@ -29,10 +30,10 @@
 					}
 				});
 				/**Change class name and html.*/
-				this.className = 'kaltura-caret kaltura-caret-right';
+				$(this).addClass('kaltura-caret-right');
+				$(this).removeClass('kaltura-caret-down');
 				$(this).html('&#9658');
 			}
-
 		});
 
 		$('#clear_categories').on('click', function () {

@@ -9,6 +9,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'sendtoeditor',
 			'library',
 			'browse',
+			'searchvideos',
 			'choosevideos',
 			'preview',
 			'updatethumbnail',
@@ -179,7 +180,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function previewAction() {
 		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
 		if ( ! $entryId ) {
-			wp_die( esc_html__( 'The video is missing or invalid.' ) );
+			wp_die( esc_html__( 'The video is missing or invalid.' ,'all_in_one_video_pack' ) );
 		}
 
 		$uiConfId = KalturaHelpers::getOption( 'kaltura_default_player_type' );
@@ -200,7 +201,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function updatethumbnailAction() {
 		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
 		if ( ! $entryId ) {
-			wp_die( esc_html__( 'The video is missing or invalid.' ) );
+			wp_die( esc_html__( 'The video is missing or invalid.' ,'all_in_one_video_pack' ) );
 		}
 
 		$uiConfId = KalturaHelpers::getOption( 'thumbnail_player_ui_conf_id' );

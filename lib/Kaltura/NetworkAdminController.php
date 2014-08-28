@@ -2,7 +2,10 @@
 
 class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 	protected function allowedActions() {
-		return array();
+		return array(
+			'login',
+			'info'
+		);
 	}
 
 	public function execute() {

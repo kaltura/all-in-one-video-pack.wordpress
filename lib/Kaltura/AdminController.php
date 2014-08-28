@@ -2,7 +2,11 @@
 
 class Kaltura_AdminController extends Kaltura_BaseController {
 	public function allowedActions() {
-		return array();
+		return array(
+			'partnerLogin',
+			'info',
+			'register'
+		);
 	}
 
 	public function execute() {
@@ -52,10 +56,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$cmsUser     = $partner->adminEmail;
 
 			// save partner details
-			update_option( 'kaltura_partner_id', $partnerId );
-			update_option( 'kaltura_secret', $secret );
-			update_option( 'kaltura_admin_secret', $adminSecret );
-			update_option( 'kaltura_cms_user', $cmsUser );
+			update_option( 'kaltura_partner_id', (string)$partnerId );
+			update_option( 'kaltura_secret', (string)$secret );
+			update_option( 'kaltura_admin_secret', (string)$adminSecret );
+			update_option( 'kaltura_cms_user', (string)$cmsUser );
 
 			$params['success'] = true;
 		}
@@ -123,11 +127,11 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 					$cmsUser      = $partner->adminEmail;
 
 					// save partner details
-					update_option( 'kaltura_partner_id', $partnerId );
-					update_option( 'kaltura_subp_id', $subPartnerId );
-					update_option( 'kaltura_secret', $secret );
-					update_option( 'kaltura_admin_secret', $adminSecret );
-					update_option( 'kaltura_cms_user', $cmsUser );
+					update_option( 'kaltura_partner_id', (string)$partnerId );
+					update_option( 'kaltura_subp_id', (string)$subPartnerId );
+					update_option( 'kaltura_secret', (string)$secret );
+					update_option( 'kaltura_admin_secret', (string)$adminSecret );
+					update_option( 'kaltura_cms_user', (string)$cmsUser );
 					$params['success'] = true;
 				}
 			} else {
@@ -149,7 +153,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$config               = KalturaHelpers::getKalturaConfiguration();
 			$config->partnerId    = 0; // no need to pass partner id for ping
 			$config->subPartnerId = 0;
-			$kalturaClient        = new KalturaVipClientBase( $config );
+			$kalturaClient        = new KalturaWordpressClientBase( $config );
 			$kmodel               = KalturaModel::getInstance();
 			$params['pingOk']     = $kmodel->pingTest( $kalturaClient );
 		}
@@ -186,14 +190,14 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 
 			update_option( 'kaltura_enable_video_comments', $enableVideoComments );
 			update_option( 'kaltura_allow_anonymous_comments', $allowAnonymousComments );
-			update_option( 'kaltura_default_player_type', $defaultPlayerType );
-			update_option( 'kaltura_default_kcw_type', $defaultKCWType );
-			update_option( 'kaltura_comments_kcw_type', $commentsKCWType );
-			update_option( 'kaltura_comments_player_type', $commentsPlayerType );
-			update_option( 'kaltura_user_identifier', $userIdentifier );
-			update_option( 'kaltura_permalink_metadata_profile_id', $permalinkMetadataProfileId );
-			update_option( 'kaltura_save_permalink', $savePermalink );
-			update_option( 'kaltura_root_category', $rootCategory );
+			update_option( 'kaltura_default_player_type', (string)$defaultPlayerType );
+			update_option( 'kaltura_default_kcw_type', (string)$defaultKCWType );
+			update_option( 'kaltura_comments_kcw_type', (string)$commentsKCWType );
+			update_option( 'kaltura_comments_player_type', (string)$commentsPlayerType );
+			update_option( 'kaltura_user_identifier', (string)$userIdentifier );
+			update_option( 'kaltura_permalink_metadata_profile_id', (string)$permalinkMetadataProfileId );
+			update_option( 'kaltura_save_permalink', (string)$savePermalink );
+			update_option( 'kaltura_root_category', (string)$rootCategory );
 
 			$params['showMessage'] = true;
 		} else {
