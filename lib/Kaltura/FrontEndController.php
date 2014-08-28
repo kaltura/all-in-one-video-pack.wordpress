@@ -19,7 +19,7 @@ class Kaltura_FrontEndController extends Kaltura_BaseController {
 			$kmodel = KalturaModel::getInstance();
 			$ks     = $kmodel->getClientSideSession();
 			if ( ! $ks ) {
-				$jsError = esc_html__( 'Failed to start new session.','All in One Video Pack'  );
+				$jsError = esc_html__( 'Failed to start new session.','all_in_one_video_pack'  );
 			} else {
 				$params['swfUrl']    = KalturaHelpers::getContributionWizardUrl( KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) ? KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) : KalturaHelpers::getOption( 'kcw_ui_conf_comments' ) );
 				$params['flashVars'] = KalturaHelpers::getContributionWizardFlashVars( $ks );
@@ -45,30 +45,30 @@ class Kaltura_FrontEndController extends Kaltura_BaseController {
 			$comment_author_email = $wpdb->escape( $user->user_email );
 		} else {
 			if ( get_option( 'comment_registration' ) ) {
-				return esc_html__( 'Sorry, you must be logged in to post a comment.','All in One Video Pack' );
+				return esc_html__( 'Sorry, you must be logged in to post a comment.','all_in_one_video_pack' );
 			}
 		}
 
 		if ( get_option( 'require_name_email' ) && ! $user->ID ) {
 			if ( 6 > strlen( $comment_author_email ) || '' == $comment_author ) {
-				return esc_html__( 'Error: please fill the required fields (name, email).','All in One Video Pack' );
+				return esc_html__( 'Error: please fill the required fields (name, email).','all_in_one_video_pack' );
 			} elseif ( ! is_email( $comment_author_email ) ) {
-				return esc_html__( 'Error: please enter a valid email address.','All in One Video Pack' );
+				return esc_html__( 'Error: please enter a valid email address.','all_in_one_video_pack' );
 			}
 		}
 		// end of wordpress validation code
 
 		if ( ! KalturaHelpers::videoCommentsEnabled() ) {
-			return esc_html__( 'You do not have sufficient permissions to access this page.','All in One Video Pack' );
+			return esc_html__( 'You do not have sufficient permissions to access this page.','all_in_one_video_pack' );
 		}
 		if ( ! KalturaHelpers::anonymousCommentsAllowed() && ! $user->ID ) {
-			return esc_html__( 'You must be logged in to post a comment.','All in One Video Pack' );
+			return esc_html__( 'You must be logged in to post a comment.','all_in_one_video_pack' );
 		}
 
 		$post_id = KalturaHelpers::getRequestParam( 'postid' );
 
 		if ( ! $post_id ) {
-			return esc_html__( 'Invalid post id.','All in One Video Pack' );
+			return esc_html__( 'Invalid post id.','all_in_one_video_pack' );
 		}
 
 		return '';
