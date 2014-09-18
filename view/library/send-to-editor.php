@@ -79,15 +79,20 @@
 <?php else: ?>
 	<?php
 	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
+    $backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
+    $backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
+
 	?>
 
 	<div id="send-to-editor" class="kaltura-tab">
 		<?php if ( KalturaHelpers::getRequestParam( 'firstedit' ) != 'true' ) { ?>
 			<div class="backDiv">
-				<a href="<?php echo esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) ); ?>"><img src="<?php echo esc_attr( KalturaHelpers::getPluginUrl() ); ?>/images/back.gif" alt="Back" /></a>
+				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
-		<?php } ?>
-		<form method="post" class="kaltura-form" action="<?php echo esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) ); ?>">
+		<?php }
+        $senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
+        ?>
+		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
 					<td valign="top" width="240">

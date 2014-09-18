@@ -93,13 +93,13 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 				}
 
 				?>
-				<li class="filter-category-div-wrapper" id="<?php echo $fullNameWithoutRoot ?>" style="margin-left: <?php echo $widthStyle ?>px">
+				<li class="filter-category-div-wrapper" id="<?php echo esc_attr($fullNameWithoutRoot) ?>" style="margin-left: <?php echo $widthStyle ?>px">
 					<?php if ( $hasChildren ) {
 						echo '<span class="kaltura-caret kaltura-caret-down">&#9660</span>';
 					} ?>
 					<label class="filter-category-label">
-						<input id="<?php echo $category->fullIds; ?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id ?>" <?php echo is_array( $this->selectedCategories ) && in_array( $category->id, $this->selectedCategories ) ? "checked=\"checked\"" : ""; ?>/>
-						<?php echo $category->name ?>
+						<input id="<?php echo esc_attr($category->fullIds); ?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id ?>" <?php echo is_array( $this->selectedCategories ) && in_array( $category->id, $this->selectedCategories ) ? "checked=\"checked\"" : ""; ?>/>
+						<?php echo esc_html($category->name) ?>
 					</label>
 					<br>
 				</li>
@@ -144,13 +144,14 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 						<?php echo esc_html( $mediaEntry->name ); ?><br />
 					</div>
 					<div class="thumb">
+                        <?php $entryUrl = $mediaEntry->thumbnailUrl . "/width/120/height/90/type/2/bgcolor/000"?>
 						<?php if ( $this->isLibrary ): ?>
 							<a href="<?php echo admin_url( 'upload.php' ) ?>?kaltura_admin_iframe_handler&kaction=preview&entryid=<?php echo $mediaEntry->id; ?>&TB_iframe=true&height=390&width=600" title="Categories&#10;<?php echo $mediaCategories; ?>" class="thickbox">
-								<img src="<?php echo esc_url( $mediaEntry->thumbnailUrl ); ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php esc_attr( $mediaEntry->name ); ?>" width="120" height="90" />
+								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" width="120" height="90" />
 							</a>
 						<?php else: ?>
 							<a href="<?php echo esc_url( $sendToEditorUrl ); ?>">
-								<img src="<?php echo esc_url( $mediaEntry->thumbnailUrl ); ?>/width/120/height/90/type/2/bgcolor/000" alt="<?php esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo $mediaCategories; ?>" width="120" height="90" />
+								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo $mediaCategories; ?>" width="120" height="90" />
 							</a>
 						<?php endif; ?>
 					</div>

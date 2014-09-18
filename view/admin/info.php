@@ -30,12 +30,12 @@
 				<tr class="kalturaFirstRow">
 					<th align="left"><?php echo esc_html( 'Partner ID' ); ?>:</th>
 					<td style="padding-right: 90px;">
-						<strong><?php echo KalturaHelpers::getOption( 'kaltura_partner_id' ); ?></strong></td>
+						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_partner_id' )); ?></strong></td>
 				</tr>
 				<tr>
 					<th align="left"><?php echo esc_html( 'KMC username' ); ?>:</th>
 					<td style="padding-right: 90px;">
-						<strong><?php echo KalturaHelpers::getOption( 'kaltura_cms_user' ); ?></strong></td>
+						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong></td>
 				</tr>
 				<tr class="kalturaLastRow">
 					<td colspan="2" align="left" style="padding-top: 10px;padding-left:10px">
@@ -145,14 +145,14 @@
 				<tr valign="top" class="advanced">
 					<td><label><?php echo esc_html( 'UICONF for Kaltura Contribution Wizard:' ); ?></label></td>
 					<td>
-						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr( KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) ? KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' ) ); ?>" />
+						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) ? esc_attr(KalturaHelpers::getOption( 'kaltura_default_kcw_type' )) : esc_attr(KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' )); ?>" />
 						<br />
 					</td>
 				</tr>
 				<tr valign="top" class="advanced">
 					<td><label><?php echo esc_html( 'UICONF for Video Comments Contrubution Wizard:' ); ?></label></td>
 					<td>
-						<input name="comments_kcw_type" id="comments_kcw_type" value="<?php echo esc_attr( KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) ? KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) : KalturaHelpers::getOption( 'kcw_ui_conf_comments' ) ); ?>" />
+						<input name="comments_kcw_type" id="comments_kcw_type" value="<?php echo KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) ? esc_attr(KalturaHelpers::getOption( 'kaltura_comments_kcw_type' )) : esc_attr(KalturaHelpers::getOption( 'kcw_ui_conf_comments' )); ?>" />
 						<br />
 					</td>
 				</tr>
