@@ -16,4 +16,4 @@
 	});
 </script>
 
-<?php echo "testDavid" . $this->uiConfId;
+<?php echo "testDavid" . esc_html($this->uiConfId);
