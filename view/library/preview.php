@@ -15,5 +15,3 @@
 		"flashvars": <?php echo json_encode($this->flashVars); ?>
 	});
 </script>
-
-<?php echo "testDavid" . esc_html($this->uiConfId);
