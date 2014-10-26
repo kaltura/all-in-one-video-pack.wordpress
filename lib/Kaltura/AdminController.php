@@ -56,10 +56,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$cmsUser     = $partner->adminEmail;
 
 			// save partner details
-			update_option( 'kaltura_partner_id', (string)$partnerId );
-			update_option( 'kaltura_secret', (string)$secret );
-			update_option( 'kaltura_admin_secret', (string)$adminSecret );
-			update_option( 'kaltura_cms_user', (string)$cmsUser );
+			update_option( 'kaltura_partner_id', sanitize_text_field((string)$partnerId) );
+			update_option( 'kaltura_secret', sanitize_text_field((string)$secret) );
+			update_option( 'kaltura_admin_secret', sanitize_text_field((string)$adminSecret) );
+			update_option( 'kaltura_cms_user', sanitize_text_field((string)$cmsUser) );
 
 			$params['success'] = true;
 		}
@@ -127,11 +127,11 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 					$cmsUser      = $partner->adminEmail;
 
 					// save partner details
-					update_option( 'kaltura_partner_id', (string)$partnerId );
-					update_option( 'kaltura_subp_id', (string)$subPartnerId );
-					update_option( 'kaltura_secret', (string)$secret );
-					update_option( 'kaltura_admin_secret', (string)$adminSecret );
-					update_option( 'kaltura_cms_user', (string)$cmsUser );
+					update_option( 'kaltura_partner_id', sanitize_text_field((string)$partnerId) );
+					update_option( 'kaltura_subp_id', sanitize_text_field((string)$subPartnerId) );
+					update_option( 'kaltura_secret', sanitize_text_field((string)$secret) );
+					update_option( 'kaltura_admin_secret', sanitize_text_field((string)$adminSecret) );
+					update_option( 'kaltura_cms_user', sanitize_text_field((string)$cmsUser) );
 					$params['success'] = true;
 				}
 			} else {
@@ -188,16 +188,16 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 
-			update_option( 'kaltura_enable_video_comments', $enableVideoComments );
-			update_option( 'kaltura_allow_anonymous_comments', $allowAnonymousComments );
-			update_option( 'kaltura_default_player_type', (string)$defaultPlayerType );
-			update_option( 'kaltura_default_kcw_type', (string)$defaultKCWType );
-			update_option( 'kaltura_comments_kcw_type', (string)$commentsKCWType );
-			update_option( 'kaltura_comments_player_type', (string)$commentsPlayerType );
-			update_option( 'kaltura_user_identifier', (string)$userIdentifier );
-			update_option( 'kaltura_permalink_metadata_profile_id', (string)$permalinkMetadataProfileId );
-			update_option( 'kaltura_save_permalink', (string)$savePermalink );
-			update_option( 'kaltura_root_category', (string)$rootCategory );
+			update_option( 'kaltura_enable_video_comments', (bool)$enableVideoComments );
+			update_option( 'kaltura_allow_anonymous_comments', (bool)$allowAnonymousComments );
+			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
+			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
+			update_option( 'kaltura_comments_kcw_type', sanitize_text_field((string)$commentsKCWType) );
+			update_option( 'kaltura_comments_player_type', sanitize_text_field((string)$commentsPlayerType) );
+			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
+			update_option( 'kaltura_permalink_metadata_profile_id', sanitize_text_field((string)$permalinkMetadataProfileId) );
+			update_option( 'kaltura_save_permalink', sanitize_text_field((string)$savePermalink) );
+			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
 
 			$params['showMessage'] = true;
 		} else {

@@ -359,6 +359,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 function kalturaGetControllerOutput() {
 	global $kalturaPlugin;
-	echo $kalturaPlugin->controllerOutput;
+	echo  esc_html($kalturaPlugin->controllerOutput);
 }
 
