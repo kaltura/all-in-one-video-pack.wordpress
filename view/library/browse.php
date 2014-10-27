@@ -8,13 +8,17 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 		<?php $this->renderView( 'library/library-menu.php' ); ?>
 		<br clear="all" />
 	<?php endif; ?>
-	<form id="kaltura-browse-form" action="<?php echo get_site_url(); ?>/wp-admin/<?php echo $kaction == 'browse' ? 'media-upload.php' : 'upload.php'; ?>?" method="get">
+    <?php
+        $selectedAction = $kaction == 'browse' ? 'media-upload.php' : 'upload.php';
+        $browseFormUrlAction = get_site_url() . '/wp-admin/' . $selectedAction . '?';
+    ?>
+	<form id="kaltura-browse-form" action="<?php echo esc_url($browseFormUrlAction) ?>" method="get">
 
 		<ul id="kaltura-filter-categories">
 
 			<?php if ( $kaction == 'browse' ) : ?>
 				<input type="hidden" name="tab" value="kaltura_browse" />
-				<input type="hidden" name="post_id" value="<?php echo $this->postId ?>" />
+				<input type="hidden" name="post_id" value="<?php echo esc_attr($this->postId) ?>" />
 			<?php else: ?>
 				<input type="hidden" name="page" value="kaltura_library" />
 			<?php endif; ?>
@@ -83,6 +87,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 				}
 
 				/** Remove root category if we select other category then default. */
+                $fullNameWithoutRoot = "";
 				if ( $rootCategory != 0 ) {
 					$pos = strpos( $category->fullName, '>' );
 					if ( $pos !== false ) {
@@ -93,12 +98,12 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 				}
 
 				?>
-				<li class="filter-category-div-wrapper" id="<?php echo esc_attr($fullNameWithoutRoot) ?>" style="margin-left: <?php echo $widthStyle ?>px">
+				<li class="filter-category-div-wrapper" id="<?php echo esc_attr($fullNameWithoutRoot) ?>" style="margin-left: <?php echo esc_attr($widthStyle) ?>px">
 					<?php if ( $hasChildren ) {
 						echo '<span class="kaltura-caret kaltura-caret-down">&#9660</span>';
 					} ?>
 					<label class="filter-category-label">
-						<input id="<?php echo esc_attr($category->fullIds); ?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo $category->id ?>" <?php echo is_array( $this->selectedCategories ) && in_array( $category->id, $this->selectedCategories ) ? "checked=\"checked\"" : ""; ?>/>
+						<input id="<?php echo esc_attr($category->fullIds); ?>" class="filter-category-input" type='checkbox' name='categoryvar[]' value="<?php echo esc_attr($category->id) ?>" <?php echo is_array( $this->selectedCategories ) && in_array( $category->id, $this->selectedCategories ) ? esc_attr("checked=\"checked\"") : ""; ?>/>
 						<?php echo esc_html($category->name) ?>
 					</label>
 					<br>

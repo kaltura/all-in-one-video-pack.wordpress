@@ -334,7 +334,12 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			}
 
 			// link the post to the category
-			$categories   = wp_get_post_categories( $postId );
+            if ( function_exists( 'get_the_terms' ) ) {
+                $categories   = get_the_terms( $postId , "category");
+            } else {
+                $categories   = wp_get_post_categories( $postId );
+            }
+
 			$categories[] = $category->cat_ID;
 			wp_set_post_categories( $postId, $categories );
 		}

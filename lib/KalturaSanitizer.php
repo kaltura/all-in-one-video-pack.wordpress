@@ -30,7 +30,6 @@ class KalturaSanitizer extends Kaltura_BaseController {
 				$params['value']        = $value;
 				$params['expectedType'] = $sanitizeType;
 				$params['valueType']    = gettype( $value );
-				$params['backtrace ']   = debug_backtrace();
 
 				return $this->renderView( 'sanitize-error.php', $params );
 			}
