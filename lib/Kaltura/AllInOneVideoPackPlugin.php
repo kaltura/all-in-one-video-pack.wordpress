@@ -11,13 +11,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function init() {
-        if (
-			is_multisite()
-			&& ! ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() )
-			&& apply_filters( 'kaltura_use_network_settings', true )
-		) {
-			add_action( 'network_admin_menu', array($this, 'networkAdminMenuAction' ) );
-		}
 
         // show notice on admin pages except for kaltura_options
 		if ( ! KalturaHelpers::getOption( 'kaltura_partner_id' ) &&	! isset( $_POST['submit'] ) &&	(!isset( $_GET['page'] ) || 'kaltura_options' !== $_GET['page'])
@@ -317,15 +310,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		} catch ( Exception $ex ) {
             trigger_error('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(), E_USER_NOTICE);
 		}
-	}
-
-	public function networkAdminMenuAction() {
-		add_submenu_page( 'settings.php', 'All in One Video', 'All in One Video', 'manage_network_options', 'all-in-one-video-pack-mu-settings', array($this, 'networkSettings' ) );
-	}
-
-	public function networkSettings() {
-		$controller = new Kaltura_NetworkAdminController();
-		$controller->execute();
 	}
 
 	public function parseRequest( $args ) {
