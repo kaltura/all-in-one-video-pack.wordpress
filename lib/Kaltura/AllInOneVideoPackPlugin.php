@@ -252,21 +252,21 @@ class Kaltura_AllInOneVideoPackPlugin {
 		$link .= '<a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Streaming') . '">Video Streaming</a>, ';
 		$link .= '<a href="' . esc_url('http://corp.kaltura.com/products/video-platform-features') . '">Video Platform</a>';
 
-        $scriptSrc = esc_url(KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . $embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' ));
-		$html         = '<script src="' . $scriptSrc . '"></script>';
+        $scriptSrc = esc_url(KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . esc_attr($embedOptions['uiconfid']) . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' ));
+		$html         = '<script src="' . esc_url($scriptSrc) . '"></script>';
 		$poweredByBox = '<div class="kaltura-powered-by" style="width: ' . esc_attr($embedOptions['width']) . 'px; "><div><a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Player') . '" target="_blank">Video Player</a> by <a href="' . esc_url('http://corp.kaltura.com/') . '" target="_blank">Kaltura</a></div></div>';
 
 		if ( $isComment ) {
 			$embedOptions['flashVars'] .= '"autoPlay":"true",';
 			$html .= '
-			<div id="' . $thumbnailDivId . '" style="width:' . $width . 'px;height:' . $height . 'px;">' . $link . '</div>
+			<div id="' . esc_attr($thumbnailDivId) . '" style="width:' . esc_attr($width) . 'px;height:' . esc_attr($height) . 'px;">' . esc_html($link) . '</div>
 			<script>
 				kWidget.thumbEmbed({
-					"targetId": "' . $thumbnailDivId . '",
-					"wid": "' . $wid . '",
-					"uiconf_id": "' . $embedOptions['uiconfid'] . '",
-					"flashvars": {' . $embedOptions['flashVars'] . '},
-					"entry_id": "' . $entryId . '"
+					"targetId": "' . esc_attr($thumbnailDivId) . '",
+					"wid": "' . esc_attr($wid) . '",
+					"uiconf_id": "' . esc_attr($embedOptions['uiconfid']) . '",
+					"flashvars": {' . esc_attr($embedOptions['flashVars']) . '},
+					"entry_id": "' . esc_attr($entryId) . '"
 				});
 			</script>
 		';
@@ -284,21 +284,21 @@ class Kaltura_AllInOneVideoPackPlugin {
 			}
 
 			$html .= '
-			<div id="' . $playerId . '_wrapper" class="kaltura-player-wrapper"><div id="' . $playerId . '" style="' . $style . '">' . $link . '</div>' . $poweredByBox . '</div>
+			<div id="' . esc_attr($playerId) . '_wrapper" class="kaltura-player-wrapper"><div id="' . esc_attr($playerId) . '" style="' . esc_attr($style) . '">' . esc_url($link) . '</div>' . esc_html($poweredByBox) . '</div>
 			<script>
 				kWidget.embed({
-					"targetId": "' . $playerId . '",
-					"wid": "' . $wid . '",
-					"uiconf_id": "' . $embedOptions['uiconfid'] . '",
-					"flashvars": {' . $embedOptions['flashVars'] . '},
-					"entry_id": "' . $entryId . '"
+					"targetId": "' . esc_attr($playerId) . '",
+					"wid": "' . esc_attr($wid) . '",
+					"uiconf_id": "' . esc_attr($embedOptions['uiconfid']) . '",
+					"flashvars": {' . esc_attr($embedOptions['flashVars']) . '},
+					"entry_id": "' . esc_attr($entryId) . '"
 				});';
 			$html .= '</script>';
 		}
 
 		$html = apply_filters( 'kaltura_player_html', $html, $attrs );
 
-		return $html;
+		return esc_html($html);
 	}
 
 	public function savePost( $postId ) {
