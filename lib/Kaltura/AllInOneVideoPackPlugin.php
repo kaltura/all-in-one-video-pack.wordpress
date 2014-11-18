@@ -255,7 +255,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 			<div id="' . esc_attr($thumbnailDivId) . '" style="width:' . esc_attr($width) . 'px;height:' . esc_attr($height) . 'px;">' . esc_html($link) . '</div>
 			<script>
 				kWidget.thumbEmbed({
-					"targetId": "' . esc_attr($thumbnailDivId) . '",
+					"targetId": "' . esc_js($thumbnailDivId) . '",
 					"wid": "' . esc_attr($wid) . '",
 					"uiconf_id": "' . esc_attr($embedOptions['uiconfid']) . '",
 					"flashvars": {' . esc_attr($embedOptions['flashVars']) . '},
@@ -289,7 +289,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$html .= '</script>';
 		}
 
-		$html = apply_filters( 'kaltura_player_html', $html, $attrs );
+//		$html = apply_filters( 'kaltura_player_html', $html, $attrs );
 
 		return esc_html($html);
 	}
@@ -343,6 +343,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 function kalturaGetControllerOutput() {
 	global $kalturaPlugin;
-	echo  esc_html($kalturaPlugin->controllerOutput);
+	echo $kalturaPlugin->controllerOutput;
 }
 
