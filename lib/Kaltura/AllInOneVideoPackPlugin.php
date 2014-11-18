@@ -289,8 +289,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$html .= '</script>';
 		}
 
-//		$html = apply_filters( 'kaltura_player_html', $html, $attrs );
-
 		return esc_html($html);
 	}
 
