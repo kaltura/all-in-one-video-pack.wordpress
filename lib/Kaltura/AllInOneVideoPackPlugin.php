@@ -341,6 +341,24 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 function kalturaGetControllerOutput() {
 	global $kalturaPlugin;
-	echo $kalturaPlugin->controllerOutput;
+    $allowedHtml = array(
+        'a' => array(),
+        'b' => array(),
+        'body' => array(),
+        'br' => array(),
+        'button' => array(
+            'type' => array(),
+            'onclick' => array()
+        ),
+        'div' => array(
+            'id' => array(),
+            'class' => array()
+        ),
+        'p' => array(),
+        'script' => array(),
+        'style' => array()
+    );
+	echo wp_kses($kalturaPlugin->controllerOutput, $allowedHtml);
 }
 
+//style div p button br
