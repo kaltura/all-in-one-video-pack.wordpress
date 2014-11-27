@@ -289,7 +289,31 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$html .= '</script>';
 		}
 
-		return esc_html($html);
+        $html = apply_filters( 'kaltura_player_html', $html, $attrs );
+
+        $allowedHtml = array(
+            'a' => array(
+                'href' => array(),
+                'target' => array()
+            ),
+            'b' => array(),
+            'body' => array(),
+            'br' => array(),
+            'button' => array(
+                'type' => array(),
+                'onclick' => array()
+            ),
+            'div' => array(
+                'id' => array(),
+                'class' => array(),
+                'style' => array()
+            ),
+            'p' => array(),
+            'script' => array(),
+            'style' => array()
+        );
+
+        return wp_kses($html, $allowedHtml);
 	}
 
 	public function savePost( $postId ) {
@@ -341,24 +365,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 function kalturaGetControllerOutput() {
 	global $kalturaPlugin;
-    $allowedHtml = array(
-        'a' => array(),
-        'b' => array(),
-        'body' => array(),
-        'br' => array(),
-        'button' => array(
-            'type' => array(),
-            'onclick' => array()
-        ),
-        'div' => array(
-            'id' => array(),
-            'class' => array()
-        ),
-        'p' => array(),
-        'script' => array(),
-        'style' => array()
-    );
-	echo wp_kses($kalturaPlugin->controllerOutput, $allowedHtml);
+    echo $kalturaPlugin->controllerOutput;
 }
 
 //style div p button br
