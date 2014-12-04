@@ -289,31 +289,42 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$html .= '</script>';
 		}
 
-        $html = apply_filters( 'kaltura_player_html', $html, $attrs );
-
         $allowedHtml = array(
+            'div' => array(
+                'id' => array(),
+                'class' => array(),
+                'style' => array(),
+                'itemprop' => array(),
+                'itemtype' => array(),
+                'itemscope' => array()
+            ),
             'a' => array(
                 'href' => array(),
                 'target' => array()
             ),
-            'b' => array(),
-            'body' => array(),
-            'br' => array(),
-            'button' => array(
-                'type' => array(),
-                'onclick' => array()
+            'script' => array(
+                'src' => array(),
+                'type' => array()
             ),
-            'div' => array(
-                'id' => array(),
-                'class' => array(),
-                'style' => array()
+            'span' => array(
+                'itemprop' => array(),
+                'content' => array()
             ),
-            'p' => array(),
-            'script' => array(),
-            'style' => array()
+            'meta' => array(
+                'itemprop' => array(),
+                'content' => array()
+            ),
+            'link' => array(
+                'href' => array(),
+                'itemprop' => array()
+            )
         );
 
-        return wp_kses($html, $allowedHtml);
+        $html = apply_filters('kaltura_player_html', $html, $attrs);
+
+        $html = wp_kses($html, $allowedHtml);
+
+        return $html;
 	}
 
 	public function savePost( $postId ) {
