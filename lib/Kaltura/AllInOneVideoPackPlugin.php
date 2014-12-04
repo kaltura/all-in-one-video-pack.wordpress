@@ -244,15 +244,30 @@ class Kaltura_AllInOneVideoPackPlugin {
 		$link .= '<a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Hosting') . '">Video Hosting</a>, ';
 		$link .= '<a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Streaming') . '">Video Streaming</a>, ';
 		$link .= '<a href="' . esc_url('http://corp.kaltura.com/products/video-platform-features') . '">Video Platform</a>';
+        $linkAllowedHtml = array(
+            'a' => array(
+                'href' => array()
+            )
+        );
 
         $scriptSrc = esc_url(KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . esc_attr($embedOptions['uiconfid']) . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' ));
 		$html         = '<script src="' . esc_url($scriptSrc) . '"></script>';
 		$poweredByBox = '<div class="kaltura-powered-by" style="width: ' . esc_attr($embedOptions['width']) . 'px; "><div><a href="' . esc_url('http://corp.kaltura.com/Products/Features/Video-Player') . '" target="_blank">Video Player</a> by <a href="' . esc_url('http://corp.kaltura.com/') . '" target="_blank">Kaltura</a></div></div>';
+        $poweredByBoxAllowedHtml = array(
+            'div' => array(
+                'class' => array(),
+                'style' => array()
+            ),
+            'a' => array(
+                'href' => array(),
+                'target' => array()
+            )
+        );
 
 		if ( $isComment ) {
 			$embedOptions['flashVars'] .= '"autoPlay":"true",';
 			$html .= '
-			<div id="' . esc_attr($thumbnailDivId) . '" style="width:' . esc_attr($width) . 'px;height:' . esc_attr($height) . 'px;">' . esc_html($link) . '</div>
+			<div id="' . esc_attr($thumbnailDivId) . '" style="width:' . esc_attr($width) . 'px;height:' . esc_attr($height) . 'px;">' . wp_kses($link, $linkAllowedHtml) . '</div>
 			<script>
 				kWidget.thumbEmbed({
 					"targetId": "' . esc_js($thumbnailDivId) . '",
@@ -277,7 +292,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 			}
 
 			$html .= '
-			<div id="' . esc_attr($playerId) . '_wrapper" class="kaltura-player-wrapper"><div id="' . esc_attr($playerId) . '" style="' . esc_attr($style) . '">' . esc_url($link) . '</div>' . esc_html($poweredByBox) . '</div>
+			<div id="' . esc_attr($playerId) . '_wrapper" class="kaltura-player-wrapper"><div id="' . esc_attr($playerId) . '" style="' . esc_attr($style) . '">' . esc_url($link) . '</div>' . wp_kses($poweredByBox, $poweredByBoxAllowedHtml) . '</div>
 			<script>
 				kWidget.embed({
 					"targetId": "' . esc_attr($playerId) . '",
@@ -290,37 +305,37 @@ class Kaltura_AllInOneVideoPackPlugin {
 		}
 
         $allowedHtml = array(
-            'div' => array(
-                'id' => array(),
-                'class' => array(),
-                'style' => array(),
-                'itemprop' => array(),
-                'itemtype' => array(),
-                'itemscope' => array()
-            ),
-            'a' => array(
-                'href' => array(),
-                'target' => array()
-            ),
-            'script' => array(
-                'src' => array(),
-                'type' => array()
-            ),
-            'span' => array(
-                'itemprop' => array(),
-                'content' => array()
-            ),
-            'meta' => array(
-                'itemprop' => array(),
-                'content' => array()
-            ),
-            'link' => array(
-                'href' => array(),
-                'itemprop' => array()
-            )
-        );
+			'div' => array(
+    				'id' => array(),
+    				'class' => array(),
+    				'style' => array(),
+    				'itemprop' => array(),
+    				'itemtype' => array(),
+    				'itemscope' => array()
+        			),
+			'a' => array(
+    				'href' => array(),
+    				'target' => array()
+        			),
+			'script' => array(
+    				'src' => array(),
+    				'type' => array()
+        			),
+			'span' => array(
+    				'itemprop' => array(),
+    				'content' => array()
+        			),
+			'meta' => array(
+    				'itemprop' => array(),
+    				'content' => array()
+        			),
+			'link' => array(
+        				'href' => array(),
+        				'itemprop' => array()
+            			)
+    		);
 
-        $html = apply_filters('kaltura_player_html', $html, $attrs);
+        $html = apply_filters( 'kaltura_player_html', $html, $attrs );
 
         $html = wp_kses($html, $allowedHtml);
 
