@@ -211,7 +211,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 			echo 'You must be <a href=' . esc_url($logIn_url) . '>logged in</a> to post a <br /> video comment.';
 		} else {
             $openComment_url = site_url() . '?kaltura_iframe_handler';
-			$js_click_code = 'Kaltura.openCommentCW(\'' . esc_url($openComment_url)  . '\'); ';
+			$js_click_code = 'Kaltura.openCommentCW("' . esc_url($openComment_url)  . '"); ';
 			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . esc_js($js_click_code) . '" />';
 		}
 	}
@@ -265,7 +265,7 @@ class Kaltura_AllInOneVideoPackPlugin {
         );
 
 		if ( $isComment ) {
-			$embedOptions['flashVars'] .= '"autoPlay":"true",';
+			$embedOptions['flashVars'] .= 'autoPlay:true,';
 			$html .= '
 			<div id="' . esc_attr($thumbnailDivId) . '" style="width:' . esc_attr($width) . 'px;height:' . esc_attr($height) . 'px;">' . wp_kses($link, $linkAllowedHtml) . '</div>
 			<script>
