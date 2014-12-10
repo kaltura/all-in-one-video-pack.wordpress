@@ -305,24 +305,39 @@ class Kaltura_AllInOneVideoPackPlugin {
 		}
 
         $allowedHtml = array(
-            'div' => array(
-                'id' => array(),
-                'class' => array(),
-                'style' => array()
-            ),
-            'a' => array(
-                'href' => array(),
-                'target' => array()
-            ),
-            'script' => array(
-                'src' => array()
-            )
-        );
-
-        $html = wp_kses($html, $allowedHtml);
+			'div' => array(
+    				'id' => array(),
+    				'class' => array(),
+    				'style' => array(),
+    				'itemprop' => array(),
+    				'itemtype' => array(),
+    				'itemscope' => array()
+        			),
+			'a' => array(
+    				'href' => array(),
+    				'target' => array()
+        			),
+			'script' => array(
+    				'src' => array(),
+    				'type' => array()
+        			),
+			'span' => array(
+    				'itemprop' => array(),
+    				'content' => array()
+        			),
+			'meta' => array(
+    				'itemprop' => array(),
+    				'content' => array()
+        			),
+			'link' => array(
+        				'href' => array(),
+        				'itemprop' => array()
+            			)
+    		);
 
         $html = apply_filters( 'kaltura_player_html', $html, $attrs );
 
+        $html = wp_kses($html, $allowedHtml);
 
         return $html;
 	}
