@@ -108,7 +108,7 @@ class KalturaHelpers {
 		$flashVars['partnerId']     = KalturaHelpers::getOption( 'kaltura_partner_id' );
 		$flashVars['subPartnerId']  = KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
 		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
-		$flashVars['close']         = 'onContributionWizardClose';
+		$flashVars['close']         = 'kaltura_onContributionWizardClose';
 		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
 
 		return $flashVars;
