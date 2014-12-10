@@ -95,9 +95,7 @@
 					<td>
 						<select name="comments_player_type" id="comments_player_type">
 							<?php foreach ( $this->players->objects as $player ): ?>
-								<input type="radio" name="comments_player_type" id="comments_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_comments_player_type' ) == esc_attr( $player->id ) ? "checked=\"checked\"" : ""; ?>/>&nbsp;&nbsp;
-								<label for="comments_player_type_<?php echo esc_attr( $player->id ); ?>"><?php echo esc_html( $player->name ); ?></label>
-								<br />
+                                <option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_comments_player_type' ) == $player->id ? "selected=\"selected\"" : ""; ?>/><?php echo esc_html( $player->name ); ?>
 							<?php endforeach; ?>
 						</select>
 						<br />
