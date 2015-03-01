@@ -230,7 +230,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		ob_start();
 		$viewRenderer->renderView( 'embed-code.php', array('attrs' => $attrs) );
 		$embedCode = ob_get_clean();
-		$embedCode = apply_filters( 'kaltura_player_html', $embedCode, $attrs );
 
 		return $embedCode;
 	}
