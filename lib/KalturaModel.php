@@ -352,13 +352,15 @@ class KalturaModel
 
 		$metadataField = $metadataFieldsResponse->objects[0];
 		$permalink = get_permalink($postId);
-		$content = $_POST['content'];
-		$matches = null;
-		if (preg_match_all('/entryid=\\\\"([^\\\\]*)/', $content, $matches))
-		{
-			foreach ($matches[1] as $entryId)
+		if (isset($_POST['content']) && !empty($_POST['content'])) {
+			$content = $_POST['content'];
+			$matches = null;
+			if (preg_match_all('/entryid=\\\\"([^\\\\]*)/', $content, $matches))
 			{
-				$this->updateEntryPermalinkMetadata($entryId, $permalink, $metadataProfileId, $metadataField->key);
+				foreach ($matches[1] as $entryId)
+				{
+					$this->updateEntryPermalinkMetadata($entryId, $permalink, $metadataProfileId, $metadataField->key);
+				}
 			}
 		}
 	}
