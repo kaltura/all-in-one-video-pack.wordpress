@@ -13,7 +13,7 @@
 	<?php endif; ?>
 	<div class="tablenav">
 		<div class="alignleft actions">
-			<input type="button" value="<?php echo esc_html( 'View Posts' ); ?>" onclick="window.location.href = 'edit.php';" name="doaction2" id="doaction2" class="button-secondary action" />
+			<input type="button" value="<?php echo esc_html( 'View Posts' ); ?>" onclick="window.location.href = '<?php echo admin_url('edit.php'); ?>';" name="doaction2" id="doaction2" class="button-secondary action" />
 			<br class="clear" />
 		</div>
 		<br class="clear" />

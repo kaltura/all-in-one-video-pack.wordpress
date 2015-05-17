@@ -13,7 +13,7 @@ $randId         = md5( $wid . $entryId . rand( 0, time() ) );
 $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
-$scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . esc_attr($embedOptions['uiconfid']) . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+$scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -25,11 +25,11 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 	</div>
 	<script>
 		kWidget.thumbEmbed({
-			"targetId": "<?php echo esc_attr($thumbnailDivId); ?>",
-			"wid": "<?php echo esc_attr($wid); ?>",
-			"uiconf_id": "<?php echo esc_attr($embedOptions['uiconfid']); ?>",
-			"flashvars": {<?php echo esc_attr($embedOptions['flashVars']); ?>},
-			"entry_id": "<?php echo esc_attr($entryId); ?>"
+			"targetId": "<?php echo esc_js($thumbnailDivId); ?>",
+			"wid": "<?php echo esc_js($wid); ?>",
+			"uiconf_id": "<?php echo esc_js($embedOptions['uiconfid']); ?>",
+			"flashvars": {<?php echo esc_js($embedOptions['flashVars']); ?>},
+			"entry_id": "<?php echo esc_js($entryId); ?>"
 		});
 	</script>
 <?php else: ?>
@@ -55,11 +55,11 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 	</div>
 	<script>
 		kWidget.embed({
-			"targetId": "<?php echo esc_attr($playerId); ?>",
-			"wid": "<?php echo esc_attr($wid); ?>",
-			"uiconf_id": "<?php echo esc_attr($embedOptions['uiconfid']); ?>",
-			"flashvars": {<?php echo esc_attr($embedOptions['flashVars']); ?>},
-			"entry_id": "<?php echo esc_attr($entryId); ?>"
+			"targetId": "<?php echo esc_js($playerId); ?>",
+			"wid": "<?php echo esc_js($wid); ?>",
+			"uiconf_id": "<?php echo esc_js($embedOptions['uiconfid']); ?>",
+			"flashvars": {<?php echo esc_js($embedOptions['flashVars']); ?>},
+			"entry_id": "<?php echo esc_js($entryId); ?>"
 		});
 	</script>
 <?php endif; ?>
