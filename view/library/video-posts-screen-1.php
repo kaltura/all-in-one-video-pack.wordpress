@@ -54,7 +54,7 @@
 						</th>
 						<?php if ( $wpCategory ): ?>
 							<td class="post-title page-title column-name">
-								<strong><a class="row-title" href="edit-tags.php?action=edit&taxonomy=category&tag_ID=<?php echo esc_attr( $wpCategory->cat_ID ); ?>" title="Edit"><?php echo esc_html( $category->fullName ); ?></a></strong>
+								<strong><a class="row-title" href="<?php echo esc_url( admin_url( 'edit-tags.php?action=edit&taxonomy=category&tag_ID='.$wpCategory->cat_ID )); ?>" title="Edit"><?php echo esc_html( $category->fullName ); ?></a></strong>
 							</td>
 							<td class="author column-description"><?php echo esc_html( $wpCategory->description ); ?></td>
 							<td class="comments column-slug">

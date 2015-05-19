@@ -20,7 +20,7 @@ $menu = array(
 		}
 		?>
 		<li>
-			<a <?php echo $current; ?>href="<?php echo add_query_arg( $params ); ?>"><?php echo esc_html( $name ); ?></a>
+			<a <?php echo $current; ?>href="<?php echo esc_url( add_query_arg( $params ) ); ?>"><?php echo esc_html( $name ); ?></a>
 			<?php if ( ! $last ): ?>
 				|
 			<?php endif; ?>

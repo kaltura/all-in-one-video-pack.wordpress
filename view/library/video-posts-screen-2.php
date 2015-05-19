@@ -72,7 +72,9 @@
 							<tr class="iedit <?php echo ( $alternate ) ? 'alternate' : '';
 							$alternate = ! $alternate; ?>">
 								<th scope="row" class="check-column">
-									<input type="checkbox" name="entries[]" value="<?php echo esc_attr( base64_encode( serialize( array( $entry->id, $entry->name, $category ) ) ) ); ?>" />
+									<input type="checkbox" name="entries[]" value="<?php echo esc_attr( $entry->id ); ?>" />
+									<input type="hidden" name="entryName_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->name ); ?>" />
+									<input type="hidden" name="entryCategory_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $category ); ?>" />
 								</th>
 								<td class="post-title page-title column-name"><?php echo esc_html( $entry->name ); ?></td>
 								<td class="author column-description"><?php echo esc_html( $category ); ?></td>

@@ -306,11 +306,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$width        = (string)KalturaHelpers::getRequestPostParam( 'width' );
 		$height       = (string)KalturaHelpers::getRequestPostParam( 'height' );
 
-		foreach ( $entries as $entryCat ) {
-			$arr          = unserialize( base64_decode( $entryCat ) );
-			$entryId      = $arr[0];
-			$entryName    = $arr[1];
-			$categoryName = $arr[2];
+		foreach ( $entries as $entryId ) {
+			$entryName    = (string)KalturaHelpers::getRequestPostParam('entryName_'.$entryId);
+			$categoryName = (string)KalturaHelpers::getRequestPostParam('entryCategory_'.$entryId);;
 			$categoryName = esc_html($categoryName);
 
 			// do we need to create new category?
