@@ -41,20 +41,17 @@ $this->renderView( 'contribution-wizard.php' );
 		jQuery("#kaltura_contribution_wizard_wrapper").empty();
 
 		var url;
-		if (entryIds.length > 1) {
-			url = "<?php echo esc_js( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'choosevideos' ) ) ); ?>";
-			var entryIdsParams = '&entryIds[]=';
-			entryIdsParams += entryIds.join('&entryIds[]=');
-			url += entryIdsParams;
-		}
-		else if (entryIds.length == 1) {
-			url = "<?php echo esc_js( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true' ) ) ); ?>&entryIds[]=" + entryIds[0];
+		if (entryIds.length) {
+			<?php $baseUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true' ) ); ?>
+
+			var baseUrl = <?php echo wp_json_encode( $baseUrl ); ?>;
+			url = baseUrl + '&entryIds[]=' + entryIds[0];
 		}
 		else {
 			alert("<?php echo esc_html( 'No Entries Uploaded' ); ?>");
 		}
 
-		window.location.href = url
+		window.location.href = url;
 	}
 
 	// fix mac firefox opacity bug

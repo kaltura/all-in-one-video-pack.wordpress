@@ -47,43 +47,6 @@ a.kalturaLink:hover {
 	color: #6699CC;
 }
 
-/* choose videos tab */
-#kaltura-tab-choose-videos p {
-	margin: 0px 15px 10px 15px;
-}
-
-#kaltura-tab-choose-videos .scroll {
-	position: relative;
-	height:   310px;
-	overflow: auto;
-}
-
-#kaltura-tab-choose-videos .options {
-	text-align: center;
-	margin-top: 5px;
-}
-
-#kaltura-tab-choose-videos .options a {
-	margin: 0 10px;
-}
-
-#kaltura-tab-choose-videos .loader {
-	position: fixed;
-	left:     9px;
-	bottom:   7px;
-}
-
-#kaltura-tab-choose-videos {
-	margin-bottom: 0px;
-}
-
-#kaltura-tab-choose-videos .fixIe7 {
-	position: relative;
-	top:      -10px;
-	height:   4px;
-	z-index:  -1;
-}
-
 /* browse tab */
 div.kaltura-wrap {
 	max-width:   1200px;

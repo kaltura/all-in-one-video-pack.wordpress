@@ -10,7 +10,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'library',
 			'browse',
 			'searchvideos',
-			'choosevideos',
 			'preview',
 			'updatethumbnail',
 			'getplayers',
@@ -164,17 +163,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$result = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categories, $queryString );
 
 		return $result;
-	}
-
-	public function choosevideosAction() {
-		wp_enqueue_style( 'media' );
-		wp_enqueue_script( 'kaltura-editable-name' );
-		wp_enqueue_script( 'kaltura-entry-status-checker' );
-		$entryIds          = KalturaHelpers::getRequestParam( 'entryIds', array() );
-		$kmodel            = KalturaModel::getInstance();
-		$entries           = $kmodel->getEntriesByIds( $entryIds );
-		$params['entries'] = $entries;
-		$this->renderView( 'library/choose-videos.php', $params );
 	}
 
 	public function previewAction() {
