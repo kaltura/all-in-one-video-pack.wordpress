@@ -264,11 +264,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 			global $show_admin_bar;
 			$show_admin_bar = false;
 
-			$controller = new Kaltura_LibraryController();
-			// we want to execute our controller before wordpress starts outputting the html
-			ob_start();
-			$controller->execute();
-			$this->controllerOutput = ob_get_clean();
 			wp_iframe( 'kalturaGetControllerOutput' );
 			die;
 		}
@@ -282,8 +277,8 @@ class Kaltura_AllInOneVideoPackPlugin {
 }
 
 function kalturaGetControllerOutput() {
-	global $kalturaPlugin;
-    echo $kalturaPlugin->controllerOutput;
+	$controller = new Kaltura_LibraryController();
+	$controller->execute();
 }
 
 //style div p button br
