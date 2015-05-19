@@ -29,7 +29,7 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = 'options-general.php?page=kaltura_options'"><?php echo esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = '<?php echo admin_url( 'options-general.php?page=kaltura_options' ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
 		</div>
 	</div>
 <?php
@@ -45,7 +45,7 @@ else: ?>
 			</div>
 		<?php endif; ?>
 		<p>
-			<a href="options-general.php?page=kaltura_options&partner_login=true">Click here if you already have a Partner ID</a>
+			<a href="<?php echo admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ); ?>">Click here if you already have a Partner ID</a>
 		</p>
 
 		<p>
