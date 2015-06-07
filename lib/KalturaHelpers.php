@@ -146,21 +146,12 @@ class KalturaHelpers {
 		return substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 );
 	}
 
-	public static function getSwfUrlForWidget( $widgetId = null, $uiConfId = null ) {
-		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = (string)$kmodel->_sanitizer->sanitizer( $uiConfId, 'string' );
-		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
-
-		if ( ! $widgetId ) {
-			$widgetId = '_' . KalturaHelpers::getOption( 'kaltura_partner_id' );
-		}
-
-		$url = KalturaHelpers::getServerUrl() . '/index.php/kwidget/wid/' . $widgetId;
-		if ( $uiConfId ) {
-			$url .= ( '/ui_conf_id/' . $uiConfId );
-		}
-
-		return $url;
+	public static function getHtml5IframeUrl( $uiConfId = null ) {
+		$scriptSrc = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
+		if ($uiConfId)
+			$scriptSrc .= '/uiconf_id/' . (int)$uiConfId;
+		$scriptSrc .= '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		return $scriptSrc;
 	}
 
 	public static function enqueueHtml5Lib( $uiConfId ) {

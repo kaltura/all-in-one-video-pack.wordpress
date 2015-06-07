@@ -27,7 +27,13 @@ KalturaModal = {
 
 		// create content div inside objModalbox
 		var jqModalboxContent = jQuery("<div>");
-		jqModalboxContent.append('<iframe scrolling="no" width="' + width + '" height="' + height + '" frameborder="0" src="' + url + '"/>');
+		var jqIframe = jQuery("<iframe>");
+		jqIframe.attr("scrolling", "no");
+		jqIframe.attr("width", width);
+		jqIframe.attr("height", height);
+		jqIframe.attr("frameborder", "0");
+		jqIframe.attr("src", url);
+		jqModalboxContent.append(jqIframe);
 		jqModalbox.append(jqModalboxContent);
 
 		jqBody.append(jqModalbox);

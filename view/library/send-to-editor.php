@@ -192,7 +192,7 @@
 			jQuery.kalturaPlayerSelector({
 				url        : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
 				defaultId  : '<?php echo esc_js(get_option('kaltura_default_player_type')); ?>',
-				swfBaseUrl : '<?php echo esc_url(KalturaHelpers::getSwfUrlForWidget()); ?>',
+				html5Url : '<?php echo esc_url(KalturaHelpers::getHtml5IframeUrl()); ?>',
 				previewId  : 'divKalturaPlayer',
 				entryId    : '<?php echo esc_js($this->entry->id); ?>',
 				playersList: '#uiConfId',

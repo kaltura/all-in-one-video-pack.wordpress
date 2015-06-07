@@ -5,7 +5,7 @@
 		var defaultOptions = {
 			url       : null,
 			defaultId : null,
-			swfBaseUrl: null,
+			html5Url: null,
 			previewId : null,
 			entryId   : '_KMCLOGO',
 			id        : 'kplayer',
@@ -62,23 +62,20 @@
 		var _onPlayerChange = function (args) {
 			var uiConfId = _$playersList.val();
 			var player = _getPlayer(uiConfId);
-			var swfUrl = options.swfBaseUrl;
-			swfUrl += ('/uiconf_id/' + uiConfId);
+			var html5Url = options.html5Url;
+			html5Url += ('/uiconf_id/' + uiConfId);
 			if (options.entryId)
-				swfUrl += ('/entry_id/' + options.entryId);
+				html5Url += ('/entry_id/' + options.entryId);
 
+			html5Url += '?iframeembed=true';
 			var height = _calculateHeight(player, options.width);
-			var playerHtml = '';
-			playerHtml += '<object id="' + options.id + '" type="application/x-shockwave-flash" data="' + swfUrl + '" width="' + options.width + '" height="' + height + '">';
-			playerHtml += '	<param name="allowScriptAccess" value="always" />';
-			playerHtml += '	<param name="allowFullScreen" value="true" />';
-			playerHtml += '	<param name="allowNetworking" value="all" />';
-			playerHtml += '	<param name="bgcolor" value="#000000" />';
-			playerHtml += '	<param name="wmode" value="opaque" />';
-			playerHtml += '	<param name="movie" value="' + swfUrl + '" />';
-			playerHtml += '</object>';
+			var iframe = jQuery('<iframe>');
+			iframe.attr("width", options.width);
+			iframe.attr("height", height);
+			iframe.attr("frameborder", "0");
+			iframe.attr("src", html5Url);
 
-			$('#' + options.previewId).empty().append(playerHtml);
+			$('#' + options.previewId).empty().append(iframe);
 			if (typeof(options.onSelect) == "function")
 				options.onSelect();
 		}
