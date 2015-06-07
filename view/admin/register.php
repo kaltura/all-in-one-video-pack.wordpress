@@ -55,7 +55,7 @@ else: ?>
 		<h3><?php echo esc_html( 'Get a Partner ID' ); ?></h3>
 
 		<form name="form1" method="post" class="registration" />
-		<?php wp_nonce_field( 'info', 'register' ); ?>
+		<?php wp_nonce_field( 'register', 'kaltura' ); ?>
 
 		<table class="form-table">
 			<tr valign="top">
