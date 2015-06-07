@@ -230,13 +230,6 @@ class KalturaHelpers {
 		return version_compare( $kversion, $compareVersion, $operator );
 	}
 
-	public static function addWPVersionJS() {
-		global $wp_version;
-		echo "<script type='text/javascript'>\n";
-		echo 'var Kaltura_WPVersion = "' . esc_js( $wp_version ) . '";' . "\n";
-		echo  "</script>\n";
-	}
-
 	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
 		$kmodel   = KalturaModel::getInstance();
 		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'intOrString' );

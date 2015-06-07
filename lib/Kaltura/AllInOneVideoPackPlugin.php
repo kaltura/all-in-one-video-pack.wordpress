@@ -29,7 +29,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 		// actions
 		add_action( 'admin_menu', array($this, 'adminMenuAction' ) );
-		add_action( 'wp_print_scripts', array($this, 'printScripts' ) );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueueScripts' ) );
 		add_action( 'admin_enqueue_scripts', array($this, 'adminEnqueueScripts' ) );
 
@@ -51,7 +50,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function adminWarning() {
-        $kalturaOptionsPageUrl = get_option( 'siteurl' ) . '/wp-admin/options-general.php?page=kaltura_options';
+        $kalturaOptionsPageUrl = admin_url('options-general.php?page=kaltura_options');
 		echo '<div class="updated fade">
 		    <p>
 		        <strong>' . esc_html__( 'To complete the All in One Video Pack installation, ') . '<a href="' . esc_url($kalturaOptionsPageUrl) . '">' . esc_html__('you must get a Partner ID.') . '</a></strong>
@@ -62,7 +61,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 	public function mceExternalPluginsFilter( $content ) {
 		$content            = $this->_sanitizer->sanitizer( $content, 'arr' );
 		$pluginUrl          = KalturaHelpers::getPluginUrl();
-		$content['kaltura'] = $pluginUrl . '/tinymce/kaltura_tinymce.js?v' . KalturaHelpers::getPluginVersion();
+		$content['kaltura'] = esc_url_raw($pluginUrl . '/tinymce/kaltura_tinymce.js?v' . KalturaHelpers::getPluginVersion());
 
 		return $content;
 	}
@@ -74,10 +73,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	public function adminMenuAction() {
 		add_options_page( 'All in One Video', 'All in One Video', 'manage_options', 'kaltura_options', array($this, 'executeAdminController' ) );
 		add_media_page( 'All in One Video', 'All in One Video', 'edit_posts', 'kaltura_library', array($this, 'executeLibraryController' ) );
-	}
-
-	public function printScripts() {
-		KalturaHelpers::addWPVersionJS();
 	}
 
 	public function enqueueScripts() {
@@ -132,9 +127,8 @@ class Kaltura_AllInOneVideoPackPlugin {
 		$content = $this->_sanitizer->sanitizer( $content, 'string' );
 
 		$uploading_iframe_ID       = (int) ( 0 == $post_ID ? $temp_ID : $post_ID );
-		$media_upload_iframe_src   = "media-upload.php?post_id=$uploading_iframe_ID";
+		$media_upload_iframe_src   = admin_url("media-upload.php?post_id=$uploading_iframe_ID");
 		$kaltura_iframe_src        = apply_filters( 'kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_upload" );
-		$kaltura_browse_iframe_src = apply_filters( 'kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_browse" );
 		$kaltura_title             = esc_attr__( 'Add Kaltura Media' );
 		$kaltura_button_src        = KalturaHelpers::getPluginUrl() . '/images/kaltura_button.png';
         $kaltura_iframe_src_final  = $kaltura_iframe_src . "&amp;TB_iframe=true&amp;height=500&amp;width=840";
