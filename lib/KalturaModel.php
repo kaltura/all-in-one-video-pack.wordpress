@@ -457,7 +457,7 @@ class KalturaModel {
 		$metadataFieldName = (string)$this->_sanitizer->sanitizer( $metadataFieldName, 'string' );
 
 		$result  = $this->getEntryMetadata( $entryId, $metadataProfileId );
-		$xmlData = '<metadata><' . $metadataFieldName . '>' . esc_url($permalink) . '</' . $metadataFieldName . '></metadata>';
+		$xmlData = '<metadata><' . esc_html($metadataFieldName) . '>' . esc_url($permalink) . '</' . esc_html($metadataFieldName) . '></metadata>';
 		if ( $result->totalCount == 0 ) {
 			$this->addEntryMetadata( $metadataProfileId, $entryId, $xmlData );
 		} else {

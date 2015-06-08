@@ -10,7 +10,7 @@
 		<form name="form1" method="post" />
 
 		<p class="submit" style="text-align: left; ">
-			<input type="button" value="<?php echo esc_html( 'Click here to edit partner details manually' ); ?>" onclick="window.location = 'options-general.php?page=kaltura_options&partner_login=true';" />
+			<input type="button" value="<?php echo esc_html( 'Click here to edit partner details manually' ); ?>" onclick="window.location = '<?php echo esc_url( admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ) ); ?>';" />
 		</p>
 		<input type="hidden" id="manual_edit" name="manual_edit" value="true" />
 		</form>
@@ -24,7 +24,7 @@
 		<h2><?php echo esc_html( 'All in One Video Pack Settings' ); ?></h2>
 
 		<form name="form1" method="post">
-			<?php wp_nonce_field( 'info', 'kaltura' ); ?>
+			<?php wp_nonce_field( 'info', '_kalturanonce' ); ?>
 			<br />
 			<table id="kaltura-cms-login">
 				<tr class="kalturaFirstRow">
@@ -75,7 +75,7 @@
 				<tr valign="top">
 					<td><label for="enable_video_comments"><?php echo esc_html( "Enable video comments?" ); ?></label></td>
 					<td>
-						<input type="checkbox" id="enable_video_comments" name="enable_video_comments" <?php echo KalturaHelpers::getOption( 'kaltura_enable_video_comments', true ) ? "checked=\"checked\"" : ""; ?> />
+						<input type="checkbox" id="enable_video_comments" name="enable_video_comments" <?php echo checked( KalturaHelpers::getOption( 'kaltura_enable_video_comments', true ) ); ?> />
 						<br />
 						<br />
 					</td>
@@ -84,7 +84,7 @@
 					<td><label for="allow_anonymous_comments"><?php echo esc_html( "Allow anonymous video comments?" ); ?></label>
 					</td>
 					<td>
-						<input type="checkbox" id="allow_anonymous_comments" name="allow_anonymous_comments" <?php echo KalturaHelpers::getOption( 'kaltura_allow_anonymous_comments', true ) ? "checked=\"checked\"" : ""; ?> />
+						<input type="checkbox" id="allow_anonymous_comments" name="allow_anonymous_comments" <?php echo checked( KalturaHelpers::getOption( 'kaltura_allow_anonymous_comments', true ) ); ?> />
 						<br />
 						<br />
 						<br />
@@ -95,7 +95,7 @@
 					<td>
 						<select name="comments_player_type" id="comments_player_type">
 							<?php foreach ( $this->players->objects as $player ): ?>
-                                <option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_comments_player_type' ) == $player->id ? "selected=\"selected\"" : ""; ?>/><?php echo esc_html( $player->name ); ?>
+                                <option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo selected(KalturaHelpers::getOption( 'kaltura_comments_player_type' ) == $player->id); ?>><?php echo esc_html( $player->name ); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<br />
@@ -105,10 +105,10 @@
 				<tr valign="top" class="parmalink_row">
 					<td><label for="save_permalink"><?php echo esc_html( "Save permalink in entry metadata?" ); ?></label</td>
 					<td>
-						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo KalturaHelpers::getOption( 'kaltura_save_permalink', false ) ? "checked=\"checked\"" : ""; ?>/>
+						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo checked( KalturaHelpers::getOption( 'kaltura_save_permalink', false ) ); ?>/>
 						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
 							<?php foreach ( $this->metadataProfilesResponse->objects as $metadataProfile ): ?>
-								<option value="<?php echo esc_attr( $metadataProfile->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_permalink_metadata_profile_id' ) == esc_attr( $metadataProfile->id ) ? "selected=\"selected\"" : ""; ?>><?php echo esc_html( $metadataProfile->name ); ?></option>
+								<option value="<?php echo esc_attr( $metadataProfile->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_permalink_metadata_profile_id' ) == esc_attr( $metadataProfile->id ) ); ?>><?php echo esc_html( $metadataProfile->name ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
@@ -121,7 +121,7 @@
 				<tr valign="top" class="advanced user_identifier">
 					<td width="200"><?php echo esc_html( 'WordPress user identifier field to be used by Kaltura:' ); ?></td>
 					<td>
-						<input type="radio" id="kaltura_user_identifier_user_login" name="kaltura_user_identifier" value="user_id" <?php echo KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_id" ? "checked=\"checked\"" : ""; ?> />
+						<input type="radio" id="kaltura_user_identifier_user_login" name="kaltura_user_identifier" value="user_id" <?php echo checked( KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_id" ); ?> />
 						<label for="kaltura_user_identifier_user_login"><?php echo esc_html( "ID" ); ?></label>
 						<br />
 
@@ -129,7 +129,7 @@
 							<?php echo esc_html( "This identifier was used in previous versions of Kaltura All in One WordPress plugin. Choose this option if you have upgraded from a previous version of Kaltura and want to keep the existing media content associated with the users that uploaded it." ); ?>
 						</div>
 
-						<input type="radio" id="kaltura_user_identifier_user_id" name="kaltura_user_identifier" value="user_login" <?php echo KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_login" ? "checked=\"checked\"" : ""; ?> />
+						<input type="radio" id="kaltura_user_identifier_user_id" name="kaltura_user_identifier" value="user_login" <?php echo checked( KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_login" ); ?> />
 						<label for="kaltura_user_identifier_user_id"><?php echo esc_html( 'user_login' ); ?></label>
 						<br />
 

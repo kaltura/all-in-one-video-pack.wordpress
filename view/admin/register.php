@@ -29,7 +29,7 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = '<?php echo admin_url( 'options-general.php?page=kaltura_options' ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = '<?php echo esc_js( admin_url( 'options-general.php?page=kaltura_options' ) ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
 		</div>
 	</div>
 <?php
@@ -55,7 +55,7 @@ else: ?>
 		<h3><?php echo esc_html( 'Get a Partner ID' ); ?></h3>
 
 		<form name="form1" method="post" class="registration" />
-		<?php wp_nonce_field( 'register', 'kaltura' ); ?>
+		<?php wp_nonce_field( 'register', '_kalturanonce' ); ?>
 
 		<table class="form-table">
 			<tr valign="top">
@@ -115,7 +115,7 @@ else: ?>
 						);
 						?>
 						<?php foreach ( $selectData as $name => $value ): ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php echo ( KalturaHelpers::getRequestPostParam( 'describe_yourself' ) == esc_attr( $value ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $name ); ?></option>
+							<option value="<?php echo esc_attr( $value ); ?>" <?php echo selected( KalturaHelpers::getRequestPostParam( 'describe_yourself' ) == esc_attr( $value ) ); ?>><?php echo esc_html( $name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -126,7 +126,7 @@ else: ?>
 					<select id="country" name="country">
 						<option value="">Please select...</option>
 						<?php foreach ( $this->countries as $value => $name ): ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php echo ( KalturaHelpers::getRequestPostParam( 'country' ) == esc_attr( $value ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $name ); ?></option>
+							<option value="<?php echo esc_attr( $value ); ?>" <?php echo selected( KalturaHelpers::getRequestPostParam( 'country' ) == esc_attr( $value ) ); ?>><?php echo esc_html( $name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -139,7 +139,7 @@ else: ?>
 						<?php $statesNew[''] = ''; ?>
 						<?php $states = array_merge( $statesNew, $this->states ); ?>
 						<?php foreach ( $states as $value => $name ): ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php echo ( KalturaHelpers::getRequestPostParam( 'state' ) == esc_attr( $value ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $name ); ?></option>
+							<option value="<?php echo esc_attr( $value ); ?>" <?php echo selected( KalturaHelpers::getRequestPostParam( 'state' ) == esc_attr( $value ) ); ?>><?php echo esc_html( $name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -156,7 +156,7 @@ else: ?>
 					?>
 					<select id="would_you_like" name="would_you_like">
 						<?php foreach ( $selectData as $value => $name ): ?>
-							<option value="<?php echo esc_attr( $value ); ?>" <?php echo ( KalturaHelpers::getRequestPostParam( 'would_you_like' ) == esc_attr( (string) $value ) ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $name ); ?></option>
+							<option value="<?php echo esc_attr( $value ); ?>" <?php echo selected( KalturaHelpers::getRequestPostParam( 'would_you_like' ) == esc_attr( (string) $value ) ); ?>><?php echo esc_html( $name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
@@ -164,12 +164,12 @@ else: ?>
 			<tr valign="top">
 				<th scope="row">How do you plan to use Kaltura's video platform?</th>
 				<td>
-					<textarea id="description" name="description"><?php echo sanitize_text_field( ( KalturaHelpers::getRequestPostParam( 'description' ) ) ) ?></textarea>
+					<textarea id="description" name="description"><?php echo esc_textarea ( sanitize_text_field( ( KalturaHelpers::getRequestPostParam( 'description' ) ) ) ); ?></textarea>
 				</td>
 			</tr>
 			<tr class="agree_to_terms">
 				<th colspan="2">
-					<input type="checkbox" name="agree_to_terms" id="agree_to_terms" value="1" <?php echo ( KalturaHelpers::getRequestPostParam( 'agree_to_terms' ) == '1' ) ? ' checked="checked"' : ''; ?> />
+					<input type="checkbox" name="agree_to_terms" id="agree_to_terms" value="1" <?php echo checked( KalturaHelpers::getRequestPostParam( 'agree_to_terms' ) == '1' ); ?> />
 					<label for="agree_to_terms">I Accept </label><a href="http://corp.kaltura.com/tandc" target="_blank">Terms of Use</a> *
 				</th>
 			</tr>

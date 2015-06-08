@@ -122,7 +122,7 @@ class KalturaSanitizer extends Kaltura_BaseController {
 		$allowedParams = array(
 			'userId'           => 'intOrString',
 			'sessionId'        => 'string',
-			'partnerId'        => 'string',
+			'partnerId'        => 'int',
 			'subPartnerId'     => 'int',
 			'afterAddentry'    => 'string',
 			'close'            => 'string',

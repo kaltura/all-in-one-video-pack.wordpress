@@ -301,7 +301,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 
 			// do we need to create new category?
 			if ( ! Kaltura_WPModel::isCategoryExists( $categoryName ) ) {
-				$newCat = array( 'cat_name' => $categoryName );
+				$newCat = array( 'cat_name' => sanitize_text_field($categoryName) );
 				wp_insert_category( $newCat );
 				wp_cache_set( 'last_changed', microtime( true ), 'terms' ); // otherwise the category won't return when retrieving it later in the code
 			}
@@ -311,8 +311,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			// create the post for the video
 			$shortCode = '[kaltura-widget uiconfid="' . esc_attr($uiConfId) . '" entryid="' . esc_attr($entryId) . '" width="' . esc_attr($width) . '" height="' . esc_attr($height) . '" /]';
 			$newPost   = array(
-				'post_title'   => esc_html($entryName),
-				'post_content' => $shortCode,
+				'post_title'   => sanitize_text_field($entryName),
+				'post_content' => wp_kses_post($shortCode),
 			);
 			$postId = wp_insert_post( $newPost );
 			if ( $postId ) {
@@ -327,6 +327,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
             }
 
 			$categories[] = $category->cat_ID;
+			array_map( 'absint', $categories);
 			wp_set_post_categories( $postId, $categories );
 		}
 		$params['numOfCreatedPosts'] = $createdPosts;

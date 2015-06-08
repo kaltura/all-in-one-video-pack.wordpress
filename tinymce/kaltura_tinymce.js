@@ -113,27 +113,26 @@
 				contentData = contentData.substr(0, startPos);
 
 				// build the image tag
-				contentData += '<img ';
-				contentData += 'src="' + (this._url + '/../thumbnails/placeholder.gif') + '" ';
-				contentData += 'title="Kaltura" ';
-				contentData += 'alt="Kaltura" ';
-				contentData += 'class="';
-				contentData += 'kaltura_item align' + attribs['align'] + ' ';
+				var img = jQuery('<img />');
+				img.attr('src', this._url + '/../thumbnails/placeholder.gif');
+				img.attr('title', 'Kaltura');
+				img.attr('alt', 'Kaltura');
+				img.addClass('kaltura_item align' + attribs['align']);
 				if (attribs['wid'])
-					contentData += 'kaltura_id_' + attribs['wid'] + ' ';
+					img.addClass('kaltura_id_' + attribs['wid']);
 				if (attribs['uiconfid'])
-					contentData += 'kaltura_uiconfid_' + attribs['uiconfid'] + ' ';
+					img.addClass('kaltura_uiconfid_' + attribs['uiconfid']);
 				if (attribs['entryid'])
-					contentData += 'kaltura_entryid_' + attribs['entryid'] + ' ';
-				contentData += '" ';
-				contentData += 'name="mce_plugin_kaltura_desc" ';
-				contentData += 'width="' + attribs['width'] + '" ';
-				contentData += 'height="' + attribs['height'] + '" ';
+					img.addClass('kaltura_entryid_' + attribs['entryid']);
+
+				img.attr('name', 'mce_plugin_kaltura_desc');
+				img.attr('width', attribs['width']);
+				img.attr('height', attribs['height']);
 
 				if (attribs['style'])
-					contentData += 'style="' + attribs['style'] + '" ';
+					img.attr('style', attribs['style']);
 
-				contentData += '/>';
+				contentData += img[0].outerHTML;
 
 				contentData += contentDataEnd;
 			}

@@ -34,7 +34,7 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = '<?php echo admin_url( 'options-general.php?page=kaltura_options' ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = '<?php echo esc_js( admin_url( 'options-general.php?page=kaltura_options' ) ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
 		</div>
 	</div>
 <?php
@@ -47,7 +47,7 @@ else: ?>
 		</p>
 
 		<form name="form1" method="post" />
-		<?php wp_nonce_field( 'partnerLogin', 'kaltura' ); ?>
+		<?php wp_nonce_field( 'partnerLogin', '_kalturanonce' ); ?>
 
 		<table class="form-table">
 			<tr valign="top">

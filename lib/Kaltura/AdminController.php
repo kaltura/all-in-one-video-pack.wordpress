@@ -35,7 +35,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$params['success'] = false;
 		$params['error']   = false;
 		if ( count( $_POST ) ) {
-			KalturaHelpers::verifyNonce( 'partnerLogin' );
+			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'partnerLogin' )) {
+				print 'Sorry, your nonce did not verify.';
+				exit;
+			}
 			$email     = KalturaHelpers::getRequestPostParam( 'email' );
 			$password  = KalturaHelpers::getRequestPostParam( 'password' );
 			$partnerId = KalturaHelpers::getRequestPostParam( 'partner_id' );
@@ -71,7 +74,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			'success' => false,
 		);
 		if ( count( $_POST ) ) {
-			KalturaHelpers::verifyNonce( 'register' );
+			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'register' )) {
+				print 'Sorry, your nonce did not verify.';
+				exit;
+			}
 			if ( KalturaHelpers::getRequestPostParam( 'agree_to_terms' ) ) {
 				global $wp_version;
 				$partner                           = new Kaltura_Client_Type_Partner();
@@ -170,7 +176,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$params['error']       = null;
 		$params['showMessage'] = false;
 		if ( count( $_POST ) ) {
-			KalturaHelpers::verifyNonce( 'info' );
+			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'info' )) {
+				print 'Sorry, your nonce did not verify.';
+				exit;
+			}
 
 			$enableVideoComments    = KalturaHelpers::getRequestPostParam( 'enable_video_comments' ) ? true : false;
 			$allowAnonymousComments = KalturaHelpers::getRequestPostParam( 'allow_anonymous_comments' ) ? true : false;
@@ -196,9 +205,8 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			update_option( 'kaltura_comments_player_type', sanitize_text_field((string)$commentsPlayerType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_permalink_metadata_profile_id', sanitize_text_field((string)$permalinkMetadataProfileId) );
-			update_option( 'kaltura_save_permalink', sanitize_text_field((string)$savePermalink) );
+			update_option( 'kaltura_save_permalink', sanitize_text_field((bool)$savePermalink) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
-
 			$params['showMessage'] = true;
 		} else {
 			$kmodel = KalturaModel::getInstance();

@@ -7,8 +7,8 @@ class Kaltura_ViewRenderer {
 			$this->$key = $value;
 		}
 		$this->allowViewRendering = true;
-		if ( is_file( dirname( __FILE__ ) . '/../../view/' . $viewFile ) ) {
-			include( dirname( __FILE__ ) . '/../../view/' . $viewFile );
+		if ( is_file( plugin_dir_path(KALTURA_PLUGIN_FILE) . '/view/' . $viewFile ) ) {
+			include( plugin_dir_path(KALTURA_PLUGIN_FILE) . '/view/' . $viewFile );
 		}
 	}
 }

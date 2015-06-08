@@ -194,17 +194,12 @@ class Kaltura_AllInOneVideoPackPlugin {
             return;
         }
 
-        else if ( wp_is_mobile() ) {
-			return;
-		}
-
 		$user = wp_get_current_user();
 		if ( ! $user->ID && ! KalturaHelpers::anonymousCommentsAllowed() ) {
-            $logIn_url = get_option( 'siteurl' ) . '/wp-login.php?redirect_to=' . urlencode( get_permalink() );
-
+			$logIn_url = wp_login_url( get_permalink() );
 			echo 'You must be <a href=' . esc_url($logIn_url) . '>logged in</a> to post a <br /> video comment.';
 		} else {
-            $openComment_url = site_url() . '?kaltura_iframe_handler';
+            $openComment_url = home_url('?kaltura_iframe_handler');
 			$js_click_code = 'Kaltura.openCommentCW("' . esc_url($openComment_url)  . '"); ';
 			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . esc_js($js_click_code) . '" />';
 		}
@@ -251,19 +246,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 			nocache_headers();
 			$controller = new Kaltura_FrontEndController();
 			$controller->execute();
-			die;
-		} elseif ( isset( $_GET['kaltura_admin_iframe_handler'] ) ) {
-			auth_redirect();
-			nocache_headers();
-			global $show_admin_bar;
-			$show_admin_bar = false;
-
-			$controller = new Kaltura_LibraryController();
-			// we want to execute our controller before wordpress starts outputting the html
-			ob_start();
-			$controller->execute();
-			$this->controllerOutput = ob_get_clean();
-			wp_iframe( 'kalturaGetControllerOutput' );
 			die;
 		}
 	}
