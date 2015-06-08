@@ -1,10 +1,10 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( $this->uiConfId ): ?>
 	<script type="text/javascript">
-		var playerWidth = "<?php echo esc_js($this->playerWidth); ?>";
-		var playerHeight = "<?php echo esc_js($this->playerHeight); ?>";
-		var uiConfId = "<?php echo esc_js($this->uiConfId); ?>";
-		var entryId = "<?php echo esc_js($this->entryId); ?>";
+		var playerWidth = <?php echo wp_json_encode($this->playerWidth); ?>;
+		var playerHeight = <?php echo wp_json_encode($this->playerHeight); ?>;
+		var uiConfId = <?php echo wp_json_encode($this->uiConfId); ?>;
+		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -41,8 +41,7 @@
 			}
 
 			<?php if (count($this->nextEntryIds) > 0): ?>
-			var url = "<?php echo esc_js(KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds))); ?>";
-			window.location.href = url;
+			window.location.href = <?php echo wp_json_encode( esc_js( KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds) ) ) ); ?>;
 			<?php else: ?>
 			setTimeout('topWindow.tb_remove()', 0);
 			<?php endif; ?>
@@ -191,10 +190,10 @@
 
 			jQuery.kalturaPlayerSelector({
 				url        : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
-				defaultId  : '<?php echo esc_js(get_option('kaltura_default_player_type')); ?>',
-				html5Url : '<?php echo esc_url(KalturaHelpers::getHtml5IframeUrl()); ?>',
+				defaultId  : <?php echo wp_json_encode(get_option('kaltura_default_player_type')); ?>,
+				html5Url : <?php echo wp_json_encode(esc_url(KalturaHelpers::getHtml5IframeUrl())); ?>,
 				previewId  : 'divKalturaPlayer',
-				entryId    : '<?php echo esc_js($this->entry->id); ?>',
+				entryId    : <?php echo wp_json_encode($this->entry->id); ?>,
 				playersList: '#uiConfId',
 				dimensions : 'input[name=playerRatio]',
 				submit     : 'input[name=sendToEditorButton]',

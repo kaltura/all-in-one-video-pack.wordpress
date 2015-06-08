@@ -196,25 +196,6 @@ ul#kaltura-browse li input.sendButton {
 	padding:    0 30px;
 }
 
-/* preview page */
-#preview-page {
-	overflow: hidden;
-	height:   100%;
-}
-
-#preview-page .player-wrapper {
-	min-height:       380px;
-	background-color: #EAF3FA;
-	border:           solid 1px #B0D1E0;
-	margin:           10px;
-}
-
-#preview-page .player-wrapper #kplayer {
-	width:  350px;
-	height: 320px;
-	margin: 30px auto;
-}
-
 /* edit & send tabs */
 #send-to-editor {
 	border: solid 1px #AED3E3;

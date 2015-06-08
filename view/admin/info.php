@@ -7,7 +7,7 @@
 		<div id="message" class="updated"><p>
 				<strong><?php echo esc_html( 'Failed to verify partner details' ); ?></strong> (<?php echo esc_html( $this->error ); ?>)
 			</p></div>
-		<form name="form1" method="post" />
+		<form name="form1" method="post" >
 
 		<p class="submit" style="text-align: left; ">
 			<input type="button" value="<?php echo esc_html( 'Click here to edit partner details manually' ); ?>" onclick="window.location = '<?php echo esc_url( admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ) ); ?>';" />

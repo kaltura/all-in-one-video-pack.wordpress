@@ -10,8 +10,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'library',
 			'browse',
 			'searchvideos',
-			'preview',
-			'updatethumbnail',
 			'getplayers',
 			'saveentryname',
 			'videoposts',
@@ -163,51 +161,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$result = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categories, $queryString );
 
 		return $result;
-	}
-
-	public function previewAction() {
-		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
-		if ( ! $entryId ) {
-			wp_die( esc_html__( 'The video is missing or invalid.' ,'all_in_one_video_pack' ) );
-		}
-
-		$uiConfId = KalturaHelpers::getOption( 'kaltura_default_player_type' );
-		KalturaHelpers::enqueueHtml5Lib( $uiConfId );
-		wp_enqueue_script( 'jquery' );
-
-		$flashVars             = array();
-		$flashVars['autoPlay'] = 'true';
-		$params                = array(
-			'widgetId'  => '_' . KalturaHelpers::getOption( 'kaltura_partner_id' ),
-			'uiConfId'  => $uiConfId,
-			'entryId'   => $entryId,
-			'flashVars' => $flashVars,
-		);
-		$this->renderView( 'library/preview.php', $params );
-	}
-
-	public function updatethumbnailAction() {
-		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
-		if ( ! $entryId ) {
-			wp_die( esc_html__( 'The video is missing or invalid.' ,'all_in_one_video_pack' ) );
-		}
-
-		$uiConfId = KalturaHelpers::getOption( 'thumbnail_player_ui_conf_id' );
-		KalturaHelpers::enqueueHtml5Lib( $uiConfId );
-		wp_enqueue_script( 'jquery' );
-
-		$kmodel          = KalturaModel::getInstance();
-		$ks              = $kmodel->getAdminSession();
-		$flashVars       = array();
-		$flashVars['ks'] = $ks;
-		$params          = array(
-			'widgetId'  => '_' . KalturaHelpers::getOption( 'kaltura_partner_id' ),
-			'uiConfId'  => $uiConfId,
-			'entryId'   => $entryId,
-			'flashVars' => $flashVars,
-		);
-		$this->renderView( 'library/update-thumbnail.php', $params );
-		$kmodel = KalturaModel::getInstance();
 	}
 
 	public function getplayersAction() {

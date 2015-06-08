@@ -56,10 +56,6 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 				<?php else: ?>
 					<div class="updated kaltura-updated">Result not found.</div>
 				<?php endif; ?>
-			<?php else: ?>
-				<?php if ( $this->isLibrary ): ?>
-					<p class="info">Click title to edit entry title. Click thumbnail to preview.</p>
-				<?php endif; ?>
 			<?php endif; ?>
 
 		</ul>
@@ -150,11 +146,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 					</div>
 					<div class="thumb">
                         <?php $entryUrl = $mediaEntry->thumbnailUrl . "/width/120/height/90/type/2/bgcolor/000"?>
-						<?php if ( $this->isLibrary ): ?>
-							<a href="<?php echo esc_url( admin_url( 'upload.php?kaltura_admin_iframe_handler&kaction=preview&entryid=' . $mediaEntry->id . '&TB_iframe=true&height=390&width=600' ) ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" class="thickbox">
-								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" width="120" height="90" />
-							</a>
-						<?php else: ?>
+						<?php if ( ! $this->isLibrary ): ?>
 							<a href="<?php echo esc_url( $sendToEditorUrl ); ?>">
 								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
 							</a>
@@ -166,9 +158,6 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 						<?php endif; ?>
 						<?php $isVideo = ( $mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO ); ?>
 						<?php if ( $this->isLibrary ): ?>
-							<?php if ( $isVideo ) : ?>
-								<input type="button" title="Update thumbnail" class="thumb thickbox" alt="<?php echo esc_url( admin_url( 'upload.php?kaltura_admin_iframe_handler&kaction=updatethumbnail&entryid=' . $mediaEntry->id . '&TB_iframe=true&height=440&width=750' ) ); ?>" />
-                            <?php endif; ?>
 							<input type="button" title="Delete video" class="delete" data-id="<?php echo esc_attr( $mediaEntry->id ); ?>" />
 						<?php endif; ?>
 						<br clear="all" />

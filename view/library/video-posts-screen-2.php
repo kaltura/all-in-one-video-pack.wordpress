@@ -27,9 +27,9 @@
 							function kaltura_updateWidthHeight() {
 								var value = jQuery("form [name=uiconf_id]").val()
 								<?php foreach($this->uiConfs->objects as $uiConf): ?>
-								if (value == "<?php echo esc_js($uiConf->id); ?>") {
-									jQuery("form [name=width]").val(<?php echo intval($uiConf->width); ?>);
-									jQuery("form [name=height]").val(<?php echo intval($uiConf->height); ?>);
+								if (value == <?php echo wp_json_encode($uiConf->id); ?>) {
+									jQuery("form [name=width]").val(<?php echo wp_json_encode(intval($uiConf->width)); ?>);
+									jQuery("form [name=height]").val(<?php echo wp_json_encode(intval($uiConf->height)); ?>);
 								}
 								<?php endforeach; ?>
 							}

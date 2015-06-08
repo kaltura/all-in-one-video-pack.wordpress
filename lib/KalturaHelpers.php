@@ -331,10 +331,7 @@ class KalturaHelpers {
 				$align = '';
 		}
 
-		$flashVarsStr = '';
-
 		return array(
-			'flashVars' => $flashVarsStr,
 			'height'    => $params['height'],
 			'width'     => $params['width'],
 			'align'     => $align,
