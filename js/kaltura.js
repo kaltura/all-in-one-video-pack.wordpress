@@ -194,20 +194,6 @@ Kaltura = {
 		jQuery('#' + thumbnailDivId).hide();
 	},
 
-	openCommentCW: function (baseUrl) {
-		var postId = jQuery('[name=comment_post_ID]').val();
-		var author = jQuery('#author').val();
-		var email = jQuery('#email').val();
-
-		KalturaModal.openModal('contribution_wizard', baseUrl + '&kaction=addcomment&postid=' + postId + '&author=' + author + '&email=' + email, { width: 900, height: 360 });
-		jQuery("#contribution_wizard").addClass("modalContributionWizard");
-	},
-
-	doErrorFromComments: function (errorMsg) {
-		KalturaModal.closeModal();
-		alert(errorMsg);
-	},
-
 	isMacFF: function () {
 		var userAgent = navigator.userAgent.toLowerCase();
 		if (userAgent.indexOf('mac') != -1 && userAgent.indexOf('firefox') != -1) {

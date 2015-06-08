@@ -72,35 +72,6 @@
 						<br />
 					</td>
 				</tr>
-				<tr valign="top">
-					<td><label for="enable_video_comments"><?php echo esc_html( "Enable video comments?" ); ?></label></td>
-					<td>
-						<input type="checkbox" id="enable_video_comments" name="enable_video_comments" <?php echo checked( KalturaHelpers::getOption( 'kaltura_enable_video_comments', true ) ); ?> />
-						<br />
-						<br />
-					</td>
-				</tr>
-				<tr valign="top">
-					<td><label for="allow_anonymous_comments"><?php echo esc_html( "Allow anonymous video comments?" ); ?></label>
-					</td>
-					<td>
-						<input type="checkbox" id="allow_anonymous_comments" name="allow_anonymous_comments" <?php echo checked( KalturaHelpers::getOption( 'kaltura_allow_anonymous_comments', true ) ); ?> />
-						<br />
-						<br />
-						<br />
-					</td>
-				</tr>
-				<tr valign="top">
-					<td><label><?php echo esc_html( 'Video comments player design:' ); ?></label></td>
-					<td>
-						<select name="comments_player_type" id="comments_player_type">
-							<?php foreach ( $this->players->objects as $player ): ?>
-                                <option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo selected(KalturaHelpers::getOption( 'kaltura_comments_player_type' ) == $player->id); ?>><?php echo esc_html( $player->name ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<br />
-					</td>
-				</tr>
 
 				<tr valign="top" class="parmalink_row">
 					<td><label for="save_permalink"><?php echo esc_html( "Save permalink in entry metadata?" ); ?></label</td>
@@ -139,6 +110,7 @@
 						<br />
 						<br />
 					</td>
+				</tr>
 
 				<tr valign="top" class="advanced">
 					<td><label><?php echo esc_html( 'UICONF for Kaltura Contribution Wizard:' ); ?></label></td>
@@ -147,15 +119,7 @@
 						<br />
 					</td>
 				</tr>
-				<tr valign="top" class="advanced">
-					<td><label><?php echo esc_html( 'UICONF for Video Comments Contrubution Wizard:' ); ?></label></td>
-					<td>
-						<input name="comments_kcw_type" id="comments_kcw_type" value="<?php echo KalturaHelpers::getOption( 'kaltura_comments_kcw_type' ) ? esc_attr(KalturaHelpers::getOption( 'kaltura_comments_kcw_type' )) : esc_attr(KalturaHelpers::getOption( 'kcw_ui_conf_comments' )); ?>" />
-						<br />
-					</td>
-				</tr>
 
-				</tr>
 				<tr>
 					<td colspan="2">
 						<br />
@@ -173,18 +137,6 @@
 
 		<script type="text/javascript">
 
-			function kaltura_updateFormState() {
-				// video comments settings
-				var enableVideoComments = jQuery("input[type=checkbox][id=enable_video_comments]").attr('checked');
-				if (enableVideoComments) {
-					jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('disabled', false);
-				}
-				else {
-					jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('disabled', true);
-					jQuery("input[type=checkbox][id=allow_anonymous_comments]").attr('checked', false);
-				}
-			}
-
 			var savePermalink = jQuery("#save_permalink").is(':checked');
 			if (!savePermalink) {
 				jQuery("#permalink_metadata_profile_id").css('visibility', 'hidden');
@@ -199,9 +151,6 @@
 			});
 
 
-			jQuery("input[type=checkbox]").click(kaltura_updateFormState);
-
-			kaltura_updateFormState();
 			jQuery('#advanced-button').click(function () {
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();

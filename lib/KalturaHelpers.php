@@ -168,14 +168,6 @@ class KalturaHelpers {
 		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . (int)$uiConfId;
 	}
 
-	public static function anonymousCommentsAllowed() {
-		return KalturaHelpers::getOption( 'kaltura_allow_anonymous_comments', true ) == true ? true : false;
-	}
-
-	public static function videoCommentsEnabled() {
-		return KalturaHelpers::getOption( 'kaltura_enable_video_comments', true ) == true ? true : false;
-	}
-
 	public static function getThumbnailUrl( $widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000 ) {
 		$kmodel   = KalturaModel::getInstance();
 		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );

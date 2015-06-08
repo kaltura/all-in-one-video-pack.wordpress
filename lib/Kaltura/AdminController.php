@@ -181,28 +181,18 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 				exit;
 			}
 
-			$enableVideoComments    = KalturaHelpers::getRequestPostParam( 'enable_video_comments' ) ? true : false;
-			$allowAnonymousComments = KalturaHelpers::getRequestPostParam( 'allow_anonymous_comments' ) ? true : false;
 			$defaultPlayerType      = KalturaHelpers::getRequestPostParam( 'default_player_type' );
 			$defaultKCWType         = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
 			$defaultKCWType         = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 
-			$commentsKCWType = KalturaHelpers::getRequestPostParam( 'comments_kcw_type' );
-			$commentsKCWType = ! empty( $commentsKCWType ) ? $commentsKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_comments' );
-
-			$commentsPlayerType         = KalturaHelpers::getRequestPostParam( 'comments_player_type' );
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
 			$permalinkMetadataProfileId = KalturaHelpers::getRequestPostParam( 'permalink_metadata_profile_id' );
 			$savePermalink              = KalturaHelpers::getRequestPostParam( 'save_permalink' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 
-			update_option( 'kaltura_enable_video_comments', (bool)$enableVideoComments );
-			update_option( 'kaltura_allow_anonymous_comments', (bool)$allowAnonymousComments );
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
-			update_option( 'kaltura_comments_kcw_type', sanitize_text_field((string)$commentsKCWType) );
-			update_option( 'kaltura_comments_player_type', sanitize_text_field((string)$commentsPlayerType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_permalink_metadata_profile_id', sanitize_text_field((string)$permalinkMetadataProfileId) );
 			update_option( 'kaltura_save_permalink', sanitize_text_field((bool)$savePermalink) );

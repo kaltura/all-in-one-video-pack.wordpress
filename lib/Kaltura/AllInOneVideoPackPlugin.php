@@ -40,13 +40,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_action( 'save_post', array($this, 'savePost' ) );
 		add_action( 'wp_ajax_kaltura_ajax', array($this, 'executeLibraryController' ) );
 
-		if ( KalturaHelpers::videoCommentsEnabled() ) {
-			add_action( 'comment_form', array($this, 'commentFormAction' ) );
-		}
-
 		add_shortcode( 'kaltura-widget', array($this, 'shortcodeHandler' ) );
-
-		add_filter( 'parse_request', array($this, 'parseRequest' ) );
 	}
 
 	public function adminWarning() {
@@ -188,23 +182,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		wp_enqueue_script( 'kaltura_upload_popup', KalturaHelpers::jsUrl( 'js/upload-popup.js' ), array(), KalturaHelpers::getPluginVersion(), true );
 	}
 
-	public function commentFormAction( $post_id ) {
-		if (function_exists('jetpack_is_mobile')&& jetpack_is_mobile()) {
-
-            return;
-        }
-
-		$user = wp_get_current_user();
-		if ( ! $user->ID && ! KalturaHelpers::anonymousCommentsAllowed() ) {
-			$logIn_url = wp_login_url( get_permalink() );
-			echo 'You must be <a href=' . esc_url($logIn_url) . '>logged in</a> to post a <br /> video comment.';
-		} else {
-            $openComment_url = home_url('?kaltura_iframe_handler');
-			$js_click_code = 'Kaltura.openCommentCW("' . esc_url($openComment_url)  . '"); ';
-			echo '<input type="button" id="kaltura_video_comment" name="kaltura_video_comment" tabindex="6" value="Add Video Comment" onclick="' . esc_js($js_click_code) . '" />';
-		}
-	}
-
 	public function shortcodeHandler( $attrs ) {
 		// prevent xss
 		foreach ( $attrs as $key => $value ) {
@@ -238,15 +215,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$kmodel->updateEntryPermalink( $postId );
 		} catch ( Exception $ex ) {
             trigger_error('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(), E_USER_NOTICE);
-		}
-	}
-
-	public function parseRequest( $args ) {
-		if ( isset( $_GET['kaltura_iframe_handler'] ) ) {
-			nocache_headers();
-			$controller = new Kaltura_FrontEndController();
-			$controller->execute();
-			die;
 		}
 	}
 
