@@ -72,28 +72,6 @@ class KalturaModel {
 		return $this->createKS( $this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::USER, $privileges, $expiry );
 	}
 
-	public function getAdminSessionUsingApi( $privileges = '', $expiry = 86400 ) {
-		$privileges  = $this->_sanitizer->sanitizer( $privileges, 'string' );
-		$expiry      = $this->_sanitizer->sanitizer( $expiry, 'int' );
-		$adminSecret = $this->_sanitizer->sanitizer( KalturaHelpers::getOption( 'kaltura_admin_secret' ), 'string' );
-
-		$this->_client->setKs( null );
-		$this->_client->getConfig()->partnerId = null;
-
-		return $this->_client->session->start( $adminSecret, $this->_userId, Kaltura_Client_Enum_SessionType::ADMIN, $this->_partnerId, $expiry, $privileges );
-	}
-
-	public function getClientSideSessionUsingApi( $privileges = '', $expiry = 86400 ) {
-		$privileges = $this->_sanitizer->sanitizer( $privileges, 'string' );
-		$expiry     = $this->_sanitizer->sanitizer( $expiry, 'int' );
-		$secret     = $this->_sanitizer->sanitizer( KalturaHelpers::getOption( 'kaltura_secret' ), 'string' );
-
-		$this->_client->setKs( null );
-		$this->_client->getConfig()->partnerId = null;
-
-		return $this->_client->session->start( $secret, $this->_userId, Kaltura_Client_Enum_SessionType::USER, $this->_partnerId, $expiry, $privileges );
-	}
-
 	public function createKS( $partnerId, $userId, $sessionType = Kaltura_Client_Enum_SessionType::USER, $privileges = '', $expiry = 86400 ) {
 		$privileges = $this->_sanitizer->sanitizer( $privileges, 'string' );
 		$expiry     = $this->_sanitizer->sanitizer( $expiry, 'int' );
@@ -129,82 +107,10 @@ class KalturaModel {
 		return $this->_client->baseEntry->get( $entryId );
 	}
 
-	public function getEntriesByIds( $ids ) {
-		$ids              = $this->_sanitizer->sanitizer( $ids, 'arr' );
-		$statuses         = array(
-			Kaltura_Client_Enum_EntryStatus::ERROR_CONVERTING,
-			Kaltura_Client_Enum_EntryStatus::ERROR_IMPORTING,
-			Kaltura_Client_Enum_EntryStatus::IMPORT,
-			Kaltura_Client_Enum_EntryStatus::PRECONVERT,
-			Kaltura_Client_Enum_EntryStatus::READY, );
-		$filter           = new Kaltura_Client_Type_BaseEntryFilter();
-		$filter->statusIn = implode( ',', $statuses );
-		if ( is_array( $ids ) ) {
-			$filter->idIn = implode( ',', $ids );
-		} else {
-			return array();
-		}
-		$result = $this->_client->baseEntry->listAction( $filter );
-
-		return $result->objects;
-	}
-
 	public function updateBaseEntry( $baseEntryId, Kaltura_Client_Type_BaseEntry $baseEntry ) {
 		$baseEntryId = (string)$this->_sanitizer->sanitizer( $baseEntryId, 'string' );
 
 		return $this->_client->baseEntry->update( $baseEntryId, $baseEntry );
-	}
-
-	public function updateMediaEntry( $mediaEntryId, $mediaEntry ) {
-		$mediaEntryId = $this->_sanitizer->sanitizer( $mediaEntryId, 'string' );
-
-		return $this->_client->media->update( $mediaEntryId, $mediaEntry );
-	}
-
-	public function listEntriesByTypes( $types, $pageSize, $page ) {
-		$page     = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = $this->_sanitizer->sanitizer( $pageSize, 'int' );
-
-		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
-		$filter->orderBy = Kaltura_Client_Enum_BaseEntryOrderBy::CREATED_AT_DESC;
-		$filter->typeIn  = $types;
-
-		$pager            = new Kaltura_Client_Type_FilterPager();
-		$pager->pageSize  = $pageSize;
-		$pager->pageIndex = $page;
-
-		return $this->_client->baseEntry->listAction( $filter, $pager );
-	}
-
-	public function listMediaEntries( $pageSize, $page ) {
-		$page     = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = $this->_sanitizer->sanitizer( $pageSize, 'int' );
-
-		return $this->listEntriesByTypes( Kaltura_Client_Enum_EntryType::MEDIA_CLIP, $pageSize, $page );
-	}
-
-	public function listEntries( $pageSize, $page ) {
-		$page     = (string)$this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = (int)$this->_sanitizer->sanitizer( $pageSize, 'int' );
-
-		$types = implode( ',', array( Kaltura_Client_Enum_EntryType::MEDIA_CLIP ) );
-
-		return $this->listEntriesByTypes( $types, $pageSize, $page );
-	}
-
-	public function listRootCategory( $pageSize, $page, $categories ) {
-		$page     = (string)$this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = (int)$this->_sanitizer->sanitizer( $pageSize, 'int' );
-
-		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
-		$filter->orderBy = '-createdAt';
-		/** If no category queried then query the root category. */
-		if ( ! $categories ) {
-			$categories = array( KalturaHelpers::getOption( 'kaltura_root_category' ) );
-		}
-		$pager            = new Kaltura_Client_Type_FilterPager();
-		$pager->pageSize  = $pageSize;
-		$pager->pageIndex = $page;
 	}
 
 	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categories, $word ) {
@@ -242,29 +148,6 @@ class KalturaModel {
 		return $this->_client->baseEntry->listAction( $filter, $pager );
 	}
 
-	public function listAllEntriesByCategory( $category ) {
-		$filter                    = new Kaltura_Client_Type_BaseEntryFilter();
-		$filter->orderBy           = Kaltura_Client_Enum_BaseEntryOrderBy::CREATED_AT_DESC;
-		$filter->categoriesMatchOr = $category;
-
-		$filter->typeIn = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
-
-		$pager            = new Kaltura_Client_Type_FilterPager();
-		$pager->pageSize  = 500;
-		$pager->pageIndex = 1;
-		$entries          = array();
-		while ( true ) {
-			$result  = $this->_client->baseEntry->listAction( $filter, $pager );
-			$entries = array_merge( $entries, $result->objects );
-			if ( count( $result->objects ) == 0 || count( $result->objects ) == $result->totalCount ) {
-				break;
-			}
-			$pager->pageIndex ++;
-		}
-
-		return $entries;
-	}
-
 	public function deleteEntry( $mediaEntryId ) {
 		$mediaEntryId = $this->_sanitizer->sanitizer( $mediaEntryId, 'string' );
 
@@ -291,29 +174,6 @@ class KalturaModel {
 		return $result;
 	}
 
-	public function listUserEntries( $userId, $pageSize, $page ) {
-		$page     = $this->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize = $this->_sanitizer->sanitizer( $pageSize, 'int' );
-		$userId   = $this->_sanitizer->sanitizer( $userId, 'string' );
-
-		$filter              = new Kaltura_Client_Type_BaseEntryFilter();
-		$filter->orderBy     = '-createdAt';
-		$filter->userIdEqual = $userId;
-
-		$pager            = new Kaltura_Client_Type_FilterPager();
-		$pager->pageSize  = $pageSize;
-		$pager->pageIndex = $page;
-
-		return $this->_client->baseEntry->listAction( $filter, $pager );
-	}
-
-	public function listRootCategoriesOrderByName() {
-		$filter             = new Kaltura_Client_Type_CategoryFilter();
-		$filter->orderBy    = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
-		$filter->depthEqual = 0; // for now, support only top level
-		return $this->_client->category->listAction( $filter );
-	}
-
 	public function generateRootTree() {
 		$filter          = new Kaltura_Client_Type_CategoryFilter();
 		$filter->orderBy = Kaltura_Client_Enum_CategoryOrderBy::FULL_NAME_ASC;
@@ -331,13 +191,6 @@ class KalturaModel {
 		}
 
 		return $this->_client->category->listAction( $filter );
-	}
-
-	public function listUiConfs() {
-		$filter          = new Kaltura_Client_Type_UiConfFilter();
-		$filter->orderBy = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
-
-		return $this->_client->uiConf->listAction( $filter );
 	}
 
 	public function listPlayersUiConfs() {

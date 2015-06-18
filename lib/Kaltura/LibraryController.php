@@ -12,8 +12,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'searchvideos',
 			'getplayers',
 			'saveentryname',
-			'videoposts',
-			'getentriesstatus',
 		);
 	}
 
@@ -182,108 +180,5 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		}
 		echo 'ok';
 		die;
-	}
-
-	public function videopostsAction() {
-		$step = KalturaHelpers::getRequestParam( 'step', 1 );
-		if ( $step == 1 ) {
-			$this->videopostsStep1();
-		} elseif ( $step == 2 ) {
-			$this->videopostsStep2();
-		} elseif ( $step == 3 ) {
-			$this->videopostsStep3();
-		}
-	}
-
-	public function getentriesstatusAction() {
-		$entryIds = KalturaHelpers::getRequestParam( 'entryIds', array() );
-		$kmodel   = KalturaModel::getInstance();
-		$entries  = $kmodel->getEntriesByIds( $entryIds );
-
-		$idsWithStatus = array();
-		foreach ( $entries as $entry ) {
-			$idsWithStatus[$entry->id] = $entry->status;
-		}
-
-		echo json_encode( $idsWithStatus );
-		die;
-	}
-
-	protected function videopostsStep1() {
-		$kmodel                 = KalturaModel::getInstance();
-		$categories             = $kmodel->listRootCategoriesOrderByName();
-		$params['categories']   = $categories->objects;
-		$params['wpCategories'] = get_categories( 'get=all' );
-		$this->renderView( 'library/video-posts-screen-1.php', $params );
-	}
-
-	protected function videopostsStep2() {
-		$hasEntries = false;
-		$categories = KalturaHelpers::getRequestPostParam( 'categories', array() );
-		$kmodel     = KalturaModel::getInstance();
-		foreach ( $categories as $category ) {
-			$entries = $kmodel->listAllEntriesByCategory( $category );
-
-			// remove the entries that have posts
-			$newEntries = array();
-			for ( $i = 0; $i < count( $entries ); $i ++ ) {
-				$entry        = $entries[$i];
-				$hasEntries   = true;
-				$newEntries[] = $entry;
-			}
-			$categories[$category] = $newEntries;
-		}
-
-		$params['uiConfs']    = $kmodel->listPlayersUiConfs();;
-		$params['categories'] = $categories;
-		$params['hasEntries'] = $hasEntries;
-		$this->renderView( 'library/video-posts-screen-2.php', $params );
-	}
-
-	protected function videopostsStep3() {
-		$entries      = KalturaHelpers::getRequestPostParam( 'entries', array() );
-		$createdPosts = 0;
-		$uiConfId     = (string)KalturaHelpers::getRequestPostParam( 'uiconf_id' );
-		$width        = (string)KalturaHelpers::getRequestPostParam( 'width' );
-		$height       = (string)KalturaHelpers::getRequestPostParam( 'height' );
-
-		foreach ( $entries as $entryId ) {
-			$entryName    = (string)KalturaHelpers::getRequestPostParam('entryName_'.$entryId);
-			$categoryName = (string)KalturaHelpers::getRequestPostParam('entryCategory_'.$entryId);;
-			$categoryName = esc_html($categoryName);
-
-			// do we need to create new category?
-			if ( ! Kaltura_WPModel::isCategoryExists( $categoryName ) ) {
-				$newCat = array( 'cat_name' => sanitize_text_field($categoryName) );
-				wp_insert_category( $newCat );
-				wp_cache_set( 'last_changed', microtime( true ), 'terms' ); // otherwise the category won't return when retrieving it later in the code
-			}
-
-			$category = Kaltura_WPModel::getCategoryByName( $categoryName );
-
-			// create the post for the video
-			$shortCode = '[kaltura-widget uiconfid="' . esc_attr($uiConfId) . '" entryid="' . esc_attr($entryId) . '" width="' . esc_attr($width) . '" height="' . esc_attr($height) . '" /]';
-			$newPost   = array(
-				'post_title'   => sanitize_text_field($entryName),
-				'post_content' => wp_kses_post($shortCode),
-			);
-			$postId = wp_insert_post( $newPost );
-			if ( $postId ) {
-				$createdPosts ++;
-			}
-
-			// link the post to the category
-            if ( function_exists( 'get_the_terms' ) ) {
-                $categories   = get_the_terms( $postId , "category");
-            } else {
-                $categories   = wp_get_post_categories( $postId );
-            }
-
-			$categories[] = $category->cat_ID;
-			array_map( 'absint', $categories);
-			wp_set_post_categories( $postId, $categories );
-		}
-		$params['numOfCreatedPosts'] = $createdPosts;
-		$this->renderView( 'library/video-posts-screen-3.php', $params );
 	}
 }

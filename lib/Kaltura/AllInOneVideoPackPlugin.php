@@ -21,7 +21,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		}
 
 		// filters
-		add_filter( 'comment_text', array($this, 'commentTextFilter' ) );
 		add_filter( 'media_buttons_context', array($this, 'mediaButtonsContextFilter' ) );
 		add_filter( 'media_upload_tabs', array($this, 'mediaUploadTabsFilter' ) );
 		add_filter( 'mce_external_plugins', array($this, 'mceExternalPluginsFilter' ) );
@@ -98,22 +97,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	function executeAdminController() {
 		$controller = new Kaltura_AdminController();
 		$controller->execute();
-	}
-
-	public function commentTextFilter( $content ) {
-		global $shortcode_tags;
-
-		// we want to run our shortcode and not all
-		$shortcode_tags_backup = $shortcode_tags;
-		$shortcode_tags        = array();
-
-		add_shortcode( 'kaltura-widget', array( $this, 'shortcodeHandler' ) );
-		$content = do_shortcode( $content );
-
-		// restore the original array
-		$shortcode_tags = $shortcode_tags_backup;
-
-		return $content;
 	}
 
 	public function mediaButtonsContextFilter( $content ) {
@@ -224,10 +207,3 @@ class Kaltura_AllInOneVideoPackPlugin {
 		media_upload_header(); // will add the tabs menu
 	}
 }
-
-function kalturaGetControllerOutput() {
-	global $kalturaPlugin;
-    echo $kalturaPlugin->controllerOutput;
-}
-
-//style div p button br

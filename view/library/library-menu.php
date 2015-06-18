@@ -1,32 +1,5 @@
 <?php KalturaHelpers::protectView( $this ); ?>
-<?php
-$kaction = KalturaHelpers::getRequestParam( 'kaction', 'library' );
 
-$menu = array(
-	'Entries'                 => array( 'kaction' => 'library', 'screen' => null, 'paged' => null, 'step' => null ),
-	'Bulk Create Video Posts' => array( 'kaction' => 'videoposts', 'paged' => null, 'step' => null ),
-)
-?>
-<ul class="subsubsub">
-	<?php $count = count( $menu );
-	$i = 1; ?>
-	<?php foreach ( $menu as $name => $params ): ?>
-		<?php
-		$last = ( $i ++ >= $count );
-		if ( $params['kaction'] == $kaction )
-			$current = 'class="current" ';
-		else {
-			$current = '';
-		}
-		?>
-		<li>
-			<a <?php echo $current; ?>href="<?php echo esc_url( add_query_arg( $params ) ); ?>"><?php echo esc_html( $name ); ?></a>
-			<?php if ( ! $last ): ?>
-				|
-			<?php endif; ?>
-		</li>
-	<?php endforeach; ?>
-</ul>
 <table id="kaltura-cms-login">
 	<tr class="kalturaFirstRow">
 		<th align="left"><?php echo esc_html( 'Partner ID' ); ?>:</th>

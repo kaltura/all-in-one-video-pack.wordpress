@@ -149,52 +149,8 @@ class KalturaHelpers {
 		return esc_url_raw($scriptSrc);
 	}
 
-	public static function enqueueHtml5Lib( $uiConfId ) {
-		$kmodel   = KalturaModel::getInstance();
-		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
-		$kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
-
-		$html5LibUrl = '' .
-			self::getServerUrl() .
-			'/p/' . $kalturaPartnerId .
-			'/sp/' . $kalturaPartnerId . '00' .
-			'/embedIframeJs' .
-			'/uiconf_id/' . $uiConfId .
-			'/partner_id/' . $kalturaPartnerId;
-		wp_enqueue_script( 'kaltura-html5lib-' . $uiConfId, $html5LibUrl );
-	}
-
 	public static function getContributionWizardUrl( $uiConfId ) {
 		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . (int)$uiConfId;
-	}
-
-	public static function getThumbnailUrl( $widgetId = null, $entryId = null, $width = 240, $height = 180, $version = 100000 ) {
-		$kmodel   = KalturaModel::getInstance();
-		$widgetId = (string)$kmodel->_sanitizer->sanitizer( $widgetId, 'string' );
-		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'int' );
-		$height   = (int)$kmodel->_sanitizer->sanitizer( $height, 'int' );
-		$version  = (int)$kmodel->_sanitizer->sanitizer( $version, 'int' );
-
-		$kalturaPartnerId = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
-		$url  = KalturaHelpers::getCdnUrl();
-		$url .= '/p/' . $kalturaPartnerId;
-		$url .= '/sp/' . $kalturaPartnerId * 100;
-		$url .= '/thumbnail';
-		if ( $widgetId ) {
-			$url .= '/widget_id/' . $widgetId;
-		}
-		if ( $entryId ) {
-			$url .= '/entry_id/' . $entryId;
-		}
-		$url .= '/width/' . $width;
-		$url .= '/height/' . $height;
-		$url .= '/type/2';
-		$url .= '/bgcolor/000000';
-		if ( $version !== null ) {
-			$url .= '/version/' . $version;
-		}
-
-		return esc_url_raw($url);
 	}
 
 	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
@@ -219,21 +175,6 @@ class KalturaHelpers {
 		}
 
 		return (int) $height;
-	}
-
-	public static function runKalturaShortcode( $content, $callback ) {
-		global $shortcode_tags;
-
-		// we will backup the shortcode array, and run only our shortcode
-		$shortcode_tags_backup = $shortcode_tags;
-		$shortcode_tags = array();
-
-		add_shortcode( 'kaltura-widget', $callback );
-
-		$content = do_shortcode( $content );
-
-		// now we can restore the original shortcode list
-		$shortcode_tags = $shortcode_tags_backup;
 	}
 
 	public static function getOption( $name, $default = null ) {
