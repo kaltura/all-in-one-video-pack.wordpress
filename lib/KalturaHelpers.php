@@ -52,24 +52,16 @@ class KalturaHelpers {
 	}
 
 	public static function getRequestPostParam( $param, $default = null ) {
-		if ( isset( $_POST[$param] ) ) {
-			if ( is_array( $_POST[$param] ) ) {
-				return array_map( 'esc_js', $_POST[$param] );
-			} else {
-				return esc_js( $_POST[$param] );
-			}
+		if ( isset( $_POST[ $param ] ) ) {
+			return $_POST[ $param ];
 		} else {
 			return $default;
 		}
 	}
 
 	public static function getRequestParam( $param, $default = null ) {
-		if ( isset( $_GET[$param] ) ) {
-			if ( is_array( $_GET[$param] ) ) {
-				return array_map( 'esc_js', $_GET[$param] );
-			} else {
-				return esc_js( $_GET[$param] );
-			}
+		if ( isset( $_GET[ $param ] ) ) {
+			return $_GET[ $param ];
 		} else {
 			return $default;
 		}
