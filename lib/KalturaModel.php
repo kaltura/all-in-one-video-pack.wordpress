@@ -262,9 +262,9 @@ class KalturaModel {
 
 	public function updateEntryPermalinkMetadata( $entryId, $permalink, $metadataProfileId, $metadataFieldName ) {
 		$entryId           = sanitize_key( $entryId );
-		$permalink         = sanitize_title( $permalink );
+		$permalink         = esc_url_raw( $permalink );
 		$metadataProfileId = intval( $metadataProfileId );
-		$metadataFieldName = tag_escape( $metadataFieldName );
+		$metadataFieldName = wp_kses( $metadataFieldName, '');
 		$xmlData = "<metadata><{$metadataFieldName}>{$permalink}</{$metadataFieldName}></metadata>";
 
 		$result  = $this->getEntryMetadata( $entryId, $metadataProfileId );
