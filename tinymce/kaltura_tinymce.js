@@ -9,7 +9,7 @@
 		 * @param {string} url Absolute URL to where the plugin is located.
 		 */
 		init: function (ed, url) {
-			this._url = url
+			this._url = url;
 
 			ed.onInit.add(function () {
 				ed.dom.loadCSS(url + "/css/tinymce.css");
@@ -55,14 +55,6 @@
 		_tagStart: '[kaltura-widget',
 
 		_tagEnd: '/]',
-
-		_replaceTagStart: '<img',
-
-		_replaceTagEnd: '/>',
-
-		_originalHeight: 0,
-
-		_originalWidth: 0,
 
 		_onBeforeSetContent: function (ed, obj) {
 			if (!obj.content)
@@ -145,90 +137,64 @@
 				return;
 
 			var contentData = obj.content;
-			var startPos = 0;
-			while ((startPos = contentData.indexOf(this._replaceTagStart, startPos)) != -1) {
-				var endPos = contentData.indexOf(this._replaceTagEnd, startPos);
-				if (endPos > -1) {
-					var attribs = this._parseAttributes(contentData.substring(startPos + this._replaceTagStart.length, endPos));
-
-					var className = attribs['class'];
-					if (!className || className.indexOf('kaltura_item') == -1) {
-						startPos++;
-						continue;
-					}
-
-					var wid = "";
-					var uiconfid = "";
-					var entryid = "";
-
-					// get the attribs that we saved in the class name
-					var classAttribs = className.split(" ");
-					for (var j = 0; j < classAttribs.length; j++) {
-						switch (classAttribs[j]) {
-							case 'alignright':
-								attribs['align'] = 'right';
-								break;
-							case 'alignleft':
-								attribs['align'] = 'left';
-								break;
-							case 'aligncenter':
-								attribs['align'] = 'center';
-								break;
-							default:
-								classAttrArr = classAttribs[j].match(/kaltura_([a-zA-Z]*)_([\w]*)/);
-								if (classAttrArr && classAttrArr.length == 3) {
-									switch (classAttrArr[1]) {
-										case 'id':
-											if (classAttrArr[2] != "")
-												wid = classAttrArr[2];
-											break;
-										case 'uiconfid':
-											if (classAttrArr[2] != "")
-												uiconfid = classAttrArr[2];
-											break;
-										case 'entryid':
-											if (classAttrArr[2] != "")
-												entryid = classAttrArr[2];
-											break;
-									}
+			var $content = jQuery(obj.content);
+			var tagStart = this._tagStart;
+			var tagEnd = this._tagEnd;
+			$content.find('img.kaltura_item').each(function (i, item) {
+				var $item = jQuery(item);
+				var widgetAttribs = {};
+				var classes = item.className.split(/\s+/);
+				jQuery.each(classes, function (i, value) {
+					switch (value)
+					{
+						case 'alignright':
+							widgetAttribs.align = 'right';
+							break;
+						case 'alignleft':
+							widgetAttribs.align = 'left';
+							break;
+						case 'aligncenter':
+							widgetAttribs.align = 'center';
+							break;
+						default:
+							var classAttrArr = value.match(/kaltura_([a-zA-Z]*)_([\w]*)/);
+							if (classAttrArr && classAttrArr.length == 3) {
+								var classAttrib = classAttrArr[1];
+								var classValue = classAttrArr[2];
+								switch(classAttrib) {
+									case 'id':
+										if (classValue)
+											widgetAttribs.wid = classValue;
+										break;
+									case 'uiconfid':
+										if (classValue)
+											widgetAttribs.uiconfid = classValue;
+										break;
+									case 'entryid':
+										if (classValue)
+											widgetAttribs.entryid = classValue;
+										break;
 								}
-								break;
-						}
+							}
+							break;
 					}
+				});
 
-					endPos += this._replaceTagEnd.length;
-					var contentDataEnd = contentData.substr(endPos);
-					contentData = contentData.substr(0, startPos);
+				widgetAttribs.width = $item.attr('width');
+				widgetAttribs.height = $item.attr('height');
 
+				if ($item.attr('style'))
+					widgetAttribs.style = $item.attr('style');
 
-					contentData += this._tagStart + ' ';
-					if (wid)
-						contentData += 'wid="' + wid + '" ';
+				var widgetStr = tagStart;
+				jQuery.each(widgetAttribs, function(propName, propValue) {
+					widgetStr += (' ' + propName + '="' + propValue + '"');
+				});
+				widgetStr += tagEnd;
+				$item.replaceWith(widgetStr)
+			});
 
-					if (uiconfid)
-						contentData += 'uiconfid="' + uiconfid + '" ';
-
-					if (entryid)
-						contentData += 'entryid="' + entryid + '" ';
-
-					contentData += 'width="' + attribs['width'] + '" ';
-					contentData += 'height="' + attribs['height'] + '" ';
-
-					if (attribs['style'])
-						contentData += 'style="' + attribs['style'] + '" ';
-
-					if (attribs['align'])
-						contentData += 'align="' + attribs['align'] + '" '; // align
-
-					contentData += this._tagEnd;
-					contentData += contentDataEnd;
-				}
-				else {
-					startPos++;
-				}
-			}
-
-			obj.content = contentData;
+			obj.content = $content.get(0).outerHTML;
 		},
 
 		_parseAttributes: function (attribute_string) {
