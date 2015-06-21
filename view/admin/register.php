@@ -45,7 +45,7 @@ else: ?>
 			</div>
 		<?php endif; ?>
 		<p>
-			<a href="<?php echo admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ); ?>">Click here if you already have a Partner ID</a>
+			<a href="<?php echo esc_url( admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ) ); ?>">Click here if you already have a Partner ID</a>
 		</p>
 
 		<p>
