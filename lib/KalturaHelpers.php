@@ -37,20 +37,6 @@ class KalturaHelpers {
 		return self::pluginUrl( '' );
 	}
 
-	public static function getPluginVersion() {
-		if ( ! function_exists( 'get_plugins' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-		$all_plugins = get_plugins();
-		foreach ( $all_plugins as $plugin ) {
-			if ( $plugin['Name'] == 'All in One Video Pack' ) {
-
-				return $plugin['Version'];
-			}
-		}
-		return '';
-	}
-
 	public static function generateTabUrl( $params ) {
 		$params = KalturaSanitizer::browseParams( $params );
 

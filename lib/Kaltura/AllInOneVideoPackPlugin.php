@@ -44,13 +44,13 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 	public function mceExternalPluginsFilter( $content ) {
 		$pluginUrl          = KalturaHelpers::getPluginUrl();
-		$content['kaltura'] = esc_url_raw($pluginUrl . '/tinymce/kaltura_tinymce.js?v' . KalturaHelpers::getPluginVersion());
+		$content['kaltura'] = esc_url_raw($pluginUrl . '/tinymce/kaltura_tinymce.js?v' . KALTURA_PLUGIN_VERSION );
 
 		return $content;
 	}
 
 	public function tinyMceVersionFilter( $content ) {
-		return $content . '_k' . KalturaHelpers::getPluginVersion();
+		return $content . '_k' . KALTURA_PLUGIN_VERSION;
 	}
 
 	public function adminMenuAction() {
@@ -59,19 +59,19 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function enqueueScripts() {
-		wp_enqueue_style( 'kaltura', KalturaHelpers::cssUrl( 'css/kaltura.css' ), array(), KalturaHelpers::getPluginVersion());
-		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array('jquery'), KalturaHelpers::getPluginVersion(), false );
+		wp_enqueue_style( 'kaltura', KalturaHelpers::cssUrl( 'css/kaltura.css' ), array(), KALTURA_PLUGIN_VERSION );
+		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array('jquery'), KALTURA_PLUGIN_VERSION, false );
 	}
 
 	public function adminEnqueueScripts() {
-		wp_register_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KalturaHelpers::getPluginVersion(), false );
-		wp_register_script( 'kaltura-player-selector', KalturaHelpers::jsUrl( 'js/kaltura-player-selector.js' ), array(), KalturaHelpers::getPluginVersion(), true );
-		wp_register_script( 'kaltura-entry-status-checker', KalturaHelpers::jsUrl( 'js/kaltura-entry-status-checker.js' ), array(), KalturaHelpers::getPluginVersion(), true );
-		wp_register_script( 'kaltura-editable-name', KalturaHelpers::jsUrl( 'js/kaltura-editable-name.js' ), array(), KalturaHelpers::getPluginVersion(), true );
-		wp_register_script( 'kaltura-jquery-validate', KalturaHelpers::jsUrl( 'js/jquery.validate.min.js' ), array(), KalturaHelpers::getPluginVersion(), true );
+		wp_register_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KALTURA_PLUGIN_VERSION, false );
+		wp_register_script( 'kaltura-player-selector', KalturaHelpers::jsUrl( 'js/kaltura-player-selector.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-entry-status-checker', KalturaHelpers::jsUrl( 'js/kaltura-entry-status-checker.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-editable-name', KalturaHelpers::jsUrl( 'js/kaltura-editable-name.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery-validate', KalturaHelpers::jsUrl( 'js/jquery.validate.min.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 
-		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KalturaHelpers::getPluginVersion(), false );
-		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KalturaHelpers::getPluginVersion() );
+		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KALTURA_PLUGIN_VERSION, false );
+		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
 
 		wp_enqueue_style( 'kaltura' );
 	}
@@ -150,7 +150,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaUploadPrintScriptsAction() {
-		wp_enqueue_script( 'kaltura_upload_popup', KalturaHelpers::jsUrl( 'js/upload-popup.js' ), array(), KalturaHelpers::getPluginVersion(), true );
+		wp_enqueue_script( 'kaltura_upload_popup', KalturaHelpers::jsUrl( 'js/upload-popup.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 	}
 
 	public function shortcodeHandler( $attrs ) {
