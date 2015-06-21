@@ -37,10 +37,14 @@
 		}
 
 		var _onInputKeyPress = function (args) {
-			if (args.keyCode == 13)
+			if (args.keyCode == 13) {
 				_save();
-			if (args.keyCode == 27)
+				return false;
+			}
+			if (args.keyCode == 27) {
 				_finishEditing();
+				return false;
+			}
 		}
 
 		var _save = function () {
