@@ -2,12 +2,12 @@
 
 <table id="kaltura-cms-login">
 	<tr class="kalturaFirstRow">
-		<th align="left"><?php echo esc_html( 'Partner ID' ); ?>:</th>
+		<th align="left">Partner ID:</th>
 		<td style="padding-right: 90px;">
 			<strong><?php echo esc_html( KalturaHelpers::getOption( 'kaltura_partner_id' ) ); ?></strong></td>
 	</tr>
 	<tr>
-		<th align="left"><?php echo esc_html( 'KMC username' ); ?>:</th>
+		<th align="left">KMC username:</th>
 		<td style="padding-right: 90px;">
 			<strong><?php echo esc_html( KalturaHelpers::getOption( 'kaltura_cms_user' ) ); ?></strong></td>
 	</tr>

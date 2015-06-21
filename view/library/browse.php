@@ -60,7 +60,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 
 		</ul>
 		<div>
-			<a href="javascript:;" id="clear_categories"><?php echo esc_html( 'clear categories' ); ?></a>
+			<a href="javascript:;" id="clear_categories">Clear categories</a>
 		</div>
 		<ul id="filter-categories">
 			<?php

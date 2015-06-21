@@ -54,7 +54,7 @@ class KalturaHelpers {
 	public static function generateTabUrl( $params ) {
 		$params = KalturaSanitizer::browseParams( $params );
 
-		$query = remove_query_arg( array_keys( $_GET ), self::getRequestUrl() );
+		$query = remove_query_arg( array_keys( $_GET ), esc_url_raw( self::getRequestUrl() ) );
 
 		$query = add_query_arg( $params, $query );
 

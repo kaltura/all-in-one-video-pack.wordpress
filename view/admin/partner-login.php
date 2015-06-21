@@ -1,7 +1,7 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( $this->error ): ?>
 	<div class="wrap">
-		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2>All in One Video Pack Installation</h2>
 		<br />
 
 		<div class="error">
@@ -12,12 +12,12 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="history.go(-1);"><?php echo esc_html( 'Back' ); ?></a>
+			<a href="#" onclick="history.go(-1);">Back</a>
 		</div>
 	</div>
 <?php elseif ( $this->success === true ): ?>
 	<div class="wrap">
-		<h2><?php echo esc_html( 'Congratulations!' ); ?></h2>
+		<h2>Congratulations!</h2>
 		<br />
 
 		<div class="updated fade">
@@ -34,40 +34,41 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="window.location.href = '<?php echo esc_js( admin_url( 'options-general.php?page=kaltura_options' ) ); ?>'"><?php echo esc_html( 'Continue...' ); ?></a>
+			<a href="#" onclick="window.location.href = '<?php echo esc_js( admin_url( 'options-general.php?page=kaltura_options' ) ); ?>'">Continue...</a>
 		</div>
 	</div>
 <?php
 else: ?>
 	<div class="wrap">
-		<h2><?php echo esc_html( 'All in One Video Pack Installation' ); ?></h2>
+		<h2>All in One Video Pack Installation</h2>
 
 		<p>
 			Please enter your Kaltura Management Console (KMC) Email & password
 		</p>
 
-		<form name="form1" method="post" />
-		<?php wp_nonce_field( 'partnerlogin', '_kalturanonce' ); ?>
+		<form name="form1" method="post">
+			<?php wp_nonce_field( 'partnerlogin', '_kalturanonce' ); ?>
 
-		<table class="form-table">
-			<tr valign="top">
-				<th scope="row"><?php echo esc_html( 'Partner ID' ); ?>:</th>
-				<td><input type="text" id="partner_id" name="partner_id" value="" size="10" /></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><?php echo esc_html( 'Email' ); ?>:</th>
-				<td><input type="text" id="email" name="email" value="" size="40" /></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><?php echo esc_html( 'Password' ); ?>:</th>
-				<td><input type="password" id="password" name="password" value="" size="20" />
-					<a href="<?php echo esc_url( KalturaHelpers::getServerUrl() ); ?>/index.php/kmc">forgot password?</a>
-				</td>
-			</tr>
-		</table>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row"><label for="partner_id">Partner ID:</label></th>
+					<td><input type="text" id="partner_id" name="partner_id" value="" size="10" /></td>
+				</tr>
+				<tr valign="top">
+					<th scope="row"><label for="email">Email:</label></th>
+					<td><input type="text" id="email" name="email" value="" size="40" /></td>
+				</tr>
+				<tr valign="top">
+					<th scope="row"><label for="password">Password:</label></th>
+					<td><input type="password" id="password" name="password" value="" size="20" />
+						<a href="<?php echo esc_url( KalturaHelpers::getServerUrl() ); ?>/index.php/kmc">forgot password?</a>
+					</td>
+				</tr>
+			</table>
 
-		<p class="submit" style="text-align: left;">
-			<input type="submit" name="Submit" value="<?php echo esc_html( 'Complete installation' ) ?>" /></p>
+			<p class="submit" style="text-align: left;">
+				<input type="submit" name="Submit" value="Complete installation" />
+			</p>
 		</form>
 	</div>
 <?php endif;

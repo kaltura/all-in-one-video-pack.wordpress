@@ -48,7 +48,7 @@ $this->renderView( 'contribution-wizard.php' );
 			url = baseUrl + '&entryIds[]=' + entryIds[0];
 		}
 		else {
-			alert("<?php echo esc_html( 'No Entries Uploaded' ); ?>");
+			alert("No Entries Uploaded");
 		}
 
 		window.location.href = url;

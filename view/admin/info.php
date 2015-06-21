@@ -1,16 +1,17 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( $this->error ): ?>
 	<div class="wrap">
-		<h2><?php echo esc_html( 'All in One Video Pack Settings' ); ?></h2>
+		<h2>All in One Video Pack Settings</h2>
 		<br />
 
-		<div id="message" class="updated"><p>
-				<strong><?php echo esc_html( 'Failed to verify partner details' ); ?></strong> (<?php echo esc_html( $this->error ); ?>)
+		<div id="message" class="updated">
+			<p>
+				<strong>Failed to verify partner details</strong> (<?php echo esc_html( $this->error ); ?>)
 			</p></div>
 		<form name="form1" method="post" >
 
 		<p class="submit" style="text-align: left; ">
-			<input type="button" value="<?php echo esc_html( 'Click here to edit partner details manually' ); ?>" onclick="window.location = '<?php echo esc_url( admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ) ); ?>';" />
+			<input type="button" value="Click here to edit partner details manually" onclick="window.location = '<?php echo esc_url( admin_url( 'options-general.php?page=kaltura_options&partner_login=true' ) ); ?>';" />
 		</p>
 		<input type="hidden" id="manual_edit" name="manual_edit" value="true" />
 		</form>
@@ -18,22 +19,25 @@
 <?php else : ?>
 	<div class="wrap">
 		<?php if ( $this->showMessage ): ?>
-			<div id="message" class="updated"><p>
-					<strong><?php echo esc_html( 'The All in One Video Pack settings have been saved.' ); ?></strong></p></div>
+			<div id="message" class="updated">
+				<p>
+					<strong>The All in One Video Pack settings have been saved.</strong>
+				</p>
+			</div>
 		<?php endif; ?>
-		<h2><?php echo esc_html( 'All in One Video Pack Settings' ); ?></h2>
+		<h2>All in One Video Pack Settings</h2>
 
 		<form name="form1" method="post">
 			<?php wp_nonce_field( 'info', '_kalturanonce' ); ?>
 			<br />
 			<table id="kaltura-cms-login">
 				<tr class="kalturaFirstRow">
-					<th align="left"><?php echo esc_html( 'Partner ID' ); ?>:</th>
+					<th align="left">Partner ID:</th>
 					<td style="padding-right: 90px;">
 						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_partner_id' )); ?></strong></td>
 				</tr>
 				<tr>
-					<th align="left"><?php echo esc_html( 'KMC username' ); ?>:</th>
+					<th align="left">KMC username:</th>
 					<td style="padding-right: 90px;">
 						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong></td>
 				</tr>
@@ -49,7 +53,7 @@
 			<table>
 
 				<tr valign="top">
-					<td><label for="root_category"><?php echo esc_html( 'Root Category:' ); ?></label></td>
+					<td><label for="root_category">Root Category:</label></td>
 					<td>
 						<select name="root_category" id="root_category" size="1">
 							<option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption( 'kaltura_root_category' ) ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
@@ -61,7 +65,7 @@
 				</tr>
 
 				<tr valign="top">
-					<td><label><?php echo esc_html( 'Default player design:' ); ?></label></td>
+					<td><label>Default player design:</label></td>
 					<td>
 						<select name="default_player_type" id="default_player_type">
 
@@ -74,7 +78,7 @@
 				</tr>
 
 				<tr valign="top" class="parmalink_row">
-					<td><label for="save_permalink"><?php echo esc_html( "Save permalink in entry metadata?" ); ?></label</td>
+					<td><label for="save_permalink">Save permalink in entry metadata?</label</td>
 					<td>
 						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo checked( KalturaHelpers::getOption( 'kaltura_save_permalink', false ) ); ?>/>
 						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
@@ -86,26 +90,26 @@
 				</tr>
 
 				<tr>
-					<td colspan="2"><a href="javascript:;" id="advanced-button"><?php echo esc_html( 'Advanced settings' ); ?></a>
+					<td colspan="2"><a href="javascript:;" id="advanced-button">Advanced settings</a>
 					</td>
 				</tr>
 				<tr valign="top" class="advanced user_identifier">
-					<td width="200"><?php echo esc_html( 'WordPress user identifier field to be used by Kaltura:' ); ?></td>
+					<td width="200">WordPress user identifier field to be used by Kaltura:</td>
 					<td>
 						<input type="radio" id="kaltura_user_identifier_user_login" name="kaltura_user_identifier" value="user_id" <?php echo checked( KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_id" ); ?> />
-						<label for="kaltura_user_identifier_user_login"><?php echo esc_html( "ID" ); ?></label>
+						<label for="kaltura_user_identifier_user_login">ID</label>
 						<br />
 
 						<div class="user_identifier_desc">
-							<?php echo esc_html( "This identifier was used in previous versions of Kaltura All in One WordPress plugin. Choose this option if you have upgraded from a previous version of Kaltura and want to keep the existing media content associated with the users that uploaded it." ); ?>
+							This identifier was used in previous versions of Kaltura All in One WordPress plugin. Choose this option if you have upgraded from a previous version of Kaltura and want to keep the existing media content associated with the users that uploaded it.
 						</div>
 
 						<input type="radio" id="kaltura_user_identifier_user_id" name="kaltura_user_identifier" value="user_login" <?php echo checked( KalturaHelpers::getOption( 'kaltura_user_identifier', 'user_login' ) == "user_login" ); ?> />
-						<label for="kaltura_user_identifier_user_id"><?php echo esc_html( 'user_login' ); ?></label>
+						<label for="kaltura_user_identifier_user_id">user_login</label>
 						<br />
 
 						<div class="user_identifier_desc">
-							<?php echo esc_html( "This identifier is a unique identifier across WordPress Multisite. Choose this option if this is a new installation of Kaltura All in one WordPress plugin." ); ?>
+							This identifier is a unique identifier across WordPress Multisite. Choose this option if this is a new installation of Kaltura All in one WordPress plugin.
 						</div>
 						<br />
 						<br />
@@ -113,7 +117,7 @@
 				</tr>
 
 				<tr valign="top" class="advanced">
-					<td><label><?php echo esc_html( 'UICONF for Kaltura Contribution Wizard:' ); ?></label></td>
+					<td><label>UICONF for Kaltura Contribution Wizard:</label></td>
 					<td>
 						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) ? esc_attr(KalturaHelpers::getOption( 'kaltura_default_kcw_type' )) : esc_attr(KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' )); ?>" />
 						<br />
@@ -125,7 +129,7 @@
 						<br />
 
 						<p class="submit" style="text-align: left; ">
-							<input type="submit" name="update" value="<?php echo esc_html( 'Update' ) ?>" /></p>
+							<input type="submit" name="update" value="Update" /></p>
 					</td>
 				</tr>
 			</table>
