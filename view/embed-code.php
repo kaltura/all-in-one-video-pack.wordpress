@@ -4,7 +4,6 @@ if (!is_array($this->attrs))
 	$this->attrs = array();
 // get the embed options from the attributes
 $embedOptions = KalturaHelpers::getEmbedOptions( $this->attrs );
-$isComment      = isset( $this->attrs['size'] ) && ( $this->attrs['size'] == 'comments' ) ? true : false;
 $wid            = $embedOptions['wid'] ? $embedOptions['wid'] : '_' . KalturaHelpers::getOption( 'kaltura_partner_id' );
 $entryId        = $embedOptions['entryId'];
 $width          = $embedOptions['width'];

@@ -9,7 +9,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'sendtoeditor',
 			'library',
 			'browse',
-			'searchvideos',
 			'getplayers',
 			'saveentryname',
 		);
@@ -126,39 +125,32 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function browseAction() {
 		wp_enqueue_style( 'media' );
 		wp_enqueue_script( 'kaltura-editable-name' );
-		$kmodel    = KalturaModel::getInstance();
-		$isLibrary = KalturaHelpers::getRequestParam( 'isLibrary', false );
+		$page         = absint( KalturaHelpers::getRequestParam( 'paged', 1 ) );
+		$isLibrary    = (bool) KalturaHelpers::getRequestParam( 'isLibrary', false );
+		$categoryIds  = array_map( 'absint', KalturaHelpers::getRequestParam( 'categoryvar', array() ) );
+		$searchString = sanitize_text_field( KalturaHelpers::getRequestParam( 'search' ) );
+
 		if ( $isLibrary ) {
 			$pageSize = 16;
 		} else {
 			$pageSize = 18;
 		}
-		$page                         = KalturaHelpers::getRequestParam( 'paged', '1' );
-		$result                       = $this->searchvideosAction( $pageSize, $page );
-		$totalCount                   = $result->totalCount;
+
+		$kmodel     = KalturaModel::getInstance();
+		$result     = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString );
+		$totalCount = $result->totalCount;
+
 		$params['page']               = $page;
 		$params['pageSize']           = $pageSize;
 		$params['totalCount']         = $totalCount;
 		$params['totalPages']         = ceil( $totalCount / $pageSize );
 		$params['result']             = $result;
-		$params['isLibrary']          = (bool) $isLibrary;
+		$params['isLibrary']          = $isLibrary;
 		$params['filters']            = $kmodel->listSelectedRootCategories();
-		$params['selectedCategories'] = KalturaHelpers::getRequestParam( 'categoryvar' );
-		$params['searchWord']         = KalturaHelpers::getRequestParam( 'search' );
+		$params['selectedCategories'] = $categoryIds;
+		$params['searchWord']         = $searchString;
 		$params['postId']             = KalturaHelpers::getRequestParam( 'post_id' );
 		$this->renderView( 'library/browse.php', $params );
-	}
-
-	public function searchvideosAction( $pageSize, $page ) {
-		$kmodel      = KalturaModel::getInstance();
-		$page        = $kmodel->_sanitizer->sanitizer( $page, 'string' );
-		$pageSize    = $kmodel->_sanitizer->sanitizer( $pageSize, 'int' );
-		$queryString = $kmodel->_sanitizer->sanitizer( KalturaHelpers::getRequestParam( 'search' ), 'string' );
-		$categories  = $kmodel->_sanitizer->sanitizer( KalturaHelpers::getRequestParam( 'categoryvar' ), 'arr' );
-
-		$result = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categories, $queryString );
-
-		return $result;
 	}
 
 	public function getplayersAction() {

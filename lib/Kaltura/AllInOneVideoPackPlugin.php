@@ -1,15 +1,6 @@
 <?php
 
 class Kaltura_AllInOneVideoPackPlugin {
-	/**
-	 * @var KalturaSanitizer
-	 */
-	public $_sanitizer = null;
-
-	public function __construct() {
-		$this->_sanitizer = new KalturaSanitizer();
-	}
-
 	public function init() {
 
         // show notice on admin pages except for kaltura_options
@@ -52,7 +43,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mceExternalPluginsFilter( $content ) {
-		$content            = $this->_sanitizer->sanitizer( $content, 'arr' );
 		$pluginUrl          = KalturaHelpers::getPluginUrl();
 		$content['kaltura'] = esc_url_raw($pluginUrl . '/tinymce/kaltura_tinymce.js?v' . KalturaHelpers::getPluginVersion());
 
@@ -101,7 +91,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 	public function mediaButtonsContextFilter( $content ) {
 		global $post_ID, $temp_ID;
-		$content = $this->_sanitizer->sanitizer( $content, 'string' );
 
 		$uploading_iframe_ID       = (int) ( 0 == $post_ID ? $temp_ID : $post_ID );
 		$media_upload_iframe_src   = admin_url("media-upload.php?post_id=$uploading_iframe_ID");
@@ -123,7 +112,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaUploadTabsFilter( $content ) {
-		$content = $this->_sanitizer->sanitizer( $content, 'arr' );
 
 		$content['kaltura_upload'] = esc_html__( 'Add Media' );
 		$content['kaltura_browse'] = esc_html__( 'Browse Existing Media' );
@@ -166,15 +154,11 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function shortcodeHandler( $attrs ) {
-		// prevent xss
-		foreach ( $attrs as $key => $value ) {
-			$attrs[$key] = esc_js( $value );
-		}
-
 		if ( ! isset( $attrs['entryid'] ) ) {
 			return '';
 		}
 
+		$attrs = KalturaSanitizer::shortCodeAttributes($attrs);
 		$viewRenderer = new Kaltura_ViewRenderer();
 		ob_start();
 		$viewRenderer->renderView( 'embed-code.php', array('attrs' => $attrs) );
@@ -197,7 +181,8 @@ class Kaltura_AllInOneVideoPackPlugin {
 			$kmodel = KalturaModel::getInstance();
 			$kmodel->updateEntryPermalink( $postId );
 		} catch ( Exception $ex ) {
-            trigger_error('An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(), E_USER_NOTICE);
+			trigger_error( 'An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(),
+				E_USER_NOTICE );
 		}
 	}
 

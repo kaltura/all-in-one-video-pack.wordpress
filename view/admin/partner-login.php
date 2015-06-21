@@ -47,7 +47,7 @@ else: ?>
 		</p>
 
 		<form name="form1" method="post" />
-		<?php wp_nonce_field( 'partnerLogin', '_kalturanonce' ); ?>
+		<?php wp_nonce_field( 'partnerlogin', '_kalturanonce' ); ?>
 
 		<table class="form-table">
 			<tr valign="top">

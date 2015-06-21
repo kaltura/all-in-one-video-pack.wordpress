@@ -3,7 +3,7 @@
 class Kaltura_AdminController extends Kaltura_BaseController {
 	public function allowedActions() {
 		return array(
-			'partnerLogin',
+			'partnerlogin',
 			'info',
 			'register'
 		);
@@ -20,7 +20,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$partnerLogin      = KalturaHelpers::getRequestParam( 'partner_login' );
 		$forceRegistration = KalturaHelpers::getRequestParam( 'force_registration' );
 		if ( $partnerLogin == 'true' ) {
-			$this->partnerLoginAction();
+			$this->partnerloginAction();
 		} else {
 			if ( ! $kalturaPartnerId || $forceRegistration ) {
 				$this->registerAction();
@@ -30,12 +30,12 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		}
 	}
 
-	public function partnerLoginAction() {
+	public function partnerloginAction() {
 		$params            = array();
 		$params['success'] = false;
 		$params['error']   = false;
 		if ( count( $_POST ) ) {
-			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'partnerLogin' )) {
+			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'partnerlogin' )) {
 				print 'Sorry, your nonce did not verify.';
 				exit;
 			}

@@ -11,27 +11,25 @@ class KalturaHelpers {
 	}
 
 	public static function getServerUrl() {
-		$sanitizer = new KalturaSanitizer();
-		$url       = (string)$sanitizer->sanitizer( KalturaHelpers::getOption( 'server_url' ), 'url' );
+		$url =  KalturaHelpers::getOption( 'server_url' );
 
-		return rtrim( $url, '/' );
+		return esc_url_raw( rtrim( $url, '/' ) );
 	}
 
-	public static function getCdnUrl()
-	{
-		$sanitizer = new KalturaSanitizer();
-		$url = (string) $sanitizer->sanitizer(KalturaHelpers::getOption('cdn_url'), 'url');
-		return rtrim($url, '/');
+	public static function getCdnUrl() {
+		$url = KalturaHelpers::getOption( 'cdn_url' );
+
+		return esc_url_raw ( rtrim( $url, '/' ) );
 	}
 
 	public static function getLoggedUserId() {
 		global $user_ID, $user_login;
 		if ( ! $user_ID && ! $user_login ) {
-			return KalturaHelpers::getOption( 'anonymous_user_id' );
+			return sanitize_user( KalturaHelpers::getOption( 'anonymous_user_id' ) );
 		} elseif ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
-			return $user_ID;
+			return sanitize_user( $user_ID );
 		} else {
-			return $user_login;
+			return sanitize_user( $user_login );
 		}
 	}
 
@@ -54,10 +52,9 @@ class KalturaHelpers {
 	}
 
 	public static function generateTabUrl( $params ) {
-		$sanitizer = new KalturaSanitizer();
-		$params    = $sanitizer->sanitizer( $params, 'generateTabUrl' );
+		$params = KalturaSanitizer::browseParams( $params );
 
-		$query = remove_query_arg(array_keys($_GET), self::getRequestUrl() );
+		$query = remove_query_arg( array_keys( $_GET ), self::getRequestUrl() );
 
 		$query = add_query_arg( $params, $query );
 
@@ -99,14 +96,11 @@ class KalturaHelpers {
 	}
 
 	public static function getContributionWizardFlashVars( $ks ) {
-		$kmodel = KalturaModel::getInstance();
-		$ks     = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
-
 		$flashVars                  = array();
-		$flashVars['userId']        = sanitize_user(KalturaHelpers::getLoggedUserId());
+		$flashVars['userId']        = sanitize_user( KalturaHelpers::getLoggedUserId() );
 		$flashVars['sessionId']     = sanitize_text_field( $ks );
-		$flashVars['partnerId']     = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
-		$flashVars['subPartnerId']  = (int)KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
+		$flashVars['partnerId']     = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$flashVars['subPartnerId']  = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) ) * 100;
 		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
 		$flashVars['close']         = 'kaltura_onContributionWizardClose';
 		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
@@ -115,28 +109,24 @@ class KalturaHelpers {
 	}
 
 	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null ) {
-		$kmodel  = KalturaModel::getInstance();
-		$ks      = (string)$kmodel->_sanitizer->sanitizer( $ks, 'string' );
-		$entryId = (string)$kmodel->_sanitizer->sanitizer( $entryId, 'string' );
-
+		$ks                     = sanitize_text_field( $ks );
+		$entryId                = sanitize_key( $entryId );
 		$flashVars              = array();
-		$flashVars['partnerId'] = (int)KalturaHelpers::getOption( 'kaltura_partner_id' );
-		$flashVars['subpId']    = (int)KalturaHelpers::getOption( 'kaltura_partner_id' ) * 100;
-		$flashVars['uid']       = sanitize_user(KalturaHelpers::getLoggedUserId());
+		$flashVars['partnerId'] = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$flashVars['subpId']    = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) ) * 100;
+		$flashVars['uid']       = sanitize_user( KalturaHelpers::getLoggedUserId() );
 
-		if ( is_string( $ks ) ) {
-			$flashVars['ks'] = sanitize_text_field( $ks );
+		if ( $ks ) {
+			$flashVars['ks'] = $ks;
 		}
-		if ( is_string( $entryId ) ) {
-			$flashVars['entryId'] = sanitize_text_field( $entryId );
+		if ( $entryId ) {
+			$flashVars['entryId'] = $entryId;
 		}
 
 		return $flashVars;
 	}
 
 	public static function flashVarsToString( $flashVars = array() ) {
-		$kmodel    = KalturaModel::getInstance();
-		$flashVars = $kmodel->_sanitizer->sanitizer( $flashVars, 'flashVarsToString' );
 		$flashVarsStr = http_build_query($flashVars);
 		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
 	}
@@ -150,19 +140,19 @@ class KalturaHelpers {
 	}
 
 	public static function getContributionWizardUrl( $uiConfId ) {
-		return KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . (int)$uiConfId;
+		return esc_url_raw ( KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
 	}
 
 	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
 		$kmodel   = KalturaModel::getInstance();
-		$width    = (int)$kmodel->_sanitizer->sanitizer( $width, 'intOrString' );
-		$uiConfId = (int)$kmodel->_sanitizer->sanitizer( $uiConfId, 'intOrString' );
+		$width    = intval($width);
+		$uiConfId = intval($uiConfId);
 
 		$player = $kmodel->getPlayerUiConf( $uiConfId );
 		if ( empty( $width ) ) {
 			$width = 400;
 		}
-		$playerRatio = $kmodel->_sanitizer->sanitizer( $playerRatio, 'playerRatio' );
+
 		if ( empty( $playerRatio ) ) {
 			$playerRatio = '4:3';
 		}
@@ -218,39 +208,10 @@ class KalturaHelpers {
 
 	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array( 'size', 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style' );
+		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style' );
 		foreach ( $arrayKeys as $key ) {
 			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
-			}
-		}
-
-		if ( $params['size'] == 'comments' ) { // comments player
-			$type               = KalturaHelpers::getOption( 'kaltura_comments_player_type' );
-			$params['uiconfid'] = $type;
-			$params['width']    = 250;
-			$params['height']   = 244;
-		} else {
-			// backward compatibility
-			switch ( $params['size'] ) {
-				case 'large':
-					$params['width']  = 410;
-					$params['height'] = 364;
-					break;
-				case 'small':
-					$params['width']  = 250;
-					$params['height'] = 244;
-					break;
-			}
-
-			// if width is missing set some default
-			if ( ! $params['width'] ) {
-				$params['width'] = 400;
-			}
-
-			// if height is missing, recalculate it
-			if ( ! $params['height'] ) {
-				$params['height'] = KalturaHelpers::calculatePlayerHeight( $params['uiconfid'], $params['width'] );
 			}
 		}
 

@@ -30,6 +30,6 @@ abstract class Kaltura_BaseController {
 	}
 
 	protected function getKAction() {
-		return KalturaHelpers::getRequestParam( 'kaction' );
+		return KalturaSanitizer::kaction( KalturaHelpers::getRequestParam( 'kaction' ) );
 	}
 }
