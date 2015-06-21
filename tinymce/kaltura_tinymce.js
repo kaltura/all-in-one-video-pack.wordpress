@@ -137,7 +137,7 @@
 				return;
 
 			var contentData = obj.content;
-			var $content = jQuery(obj.content);
+			var $content = jQuery('<div />').append(contentData);
 			var tagStart = this._tagStart;
 			var tagEnd = this._tagEnd;
 			$content.find('img.kaltura_item').each(function (i, item) {
@@ -190,11 +190,11 @@
 				jQuery.each(widgetAttribs, function(propName, propValue) {
 					widgetStr += (' ' + propName + '="' + propValue + '"');
 				});
-				widgetStr += tagEnd;
+				widgetStr += (' ' + tagEnd);
 				$item.replaceWith(widgetStr)
 			});
 
-			obj.content = $content.get(0).outerHTML;
+			obj.content = $content.html();
 		},
 
 		_parseAttributes: function (attribute_string) {
