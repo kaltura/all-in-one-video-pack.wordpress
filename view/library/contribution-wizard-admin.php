@@ -1,5 +1,6 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php
+media_upload_header();
 $this->renderView( 'contribution-wizard.php' );
 ?>
 

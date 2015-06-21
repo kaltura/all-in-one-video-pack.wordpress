@@ -112,6 +112,9 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaUploadTabsFilter( $content ) {
+		// hide other tabs when user clicks on our tab
+		if (in_array(KalturaHelpers::getRequestParam('tab'), array('kaltura_upload', 'kaltura_browse')))
+			$content = array();
 
 		$content['kaltura_upload'] = esc_html__( 'Add Media' );
 		$content['kaltura_browse'] = esc_html__( 'Browse Existing Media' );
@@ -126,8 +129,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaUploadAction() {
-		$this->setKalturaOnlyMediaTabs();
-
 		if ( ! isset( $_GET['kaction'] ) ) {
 			$_GET['kaction'] = 'upload';
 		}
@@ -138,8 +139,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaBrowseAction() {
-		$this->setKalturaOnlyMediaTabs();
-
 		if ( ! isset( $_GET['kaction'] ) ) {
 			$_GET['kaction'] = 'browse';
 		}
@@ -184,11 +183,5 @@ class Kaltura_AllInOneVideoPackPlugin {
 			trigger_error( 'An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(),
 				E_USER_NOTICE );
 		}
-	}
-
-	private function setKalturaOnlyMediaTabs() {
-		unset( $GLOBALS['wp_filter']['media_upload_tabs'] ); // remove all registerd filters for the tabs
-		add_filter( 'media_upload_tabs', array($this, 'mediaUploadTabsFilterOnlyKaltura' ) ); // register our filter for the tabs
-		media_upload_header(); // will add the tabs menu
 	}
 }
