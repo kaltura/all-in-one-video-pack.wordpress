@@ -154,7 +154,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$_POST['last_name']  = $profileuser->last_name;
 			$_POST['email']      = $profileuser->user_email;
 			$_POST['company']    = get_bloginfo( 'name' );
-			$_POST['website']    = get_option( 'home' );
+			$_POST['website']    = home_url();
 
 			$config               = KalturaHelpers::getKalturaConfiguration();
 			$config->partnerId    = 0; // no need to pass partner id for ping

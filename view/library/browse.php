@@ -179,8 +179,8 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 		array(
 			'base'    => add_query_arg( 'paged', '%#%' ),
 			'format'  => '',
-			'total'   => $this->totalPages,
-			'current' => $this->page
+			'total'   => intval( $this->totalPages ),
+			'current' => intval( $this->page )
 		)
 	);
 

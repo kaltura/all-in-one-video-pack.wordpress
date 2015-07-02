@@ -164,7 +164,7 @@ else: ?>
 				<tr valign="top">
 					<th scope="row"><label for="description">How do you plan to use Kaltura's video platform?</label></th>
 					<td>
-						<textarea id="description" name="description"><?php echo esc_textarea ( sanitize_text_field( ( KalturaHelpers::getRequestPostParam( 'description' ) ) ) ); ?></textarea>
+						<textarea id="description" name="description"><?php echo esc_textarea ( ( KalturaHelpers::getRequestPostParam( 'description' ) ) ); ?></textarea>
 					</td>
 				</tr>
 				<tr class="agree_to_terms">

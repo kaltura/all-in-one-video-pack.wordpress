@@ -56,9 +56,9 @@
 					<td><label for="root_category">Root Category:</label></td>
 					<td>
 						<select name="root_category" id="root_category" size="1">
-							<option id="root_category_default" value="0" <?php echo KalturaHelpers::getOption( 'kaltura_root_category' ) ? "selected=\"selected\"" : ""; ?>>Root (default)</option>
+							<option id="root_category_default" value="0" <?php echo selected( KalturaHelpers::getOption( 'kaltura_root_category' ), 0 ); ?>>Root (default)</option>
 							<?php foreach ( $this->categories->objects as $category ): ?>
-								<option id="root_category<?php echo esc_attr( $category->id ); ?>" value="<?php echo esc_attr( $category->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_root_category' ) == esc_attr( $category->id ) ? "selected=\"selected\"" : ""; ?>><?php echo esc_html( $category->fullName ); ?></option>
+								<option id="root_category<?php echo esc_attr( $category->id ); ?>" value="<?php echo esc_attr( $category->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_root_category' ), esc_attr( $category->id ) ); ?>><?php echo esc_html( $category->fullName ); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
@@ -70,7 +70,7 @@
 						<select name="default_player_type" id="default_player_type">
 
 							<?php foreach ( $this->players->objects as $player ): ?>
-								<option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo KalturaHelpers::getOption( 'kaltura_default_player_type' ) == $player->id ? "selected=\"selected\"" : ""; ?>/><?php echo esc_html( $player->name ); ?>
+								<option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_default_player_type' ), $player->id ); ?>><?php echo esc_html( $player->name ); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<br />
@@ -117,9 +117,9 @@
 				</tr>
 
 				<tr valign="top" class="advanced">
-					<td><label>UICONF for Kaltura Contribution Wizard:</label></td>
+					<td><label for="default_kcw_type">UICONF for Kaltura Contribution Wizard:</label></td>
 					<td>
-						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) ? esc_attr(KalturaHelpers::getOption( 'kaltura_default_kcw_type' )) : esc_attr(KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' )); ?>" />
+						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr( KalturaHelpers::getOption( 'kaltura_default_kcw_type', KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' ) ) ); ?>" />
 						<br />
 					</td>
 				</tr>
