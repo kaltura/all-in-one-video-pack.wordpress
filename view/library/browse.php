@@ -2,7 +2,9 @@
 <?php $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' ); ?>
 <?php $rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
 $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
-<?php media_upload_header(); ?>
+<?php if (!$this->isLibrary): ?>
+	<?php media_upload_header(); ?>
+<?php endif; ?>
 <div class="<?php echo ( is_bool( $this->isLibrary ) ) ? 'wrap kaltura-wrap ' . esc_attr( $kaction ) : 'kaltura-tab' ?>">
 	<?php if ( $this->isLibrary ): ?>
 		<h2>All in One Video</h2>
