@@ -159,10 +159,10 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 					<div class="thumb">
                         <?php $entryUrl = $mediaEntry->thumbnailUrl . "/width/120/height/90/type/2/bgcolor/000"?>
 						<?php if ( $this->isLibrary ): ?>
-							<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" width="120" height="90" />
+							<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php echo esc_attr( $mediaEntry->name ); ?>" width="120" height="90" />
 						<?php else: ?>
 							<a href="<?php echo esc_url( $sendToEditorUrl ); ?>">
-								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
+								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php echo esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
 							</a>
 						<?php endif; ?>
 					</div>
