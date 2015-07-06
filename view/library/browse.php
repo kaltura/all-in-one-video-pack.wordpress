@@ -33,7 +33,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 			</ul>
 
 			<?php
-			$page_links = paginate_links(
+			$pageLinks = paginate_links(
 				array(
 					'base'    => add_query_arg( 'paged', '%#%' ),
 					'format'  => '',
@@ -41,10 +41,19 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 					'current' => intval( $this->page )
 				)
 			);
-			if ( $page_links ) {
-				echo "<div class=\"kaltura-pager\">$page_links</div>";
-			}
+			$pageLinksAllowedHtml = array(
+				'a' => array(
+					'href' => array(),
+					'class' => array(),
+				),
+				'span' => array(
+					'class' => array()
+				),
+			);
 			?>
+			<?php if ( $pageLinks ): ?>
+				<div class="kaltura-pager"><?php echo wp_kses($pageLinks, $pageLinksAllowedHtml); ?></div>
+			<?php endif; ?>
 
 			<div class="entry-search-filter">
 				<input name="search" value="<?php echo esc_attr( $this->searchWord ) ?>" />
@@ -174,20 +183,9 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 
 	<ul class="filter-categories-header">
 	</ul>
-	<?php
-	$page_links = paginate_links(
-		array(
-			'base'    => add_query_arg( 'paged', '%#%' ),
-			'format'  => '',
-			'total'   => intval( $this->totalPages ),
-			'current' => intval( $this->page )
-		)
-	);
-
-	if ( $page_links ) {
-		echo "<div class=\"kaltura-pager\">$page_links</div>";
-	}
-	?>
+	<?php if ( $pageLinks ): ?>
+		<div class="kaltura-pager"><?php echo wp_kses($pageLinks, $pageLinksAllowedHtml); ?></div>
+	<?php endif; ?>
 </div>
 
 <script type="text/javascript">
