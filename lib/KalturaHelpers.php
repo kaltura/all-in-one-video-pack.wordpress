@@ -61,7 +61,7 @@ class KalturaHelpers {
 
 	public static function getRequestParam( $param, $default = null ) {
 		if ( isset( $_GET[ $param ] ) ) {
-			return $_GET[ $param ];
+			return wp_check_invalid_utf8( $_GET[ $param ] );
 		} else {
 			return $default;
 		}
