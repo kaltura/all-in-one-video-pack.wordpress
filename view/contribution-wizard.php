@@ -6,13 +6,9 @@ if ( is_array( $this->flashVars ) ) {
 }
 ?>
 
-<object id="kcw" type="application/x-shockwave-flash" data="<?php echo esc_url( $this->swfUrl ); ?>" width="100%" height="360">
-	<param name="allowScriptAccess" value="always" />
-	<param name="allowNetworking" value="all" />
-	<param name="wmode" value="transparent" />
-	<param name="flashvars" value="<?php echo esc_attr( $flashVarsStr ); ?>" />
-	<param name="movie" value="<?php echo esc_url( $this->swfUrl ); ?>" />
-</object>
+<div class="kaltura-tab">
+	Add Media is currently not available. To upload video to the KMC, please use existing procedures. To add an existing video to your story click on the "Browse Existing Media Tab".
+</div>
 
 <script type="text/javascript">
 	var topWindow = Kaltura.getTopWindow();
