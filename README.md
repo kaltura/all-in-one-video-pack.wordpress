@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-AGPLv3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0.html)
 
-=== Kaltura All-in-One Video Plugin for WordPress ===
+## Kaltura All-in-One Video Plugin for WordPress
 Contributors: Kaltura
 Donate link: http://www.kaltura.org/
 Tags: admin, advertising, all in one,  audio, camera,  collaboration, comments, , Encoding, Facebook, flickr, gallery, images, interactive, kaltura, media, media library, participate, photo, picture, player, playlist, plugin,podcast, Post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video comments, video gallery, video responses, video-ads, vlog, webcam, widget, mobile
@@ -10,7 +10,7 @@ Stable tag: 2.4.4
 
 Easily add full video capabilities to your blog.
 
-== Description ==
+### Description
 
 This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including the ability to upload/ record/import videos and publish them directly to your post, enable video comments, centrally manage and track your video content. 
 You will instantly enhance user engagement on your WordPress site by enriching it with video. Leverage the full power of our Online Video Platform: superb playback, audience engagement, monetization, video management, social sharing, mobile and tablet delivery and more. Kaltura will handle all the heavy lifting in the back-end, including transcoding, storing, and streaming of your video content.
