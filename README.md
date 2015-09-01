@@ -3,10 +3,10 @@
 ## Kaltura All-in-One Video Plugin for WordPress
 Contributors: Kaltura
 Donate link: http://www.kaltura.org/
-Tags: admin, advertising, all in one,  audio, camera,  collaboration, comments, , Encoding, Facebook, flickr, gallery, images, interactive, kaltura, media, media library, participate, photo, picture, player, playlist, plugin,podcast, Post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video comments, video gallery, video responses, video-ads, vlog, webcam, widget, mobile
-Requires at least: 2.5.2
-Tested up to: 3.5.2
-Stable tag: 2.4.4
+* Tags: admin, advertising, all in one,  audio, camera,  collaboration, comments, , Encoding, Facebook, flickr, gallery, images, interactive, kaltura, media, media library, participate, photo, picture, player, playlist, plugin,podcast, Post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video comments, video gallery, video responses, video-ads, vlog, webcam, widget, mobile
+* Requires at least: 2.5.2
+* Tested up to: 3.5.2
+* Stable tag: 2.4.4
 
 Easily add full video capabilities to your blog.
 
@@ -48,7 +48,7 @@ See release notes [here](http://knowledge.kaltura.com/node/905).
 
 Get support at our [forum](https://forum.kaltura.org).
 
-== Installation ==
+## Installation 
 
 If you are installing this plugin for the first time:
 
@@ -63,16 +63,16 @@ If you are upgrading your current version of the plugin, or if you're upgrading 
 2. Download the latest version
 3. Follow the installation steps above
 
-Installing the Recent Videos Sidebar Widget
+## Installing the Recent Videos Sidebar Widget
 
 1. Activate the All in One Video Pack Sidebar Widget through the 'Plugins' menu in the WordPress admin application
 2. Go to Design > Widgets in the WordPress admin application, then click Add to add the Recent Videos Widget to your sidebar 
 
 Note that videos from earlier versions of the plugin will not show up on the sidebar unless they are reposted, or you can edit them with the Kaltura video editor, resave them, and they will appear in the sidebar.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions 
 
-= I installed the plugin, but installation failed after pressing Complete Installation, showing me a text in a red rectangle? =
+* I installed the plugin, but installation failed after pressing Complete Installation, showing me a text in a red rectangle? =
 
 Cause: Either the Curl PHP extension or some curl functions are disabled on your server or your hosting blocks API calls to the Kaltura servers.
 
@@ -80,7 +80,7 @@ Solution 1: Enable curl and its functions on the server (or have the hosting com
 
 Solution 2: Remove any blocking of external calls from the server.
 
-= I can't activate the plugin, it presents an error message after clicking Activate on the plugin list =
+* I can't activate the plugin, it presents an error message after clicking Activate on the plugin list =
 It might be caused due to an old version of PHP.
 
 The Kaltura wp plugin is written for PHP4 and PHP5 with the use of classes and static members, these are not supported on earlier versions of PHP.
@@ -88,7 +88,7 @@ The Kaltura wp plugin is written for PHP4 and PHP5 with the use of classes and s
 Upgrade to PHP 5.3 or later. If upgrading doesn't solve the issue, post the error information on the [forum] (http://forum.kaltura.org) and we'll help you.
 
 
-== Screenshots ==
+## Screenshots
 
 1. Blog main page with video posts
 2. Add a video comment
@@ -99,7 +99,7 @@ Upgrade to PHP 5.3 or later. If upgrading doesn't solve the issue, post the erro
 7. The plugin settings page
 8. Video Editor
 
-== Join the Kaltura Community and Contribute to Open Source Video! ==
+## Join the Kaltura Community and Contribute to Open Source Video!
 
 Creative potential, innovation, and competition all correlate directly with the balance of freedoms and constraints we face in sharing, manipulating, finding, and watching video. For instance, to create remixes or mash-ups, video artists need access to the original materials in order to reformulate their new work. In an ideal world, everyday users will be able to easily copy and paste portions of video, as they already can with text. Of course the benefits of a more open system will go far beyond remixing, cutting, and pasting - when open video standards and formats are widely embraced, it will be possible to index, search, and access the medium much as we do text. This will be the real revolution for video. 
 
