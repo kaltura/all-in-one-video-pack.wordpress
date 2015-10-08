@@ -25,7 +25,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		// media upload actions
 		add_action( 'media_upload_kaltura_upload', array($this, 'mediaUploadAction' ) );
 		add_action( 'media_upload_kaltura_browse', array($this, 'mediaBrowseAction' ) );
-		add_action( 'admin_print_scripts-media-upload-popup', array($this, 'mediaUploadPrintScriptsAction' ) );
 
 		add_action( 'save_post', array($this, 'savePost' ) );
 		add_action( 'wp_ajax_kaltura_ajax', array($this, 'executeLibraryController' ) );
@@ -146,10 +145,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		$controller = new Kaltura_LibraryController();
 
 		wp_iframe( array( $controller, 'execute' ) );
-	}
-
-	public function mediaUploadPrintScriptsAction() {
-		wp_enqueue_script( 'kaltura_upload_popup', KalturaHelpers::jsUrl( 'js/upload-popup.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 	}
 
 	public function shortcodeHandler( $attrs ) {
