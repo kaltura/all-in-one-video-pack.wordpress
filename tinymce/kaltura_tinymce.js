@@ -54,7 +54,7 @@
 
 		_tagStart: '[kaltura-widget',
 
-		_tagEnd: '/]',
+		_tagEnd: ['/]', ']'],
 
 		_onBeforeSetContent: function (ed, obj) {
 			if (!obj.content)
@@ -64,7 +64,19 @@
 			var startPos = 0;
 
 			while ((startPos = contentData.indexOf(this._tagStart, startPos)) != -1) {
-				var endPos = contentData.indexOf(this._tagEnd, startPos);
+				var endPos = null;
+				var endTagLength = 0;
+				for(var i = 0; i < this._tagEnd.length; i++) {
+					endPos = contentData.indexOf(this._tagEnd[i], startPos);
+					if (endPos != -1) {
+						endTagLength = this._tagEnd[i].length;
+						break;
+					}
+				}
+				if (endPos == -1) {
+					startPos++;
+					continue;
+				}
 				var attribs = this._parseAttributes(contentData.substring(startPos + this._tagStart.length, endPos));
 
 				// set defaults if not found
@@ -100,7 +112,7 @@
 				if (attribs['width'] == '250' && attribs['height'] == '244')
 					attribs['size'] = 'small';
 
-				endPos += this._tagEnd.length;
+				endPos += endTagLength;
 				var contentDataEnd = contentData.substr(endPos);
 				contentData = contentData.substr(0, startPos);
 
@@ -139,7 +151,7 @@
 			var contentData = obj.content;
 			var $content = jQuery('<div />').append(contentData);
 			var tagStart = this._tagStart;
-			var tagEnd = this._tagEnd;
+			var tagEnd = this._tagEnd[0];
 			$content.find('img.kaltura_item').each(function (i, item) {
 				var $item = jQuery(item);
 				var widgetAttribs = {};
