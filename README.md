@@ -63,6 +63,19 @@ If you are upgrading your current version of the plugin, or if you're upgrading 
 2. Download the latest version
 3. Follow the installation steps above
 
+If you are installing this plugin and like to connect it with your self-hosted Kaltura CE:
+
+1. Download and extract the plugin archive file or install it from the back-end of your site, the same way you are used to do for every other WP plugin
+2. Activate the plugin
+3. Before proceeding, edit the file settings.ini located in /wp-content/plugins/all-in-one-video-pack and set:<br>
+    server_url = "http://example.com"<br>
+    cdn_url = "http://example.com"<br>
+ where "example.com" is your URL, leaving untouched the other parameters 
+4. Once edited the file, get back to the WP dashboard and – to complete the installation – click on you "must get a partner ID" (you will see the link in the upper part of the screen)
+5. Then click on "Click here if you have a Partner ID"
+6. Fill in the form with your partner-id, email and password as in your Kaltura Management Console (KMC)
+7. Click on "Complete installation"
+
 ## Installing the Recent Videos Sidebar Widget
 
 1. Activate the All in One Video Pack Sidebar Widget through the 'Plugins' menu in the WordPress admin application
