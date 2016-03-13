@@ -11,4 +11,5 @@ return array(
 	'categoriesRootId'             => 0,
 	'thumbnail_player_ui_conf_id'  => 14969192,
 	'kaltura_default_player_type'  => 11958362, // default player if player was not chosen in plugin admin screen
+	'kaltura_show_media_from'	   => 'all_account', // when browsing media - should the media be from the whole account or just the logged in user's?
 );

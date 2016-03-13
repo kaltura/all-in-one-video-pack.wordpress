@@ -77,6 +77,17 @@
 					</td>
 				</tr>
 
+				<tr valign="top">
+					<td><label>Allow users to select existing media:</label></td>
+					<td>
+						<input type="radio" name="show_media_from" value="all_account" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'all_account' ); ?>/>
+						<label for="all_account">All media in publisher account</label>
+						<br />
+						<input type="radio" name="show_media_from" value="logged_in_user" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'logged_in_user' ); ?> />
+						<label for="logged_in_user">Only the user’s own media</label>
+					</td>
+				</tr>
+
 				<tr valign="top" class="parmalink_row">
 					<td><label for="save_permalink">Save permalink in entry metadata?</label</td>
 					<td>
