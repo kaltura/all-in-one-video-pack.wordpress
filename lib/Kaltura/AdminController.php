@@ -184,18 +184,13 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$defaultPlayerType      = KalturaHelpers::getRequestPostParam( 'default_player_type' );
 			$defaultKCWType         = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
 			$defaultKCWType         = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
-
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
-			$permalinkMetadataProfileId = KalturaHelpers::getRequestPostParam( 'permalink_metadata_profile_id' );
-			$savePermalink              = KalturaHelpers::getRequestPostParam( 'save_permalink' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
-			update_option( 'kaltura_permalink_metadata_profile_id', sanitize_text_field((string)$permalinkMetadataProfileId) );
-			update_option( 'kaltura_save_permalink', sanitize_text_field((bool)$savePermalink) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
 			$params['showMessage'] = true;
 		} else {
@@ -210,13 +205,11 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$kmodel                   = KalturaModel::getInstance();
 		$players                  = $kmodel->listPlayersUiConfs();
 		$kcws                     = $kmodel->listKCWUiConfs();
-		$metadataProfilesResponse = $kmodel->getMetadataProfilesTypeEntry();
 		$categories               = $kmodel->generateRootTree();
 
 		$params['players']                  = $players;
 		$params['kcws']                     = $kcws;
 		$params['categories']               = $categories;
-		$params['metadataProfilesResponse'] = $metadataProfilesResponse;
 		$this->renderView( 'admin/info.php', $params );
 	}
 }

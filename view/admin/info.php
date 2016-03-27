@@ -77,18 +77,6 @@
 					</td>
 				</tr>
 
-				<tr valign="top" class="parmalink_row">
-					<td><label for="save_permalink">Save permalink in entry metadata?</label</td>
-					<td>
-						<input type="checkbox" name="save_permalink" id="save_permalink" <?php echo checked( KalturaHelpers::getOption( 'kaltura_save_permalink', false ) ); ?>/>
-						<select id="permalink_metadata_profile_id" name="permalink_metadata_profile_id">
-							<?php foreach ( $this->metadataProfilesResponse->objects as $metadataProfile ): ?>
-								<option value="<?php echo esc_attr( $metadataProfile->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_permalink_metadata_profile_id' ) == esc_attr( $metadataProfile->id ) ); ?>><?php echo esc_html( $metadataProfile->name ); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</td>
-				</tr>
-
 				<tr>
 					<td colspan="2"><a href="javascript:;" id="advanced-button">Advanced settings</a>
 					</td>
@@ -140,21 +128,6 @@
 		</form>
 
 		<script type="text/javascript">
-
-			var savePermalink = jQuery("#save_permalink").is(':checked');
-			if (!savePermalink) {
-				jQuery("#permalink_metadata_profile_id").css('visibility', 'hidden');
-			}
-
-			jQuery("#save_permalink").change(function () {
-				var savePermalink = jQuery(this).is(':checked');
-				if (!savePermalink)
-					jQuery("#permalink_metadata_profile_id").css('visibility', 'hidden');
-				else
-					jQuery("#permalink_metadata_profile_id").css('visibility', '');
-			});
-
-
 			jQuery('#advanced-button').click(function () {
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();

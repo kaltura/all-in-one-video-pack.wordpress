@@ -26,7 +26,6 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_action( 'media_upload_kaltura_upload', array($this, 'mediaUploadAction' ) );
 		add_action( 'media_upload_kaltura_browse', array($this, 'mediaBrowseAction' ) );
 
-		add_action( 'save_post', array($this, 'savePost' ) );
 		add_action( 'wp_ajax_kaltura_ajax', array($this, 'executeLibraryController' ) );
 
 		add_shortcode( 'kaltura-widget', array($this, 'shortcodeHandler' ) );
@@ -161,22 +160,4 @@ class Kaltura_AllInOneVideoPackPlugin {
 		return $embedCode;
 	}
 
-	public function savePost( $postId ) {
-		if ( ! KalturaHelpers::getOption( 'kaltura_save_permalink' ) ) {
-			return;
-		}
-
-		// ignore revisions
-		if ( wp_is_post_revision( $postId ) ) {
-			return;
-		}
-
-		try {
-			$kmodel = KalturaModel::getInstance();
-			$kmodel->updateEntryPermalink( $postId );
-		} catch ( Exception $ex ) {
-			trigger_error( 'An error occurred while updating entry\'s permalink - ' . $ex->getMessage() . ' - ' . $ex->getTraceAsString(),
-				E_USER_NOTICE );
-		}
-	}
 }
