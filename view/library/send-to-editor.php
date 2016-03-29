@@ -96,23 +96,6 @@
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
-					<td valign="top" width="240">
-						<div class="kaltura-loader"></div>
-						<div id="divKalturaPlayer"></div>
-						<script type="text/javascript">
-							function kaltura_updateRatio() {
-								var ratio = jQuery("input[name=playerRatio]:checked").val();
-								if (ratio == "16:9") {
-									jQuery("#playerWidthLarge").next().text("Large (400x290)");
-									jQuery("#playerWidthMedium").next().text("Small (260x211)");
-								}
-								else {
-									jQuery("#playerWidthLarge").next().text("Large (400x365)");
-									jQuery("#playerWidthMedium").next().text("Small (260x260)");
-								}
-							}
-						</script>
-					</td>
 					<td valign="top">
 						<table class="options">
 							<tr>
@@ -162,6 +145,23 @@
 							</tr>
 						</table>
 					</td>
+                    <td valign="top" width="240">
+                        <div class="kaltura-loader"></div>
+                        <div id="divKalturaPlayer"></div>
+                        <script type="text/javascript">
+                            function kaltura_updateRatio() {
+                                var ratio = jQuery("input[name=playerRatio]:checked").val();
+                                if (ratio == "16:9") {
+                                    jQuery("#playerWidthLarge").next().text("Large (400x290)");
+                                    jQuery("#playerWidthMedium").next().text("Small (260x211)");
+                                }
+                                else {
+                                    jQuery("#playerWidthLarge").next().text("Large (400x365)");
+                                    jQuery("#playerWidthMedium").next().text("Small (260x260)");
+                                }
+                            }
+                        </script>
+                    </td>
 				</tr>
 			</table>
 			<p class="submit">
