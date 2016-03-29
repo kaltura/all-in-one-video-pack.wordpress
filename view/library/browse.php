@@ -86,7 +86,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 
 				$widthStyle  = $depth * 20;
 				$hasChildren = false;
-				if ( strpos( $categories[$key + 1]->fullName, $category->fullName ) !== false ) {
+				if ( isset($categories[$key + 1]) && strpos( $categories[$key + 1]->fullName, $category->fullName ) !== false ) {
 					$hasChildren = true;
 				} else // Add the caret size to the total width.
 				{
