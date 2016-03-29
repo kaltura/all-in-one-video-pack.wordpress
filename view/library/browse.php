@@ -58,8 +58,8 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 			<?php endif; ?>
 
 			<div class="entry-search-filter">
-				<input name="search" value="<?php echo esc_attr( $this->searchWord ) ?>" />
-				<input type="submit" value="Search Entries"></button>
+				<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
+				<input type="submit" value="Go"></button>
 			</div>
 
 			<?php if ( ! count( $this->result->objects ) ): ?>
