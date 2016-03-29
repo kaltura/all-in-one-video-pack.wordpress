@@ -191,7 +191,8 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 </div>
 
 <script type="text/javascript">
-	jQuery(function () {
+	window.top.Kaltura.restoreModalBoxWp26();
+    jQuery(function () {
 		jQuery('li div.showName').kalturaEditableName({
 			namePostParam: 'entryName',
 			idPostParam  : 'entryId',

@@ -210,7 +210,6 @@
 
 			function kaltura_fixHeight() {
 				var topWindow = Kaltura.getTopWindow();
-				topWindow.Kaltura.animateModalSize(790, jQuery("#send-to-editor").height() + 70);
 			}
 
 			kaltura_fixHeight();
