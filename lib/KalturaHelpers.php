@@ -126,12 +126,10 @@ class KalturaHelpers {
 		return esc_url_raw ( KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
 	}
 
-	public static function calculatePlayerHeight( $uiConfId, $width, $playerRatio = '4:3' ) {
+	public static function calculatePlayerHeight( $player, $width, $playerRatio = '4:3' ) {
 		$kmodel   = KalturaModel::getInstance();
 		$width    = intval($width);
-		$uiConfId = intval($uiConfId);
 
-		$player = $kmodel->getPlayerUiConf( $uiConfId );
 		if ( empty( $width ) ) {
 			$width = 400;
 		}
@@ -140,7 +138,7 @@ class KalturaHelpers {
 			$playerRatio = '4:3';
 		}
 
-		$spacer = $player->height - ( $player->width / 4 ) * 3; // assume the width and height saved in kaltura is 4/3
+		$spacer = self::calculateSpacer($player);
 		if ( $playerRatio == '16:9' ) {
 			$height = ( $width / 16 ) * 9 + $spacer;
 		} else {
@@ -149,6 +147,27 @@ class KalturaHelpers {
 
 		return (int) $height;
 	}
+
+    public static function calculateSpacer($player) {
+        $aspectRatio = self::calculatePlayerRatio($player->width, $player->height);
+        return $player->height - ( $player->width / $aspectRatio[0] ) * $aspectRatio[1];
+    }
+
+    public static function calculatePlayerRatio($playerWidth, $playerHeight) {
+        $normalRatio = 4 / 3;
+        $wideRatio = 16 / 9;
+
+        $playerRatio = $playerWidth / $playerHeight;
+
+        $distanceFromWide = abs($playerRatio - $wideRatio);
+        $distanceFromNormal = abs($playerRatio - $normalRatio);
+        if($distanceFromNormal < $distanceFromWide) {
+            return array(4, 3);
+        }
+        else {
+            return array(16, 9);
+        }
+    }
 
 	public static function getOption( $name, $default = null ) {
 		$name    = is_string( $name ) ? $name : null;
@@ -191,7 +210,7 @@ class KalturaHelpers {
 
 	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style' );
+		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive' );
 		foreach ( $arrayKeys as $key ) {
 			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
@@ -217,13 +236,14 @@ class KalturaHelpers {
 		}
 
 		return array(
-			'height'    => $params['height'],
-			'width'     => $params['width'],
-			'align'     => $align,
-			'style'     => $params['style'],
-			'wid'       => $params['wid'],
-			'entryId'   => $params['entryid'],
-			'uiconfid'  => $params['uiconfid'],
+			'height'        => $params['height'],
+			'width'         => $params['width'],
+			'align'         => $align,
+			'style'         => $params['style'],
+			'wid'           => $params['wid'],
+			'entryId'       => $params['entryid'],
+			'uiconfid'      => $params['uiconfid'],
+            'responsive'    => $params['responsive'],
 		);
 	}
 

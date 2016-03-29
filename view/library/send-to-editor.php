@@ -5,6 +5,7 @@
 		var playerHeight = <?php echo wp_json_encode($this->playerHeight); ?>;
 		var uiConfId = <?php echo wp_json_encode($this->uiConfId); ?>;
 		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
+        var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -13,6 +14,7 @@
 		htmlArray.push('entryid="' + entryId + '" ');
 		htmlArray.push('width="' + playerWidth + '" ');
 		htmlArray.push('height="' + playerHeight + '" ');
+        htmlArray.push('responsive="' + isResponsive + '" ');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
@@ -132,6 +134,10 @@
 											</script>
 										<?php endif; ?>
 									</div>
+                                    <div class="checkBox">
+                                        <input type="checkbox" name="makeResponsive">
+                                        <label for="makeResponsive">Make responsive</label>
+                                    </div>
 								</td>
 								<td valign="top" style="padding-left:25px;">
 									<strong>Player Dimensions:</strong>
