@@ -132,10 +132,13 @@
 									<strong>Select player size:</strong>
 
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="400" checked="checked" /><label for="playerWidthLarge"></label><br />
+										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
 									</div>
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="260" /><label for="playerWidthMedium"></label>
+										<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="400" /><label for="playerWidthMedium"></label>
+									</div>
+									<div class="radioBox">
+										<input type="radio" class="iradio" name="playerWidth" id="playerWidthSmall" value="304" /><label for="playerWidthSmall"></label>
 									</div>
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthCustom" value="" /><label for="playerCustomWidth">Custom width</label>
@@ -152,12 +155,14 @@
 							function kaltura_updateRatio() {
 								var ratio = jQuery("input[name=playerRatio]:checked").val();
 								if (ratio == "16:9") {
-									jQuery("#playerWidthLarge").next().text("Large (400x290)");
-									jQuery("#playerWidthMedium").next().text("Small (260x211)");
+									jQuery("#playerWidthLarge").next().text("Large (608x372)");
+									jQuery("#playerWidthMedium").next().text("Medium (400x255)");
+									jQuery("#playerWidthSmall").next().text("Small (304x201)");
 								}
 								else {
-									jQuery("#playerWidthLarge").next().text("Large (400x365)");
-									jQuery("#playerWidthMedium").next().text("Small (260x260)");
+									jQuery("#playerWidthLarge").next().text("Large (608x486)");
+									jQuery("#playerWidthMedium").next().text("Medium (400x330)");
+									jQuery("#playerWidthSmall").next().text("Small (304x258)");
 								}
 							}
 						</script>
