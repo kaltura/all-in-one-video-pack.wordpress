@@ -14,7 +14,7 @@ $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
-$playerRatio = KalturaHelpers::calculatePlayerRatio($width, $height);
+$playerRatio = KalturaHelpers::calculatePlayerRatio($width, $height - 30);
 $playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 ?>
 
