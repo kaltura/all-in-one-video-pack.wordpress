@@ -40,7 +40,7 @@ $playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 <?php else:?>
 
 <div id="<?php echo esc_attr($playerId);?>_wrapper" class="kaltura-player-wrapper">
-	<div id="<?php echo esc_attr($playerId); ?>" style="width:<?php echo esc_attr($width); ?>px; height: <?php echo esc_attr($height + 10); ?>px; <?php echo esc_attr($style); ?>">
+	<div id="<?php echo esc_attr($playerId); ?>" style="width:<?php echo esc_attr($width); ?>px; height: <?php echo esc_attr($height); ?>px; <?php echo esc_attr($style); ?>">
 		<a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a>, <a href="http://corp.kaltura.com/Products/Features/Video-Hosting">Video Hosting</a>, <a href="http://corp.kaltura.com/Products/Features/Video-Streaming">Video Streaming</a>, <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
 	</div>
 	<div class="kaltura-powered-by" style="width: <?php echo esc_attr($embedOptions['width']); ?>px">
