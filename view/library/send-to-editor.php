@@ -5,7 +5,7 @@
 		var playerHeight = <?php echo wp_json_encode($this->playerHeight); ?>;
 		var uiConfId = <?php echo wp_json_encode($this->uiConfId); ?>;
 		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
-        var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
+		var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -14,7 +14,7 @@
 		htmlArray.push('entryid="' + entryId + '" ');
 		htmlArray.push('width="' + playerWidth + '" ');
 		htmlArray.push('height="' + playerHeight + '" ');
-        htmlArray.push('responsive="' + isResponsive + '" ');
+		htmlArray.push('responsive="' + isResponsive + '" ');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
@@ -80,8 +80,8 @@
 <?php else: ?>
 	<?php
 	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
-    $backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
-    $backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
+	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
+	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
 
 	?>
 
@@ -91,8 +91,8 @@
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
 		<?php }
-        $senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
-        ?>
+		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
+		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
@@ -117,10 +117,10 @@
 											</script>
 										<?php endif; ?>
 									</div>
-                                    <div class="checkBox">
-                                        <input type="checkbox" name="makeResponsive">
-                                        <label for="makeResponsive">Make responsive</label>
-                                    </div>
+									<div class="checkBox">
+										<input type="checkbox" name="makeResponsive">
+										<label for="makeResponsive">Make responsive</label>
+									</div>
 								</td>
 								<td valign="top" style="padding-left:25px;">
 									<strong>Player Dimensions:</strong>
@@ -145,23 +145,23 @@
 							</tr>
 						</table>
 					</td>
-                    <td valign="top" width="240">
-                        <div class="kaltura-loader"></div>
-                        <div id="divKalturaPlayer"></div>
-                        <script type="text/javascript">
-                            function kaltura_updateRatio() {
-                                var ratio = jQuery("input[name=playerRatio]:checked").val();
-                                if (ratio == "16:9") {
-                                    jQuery("#playerWidthLarge").next().text("Large (400x290)");
-                                    jQuery("#playerWidthMedium").next().text("Small (260x211)");
-                                }
-                                else {
-                                    jQuery("#playerWidthLarge").next().text("Large (400x365)");
-                                    jQuery("#playerWidthMedium").next().text("Small (260x260)");
-                                }
-                            }
-                        </script>
-                    </td>
+					<td valign="top" width="240">
+						<div class="kaltura-loader"></div>
+						<div id="divKalturaPlayer"></div>
+						<script type="text/javascript">
+							function kaltura_updateRatio() {
+								var ratio = jQuery("input[name=playerRatio]:checked").val();
+								if (ratio == "16:9") {
+									jQuery("#playerWidthLarge").next().text("Large (400x290)");
+									jQuery("#playerWidthMedium").next().text("Small (260x211)");
+								}
+								else {
+									jQuery("#playerWidthLarge").next().text("Large (400x365)");
+									jQuery("#playerWidthMedium").next().text("Small (260x260)");
+								}
+							}
+						</script>
+					</td>
 				</tr>
 			</table>
 			<p class="submit">

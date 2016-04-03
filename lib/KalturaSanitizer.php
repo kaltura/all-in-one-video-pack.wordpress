@@ -24,9 +24,9 @@ class KalturaSanitizer {
 				case 'style':
 					$newValue = sanitize_text_field( $value );
 					break;
-                case 'responsive':
-                    $newValue = $value === 'true';
-                    break;
+				case 'responsive':
+					$newValue = $value === 'true';
+					break;
 			}
 
 			if ( $newValue !== null ) {

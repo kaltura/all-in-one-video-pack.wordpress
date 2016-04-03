@@ -148,26 +148,26 @@ class KalturaHelpers {
 		return (int) $height;
 	}
 
-    public static function calculateSpacer($player) {
-        $aspectRatio = self::calculatePlayerRatio($player->width, $player->height);
-        return $player->height - ( $player->width / $aspectRatio[0] ) * $aspectRatio[1];
-    }
+	public static function calculateSpacer($player) {
+		$aspectRatio = self::calculatePlayerRatio($player->width, $player->height);
+		return $player->height - ( $player->width / $aspectRatio[0] ) * $aspectRatio[1];
+	}
 
-    public static function calculatePlayerRatio($playerWidth, $playerHeight) {
-        $normalRatio = 4 / 3;
-        $wideRatio = 16 / 9;
+	public static function calculatePlayerRatio($playerWidth, $playerHeight) {
+		$normalRatio = 4 / 3;
+		$wideRatio = 16 / 9;
 
-        $playerRatio = $playerWidth / $playerHeight;
+		$playerRatio = $playerWidth / $playerHeight;
 
-        $distanceFromWide = abs($playerRatio - $wideRatio);
-        $distanceFromNormal = abs($playerRatio - $normalRatio);
-        if($distanceFromNormal < $distanceFromWide) {
-            return array(4, 3);
-        }
-        else {
-            return array(16, 9);
-        }
-    }
+		$distanceFromWide = abs($playerRatio - $wideRatio);
+		$distanceFromNormal = abs($playerRatio - $normalRatio);
+		if($distanceFromNormal < $distanceFromWide) {
+			return array(4, 3);
+		}
+		else {
+			return array(16, 9);
+		}
+	}
 
 	public static function getOption( $name, $default = null ) {
 		$name    = is_string( $name ) ? $name : null;
@@ -243,7 +243,7 @@ class KalturaHelpers {
 			'wid'           => $params['wid'],
 			'entryId'       => $params['entryid'],
 			'uiconfid'      => $params['uiconfid'],
-            'responsive'    => $params['responsive'],
+			'responsive'    => $params['responsive'],
 		);
 	}
 

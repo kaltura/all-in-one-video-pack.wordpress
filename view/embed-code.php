@@ -33,9 +33,9 @@ $playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 
 <?php if($isResponsive): ?>
 <div style="width: 100%;display: inline-block;position: relative;"> 
-    <div id="dummy" style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
-    <div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left:0;left: 0;right: 0;bottom:-36px;border:solid thin black;">
-    </div>
+	<div id="dummy" style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
+	<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left:0;left: 0;right: 0;bottom:-36px;border:solid thin black;">
+	</div>
 </div>
 <?php else:?>
 

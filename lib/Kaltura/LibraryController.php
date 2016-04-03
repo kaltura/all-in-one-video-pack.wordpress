@@ -106,16 +106,16 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$width       = KalturaHelpers::getRequestPostParam( 'playerWidth' );
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
-            $isResponsive = !empty(KalturaHelpers::getRequestPostParam( 'makeResponsive' ));
+			$isResponsive = !empty(KalturaHelpers::getRequestPostParam( 'makeResponsive' ));
 
-            $player = $kmodel->getPlayerUiConf( intval($uiConfId) );
+			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
 
 			$params['entryId']      = $entryId;
 			$params['nextEntryIds'] = $entryIds;
 			$params['playerWidth']  = $width;
 			$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $player, $width, $playerRatio );
 			$params['uiConfId']     = $uiConfId;
-            $params['isResponsive'] = $isResponsive ? 'true': 'false';
+			$params['isResponsive'] = $isResponsive ? 'true': 'false';
 		}
 		$this->renderView( 'library/send-to-editor.php', $params );
 	}
