@@ -185,7 +185,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$defaultKCWType             = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
 			$defaultKCWType             = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
-			$show_media_from            = KalturaHelpers::getRequestPostParam( 'show_media_from' );
+			$showMediaFrom              = KalturaHelpers::getRequestPostParam( 'show_media_from' );
 			$permalinkMetadataProfileId = KalturaHelpers::getRequestPostParam( 'permalink_metadata_profile_id' );
 			$savePermalink              = KalturaHelpers::getRequestPostParam( 'save_permalink' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
