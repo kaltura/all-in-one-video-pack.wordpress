@@ -117,6 +117,9 @@ class KalturaModel {
 		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = '-createdAt';
 		$filter->typeIn  = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
+		if(KalturaHelpers::getOption('kaltura_show_media_from') === 'logged_in_user') {
+			$filter->userIdEqual = KalturaHelpers::getLoggedUserId();
+		}
 
 		if ( $rootCategory )
 			$categoryIds[] = $rootCategory;
