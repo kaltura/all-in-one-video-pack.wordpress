@@ -181,14 +181,16 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 				exit;
 			}
 
-			$defaultPlayerType      = KalturaHelpers::getRequestPostParam( 'default_player_type' );
-			$defaultKCWType         = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
-			$defaultKCWType         = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
+			$defaultPlayerType          = KalturaHelpers::getRequestPostParam( 'default_player_type' );
+			$defaultKCWType             = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
+			$defaultKCWType             = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
+			$showMediaFrom              = KalturaHelpers::getRequestPostParam( 'show_media_from' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
+			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
 			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );

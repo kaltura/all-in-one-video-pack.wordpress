@@ -3,6 +3,14 @@
 class Kaltura_AllInOneVideoPackPlugin {
 	public function init() {
 
+		if(is_multisite() && ! ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() ) && apply_filters( 'kaltura_use_network_settings', true )) {
+			add_action( 'network_admin_menu', array($this, 'networkAdminMenuAction' ) );
+		}
+
+		if (defined('MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE) {
+			add_action('network_admin_menu', array($this, 'networkAdminMenuAction'));
+		}
+
         // show notice on admin pages except for kaltura_options
 		if ( ! KalturaHelpers::getOption( 'kaltura_partner_id' ) &&	! isset( $_POST['submit'] ) &&	(!isset( $_GET['page'] ) || 'kaltura_options' !== $_GET['page'])
 		) {
@@ -159,5 +167,4 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 		return $embedCode;
 	}
-
 }
