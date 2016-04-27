@@ -58,8 +58,8 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 			<?php endif; ?>
 
 			<div class="entry-search-filter">
-				<input name="search" value="<?php echo esc_attr( $this->searchWord ) ?>" />
-				<input type="submit" value="Search Entries"></button>
+				<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
+				<input type="submit" value="Go"></button>
 			</div>
 
 			<?php if ( ! count( $this->result->objects ) ): ?>
@@ -86,7 +86,7 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 
 				$widthStyle  = $depth * 20;
 				$hasChildren = false;
-				if ( strpos( $categories[$key + 1]->fullName, $category->fullName ) !== false ) {
+				if ( isset($categories[$key + 1]) && strpos( $categories[$key + 1]->fullName, $category->fullName ) !== false ) {
 					$hasChildren = true;
 				} else // Add the caret size to the total width.
 				{
@@ -191,7 +191,8 @@ $rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 </div>
 
 <script type="text/javascript">
-	jQuery(function () {
+	window.top.Kaltura.restoreModalBoxWp26();
+    jQuery(function () {
 		jQuery('li div.showName').kalturaEditableName({
 			namePostParam: 'entryName',
 			idPostParam  : 'entryId',

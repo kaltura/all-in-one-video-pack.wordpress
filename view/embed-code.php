@@ -8,11 +8,14 @@ $wid            = $embedOptions['wid'] ? $embedOptions['wid'] : '_' . KalturaHel
 $entryId        = $embedOptions['entryId'];
 $width          = $embedOptions['width'];
 $height         = $embedOptions['height'];
+$isResponsive   = !empty($embedOptions['responsive']);
 $randId         = md5( $wid . $entryId . rand( 0, time() ) );
 $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+$playerRatio = KalturaHelpers::calculatePlayerRatio($width, $height - 30);
+$playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -27,8 +30,17 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 		$style .= $embedOptions['style'];
 	}
 ?>
+
+<?php if($isResponsive): ?>
+<div style="width: 100%;display: inline-block;position: relative;"> 
+	<div style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
+	<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:-36px;">
+	</div>
+</div>
+<?php else:?>
+
 <div id="<?php echo esc_attr($playerId);?>_wrapper" class="kaltura-player-wrapper">
-	<div id="<?php echo esc_attr($playerId); ?>" style="width:<?php echo esc_attr($width); ?>px; height: <?php echo esc_attr($height + 10); ?>px; <?php echo esc_attr($style); ?>">
+	<div id="<?php echo esc_attr($playerId); ?>" style="width:<?php echo esc_attr($width); ?>px; height: <?php echo esc_attr($height); ?>px; <?php echo esc_attr($style); ?>">
 		<a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a>, <a href="http://corp.kaltura.com/Products/Features/Video-Hosting">Video Hosting</a>, <a href="http://corp.kaltura.com/Products/Features/Video-Streaming">Video Streaming</a>, <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
 	</div>
 	<div class="kaltura-powered-by" style="width: <?php echo esc_attr($embedOptions['width']); ?>px">
@@ -37,6 +49,8 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 		</div>
 	</div>
 </div>
+
+<?php endif; ?>
 <script>
 	kWidget.embed({
 		"targetId": <?php echo wp_json_encode($playerId); ?>,
