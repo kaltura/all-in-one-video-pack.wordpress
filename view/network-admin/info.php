@@ -8,7 +8,7 @@ $sanitizer = new KalturaSanitizer(); ?>
 		<div id="message" class="updated"><p>
 				<strong><?php echo esc_html( 'Failed to verify partner details' ); ?></strong> (<?php echo esc_html( $this->error ); ?>)
 			</p></div>
-		<a href="settings.php?page=all-in-one-video-pack-mu-settings&partner_login">Change settings</a>
+		<a href="settings.php?page=all-in-one-video-pack-mu-settings&amp;partner_login">Change settings</a>
 	</div>
 	<?php else : ?>
 		<div class="wrap">
@@ -34,6 +34,6 @@ $sanitizer = new KalturaSanitizer(); ?>
 					</td>
 				</tr>
 			</table>
-			<a href="settings.php?page=all-in-one-video-pack-mu-settings&partner_login">Change settings</a>
+			<a href="settings.php?page=all-in-one-video-pack-mu-settings&amp;partner_login">Change settings</a>
 		</div>
 		<?php endif;

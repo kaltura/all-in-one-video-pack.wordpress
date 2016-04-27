@@ -43,7 +43,7 @@ else: ?>
 		<h2>All in One Video Pack Installation</h2>
 
 		<p>
-			Please enter your Kaltura Management Console (KMC) Email & password
+			Please enter your Kaltura Management Console (KMC) Email &amp; password
 		</p>
 
 		<form name="form1" method="post">
