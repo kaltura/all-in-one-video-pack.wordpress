@@ -117,7 +117,7 @@
 								<td style="padding-bottom:22px;" colspan="2">
 									<?php if ($this->isLibrary) ?>
 									<label for="ktitle">Title:</label>
-									<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo esc_attr( $this->entry->name ); ?>" style="margin-left:6px;" />
+									<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo esc_attr( $this->entry->name ); ?>" style="margin-left:6px;" disabled />
 									<span style="color:red; font-size: 20px; font-weight: bold; display: none; line-height: 20px">*</span>
 								</td>
 							</tr>
