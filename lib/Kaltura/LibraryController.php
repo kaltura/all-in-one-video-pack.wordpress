@@ -95,12 +95,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$params['flashVars']['autoPlay']   = 'true';
 			$params['thumbnailPlaceHolderUrl'] = $thumbnail;
 		} else {
-			// update the entry name
 			$kmodel = KalturaModel::getInstance();
-
-			$baseEntry       = new Kaltura_Client_Type_BaseEntry();
-			$baseEntry->name = KalturaHelpers::getRequestPostParam( 'ktitle' );
-			$kmodel->updateBaseEntry( $entryId, $baseEntry );
 
 			array_shift( $entryIds ); // done with 1 entry, maybe we have more
 			$width       = KalturaHelpers::getRequestPostParam( 'playerWidth' );
