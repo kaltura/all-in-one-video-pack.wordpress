@@ -181,11 +181,6 @@
 			});
 
 			jQuery("input[type=submit]").click(function () {
-				jQuery("#ktitle").css("border-color", "").siblings("span").hide();
-				if (jQuery("#ktitle").val().replace(/ /g, "").length == 0) {
-					jQuery("#ktitle").css("border-color", "red").siblings("span").show();
-					return false;
-				}
 				jQuery("#playerWidthCustom").val(jQuery("#playerCustomWidth").val());
 				if (jQuery("#playerWidthCustom").attr("checked")) {
 					customWidth = jQuery("#playerCustomWidth").val();
