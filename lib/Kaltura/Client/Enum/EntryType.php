@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,18 +28,19 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EntryType {
-	const AUTOMATIC      = '-1';
-	const EXTERNAL_MEDIA = 'externalMedia.externalMedia';
-	const MEDIA_CLIP     = '1';
-	const MIX            = '2';
-	const PLAYLIST       = '5';
-	const DATA           = '6';
-	const LIVE_STREAM    = '7';
-	const LIVE_CHANNEL   = '8';
-	const DOCUMENT       = '10';
+class Kaltura_Client_Enum_EntryType
+{
+	const AUTOMATIC = "-1";
+	const EXTERNAL_MEDIA = "externalMedia.externalMedia";
+	const MEDIA_CLIP = "1";
+	const MIX = "2";
+	const PLAYLIST = "5";
+	const DATA = "6";
+	const LIVE_STREAM = "7";
+	const LIVE_CHANNEL = "8";
+	const DOCUMENT = "10";
 }
 

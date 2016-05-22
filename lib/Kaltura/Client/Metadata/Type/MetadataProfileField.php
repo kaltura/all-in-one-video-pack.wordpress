@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,31 +28,31 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_ObjectBase {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_ObjectBase
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaMetadataProfileField';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->id ) ) {
-			$this->id = (int) $xml->id;
-		}
-		$this->xPath = (string) $xml->xPath;
-		$this->key   = (string) $xml->key;
-		$this->label = (string) $xml->label;
+		
+		if(count($xml->id))
+			$this->id = (int)$xml->id;
+		$this->xPath = (string)$xml->xPath;
+		$this->key = (string)$xml->key;
+		$this->label = (string)$xml->label;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 * @readonly
@@ -60,7 +60,7 @@ class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_O
 	public $id = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 * @readonly
@@ -68,7 +68,7 @@ class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_O
 	public $xPath = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 * @readonly
@@ -76,7 +76,7 @@ class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_O
 	public $key = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 * @readonly

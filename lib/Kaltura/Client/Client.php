@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,10 +28,11 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Client extends Kaltura_Client_ClientBase {
+class Kaltura_Client_Client extends Kaltura_Client_ClientBase
+{
 	/**
 	 * @var string
 	 */
@@ -39,42 +40,42 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase {
 
 	/**
 	 * Base Entry Service
-	 *
+	 *  
 	 * @var Kaltura_Client_BaseEntryService
 	 */
 	public $baseEntry = null;
 
 	/**
 	 * Add & Manage Categories
-	 *
+	 *  
 	 * @var Kaltura_Client_CategoryService
 	 */
 	public $category = null;
 
 	/**
 	 * Media service lets you upload and manage media files (images / videos & audio)
-	 *
+	 *  
 	 * @var Kaltura_Client_MediaService
 	 */
 	public $media = null;
 
 	/**
 	 * partner service allows you to change/manage your partner personal details and settings as well
-	 *
+	 *  
 	 * @var Kaltura_Client_PartnerService
 	 */
 	public $partner = null;
 
 	/**
 	 * Session service
-	 *
+	 *  
 	 * @var Kaltura_Client_SessionService
 	 */
 	public $session = null;
 
 	/**
 	 * System service is used for internal system helpers & to retrieve system level information
-	 *
+	 *  
 	 * @var Kaltura_Client_SystemService
 	 */
 	public $system = null;
@@ -82,7 +83,7 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase {
 	/**
 	 * UiConf service lets you create and manage your UIConfs for the various flash components
 	 *  This service is used by the KMC-ApplicationStudio
-	 *
+	 *  
 	 * @var Kaltura_Client_UiConfService
 	 */
 	public $uiConf = null;
@@ -92,16 +93,17 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase {
 	 *
 	 * @param Kaltura_Client_Configuration $config
 	 */
-	public function __construct( Kaltura_Client_Configuration $config ) {
-		parent::__construct( $config );
-
-		$this->baseEntry = new Kaltura_Client_BaseEntryService( $this );
-		$this->category  = new Kaltura_Client_CategoryService( $this );
-		$this->media     = new Kaltura_Client_MediaService( $this );
-		$this->partner   = new Kaltura_Client_PartnerService( $this );
-		$this->session   = new Kaltura_Client_SessionService( $this );
-		$this->system    = new Kaltura_Client_SystemService( $this );
-		$this->uiConf    = new Kaltura_Client_UiConfService( $this );
+	public function __construct(Kaltura_Client_Configuration $config)
+	{
+		parent::__construct($config);
+		
+		$this->baseEntry = new Kaltura_Client_BaseEntryService($this);
+		$this->category = new Kaltura_Client_CategoryService($this);
+		$this->media = new Kaltura_Client_MediaService($this);
+		$this->partner = new Kaltura_Client_PartnerService($this);
+		$this->session = new Kaltura_Client_SessionService($this);
+		$this->system = new Kaltura_Client_SystemService($this);
+		$this->uiConf = new Kaltura_Client_UiConfService($this);
 	}
-
+	
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,86 +28,81 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Client_Type_BaseEntryFilter {
-	public function get_kaltura_object_type() {
+abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Client_Type_BaseEntryFilter
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaPlayableEntryBaseFilter';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->lastPlayedAtGreaterThanOrEqual ) ) {
-			$this->lastPlayedAtGreaterThanOrEqual = (int) $xml->lastPlayedAtGreaterThanOrEqual;
-		}
-		if ( count( $xml->lastPlayedAtLessThanOrEqual ) ) {
-			$this->lastPlayedAtLessThanOrEqual = (int) $xml->lastPlayedAtLessThanOrEqual;
-		}
-		if ( count( $xml->durationLessThan ) ) {
-			$this->durationLessThan = (int) $xml->durationLessThan;
-		}
-		if ( count( $xml->durationGreaterThan ) ) {
-			$this->durationGreaterThan = (int) $xml->durationGreaterThan;
-		}
-		if ( count( $xml->durationLessThanOrEqual ) ) {
-			$this->durationLessThanOrEqual = (int) $xml->durationLessThanOrEqual;
-		}
-		if ( count( $xml->durationGreaterThanOrEqual ) ) {
-			$this->durationGreaterThanOrEqual = (int) $xml->durationGreaterThanOrEqual;
-		}
-		$this->durationTypeMatchOr = (string) $xml->durationTypeMatchOr;
+		
+		if(count($xml->lastPlayedAtGreaterThanOrEqual))
+			$this->lastPlayedAtGreaterThanOrEqual = (int)$xml->lastPlayedAtGreaterThanOrEqual;
+		if(count($xml->lastPlayedAtLessThanOrEqual))
+			$this->lastPlayedAtLessThanOrEqual = (int)$xml->lastPlayedAtLessThanOrEqual;
+		if(count($xml->durationLessThan))
+			$this->durationLessThan = (int)$xml->durationLessThan;
+		if(count($xml->durationGreaterThan))
+			$this->durationGreaterThan = (int)$xml->durationGreaterThan;
+		if(count($xml->durationLessThanOrEqual))
+			$this->durationLessThanOrEqual = (int)$xml->durationLessThanOrEqual;
+		if(count($xml->durationGreaterThanOrEqual))
+			$this->durationGreaterThanOrEqual = (int)$xml->durationGreaterThanOrEqual;
+		$this->durationTypeMatchOr = (string)$xml->durationTypeMatchOr;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $lastPlayedAtGreaterThanOrEqual = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $lastPlayedAtLessThanOrEqual = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $durationLessThan = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $durationGreaterThan = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $durationLessThanOrEqual = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $durationGreaterThanOrEqual = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */

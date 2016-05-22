@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,29 +28,30 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_CategoryOrderBy {
-	const CREATED_AT_ASC                   = '+createdAt';
-	const DEPTH_ASC                        = '+depth';
-	const DIRECT_ENTRIES_COUNT_ASC         = '+directEntriesCount';
-	const DIRECT_SUB_CATEGORIES_COUNT_ASC  = '+directSubCategoriesCount';
-	const ENTRIES_COUNT_ASC                = '+entriesCount';
-	const FULL_NAME_ASC                    = '+fullName';
-	const MEMBERS_COUNT_ASC                = '+membersCount';
-	const NAME_ASC                         = '+name';
-	const PARTNER_SORT_VALUE_ASC           = '+partnerSortValue';
-	const UPDATED_AT_ASC                   = '+updatedAt';
-	const CREATED_AT_DESC                  = '-createdAt';
-	const DEPTH_DESC                       = '-depth';
-	const DIRECT_ENTRIES_COUNT_DESC        = '-directEntriesCount';
-	const DIRECT_SUB_CATEGORIES_COUNT_DESC = '-directSubCategoriesCount';
-	const ENTRIES_COUNT_DESC               = '-entriesCount';
-	const FULL_NAME_DESC                   = '-fullName';
-	const MEMBERS_COUNT_DESC               = '-membersCount';
-	const NAME_DESC                        = '-name';
-	const PARTNER_SORT_VALUE_DESC          = '-partnerSortValue';
-	const UPDATED_AT_DESC                  = '-updatedAt';
+class Kaltura_Client_Enum_CategoryOrderBy
+{
+	const CREATED_AT_ASC = "+createdAt";
+	const DEPTH_ASC = "+depth";
+	const DIRECT_ENTRIES_COUNT_ASC = "+directEntriesCount";
+	const DIRECT_SUB_CATEGORIES_COUNT_ASC = "+directSubCategoriesCount";
+	const ENTRIES_COUNT_ASC = "+entriesCount";
+	const FULL_NAME_ASC = "+fullName";
+	const MEMBERS_COUNT_ASC = "+membersCount";
+	const NAME_ASC = "+name";
+	const PARTNER_SORT_VALUE_ASC = "+partnerSortValue";
+	const UPDATED_AT_ASC = "+updatedAt";
+	const CREATED_AT_DESC = "-createdAt";
+	const DEPTH_DESC = "-depth";
+	const DIRECT_ENTRIES_COUNT_DESC = "-directEntriesCount";
+	const DIRECT_SUB_CATEGORIES_COUNT_DESC = "-directSubCategoriesCount";
+	const ENTRIES_COUNT_DESC = "-entriesCount";
+	const FULL_NAME_DESC = "-fullName";
+	const MEMBERS_COUNT_DESC = "-membersCount";
+	const NAME_DESC = "-name";
+	const PARTNER_SORT_VALUE_DESC = "-partnerSortValue";
+	const UPDATED_AT_DESC = "-updatedAt";
 }
 

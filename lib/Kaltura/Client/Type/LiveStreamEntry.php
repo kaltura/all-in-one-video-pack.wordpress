@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,43 +28,45 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaLiveStreamEntry';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		$this->streamRemoteId       = (string) $xml->streamRemoteId;
-		$this->streamRemoteBackupId = (string) $xml->streamRemoteBackupId;
-		if ( empty( $xml->bitrates ) ) {
+		
+		$this->streamRemoteId = (string)$xml->streamRemoteId;
+		$this->streamRemoteBackupId = (string)$xml->streamRemoteBackupId;
+		if(empty($xml->bitrates))
 			$this->bitrates = array();
-		} else {
-			$this->bitrates = Kaltura_Client_ParseUtils::unmarshalArray( $xml->bitrates, 'KalturaLiveStreamBitrate' );
-		}
-		$this->primaryBroadcastingUrl   = (string) $xml->primaryBroadcastingUrl;
-		$this->secondaryBroadcastingUrl = (string) $xml->secondaryBroadcastingUrl;
-		$this->streamName               = (string) $xml->streamName;
-		$this->streamUrl                = (string) $xml->streamUrl;
-		$this->hlsStreamUrl             = (string) $xml->hlsStreamUrl;
-		$this->urlManager               = (string) $xml->urlManager;
-		$this->encodingIP1              = (string) $xml->encodingIP1;
-		$this->encodingIP2              = (string) $xml->encodingIP2;
-		$this->streamPassword           = (string) $xml->streamPassword;
-		$this->streamUsername           = (string) $xml->streamUsername;
+		else
+			$this->bitrates = Kaltura_Client_ParseUtils::unmarshalArray($xml->bitrates, "KalturaLiveStreamBitrate");
+		$this->primaryBroadcastingUrl = (string)$xml->primaryBroadcastingUrl;
+		$this->secondaryBroadcastingUrl = (string)$xml->secondaryBroadcastingUrl;
+		$this->primaryRtspBroadcastingUrl = (string)$xml->primaryRtspBroadcastingUrl;
+		$this->secondaryRtspBroadcastingUrl = (string)$xml->secondaryRtspBroadcastingUrl;
+		$this->streamName = (string)$xml->streamName;
+		$this->streamUrl = (string)$xml->streamUrl;
+		$this->hlsStreamUrl = (string)$xml->hlsStreamUrl;
+		$this->urlManager = (string)$xml->urlManager;
+		$this->encodingIP1 = (string)$xml->encodingIP1;
+		$this->encodingIP2 = (string)$xml->encodingIP2;
+		$this->streamPassword = (string)$xml->streamPassword;
+		$this->streamUsername = (string)$xml->streamUsername;
 	}
-
 	/**
 	 * The stream id as provided by the provider
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -73,7 +75,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The backup stream id as provided by the provider
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -82,28 +84,42 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * Array of supported bitrates
-	 *
+	 * 	 
 	 *
 	 * @var array of KalturaLiveStreamBitrate
 	 */
 	public $bitrates;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $primaryBroadcastingUrl = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $secondaryBroadcastingUrl = null;
 
 	/**
+	 * 
 	 *
+	 * @var string
+	 */
+	public $primaryRtspBroadcastingUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $secondaryRtspBroadcastingUrl = null;
+
+	/**
+	 * 
 	 *
 	 * @var string
 	 */
@@ -111,7 +127,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The stream url
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -119,7 +135,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * HLS URL - URL for live stream playback on mobile device
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -127,7 +143,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * URL Manager to handle the live stream URL (for instance, add token)
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -135,7 +151,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The broadcast primary ip
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -143,7 +159,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The broadcast secondary ip
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -151,7 +167,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The broadcast password
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -159,7 +175,7 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry 
 
 	/**
 	 * The broadcast username
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 * @readonly

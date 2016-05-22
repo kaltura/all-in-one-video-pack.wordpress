@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,30 +28,30 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaLiveChannel';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		$this->playlistId = (string) $xml->playlistId;
-		if ( count( $xml->repeat ) ) {
-			$this->repeat = (int) $xml->repeat;
-		}
+		
+		$this->playlistId = (string)$xml->playlistId;
+		if(count($xml->repeat))
+			$this->repeat = (int)$xml->repeat;
 	}
-
 	/**
 	 * Playlist id to be played
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */
@@ -59,7 +59,7 @@ class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry {
 
 	/**
 	 * Indicates that the segments should be repeated for ever
-	 *
+	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */

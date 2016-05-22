@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,50 +28,51 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntryBaseFilter extends Kaltura_Client_Type_MediaEntryFilter {
-	public function get_kaltura_object_type() {
+abstract class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntryBaseFilter extends Kaltura_Client_Type_MediaEntryFilter
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaExternalMediaEntryBaseFilter';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		$this->externalSourceTypeEqual = (string) $xml->externalSourceTypeEqual;
-		$this->externalSourceTypeIn    = (string) $xml->externalSourceTypeIn;
-		$this->assetParamsIdsMatchOr   = (string) $xml->assetParamsIdsMatchOr;
-		$this->assetParamsIdsMatchAnd  = (string) $xml->assetParamsIdsMatchAnd;
+		
+		$this->externalSourceTypeEqual = (string)$xml->externalSourceTypeEqual;
+		$this->externalSourceTypeIn = (string)$xml->externalSourceTypeIn;
+		$this->assetParamsIdsMatchOr = (string)$xml->assetParamsIdsMatchOr;
+		$this->assetParamsIdsMatchAnd = (string)$xml->assetParamsIdsMatchAnd;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType
 	 */
 	public $externalSourceTypeEqual = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $externalSourceTypeIn = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $assetParamsIdsMatchOr = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */

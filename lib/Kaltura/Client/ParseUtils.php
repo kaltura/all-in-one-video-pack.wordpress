@@ -27,43 +27,46 @@
 // @ignore
 // ===================================================================================================
 
-class Kaltura_Client_ParseUtils {
-	public static function unmarshalSimpleType( \SimpleXMLElement $xml ) {
+class Kaltura_Client_ParseUtils 
+{
+	public static function unmarshalSimpleType(\SimpleXMLElement $xml) 
+	{
 		return "$xml";
 	}
-
-	public static function unmarshalObject( \SimpleXMLElement $xml, $fallbackType = null ) {
-		$objectType = reset( $xml->objectType );
-		$type       = Kaltura_Client_TypeMap::getZendType( $objectType );
-		if ( ! class_exists( $type ) ) {
-			$type = Kaltura_Client_TypeMap::getZendType( $fallbackType );
-			if ( ! class_exists( $type ) ) {
-				throw new ClientException( "Invalid object type class [$type] of Kaltura type [$objectType]", ClientException::ERROR_INVALID_OBJECT_TYPE );
-			}
+	
+	public static function unmarshalObject(\SimpleXMLElement $xml, $fallbackType = null) 
+	{
+		$objectType = reset($xml->objectType);
+		$type = Kaltura_Client_TypeMap::getZendType($objectType);
+		if(!class_exists($type)) {
+			$type = Kaltura_Client_TypeMap::getZendType($fallbackType);
+			if(!class_exists($type))
+				throw new ClientException("Invalid object type class [$type] of Kaltura type [$objectType]", ClientException::ERROR_INVALID_OBJECT_TYPE);
 		}
-
-		return new $type( $xml );
+			
+		return new $type($xml);
 	}
-
-	public static function unmarshalArray( \SimpleXMLElement $xml, $fallbackType = null ) {
+	
+	public static function unmarshalArray(\SimpleXMLElement $xml, $fallbackType = null)
+	{
 		$xmls = $xml->children();
-		$ret  = array();
-		foreach ( $xmls as $xml ) {
-			$ret[] = self::unmarshalObject( $xml, $fallbackType );
-		}
-
+		$ret = array();
+		foreach($xmls as $xml)
+			$ret[] = self::unmarshalObject($xml, $fallbackType);
+			
 		return $ret;
 	}
 
-	public static function checkIfError( \SimpleXMLElement $xml, $throwException = true ) {
-		if ( $xml->error ) {
-			$code    = "{$xml->error->code}";
+	public static function checkIfError(\SimpleXMLElement $xml, $throwException = true) 
+	{
+		if(($xml->error) && (count($xml->children()) == 1))
+		{
+			$code = "{$xml->error->code}";
 			$message = "{$xml->error->message}";
-			if ( $throwException ) {
-				throw new Kaltura_Client_Exception( $message, $code );
-			} else {
-				return new Kaltura_Client_Exception( $message, $code );
-			}
+			if($throwException)
+				throw new Kaltura_Client_Exception($message, $code);
+			else 
+				return new Kaltura_Client_Exception($message, $code);
 		}
 	}
 }

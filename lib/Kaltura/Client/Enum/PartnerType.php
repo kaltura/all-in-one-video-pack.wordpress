@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,20 +28,21 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PartnerType {
-	const KMC               = 1;
-	const WIKI              = 100;
-	const WORDPRESS         = 101;
-	const DRUPAL            = 102;
-	const DEKIWIKI          = 103;
-	const MOODLE            = 104;
+class Kaltura_Client_Enum_PartnerType
+{
+	const KMC = 1;
+	const WIKI = 100;
+	const WORDPRESS = 101;
+	const DRUPAL = 102;
+	const DEKIWIKI = 103;
+	const MOODLE = 104;
 	const COMMUNITY_EDITION = 105;
-	const JOOMLA            = 106;
-	const BLACKBOARD        = 107;
-	const SAKAI             = 108;
-	const ADMIN_CONSOLE     = 109;
+	const JOOMLA = 106;
+	const BLACKBOARD = 107;
+	const SAKAI = 108;
+	const ADMIN_CONSOLE = 109;
 }
 

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,13 +28,15 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EntryReplacementStatus {
-	const NONE                       = '0';
-	const APPROVED_BUT_NOT_READY     = '1';
-	const READY_BUT_NOT_APPROVED     = '2';
-	const NOT_READY_AND_NOT_APPROVED = '3';
+class Kaltura_Client_Enum_EntryReplacementStatus
+{
+	const NONE = "0";
+	const APPROVED_BUT_NOT_READY = "1";
+	const READY_BUT_NOT_APPROVED = "2";
+	const NOT_READY_AND_NOT_APPROVED = "3";
+	const FAILED = "4";
 }
 

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,22 +28,22 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_SourceType {
-	const LIMELIGHT_LIVE        = 'limeLight.LIVE_STREAM';
-	const VELOCIX_LIVE          = 'velocix.VELOCIX_LIVE';
-	const FILE                  = '1';
-	const WEBCAM                = '2';
-	const URL                   = '5';
-	const SEARCH_PROVIDER       = '6';
-	const AKAMAI_LIVE           = '29';
-	const MANUAL_LIVE_STREAM    = '30';
-	const AKAMAI_UNIVERSAL_LIVE = '31';
-	const LIVE_STREAM           = '32';
-	const LIVE_CHANNEL          = '33';
-	const RECORDED_LIVE         = '34';
-	const CLIP                  = '35';
+class Kaltura_Client_Enum_SourceType
+{
+	const FILE = "1";
+	const WEBCAM = "2";
+	const URL = "5";
+	const SEARCH_PROVIDER = "6";
+	const AKAMAI_LIVE = "29";
+	const MANUAL_LIVE_STREAM = "30";
+	const AKAMAI_UNIVERSAL_LIVE = "31";
+	const LIVE_STREAM = "32";
+	const LIVE_CHANNEL = "33";
+	const RECORDED_LIVE = "34";
+	const CLIP = "35";
+	const LIVE_STREAM_ONTEXTDATA_CAPTIONS = "42";
 }
 

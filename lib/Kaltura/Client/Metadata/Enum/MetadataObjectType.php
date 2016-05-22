@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,16 +28,14 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Enum_MetadataObjectType {
-	const AD_CUE_POINT   = 'adCuePointMetadata.AdCuePoint';
-	const ANNOTATION     = 'annotationMetadata.Annotation';
-	const CODE_CUE_POINT = 'codeCuePointMetadata.CodeCuePoint';
-	const ENTRY          = '1';
-	const CATEGORY       = '2';
-	const USER           = '3';
-	const PARTNER        = '4';
+class Kaltura_Client_Metadata_Enum_MetadataObjectType
+{
+	const ENTRY = "1";
+	const CATEGORY = "2";
+	const USER = "3";
+	const PARTNER = "4";
 }
 

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,58 +28,67 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaPlayerDeliveryType';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		$this->id    = (string) $xml->id;
-		$this->label = (string) $xml->label;
-		if ( empty( $xml->flashvars ) ) {
+		
+		$this->id = (string)$xml->id;
+		$this->label = (string)$xml->label;
+		if(empty($xml->flashvars))
 			$this->flashvars = array();
-		} else {
-			$this->flashvars = Kaltura_Client_ParseUtils::unmarshalArray( $xml->flashvars, 'KalturaKeyValue' );
-		}
-		$this->minVersion = (string) $xml->minVersion;
+		else
+			$this->flashvars = Kaltura_Client_ParseUtils::unmarshalArray($xml->flashvars, "KalturaKeyValue");
+		$this->minVersion = (string)$xml->minVersion;
+		if(!empty($xml->enabledByDefault))
+			$this->enabledByDefault = true;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $id = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $label = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var array of KalturaKeyValue
 	 */
 	public $flashvars;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $minVersion = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	public $enabledByDefault = null;
 
 
 }

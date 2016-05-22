@@ -28,36 +28,43 @@
 // ===================================================================================================
 /**
  * Abstract base class for all client objects
- *
- * @package    Kaltura
+ * 
+ * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_ObjectBase {
-	abstract public function get_kaltura_object_type();
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-
+abstract class Kaltura_Client_ObjectBase
+{
+	abstract public function getKalturaObjectType();
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		
 	}
-
-	protected function addIfNotNull( &$params, $paramName, $paramValue ) {
-		if ( $paramValue !== null ) {
-			if ( $paramValue instanceof Kaltura_Client_ObjectBase ) {
+	
+	protected function addIfNotNull(&$params, $paramName, $paramValue)
+	{
+		if ($paramValue !== null)
+		{
+			if($paramValue instanceof Kaltura_Client_ObjectBase)
+			{
 				$params[$paramName] = $paramValue->toParams();
-			} else {
+			}
+			else
+			{
 				$params[$paramName] = $paramValue;
 			}
 		}
 	}
-
-	public function toParams() {
+	
+	public function toParams()
+	{
 		$params = array(
-			'objectType' => $this->get_kaltura_object_type(),
+			'objectType' => $this->getKalturaObjectType()
 		);
-
-		foreach ( $this as $prop => $val ) {
-			$this->addIfNotNull( $params, $prop, $val );
-		}
-
+		
+	    foreach($this as $prop => $val)
+			$this->addIfNotNull($params, $prop, $val);
+			
 		return $params;
 	}
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,48 +29,46 @@
 
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_MetadataProfileService extends Kaltura_Client_ServiceBase {
-	function __construct( Kaltura_Client_Client $client = null ) {
-		parent::__construct( $client );
+class Kaltura_Client_Metadata_MetadataProfileService extends Kaltura_Client_ServiceBase
+{
+	function __construct(Kaltura_Client_Client $client = null)
+	{
+		parent::__construct($client);
 	}
 
-	function listAction( Kaltura_Client_Metadata_Type_MetadataProfileFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null ) {
+	function listAction(Kaltura_Client_Metadata_Type_MetadataProfileFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
+	{
 		$kparams = array();
-		if ( $filter !== null ) {
-			$this->client->addParam( $kparams, 'filter', $filter->toParams() );
-		}
-		if ( $pager !== null ) {
-			$this->client->addParam( $kparams, 'pager', $pager->toParams() );
-		}
-		$this->client->queueServiceActionCall( 'metadata_metadataprofile', 'list', 'KalturaMetadataProfileListResponse', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$this->client->queueServiceActionCall("metadata_metadataprofile", "list", "KalturaMetadataProfileListResponse", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMetadataProfileListResponse' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Metadata_Type_MetadataProfileListResponse' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataProfileListResponse");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataProfileListResponse");
 		return $resultObject;
 	}
 
-	function listFields( $metadataProfileId ) {
+	function listFields($metadataProfileId)
+	{
 		$kparams = array();
-		$this->client->addParam( $kparams, 'metadataProfileId', $metadataProfileId );
-		$this->client->queueServiceActionCall( 'metadata_metadataprofile', 'listFields', 'KalturaMetadataProfileFieldListResponse', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		$this->client->addParam($kparams, "metadataProfileId", $metadataProfileId);
+		$this->client->queueServiceActionCall("metadata_metadataprofile", "listFields", "KalturaMetadataProfileFieldListResponse", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMetadataProfileFieldListResponse' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Metadata_Type_MetadataProfileFieldListResponse' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataProfileFieldListResponse");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataProfileFieldListResponse");
 		return $resultObject;
 	}
 }

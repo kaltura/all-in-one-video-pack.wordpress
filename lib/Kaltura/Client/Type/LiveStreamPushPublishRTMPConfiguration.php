@@ -31,24 +31,53 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_LicenseType
+class Kaltura_Client_Type_LiveStreamPushPublishRTMPConfiguration extends Kaltura_Client_Type_LiveStreamPushPublishConfiguration
 {
-	const UNKNOWN = -1;
-	const NONE = 0;
-	const COPYRIGHTED = 1;
-	const PUBLIC_DOMAIN = 2;
-	const CREATIVECOMMONS_ATTRIBUTION = 3;
-	const CREATIVECOMMONS_ATTRIBUTION_SHARE_ALIKE = 4;
-	const CREATIVECOMMONS_ATTRIBUTION_NO_DERIVATIVES = 5;
-	const CREATIVECOMMONS_ATTRIBUTION_NON_COMMERCIAL = 6;
-	const CREATIVECOMMONS_ATTRIBUTION_NON_COMMERCIAL_SHARE_ALIKE = 7;
-	const CREATIVECOMMONS_ATTRIBUTION_NON_COMMERCIAL_NO_DERIVATIVES = 8;
-	const GFDL = 9;
-	const GPL = 10;
-	const AFFERO_GPL = 11;
-	const LGPL = 12;
-	const BSD = 13;
-	const APACHE = 14;
-	const MOZILLA = 15;
+	public function getKalturaObjectType()
+	{
+		return 'KalturaLiveStreamPushPublishRTMPConfiguration';
+	}
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
+			return;
+		
+		$this->userId = (string)$xml->userId;
+		$this->password = (string)$xml->password;
+		$this->streamName = (string)$xml->streamName;
+		$this->applicationName = (string)$xml->applicationName;
+	}
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $userId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $password = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $streamName = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $applicationName = null;
+
+
 }
 

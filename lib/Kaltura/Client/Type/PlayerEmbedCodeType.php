@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,52 +28,52 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_PlayerEmbedCodeType extends Kaltura_Client_ObjectBase {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_PlayerEmbedCodeType extends Kaltura_Client_ObjectBase
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaPlayerEmbedCodeType';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		$this->id    = (string) $xml->id;
-		$this->label = (string) $xml->label;
-		if ( ! empty( $xml->entryOnly ) ) {
+		
+		$this->id = (string)$xml->id;
+		$this->label = (string)$xml->label;
+		if(!empty($xml->entryOnly))
 			$this->entryOnly = true;
-		}
-		$this->minVersion = (string) $xml->minVersion;
+		$this->minVersion = (string)$xml->minVersion;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $id = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */
 	public $label = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var bool
 	 */
 	public $entryOnly = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,12 +28,13 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_UserJoinPolicyType {
-	const AUTO_JOIN       = 1;
+class Kaltura_Client_Enum_UserJoinPolicyType
+{
+	const AUTO_JOIN = 1;
 	const REQUEST_TO_JOIN = 2;
-	const NOT_ALLOWED     = 3;
+	const NOT_ALLOWED = 3;
 }
 

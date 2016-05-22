@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,25 +28,26 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_SearchProviderType {
-	const FLICKR             = 3;
-	const YOUTUBE            = 4;
-	const MYSPACE            = 7;
-	const PHOTOBUCKET        = 8;
-	const JAMENDO            = 9;
-	const CCMIXTER           = 10;
-	const NYPL               = 11;
-	const CURRENT            = 12;
-	const MEDIA_COMMONS      = 13;
-	const KALTURA            = 20;
+class Kaltura_Client_Enum_SearchProviderType
+{
+	const FLICKR = 3;
+	const YOUTUBE = 4;
+	const MYSPACE = 7;
+	const PHOTOBUCKET = 8;
+	const JAMENDO = 9;
+	const CCMIXTER = 10;
+	const NYPL = 11;
+	const CURRENT = 12;
+	const MEDIA_COMMONS = 13;
+	const KALTURA = 20;
 	const KALTURA_USER_CLIPS = 21;
-	const ARCHIVE_ORG        = 22;
-	const KALTURA_PARTNER    = 23;
-	const METACAFE           = 24;
-	const SEARCH_PROXY       = 28;
-	const PARTNER_SPECIFIC   = 100;
+	const ARCHIVE_ORG = 22;
+	const KALTURA_PARTNER = 23;
+	const METACAFE = 24;
+	const SEARCH_PROXY = 28;
+	const PARTNER_SPECIFIC = 100;
 }
 

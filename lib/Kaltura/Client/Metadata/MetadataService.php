@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,69 +29,66 @@
 
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_MetadataService extends Kaltura_Client_ServiceBase {
-	function __construct( Kaltura_Client_Client $client = null ) {
-		parent::__construct( $client );
+class Kaltura_Client_Metadata_MetadataService extends Kaltura_Client_ServiceBase
+{
+	function __construct(Kaltura_Client_Client $client = null)
+	{
+		parent::__construct($client);
 	}
 
-	function add( $metadataProfileId, $objectType, $objectId, $xmlData ) {
+	function add($metadataProfileId, $objectType, $objectId, $xmlData)
+	{
 		$kparams = array();
-		$this->client->addParam( $kparams, 'metadataProfileId', $metadataProfileId );
-		$this->client->addParam( $kparams, 'objectType', $objectType );
-		$this->client->addParam( $kparams, 'objectId', $objectId );
-		$this->client->addParam( $kparams, 'xmlData', $xmlData );
-		$this->client->queueServiceActionCall( 'metadata_metadata', 'add', 'KalturaMetadata', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		$this->client->addParam($kparams, "metadataProfileId", $metadataProfileId);
+		$this->client->addParam($kparams, "objectType", $objectType);
+		$this->client->addParam($kparams, "objectId", $objectId);
+		$this->client->addParam($kparams, "xmlData", $xmlData);
+		$this->client->queueServiceActionCall("metadata_metadata", "add", "KalturaMetadata", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMetadata' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Metadata_Type_Metadata' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadata");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_Metadata");
 		return $resultObject;
 	}
 
-	function update( $id, $xmlData = null, $version = null ) {
+	function update($id, $xmlData = null, $version = null)
+	{
 		$kparams = array();
-		$this->client->addParam( $kparams, 'id', $id );
-		$this->client->addParam( $kparams, 'xmlData', $xmlData );
-		$this->client->addParam( $kparams, 'version', $version );
-		$this->client->queueServiceActionCall( 'metadata_metadata', 'update', 'KalturaMetadata', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "xmlData", $xmlData);
+		$this->client->addParam($kparams, "version", $version);
+		$this->client->queueServiceActionCall("metadata_metadata", "update", "KalturaMetadata", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMetadata' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Metadata_Type_Metadata' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadata");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_Metadata");
 		return $resultObject;
 	}
 
-	function listAction( Kaltura_Client_Metadata_Type_MetadataFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null ) {
+	function listAction(Kaltura_Client_Metadata_Type_MetadataFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
+	{
 		$kparams = array();
-		if ( $filter !== null ) {
-			$this->client->addParam( $kparams, 'filter', $filter->toParams() );
-		}
-		if ( $pager !== null ) {
-			$this->client->addParam( $kparams, 'pager', $pager->toParams() );
-		}
-		$this->client->queueServiceActionCall( 'metadata_metadata', 'list', 'KalturaMetadataListResponse', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		if ($filter !== null)
+			$this->client->addParam($kparams, "filter", $filter->toParams());
+		if ($pager !== null)
+			$this->client->addParam($kparams, "pager", $pager->toParams());
+		$this->client->queueServiceActionCall("metadata_metadata", "list", "KalturaMetadataListResponse", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaMetadataListResponse' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Metadata_Type_MetadataListResponse' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataListResponse");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataListResponse");
 		return $resultObject;
 	}
 }

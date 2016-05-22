@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,21 +28,23 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_DataCenterContentResource extends Kaltura_Client_Type_ContentResource {
-	public function get_kaltura_object_type() {
+abstract class Kaltura_Client_Type_DataCenterContentResource extends Kaltura_Client_Type_ContentResource
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaDataCenterContentResource';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
+		
 	}
 
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,48 +29,48 @@
 
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase {
-	function __construct( Kaltura_Client_Client $client = null ) {
-		parent::__construct( $client );
+class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase
+{
+	function __construct(Kaltura_Client_Client $client = null)
+	{
+		parent::__construct($client);
 	}
 
-	function register( Kaltura_Client_Type_Partner $partner, $cmsPassword = '', $templatePartnerId = null, $silent = false ) {
+	function register(Kaltura_Client_Type_Partner $partner, $cmsPassword = "", $templatePartnerId = null, $silent = false)
+	{
 		$kparams = array();
-		$this->client->addParam( $kparams, 'partner', $partner->toParams() );
-		$this->client->addParam( $kparams, 'cmsPassword', $cmsPassword );
-		$this->client->addParam( $kparams, 'templatePartnerId', $templatePartnerId );
-		$this->client->addParam( $kparams, 'silent', $silent );
-		$this->client->queueServiceActionCall( 'partner', 'register', 'KalturaPartner', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		$this->client->addParam($kparams, "partner", $partner->toParams());
+		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
+		$this->client->addParam($kparams, "templatePartnerId", $templatePartnerId);
+		$this->client->addParam($kparams, "silent", $silent);
+		$this->client->queueServiceActionCall("partner", "register", "KalturaPartner", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaPartner' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Type_Partner' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaPartner");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
 		return $resultObject;
 	}
 
-	function getSecrets( $partnerId, $adminEmail, $cmsPassword ) {
+	function getSecrets($partnerId, $adminEmail, $cmsPassword)
+	{
 		$kparams = array();
-		$this->client->addParam( $kparams, 'partnerId', $partnerId );
-		$this->client->addParam( $kparams, 'adminEmail', $adminEmail );
-		$this->client->addParam( $kparams, 'cmsPassword', $cmsPassword );
-		$this->client->queueServiceActionCall( 'partner', 'getSecrets', 'KalturaPartner', $kparams );
-		if ( $this->client->isMultiRequest() ) {
+		$this->client->addParam($kparams, "partnerId", $partnerId);
+		$this->client->addParam($kparams, "adminEmail", $adminEmail);
+		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
+		$this->client->queueServiceActionCall("partner", "getSecrets", "KalturaPartner", $kparams);
+		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
-		}
-		$resultXml       = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement( $resultXml );
-		Kaltura_Client_ParseUtils::checkIfError( $resultXmlObject->result );
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject( $resultXmlObject->result, 'KalturaPartner' );
-		$this->client->validateObjectType( $resultObject, 'Kaltura_Client_Type_Partner' );
-
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaPartner");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_Partner");
 		return $resultObject;
 	}
 }

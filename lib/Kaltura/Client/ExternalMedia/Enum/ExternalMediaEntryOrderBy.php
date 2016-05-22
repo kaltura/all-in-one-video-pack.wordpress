@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,41 +28,42 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_ExternalMedia_Enum_ExternalMediaEntryOrderBy {
-	const CREATED_AT_ASC          = '+createdAt';
-	const DURATION_ASC            = '+duration';
-	const END_DATE_ASC            = '+endDate';
-	const LAST_PLAYED_AT_ASC      = '+lastPlayedAt';
-	const MEDIA_TYPE_ASC          = '+mediaType';
-	const MODERATION_COUNT_ASC    = '+moderationCount';
-	const NAME_ASC                = '+name';
-	const PARTNER_SORT_VALUE_ASC  = '+partnerSortValue';
-	const PLAYS_ASC               = '+plays';
-	const RANK_ASC                = '+rank';
-	const RECENT_ASC              = '+recent';
-	const START_DATE_ASC          = '+startDate';
-	const TOTAL_RANK_ASC          = '+totalRank';
-	const UPDATED_AT_ASC          = '+updatedAt';
-	const VIEWS_ASC               = '+views';
-	const WEIGHT_ASC              = '+weight';
-	const CREATED_AT_DESC         = '-createdAt';
-	const DURATION_DESC           = '-duration';
-	const END_DATE_DESC           = '-endDate';
-	const LAST_PLAYED_AT_DESC     = '-lastPlayedAt';
-	const MEDIA_TYPE_DESC         = '-mediaType';
-	const MODERATION_COUNT_DESC   = '-moderationCount';
-	const NAME_DESC               = '-name';
-	const PARTNER_SORT_VALUE_DESC = '-partnerSortValue';
-	const PLAYS_DESC              = '-plays';
-	const RANK_DESC               = '-rank';
-	const RECENT_DESC             = '-recent';
-	const START_DATE_DESC         = '-startDate';
-	const TOTAL_RANK_DESC         = '-totalRank';
-	const UPDATED_AT_DESC         = '-updatedAt';
-	const VIEWS_DESC              = '-views';
-	const WEIGHT_DESC             = '-weight';
+class Kaltura_Client_ExternalMedia_Enum_ExternalMediaEntryOrderBy
+{
+	const CREATED_AT_ASC = "+createdAt";
+	const DURATION_ASC = "+duration";
+	const END_DATE_ASC = "+endDate";
+	const LAST_PLAYED_AT_ASC = "+lastPlayedAt";
+	const MEDIA_TYPE_ASC = "+mediaType";
+	const MODERATION_COUNT_ASC = "+moderationCount";
+	const NAME_ASC = "+name";
+	const PARTNER_SORT_VALUE_ASC = "+partnerSortValue";
+	const PLAYS_ASC = "+plays";
+	const RANK_ASC = "+rank";
+	const RECENT_ASC = "+recent";
+	const START_DATE_ASC = "+startDate";
+	const TOTAL_RANK_ASC = "+totalRank";
+	const UPDATED_AT_ASC = "+updatedAt";
+	const VIEWS_ASC = "+views";
+	const WEIGHT_ASC = "+weight";
+	const CREATED_AT_DESC = "-createdAt";
+	const DURATION_DESC = "-duration";
+	const END_DATE_DESC = "-endDate";
+	const LAST_PLAYED_AT_DESC = "-lastPlayedAt";
+	const MEDIA_TYPE_DESC = "-mediaType";
+	const MODERATION_COUNT_DESC = "-moderationCount";
+	const NAME_DESC = "-name";
+	const PARTNER_SORT_VALUE_DESC = "-partnerSortValue";
+	const PLAYS_DESC = "-plays";
+	const RANK_DESC = "-rank";
+	const RECENT_DESC = "-recent";
+	const START_DATE_DESC = "-startDate";
+	const TOTAL_RANK_DESC = "-totalRank";
+	const UPDATED_AT_DESC = "-updatedAt";
+	const VIEWS_DESC = "-views";
+	const WEIGHT_DESC = "-weight";
 }
 

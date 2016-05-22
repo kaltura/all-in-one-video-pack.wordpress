@@ -27,38 +27,39 @@
 // @ignore
 // ===================================================================================================
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Configuration {
+class Kaltura_Client_Configuration
+{
 	private $logger;
 
-	public $serviceUrl = 'http://www.kaltura.com/';
-	public $partnerId = null;
-	public $format = Kaltura_Client_ClientBase::KALTURA_SERVICE_FORMAT_XML;
-	public $clientTag = 'php5zend:14-01-26';
-	public $curlTimeout = 120;
-	public $startZendDebuggerSession = false;
-	public $userAgent = '';
-	public $proxyHost = null;
-	public $proxyPort = null;
-	public $proxyType = 'HTTP';
-	public $proxyUser = null;
-	public $proxyPassword = '';
-	public $verifySSL = true;
-	public $sslCertificatePath = null;
-	public $requestHeaders = array();
-
+	public $serviceUrl    				= "http://www.kaltura.com/";
+	public $partnerId    				= null;
+	public $format        				= Kaltura_Client_ClientBase::KALTURA_SERVICE_FORMAT_XML;
+	public $clientTag 	  				= "php5zend:16-05-22";
+	public $curlTimeout   				= 120;
+	public $startZendDebuggerSession 	= false;
+	public $userAgent					= '';
+	public $proxyHost                   = null;
+	public $proxyPort                   = null;
+	public $proxyType                   = 'HTTP';
+	public $proxyUser                   = null;
+	public $proxyPassword               = '';
+	public $verifySSL 					= true;
+	public $sslCertificatePath			= null;
+	public $requestHeaders				= array();
+	
 	/**
 	 * Constructs new Kaltura configuration object
 	 *
 	 */
-	public function __construct( $partnerId = -1 ) {
-		if ( $partnerId && ! is_numeric( $partnerId ) ) {
-			throw new Kaltura_Client_ClientException( 'Invalid partner id', Kaltura_Client_ClientException::ERROR_INVALID_PARTNER_ID );
-		}
+	public function __construct($partnerId = -1)
+	{
+	    if ($partnerId && !is_numeric($partnerId))
+	        throw new Kaltura_Client_ClientException("Invalid partner id", Kaltura_Client_ClientException::ERROR_INVALID_PARTNER_ID);
 
-		$this->partnerId = $partnerId;
+	    $this->partnerId = $partnerId;
 	}
 
 	/**
@@ -66,7 +67,8 @@ class Kaltura_Client_Configuration {
 	 *
 	 * @param Kaltura_Client_ILogger $log
 	 */
-	public function setLogger( Kaltura_Client_ILogger $log ) {
+	public function setLogger(Kaltura_Client_ILogger $log)
+	{
 		$this->logger = $log;
 	}
 
@@ -75,7 +77,8 @@ class Kaltura_Client_Configuration {
 	 *
 	 * @return Kaltura_Client_ILogger
 	 */
-	public function getLogger() {
+	public function getLogger()
+	{
 		return $this->logger;
 	}
 }

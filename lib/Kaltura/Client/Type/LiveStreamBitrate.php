@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,56 +28,54 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_LiveStreamBitrate extends Kaltura_Client_ObjectBase
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaLiveStreamBitrate';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->bitrate ) ) {
-			$this->bitrate = (int) $xml->bitrate;
-		}
-		if ( count( $xml->width ) ) {
-			$this->width = (int) $xml->width;
-		}
-		if ( count( $xml->height ) ) {
-			$this->height = (int) $xml->height;
-		}
-		$this->tags = (string) $xml->tags;
+		
+		if(count($xml->bitrate))
+			$this->bitrate = (int)$xml->bitrate;
+		if(count($xml->width))
+			$this->width = (int)$xml->width;
+		if(count($xml->height))
+			$this->height = (int)$xml->height;
+		$this->tags = (string)$xml->tags;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $bitrate = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $width = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var int
 	 */
 	public $height = null;
 
 	/**
-	 *
+	 * 
 	 *
 	 * @var string
 	 */

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,48 +28,42 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaPlayableEntry';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->plays ) ) {
-			$this->plays = (int) $xml->plays;
-		}
-		if ( count( $xml->views ) ) {
-			$this->views = (int) $xml->views;
-		}
-		if ( count( $xml->lastPlayedAt ) ) {
-			$this->lastPlayedAt = (int) $xml->lastPlayedAt;
-		}
-		if ( count( $xml->width ) ) {
-			$this->width = (int) $xml->width;
-		}
-		if ( count( $xml->height ) ) {
-			$this->height = (int) $xml->height;
-		}
-		if ( count( $xml->duration ) ) {
-			$this->duration = (int) $xml->duration;
-		}
-		if ( count( $xml->msDuration ) ) {
-			$this->msDuration = (int) $xml->msDuration;
-		}
-		$this->durationType = (string) $xml->durationType;
+		
+		if(count($xml->plays))
+			$this->plays = (int)$xml->plays;
+		if(count($xml->views))
+			$this->views = (int)$xml->views;
+		if(count($xml->lastPlayedAt))
+			$this->lastPlayedAt = (int)$xml->lastPlayedAt;
+		if(count($xml->width))
+			$this->width = (int)$xml->width;
+		if(count($xml->height))
+			$this->height = (int)$xml->height;
+		if(count($xml->duration))
+			$this->duration = (int)$xml->duration;
+		if(count($xml->msDuration))
+			$this->msDuration = (int)$xml->msDuration;
+		$this->durationType = (string)$xml->durationType;
 	}
-
 	/**
 	 * Number of plays
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -78,7 +72,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * Number of views
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -87,7 +81,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The last time the entry was played
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -96,7 +90,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The width in pixels
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -105,7 +99,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The height in pixels
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -114,7 +108,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The duration in seconds
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -123,7 +117,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The duration in miliseconds
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 */
@@ -131,7 +125,7 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry {
 
 	/**
 	 * The duration type (short for 0-4 mins, medium for 4-20 mins, long for 20+ mins)
-	 *
+	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_DurationType
 	 * @readonly

@@ -28,10 +28,11 @@
 // ===================================================================================================
 /**
  * Implement to get Kaltura Client logs
- *
- * @package    Kaltura
+ * 
+ * @package Kaltura
  * @subpackage Client
  */
-interface Kaltura_Client_ILogger {
-	function log( $msg );
+interface Kaltura_Client_ILogger 
+{
+	function log($msg); 
 }

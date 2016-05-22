@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,32 +28,31 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAttributes {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAttributes
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaClipAttributes';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->offset ) ) {
-			$this->offset = (int) $xml->offset;
-		}
-		if ( count( $xml->duration ) ) {
-			$this->duration = (int) $xml->duration;
-		}
+		
+		if(count($xml->offset))
+			$this->offset = (int)$xml->offset;
+		if(count($xml->duration))
+			$this->duration = (int)$xml->duration;
 	}
-
 	/**
 	 * Offset in milliseconds
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 */
@@ -61,7 +60,7 @@ class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAt
 
 	/**
 	 * Duration in milliseconds
-	 *
+	 * 	 
 	 *
 	 * @var int
 	 */

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,33 +28,32 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaMixEntry';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( ! empty( $xml->hasRealThumbnail ) ) {
+		
+		if(!empty($xml->hasRealThumbnail))
 			$this->hasRealThumbnail = true;
-		}
-		if ( count( $xml->editorType ) ) {
-			$this->editorType = (int) $xml->editorType;
-		}
-		$this->dataContent = (string) $xml->dataContent;
+		if(count($xml->editorType))
+			$this->editorType = (int)$xml->editorType;
+		$this->dataContent = (string)$xml->dataContent;
 	}
-
 	/**
 	 * Indicates whether the user has submited a real thumbnail to the mix (Not the one that was generated automaticaly)
-	 *
+	 * 	 
 	 *
 	 * @var bool
 	 * @readonly
@@ -63,7 +62,7 @@ class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry {
 
 	/**
 	 * The editor type used to edit the metadata
-	 *
+	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_EditorType
 	 */
@@ -71,7 +70,7 @@ class Kaltura_Client_Type_MixEntry extends Kaltura_Client_Type_PlayableEntry {
 
 	/**
 	 * The xml data of the mix
-	 *
+	 * 	 
 	 *
 	 * @var string
 	 */

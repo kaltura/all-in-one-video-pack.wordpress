@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,34 +28,39 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin {
-	protected function __construct( Kaltura_Client_Client $client ) {
-		parent::__construct( $client );
+class Kaltura_Client_Document_Plugin extends Kaltura_Client_Plugin
+{
+	protected function __construct(Kaltura_Client_Client $client)
+	{
+		parent::__construct($client);
 	}
 
 	/**
 	 * @return Kaltura_Client_Document_Plugin
 	 */
-	public static function get( Kaltura_Client_Client $client ) {
-		return new Kaltura_Client_Document_Plugin( $client );
+	public static function get(Kaltura_Client_Client $client)
+	{
+		return new Kaltura_Client_Document_Plugin($client);
 	}
 
 	/**
 	 * @return array<Kaltura_Client_ServiceBase>
 	 */
-	public function getServices() {
-		$services = array();
-
+	public function getServices()
+	{
+		$services = array(
+		);
 		return $services;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function getName()
+	{
 		return 'document';
 	}
 }

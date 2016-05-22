@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2015  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -28,32 +28,41 @@
 // ===================================================================================================
 
 /**
- * @package    Kaltura
+ * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_LiveEntryFilter extends Kaltura_Client_Type_LiveEntryBaseFilter {
-	public function get_kaltura_object_type() {
+class Kaltura_Client_Type_LiveEntryFilter extends Kaltura_Client_Type_LiveEntryBaseFilter
+{
+	public function getKalturaObjectType()
+	{
 		return 'KalturaLiveEntryFilter';
 	}
-
-	public function __construct( SimpleXMLElement $xml = null ) {
-		parent::__construct( $xml );
-
-		if ( is_null( $xml ) ) {
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
 			return;
-		}
-
-		if ( count( $xml->isLive ) ) {
-			$this->isLive = (int) $xml->isLive;
-		}
+		
+		if(count($xml->isLive))
+			$this->isLive = (int)$xml->isLive;
+		if(count($xml->isRecordedEntryIdEmpty))
+			$this->isRecordedEntryIdEmpty = (int)$xml->isRecordedEntryIdEmpty;
 	}
-
 	/**
-	 *
+	 * 
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */
 	public $isLive = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $isRecordedEntryIdEmpty = null;
 
 
 }
