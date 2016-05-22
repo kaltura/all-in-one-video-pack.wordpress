@@ -69,7 +69,7 @@
 					<td>
 						<select name="default_player_type" id="default_player_type">
 
-							<?php foreach ( $this->players->objects as $player ): ?>
+							<?php foreach ( $this->players as $player ): ?>
 								<option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_default_player_type' ), $player->id ); ?>><?php echo esc_html( $player->name ); ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -80,11 +80,11 @@
 				<tr valign="top">
 					<td><label>Allow users to select existing media:</label></td>
 					<td>
-						<input type="radio" name="show_media_from" value="all_account" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'all_account' ); ?>/>
-						<label for="all_account">All media in publisher account</label>
+						<input type="radio" name="show_media_from" id="show_media_from_all_account" value="all_account" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'all_account' ); ?>/>
+						<label for="show_media_from_all_account">All media in publisher account</label>
 						<br />
-						<input type="radio" name="show_media_from" value="logged_in_user" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'logged_in_user' ); ?> />
-						<label for="logged_in_user">Only the user’s own media</label>
+						<input type="radio" name="show_media_from" id="show_media_from_logged_in_user" value="logged_in_user" <?php echo checked( KalturaHelpers::getOption( 'kaltura_show_media_from' ) === 'logged_in_user' ); ?> />
+						<label for="show_media_from_logged_in_user">Only the user’s own media</label>
 					</td>
 				</tr>
 
@@ -119,6 +119,19 @@
 					<td><label for="default_kcw_type">UICONF for Kaltura Contribution Wizard:</label></td>
 					<td>
 						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr( KalturaHelpers::getOption( 'kaltura_default_kcw_type', KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' ) ) ); ?>" />
+						<br />
+					</td>
+				</tr>
+
+
+				<tr valign="top" class="advanced available-players">
+					<td><label>Allowed players:</label></td>
+					<td>
+						<div class="players-scroll">
+						<?php foreach ( $this->players as $player ): ?>
+							<label><input type="checkbox" class="radio" value="<?php echo esc_attr( $player->id ); ?>" <?php echo checked(isset($this->allowedPlayers[$player->id])); ?> name="allowed_players[]" /><?php echo esc_html( $player->name ); ?></label>
+						<?php endforeach; ?>
+						</div>
 						<br />
 					</td>
 				</tr>

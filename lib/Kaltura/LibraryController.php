@@ -150,9 +150,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	}
 
 	public function getplayersAction() {
-		$kmodel  = KalturaModel::getInstance();
-		$uiConfs = $kmodel->listPlayersUiConfs();
-		echo json_encode( $uiConfs );
+		$players = KalturaHelpers::getAllowedPlayers();
+		echo json_encode( array_values( $players ) );
 		die;
 	}
 

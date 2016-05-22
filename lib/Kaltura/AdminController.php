@@ -175,6 +175,9 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$params                = array();
 		$params['error']       = null;
 		$params['showMessage'] = false;
+		$kmodel                = KalturaModel::getInstance();
+		$players               = $kmodel->listPlayersUiConfs();
+		$players               = $players->objects;
 		if ( count( $_POST ) ) {
 			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'info' )) {
 				print 'Sorry, your nonce did not verify.';
@@ -188,12 +191,22 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$showMediaFrom              = KalturaHelpers::getRequestPostParam( 'show_media_from' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
+			$allowedPlayers             = KalturaHelpers::getRequestPostParam( 'allowed_players' );
+			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
 			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
+
+			// only set allowed players when it was provided and when not all players were selected
+			if ( count( $allowedPlayers ) > 0 && count( $allowedPlayers ) < count( $players ) ) {
+				update_option( 'kaltura_allowed_players', array_values( $allowedPlayers ) );
+			} else {
+				// otherwise, we reset to empty array to allow all players
+				update_option( 'kaltura_allowed_players', array() );
+			}
 			$params['showMessage'] = true;
 		} else {
 			$kmodel = KalturaModel::getInstance();
@@ -204,14 +217,12 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			}
 		}
 
-		$kmodel                   = KalturaModel::getInstance();
-		$players                  = $kmodel->listPlayersUiConfs();
-		$kcws                     = $kmodel->listKCWUiConfs();
+		$allowedPlayers           = KalturaHelpers::getAllowedPlayers();
 		$categories               = $kmodel->generateRootTree();
 
 		$params['players']                  = $players;
-		$params['kcws']                     = $kcws;
 		$params['categories']               = $categories;
+		$params['allowedPlayers']           = $allowedPlayers;
 		$this->renderView( 'admin/info.php', $params );
 	}
 }

@@ -35,11 +35,11 @@
 
 		var _onPlayersLoadedSuccess = function (data) {
 			_hideLoader();
-			if (data && data.objects) {
-				_players = data.objects;
+			if (data) {
+				_players = data;
 				_$playersList.empty();
-				jQuery.each(data.objects, function (index) {
-					var player = data.objects[index];
+				jQuery.each(_players, function (index) {
+					var player = _players[index];
 					var option = jQuery('<option>');
 					option.attr('value', player.id);
 					if (player.id == options.defaultId)

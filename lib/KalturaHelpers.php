@@ -247,6 +247,24 @@ class KalturaHelpers {
 		);
 	}
 
+	public static function getAllowedPlayers() {
+		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_players' );
+		if (!$allowedPlayers)
+			$allowedPlayers = array();
+		/** @var array $allPlayers */
+		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
+		$allPlayers = $allPlayers->objects;
+		$players    = array();
+		foreach ( $allPlayers as $player ) {
+			if ( in_array( $player->id, $allowedPlayers ) || ! $allowedPlayers ) {
+				$players[ $player->id ] = $player;
+			}
+		}
+
+		return $players;
+	}
+
+
 	public static function getCountries() {
 		return array(
 			'AF' => 'Afghanistan (افغانستان)',
