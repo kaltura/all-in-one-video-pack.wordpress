@@ -195,6 +195,28 @@ class KalturaHelpers {
 		return $defaultSettings;
 	}
 
+	public static function isFeatureEnabled($name) {
+		$name = is_string( $name ) ? $name : null;
+		$features = self::getFeatures();
+		$optionFeatureName = 'kaltura_feature_'.$name;
+		$enabledByOption = get_option( $optionFeatureName, null );
+		if ( ! is_null( $enabledByOption ) ) {
+			return (bool)$enabledByOption;
+		}
+
+		$enabledByFilter = apply_filters($optionFeatureName, null);
+		if ( ! is_null( $enabledByFilter ) ) {
+			return (bool)$enabledByFilter;
+		}
+
+		return isset($features[$name]) ? (bool)$features[$name] : false;
+	}
+
+	public static function getFeatures() {
+		$defaultSettings = require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'features.php' );
+		return $defaultSettings;
+	}
+
 	public static function pluginUrl( $uri = '' ) {
 		// In addition to providing the produced url, also provide the $uri
 		return apply_filters( 'all_in_one_video_pack_plugin_url', plugins_url( $uri, KALTURA_PLUGIN_FILE ), $uri );
