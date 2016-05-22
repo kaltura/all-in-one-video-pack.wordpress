@@ -116,7 +116,7 @@
 										<?php endif; ?>
 									</div>
 									<div class="checkBox">
-										<input type="checkbox" name="makeResponsive">
+										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
 										<label for="makeResponsive">Make responsive</label>
 									</div>
 								</td>
@@ -163,6 +163,20 @@
 									jQuery("#playerWidthSmall").next().text("Small (304x258)");
 								}
 							}
+
+							function kaltura_updateResponsiveState() {
+								var $elements = jQuery();
+								$elements = $elements.add('#playerWidthLarge,#playerWidthMedium,#playerWidthSmall');
+								$elements = $elements.add('#playerWidthCustom,#playerCustomWidth');
+								if (jQuery('#makeResponsive').prop('checked')) {
+									jQuery("#playerWidthMedium").click();
+									$elements.prop('disabled', true);
+								}
+								else {
+									$elements.prop('disabled', false);
+								}
+
+							}
 						</script>
 					</td>
 				</tr>
@@ -175,6 +189,7 @@
 	<script type="text/javascript">
 		jQuery(function () {
 			kaltura_updateRatio();
+			kaltura_updateResponsiveState();
 
 			jQuery("#playerCustomWidth").click(function () {
 				jQuery(this).siblings("[type=radio]").attr("checked", "checked");
