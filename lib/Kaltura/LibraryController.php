@@ -125,6 +125,19 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$isLibrary    = (bool) KalturaHelpers::getRequestParam( 'isLibrary', false );
 		$categoryIds  = array_map( 'absint', KalturaHelpers::getRequestParam( 'categoryvar', array() ) );
 		$searchString = sanitize_text_field( KalturaHelpers::getRequestParam( 'search' ) );
+		$allowedOwnerTypes = array(
+				'all-media',
+				'my-media',
+				'media-publish',
+				'media-edit',
+		);
+		$ownerType = in_array( KalturaHelpers::getRequestParam( 'ownertype' ), $allowedOwnerTypes) ? KalturaHelpers::getRequestParam( 'ownertype' ) : null;
+
+		// if only logger-in option is enabled, do no allow viewing all media
+		if($ownerType === 'all-media' &&
+		   KalturaHelpers::getOption('kaltura_show_media_from') === 'logged_in_user') {
+			$ownerType = 'my-media';
+		}
 
 		if ( $isLibrary ) {
 			$pageSize = 16;
@@ -133,7 +146,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		}
 
 		$kmodel     = KalturaModel::getInstance();
-		$result     = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString );
+		$result     = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 		$totalCount = $result->totalCount;
 
 		$params['page']               = $page;
@@ -146,6 +159,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['selectedCategories'] = $categoryIds;
 		$params['searchWord']         = $searchString;
 		$params['postId']             = KalturaHelpers::getRequestParam( 'post_id' );
+		$params['filterOwnerType']    = $ownerType;
 		$this->renderView( 'library/browse.php', $params );
 	}
 

@@ -23,7 +23,8 @@ form.kaltura-form {
 
 .kaltura-pager {
 	text-align: center;
-	float:      left;
+	float: right;
+	margin-right: 6%;
 }
 
 /* general for tabs */
@@ -369,6 +370,10 @@ ul#kaltura-browse li input.sendButton {
 }
 
 /* settings info page */
+.settings_page_kaltura_options select {
+	width: 420px;
+}
+
 .settings_page_kaltura_options tr.advanced {
 	display: none;
 }
@@ -382,8 +387,17 @@ ul#kaltura-browse li input.sendButton {
 	font-weight: bold;
 }
 
-.settings_page_kaltura_options .parmalink_row label {
-	padding-top: 4px;
+.settings_page_kaltura_options .available-players .players-scroll {
+	max-height: 120px;
+	width: 420px;
+	overflow-y: auto;
+}
+
+.settings_page_kaltura_options .available-players .players-scroll label {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: block;
 }
 
 /*--------------------------------
@@ -476,6 +490,11 @@ ul#kaltura-browse li input.sendButton {
 	width: 450px;
 }
 
+.filter-side {
+	width: 25%;
+	float: left;
+}
+
 .filter-category-label {
 	top:      -6px;
 	position: relative;
@@ -487,14 +506,9 @@ ul#kaltura-browse li input.sendButton {
 	box-shadow:         0 0 12px #CCCC00;
 }
 
-.filter-categories-header {
-	float: left;
-	width: 29%;
-}
-
 .entry-search-filter {
 	float: right;
-	width: 30%;
+	margin-right: 6%;
 }
 
 .kaltura-caret {
@@ -507,38 +521,27 @@ ul#kaltura-browse li input.sendButton {
 	margin-right: 3px;
 }
 
+#filter-media-owner-type-wrap label {
+	display: block;
+}
+
+#filter-media-owner-type-wrap {
+	margin-bottom: 15px;
+}
+
 #filter-categories {
-	clear:      both;
 	padding:    15px;
+	margin-right: 20px;
 	height:     100%;
 	max-height: 500px;
-	width:      20%;
 	overflow:   auto;
-	float:      left;
 	border:     1px solid #d5d2ca;
 }
 
-#filter-categories-title {
-	float: left;
-}
-
-#kaltura-filter-categories {
-	margin:    0px;
-	float:     left;
-	min-width: 100%;
-}
-
-#kaltura-filter-categories p.info {
-	width:      31%;
-	text-align: center;
-	float:      left;
-	margin:     0px;
-}
-
 #filter-categories-button {
-	float:    right;
-	right:    20%;
-	position: relative;
+	width: 80px;
+	margin: 0 auto;
+	display: block;
 }
 
 /** CSS for iframe when uploading media to post. */
@@ -561,7 +564,7 @@ ul#kaltura-browse li input.sendButton {
 	height: 16px;
 }
 
-.kaltura-tab .filter-categories-header {
+.kaltura-tab #filter-categories-header {
 	width: 45%;
 }
 

@@ -107,7 +107,7 @@ class KalturaModel {
 		return $this->_client->baseEntry->update( $baseEntryId, $baseEntry );
 	}
 
-	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $word ) {
+	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $word, $ownerType ) {
 		$page       = intval( $page );
 		$pageSize   = intval( $pageSize );
 		$word       = sanitize_text_field( $word );
@@ -116,9 +116,29 @@ class KalturaModel {
 
 		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = '-createdAt';
-		$filter->typeIn  = Kaltura_Client_Enum_EntryType::MEDIA_CLIP;
-		if(KalturaHelpers::getOption('kaltura_show_media_from') === 'logged_in_user') {
-			$filter->userIdEqual = KalturaHelpers::getLoggedUserId();
+
+		$types = array(
+				Kaltura_Client_Enum_EntryType::MEDIA_CLIP
+		);
+		if ( KalturaHelpers::isFeatureEnabled( 'youtube_entries' ) ) {
+			$types[] = Kaltura_Client_Enum_EntryType::EXTERNAL_MEDIA;
+		}
+		$filter->typeIn = implode( ',', $types );
+
+		switch($ownerType)
+		{
+			case 'all-media':
+				// default filter
+				break;
+			case 'my-media':
+				$filter->userIdEqual = KalturaHelpers::getLoggedUserId();
+				break;
+			case 'media-publish':
+				$filter->entitledUsersPublishMatchAnd = KalturaHelpers::getLoggedUserId();
+				break;
+			case 'media-edit':
+				$filter->entitledUsersEditMatchAnd = KalturaHelpers::getLoggedUserId();
+				break;
 		}
 
 		if ( $rootCategory )

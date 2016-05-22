@@ -286,6 +286,37 @@ class KalturaHelpers {
 		return $players;
 	}
 
+	/**
+	 * Create string of media categories that assigned to the entry.
+	 *
+	 * @param Kaltura_Client_Type_BaseEntry $baseEntry
+	 * @return array
+	 */
+	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry, $maxCategories = 14 ) {
+		$rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
+		if ( $baseEntry->categories ) {
+			$mediaCategories = explode( ',', $baseEntry->categories );
+			$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
+			foreach ( $mediaCategories as $key => $mediaCategory ) {
+				if ( $rootCategory ) {
+					$pos = strpos( $mediaCategory, '>' );
+					if ( $pos !== false ) {
+						$fullEntryCategoryWithoutRoot = substr( $mediaCategory, $pos + 1 );
+					}
+				} else {
+					$fullEntryCategoryWithoutRoot = $mediaCategory;
+				}
+
+				$fullEntryCategoryWithoutRoot = str_replace( '>', ' > ', $fullEntryCategoryWithoutRoot );
+				$fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; ' . $fullEntryCategoryWithoutRoot;
+				$mediaCategories[$key] = $fullEntryCategoryWithoutRoot;
+			}
+			$mediaCategories = join( '&#10;', $mediaCategories );
+		} else {
+			$mediaCategories = 'No Category';
+		}
+		return $mediaCategories;
+	}
 
 	public static function getCountries() {
 		return array(

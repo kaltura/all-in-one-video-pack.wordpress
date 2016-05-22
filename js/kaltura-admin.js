@@ -36,7 +36,7 @@
 			}
 		});
 
-		$('#clear_categories').on('click', function () {
+		$('#clear-categories').on('click', function () {
 			$('#filter-categories .filter-category-input').removeAttr('checked');
 			$('#filter-categories-button').click();
 		});
@@ -54,6 +54,10 @@
 					$(inputElement).prop('checked', $(that).prop('checked'));
 				}
 			});
+		});
+
+		$('#filter-media-owner-type').on('change', function () {
+			$('#filter-categories-button').click();
 		});
 	});
 
