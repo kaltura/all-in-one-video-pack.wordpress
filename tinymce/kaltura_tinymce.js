@@ -128,6 +128,8 @@
 					img.addClass('kaltura_uiconfid_' + attribs['uiconfid']);
 				if (attribs['entryid'])
 					img.addClass('kaltura_entryid_' + attribs['entryid']);
+				if (attribs['responsive'])
+					img.addClass('kaltura_responsive_' + attribs['responsive']);
 
 				img.attr('name', 'mce_plugin_kaltura_desc');
 				img.attr('width', attribs['width']);
@@ -185,6 +187,10 @@
 									case 'entryid':
 										if (classValue)
 											widgetAttribs.entryid = classValue;
+										break;
+									case 'responsive':
+										if (classValue)
+											widgetAttribs.responsive = classValue;
 										break;
 								}
 							}
