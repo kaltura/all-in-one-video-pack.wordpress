@@ -10,7 +10,7 @@ Author URI: http://www.kaltura.org/
 
 define( 'KALTURA_PLUGIN_FILE', __FILE__ );
 define( 'KALTURA_ROOT', dirname( __FILE__ ) );
-define( 'KALTURA_PLUGIN_VERSION', '2.6' );
+define( 'KALTURA_PLUGIN_VERSION', '2.6.1' );
 
 require_once( KALTURA_ROOT . '/lib/Kaltura/Autoloader.php' );
 
