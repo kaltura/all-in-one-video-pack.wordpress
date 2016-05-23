@@ -101,9 +101,7 @@
 							<tr>
 								<td style="padding-bottom:22px;" colspan="2">
 									<?php if ($this->isLibrary) ?>
-									<label for="ktitle">Title:</label>
-									<input type="text" name="ktitle" id="ktitle" size="32" value="<?php echo esc_attr( $this->entry->name ); ?>" style="margin-left:6px;" />
-									<span style="color:red; font-size: 20px; font-weight: bold; display: none; line-height: 20px">*</span>
+									<span>Title: <?php echo esc_attr( $this->entry->name ); ?></span>
 								</td>
 							</tr>
 							<tr>
@@ -183,11 +181,6 @@
 			});
 
 			jQuery("input[type=submit]").click(function () {
-				jQuery("#ktitle").css("border-color", "").siblings("span").hide();
-				if (jQuery("#ktitle").val().replace(/ /g, "").length == 0) {
-					jQuery("#ktitle").css("border-color", "red").siblings("span").show();
-					return false;
-				}
 				jQuery("#playerWidthCustom").val(jQuery("#playerCustomWidth").val());
 				if (jQuery("#playerWidthCustom").attr("checked")) {
 					customWidth = jQuery("#playerCustomWidth").val();
