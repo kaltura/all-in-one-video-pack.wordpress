@@ -197,6 +197,10 @@ ul#kaltura-browse li input.sendButton {
 }
 
 /* edit & send tabs */
+#send-to-editor .form-table {
+	max-width: 1000px;
+}
+
 #send-to-editor {
 	border: solid 1px #AED3E3;
 }

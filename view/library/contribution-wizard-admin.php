@@ -5,27 +5,7 @@ $this->renderView( 'contribution-wizard.php' );
 ?>
 
 <script type="text/javascript">
-	jQuery('body').css('overflow', 'hidden');
-
-	var cwWidth = 790;
-	var cwHeight = 360;
 	var entryIds = [];
-	//debugger;
-	var topWindow = Kaltura.getTopWindow();
-	topWindow.Kaltura.unbindOverlayClick();
-
-	topWindow.Kaltura.hackModalBoxWp26();
-
-	// fix for IE6, scroll the page up so modal would animate in the center of the window
-	if (jQuery.browser.msie && jQuery.browser.version < 7)
-		topWindow.scrollTo(0, 0);
-
-	topWindow.Kaltura.animateModalSize(
-		cwWidth,
-		cwHeight + 8,
-		function () {
-		}
-	);
 
 	function kaltura_onContributionWizardAfterAddEntry(obj) {
 		if (obj && obj.length > 0) {

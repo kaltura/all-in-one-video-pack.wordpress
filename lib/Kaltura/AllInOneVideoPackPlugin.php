@@ -77,6 +77,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		wp_register_script( 'kaltura-jquery-validate', KalturaHelpers::jsUrl( 'js/jquery.validate.min.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 
 		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KALTURA_PLUGIN_VERSION, false );
+		wp_enqueue_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KALTURA_PLUGIN_VERSION, false );
 		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
 
 		wp_enqueue_style( 'kaltura' );
@@ -96,23 +97,12 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function mediaButtonsContextFilter( $content ) {
-		global $post_ID, $temp_ID;
-
-		$uploading_iframe_ID       = (int) ( 0 == $post_ID ? $temp_ID : $post_ID );
-		$media_upload_iframe_src   = admin_url("media-upload.php?post_id=$uploading_iframe_ID");
-		$kaltura_iframe_src        = apply_filters( 'kaltura_iframe_src', "$media_upload_iframe_src&amp;tab=kaltura_upload" );
 		$kaltura_title             = esc_attr__( 'Add Kaltura Media' );
 		$kaltura_button_src        = KalturaHelpers::getPluginUrl() . '/images/kaltura_button.png';
-        $kaltura_iframe_src_final  = $kaltura_iframe_src . "&amp;TB_iframe=true&amp;height=500&amp;width=840";
 
-        $content .= '<a
-		    href="' . esc_url($kaltura_iframe_src_final) . '"
-		    class="thickbox"
-		    title="' . esc_attr__($kaltura_title) . '">
-		        <img src="' . esc_url($kaltura_button_src) . '"
-		        alt="' . esc_attr__($kaltura_title) . '" />
-		    </a>';
-
+		$content .= '<a id="kaltura-media-button" href="#" title="' . esc_attr__($kaltura_title) . '">
+						<img src="' . esc_url($kaltura_button_src) . '" alt="' . esc_attr__($kaltura_title) . '" />
+					</a>';
 
 		return $content;
 	}

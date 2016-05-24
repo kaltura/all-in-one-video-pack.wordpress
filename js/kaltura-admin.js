@@ -158,5 +158,18 @@
 				deleteEntry(entryId);
 			});
 		}
+
+		$(document.body).on('click', '#kaltura-media-button', function (event) {
+			var elem = $(event.currentTarget),
+					editor = elem.data('editor'),
+					options = {
+						state: 'iframe:kaltura_upload'
+					};
+
+			event.preventDefault();
+
+			wp.media.editor.open(editor, options);
+			wp.media.editor.get(editor).setState('iframe:kaltura_upload');
+		});
 	});
 })(jQuery);
