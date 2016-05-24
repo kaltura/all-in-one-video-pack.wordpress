@@ -1,4 +1,8 @@
 <?php KalturaHelpers::protectView( $this ); ?>
+<?php
+$rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
+$rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0;
+?>
 <ul id="filter-categories">
 	<?php
 	$categories = $this->filters->objects;

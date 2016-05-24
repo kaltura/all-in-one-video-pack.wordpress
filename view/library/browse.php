@@ -1,7 +1,5 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' ); ?>
-<?php $rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
-$rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0; ?>
 <?php if (!$this->isLibrary): ?>
 	<?php media_upload_header(); ?>
 <?php endif; ?>
