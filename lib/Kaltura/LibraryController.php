@@ -5,6 +5,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	protected function allowedActions() {
 		return array(
 			'upload',
+			'edit',
 			'delete',
 			'sendtoeditor',
 			'library',
@@ -31,6 +32,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	}
 
 	public function uploadAction() {
+		wp_enqueue_script( 'kaltura-jquery.fileupload-kaltura-base' );
+		wp_enqueue_style( 'kaltura-jquery.fileupload-ui-kaltura' );
+
 		$kmodel      = KalturaModel::getInstance();
 		$pingSuccess = $kmodel->pingTest();
 		if ( ! $pingSuccess ) {
@@ -49,7 +53,41 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['flashVars']['categoriesRootId'] = $rootCategory;
 		$params['swfUrl']                        = KalturaHelpers::getContributionWizardUrl( $kcwUiConfId );
 		$params['rootCategory']                  = $rootCategory;
-		$this->renderView( 'library/contribution-wizard-admin.php', $params );
+		$params['fileUploadParams']              = KalturaHelpers::getFileUploadParams( $ks );
+		if ( KalturaHelpers::getOption('kaltura_enable_kcw') ) {
+			$this->renderView( 'library/contribution-wizard-admin.php', $params );
+		} else {
+			$this->renderView( 'library/upload.php', $params );
+		}
+	}
+
+	public function editAction() {
+		$entryId = KalturaHelpers::getRequestParam( 'entryid' );
+		$kmodel  = KalturaModel::getInstance();
+		$params  = array();
+		if ( count( $_POST ) ) {
+			$entryUpdate              = new Kaltura_Client_Type_BaseEntry();
+			$entryUpdate->name        = KalturaHelpers::getRequestPostParam( 'entry-title' );
+			$entryUpdate->description = KalturaHelpers::getRequestPostParam( 'entry-description' );
+			$kmodel->updateBaseEntry( $entryId, $entryUpdate );
+			$redirectUrl           = wp_sanitize_redirect( KalturaHelpers::generateTabUrl( array(
+					'tab'        => 'kaltura_upload',
+					'kaction'    => 'sendtoeditor',
+					'firstedit'  => 'true',
+					'entryIds' => array( $entryId )
+			) ) );
+			$params['redirectUrl'] = $redirectUrl;
+		} else {
+			$entry             = $kmodel->getEntry( $entryId );
+			$params['entry']   = $entry;
+			$params['formUrl'] = KalturaHelpers::generateTabUrl(
+					array(
+							'tab'     => 'kaltura_upload',
+							'kaction' => 'edit',
+							'entryid' => $entryId,
+					) );
+		}
+		$this->renderView( 'library/edit.php', $params );
 	}
 
 	public function deleteAction() {

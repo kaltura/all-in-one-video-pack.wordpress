@@ -17,6 +17,17 @@ form.kaltura-form {
 	margin: 0;
 }
 
+.kaltura-edit-entry-form {
+	padding: 0 16px;
+}
+.kaltura-edit-entry-form #entry-title {
+	max-width: 400px;
+}
+
+.kaltura-edit-entry-form #entry-description {
+	max-width: 400px;
+}
+
 .media_page_interactive_video_library .column-posts {
 	width: 5em;
 }

@@ -10,16 +10,22 @@ class KalturaHelpers {
 		return $config;
 	}
 
-	public static function getServerUrl() {
+	public static function getServerUrl($path = null) {
 		$url =  KalturaHelpers::getOption( 'server_url' );
+		$url = rtrim( $url, '/' );
+		if ($path)
+			$url .= $path;
 
-		return esc_url_raw( rtrim( $url, '/' ) );
+		return esc_url_raw( $url );
 	}
 
-	public static function getCdnUrl() {
+	public static function getCdnUrl($path = null) {
 		$url = KalturaHelpers::getOption( 'cdn_url' );
+		$url = rtrim( $url, '/' );
+		if ($path)
+			$url .= $path;
 
-		return esc_url_raw ( rtrim( $url, '/' ) );
+		return esc_url_raw( $url );
 	}
 
 	public static function getLoggedUserId() {
@@ -124,6 +130,28 @@ class KalturaHelpers {
 
 	public static function getContributionWizardUrl( $uiConfId ) {
 		return esc_url_raw ( KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
+	}
+
+	public static function getFileUploadParams( $ks ) {
+		$params = array(
+				'maxChunkSize'                     => 3000000,
+				'dynamicChunkSizeInitialChunkSize' => 1000000,
+				'dynamicChunkSizeThreshold'        => 50000000,
+				'dynamixChunkSizeMaxTime'          => 30,
+				'host'                             => KalturaHelpers::getServerUrl(),
+				'apiURL'                           => KalturaHelpers::getServerUrl( '/api_v3/' ),
+				'url'                              => KalturaHelpers::getServerUrl( '/api_v3/?service=uploadToken&action=upload&format=1' ),
+				'ks'                               => $ks,
+				'fileTypes'                        => '*.mts;*.MTS;*.qt;*.mov;*.mpg;*.avi;*.mp3;*.m4a;*.wav;*.mp4;*.wma;*.vob;*.flv;*.f4v;*.asf;*.qt;*.mov;*.mpeg;*.avi;*.wmv;*.m4v;*.3gp;*.jpg;*.jpeg;*.bmp;*.png;*.gif;*.tif;*.tiff;*.mkv;*.QT;*.MOV;*.MPG;*.AVI;*.MP3;*.M4A;*.WAV;*.MP4;*.WMA;*.VOB;*.FLV;*.F4V;*.ASF;*.QT;*.MOV;*.MPEG;*.AVI;*.WMV;*.M4V;*.3GP;*.JPG;*.JPEG;*.BMP;*.PNG;*.GIF;*.TIF;*.TIFF;*.MKV;*.AIFF;*.arf;*.ARF;*.webm;*.WEBM;*.rm;*.RM;*.ra;*.RA;*.RV;*.rv;*.aiff',
+				'context'                          => '',
+				'categoryId'                       => - 1,
+				'messages'                         => array(
+						'acceptFileTypes' => 'File type not allowed',
+						'maxFileSize'     => 'File is too large',
+						'minFileSize'     => 'File is too small'
+				)
+		);
+		return $params;
 	}
 
 	public static function calculatePlayerHeight( $player, $width, $playerRatio = '4:3' ) {
