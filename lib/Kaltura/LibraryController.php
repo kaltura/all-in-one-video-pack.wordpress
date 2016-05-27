@@ -101,7 +101,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$width       = KalturaHelpers::getRequestPostParam( 'playerWidth' );
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
-			$isResponsive = !empty(KalturaHelpers::getRequestPostParam( 'makeResponsive' ));
+
+			$varMakeResponsive = KalturaHelpers::getRequestPostParam( 'makeResponsive' );
+			$isResponsive = !empty($varMakeResponsive);
 
 			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
 
