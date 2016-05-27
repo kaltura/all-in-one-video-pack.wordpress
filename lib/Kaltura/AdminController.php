@@ -158,10 +158,8 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 
 			$config               = KalturaHelpers::getKalturaConfiguration();
 			$config->partnerId    = 0; // no need to pass partner id for ping
-			$config->subPartnerId = 0;
-			$kalturaClient        = new KalturaWordpressClientBase( $config );
 			$kmodel               = KalturaModel::getInstance();
-			$params['pingOk']     = $kmodel->pingTest( $kalturaClient );
+			$params['pingOk']     = $kmodel->pingTest();
 		}
 
 		$params['countries'] = KalturaHelpers::getCountries();
