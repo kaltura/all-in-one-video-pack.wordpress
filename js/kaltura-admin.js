@@ -174,6 +174,15 @@
 
 			wp.media.editor.open(editor, options);
 			wp.media.editor.get(editor).setState('iframe:kaltura_upload');
+
+			// after adding a media to a post, the iframe will be set to the send to editor page.
+			// we should re-render the iframe view to reset it to the original upload url.
+			var frame = wp.media.editor.get(editor).state('iframe:kaltura_upload').frame;
+			if (frame.views) {
+				var iframe = frame.views.first('.media-frame-content');
+				if (iframe)
+					iframe.render();
+			}
 		});
 	});
 })(jQuery);
