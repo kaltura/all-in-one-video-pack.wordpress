@@ -193,12 +193,14 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 			$allowedPlayers             = KalturaHelpers::getRequestPostParam( 'allowed_players' );
 			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
+			$enableKcw                  = KalturaHelpers::getRequestPostParam( 'enable_kcw' );
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
 			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
+			update_option( 'kaltura_enable_kcw', (bool)$enableKcw);
 
 			// only set allowed players when it was provided and when not all players were selected
 			if ( count( $allowedPlayers ) > 0 && count( $allowedPlayers ) < count( $players ) ) {

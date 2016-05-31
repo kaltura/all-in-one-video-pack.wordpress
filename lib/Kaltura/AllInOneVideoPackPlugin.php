@@ -76,10 +76,34 @@ class Kaltura_AllInOneVideoPackPlugin {
 		wp_register_script( 'kaltura-editable-name', KalturaHelpers::jsUrl( 'js/kaltura-editable-name.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 		wp_register_script( 'kaltura-jquery-validate', KalturaHelpers::jsUrl( 'js/jquery.validate.min.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 
+		// bootstrap
+		wp_register_style( 'kaltura-bootstrap', KalturaHelpers::cssUrl( 'bootstrap/css/bootstrap.min.css' ), array(), KALTURA_PLUGIN_VERSION );
+		wp_register_script( 'kaltura-bootstrap', KalturaHelpers::jsUrl( 'bootstrap/js/bootstrap.js' ), array(), KALTURA_PLUGIN_VERSION );
+
+		// chunked-file-upload-jquery
+		wp_register_script( 'kaltura-jquery.ui.widget', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.ui.widget.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.iframe-transport', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.iframe-transport.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-webtoolkit.md5', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/webtoolkit.md5.js' ), array(), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.fileupload-process', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.fileupload-process.js' ), array('kaltura-jquery.fileupload'), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.fileupload-validate', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.fileupload-validate.js' ), array('kaltura-jquery.fileupload'), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.fileupload-kaltura-base', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.fileupload-kaltura-base.js' ), array( 'kaltura-jquery.fileupload-kaltura'), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.fileupload', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.fileupload.js' ), array(
+				'kaltura-jquery.ui.widget',
+				'kaltura-jquery.iframe-transport',
+				'kaltura-webtoolkit.md5',
+		), KALTURA_PLUGIN_VERSION, true );
+		wp_register_script( 'kaltura-jquery.fileupload-kaltura', KalturaHelpers::jsUrl( 'chunked-file-upload-jquery/js/jquery.fileupload-kaltura.js' ), array(
+				'kaltura-jquery.fileupload',
+				'kaltura-jquery.fileupload-process',
+				'kaltura-jquery.fileupload-validate',
+		), KALTURA_PLUGIN_VERSION, true );
+		wp_register_style( 'kaltura-jquery.fileupload-ui', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui.css' ), array( ), KALTURA_PLUGIN_VERSION );
+		wp_register_style( 'kaltura-jquery.fileupload-ui-kaltura', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui-kaltura.css' ), array( 'kaltura-jquery.fileupload-ui', 'kaltura-bootstrap' ), KALTURA_PLUGIN_VERSION );
+
 		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KALTURA_PLUGIN_VERSION, false );
 		wp_enqueue_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KALTURA_PLUGIN_VERSION, false );
-		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
 
+		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
 		wp_enqueue_style( 'kaltura' );
 	}
 

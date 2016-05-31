@@ -58,6 +58,9 @@ class KalturaSanitizer {
 				case 'entryIds':
 					$newValue = array_map('sanitize_key', $value);
 					break;
+				case 'entryid':
+					$newValue = sanitize_key($value);
+					break;
 			}
 
 			if ( $newValue !== null ) {
