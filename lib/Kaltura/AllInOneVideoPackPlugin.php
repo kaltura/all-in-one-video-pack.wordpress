@@ -123,8 +123,9 @@ class Kaltura_AllInOneVideoPackPlugin {
 	public function mediaButtonsContextFilter( $content ) {
 		$kaltura_title             = esc_attr__( 'Add Kaltura Media' );
 		$kaltura_button_src        = KalturaHelpers::getPluginUrl() . '/images/kaltura_button.png';
+		$default_screen            = KalturaHelpers::getOption('kaltura_button_behavior');
 
-		$content .= '<a id="kaltura-media-button" href="#" title="' . esc_attr__($kaltura_title) . '">
+		$content .= '<a id="kaltura-media-button" data-default-screen="' . esc_attr($default_screen) . '" href="#" title="' . esc_attr__($kaltura_title) . '">
 						<img src="' . esc_url($kaltura_button_src) . '" alt="' . esc_attr__($kaltura_title) . '" />
 					</a>';
 

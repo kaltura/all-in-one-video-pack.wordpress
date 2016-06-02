@@ -84,6 +84,13 @@ class KalturaModel {
 		return sanitize_text_field( $decoded_str );
 	}
 
+	/**
+	 * @param $partnerId
+	 * @param $email
+	 * @param $password
+	 *
+	 * @return Kaltura_Client_Type_Partner
+	 */
 	public function getSecrets( $partnerId, $email, $password ) {
 		$email     = sanitize_email( $email );
 		$password  = sanitize_text_field( $password );
@@ -95,18 +102,38 @@ class KalturaModel {
 		return $this->_client->partner->getSecrets( $partnerId, $email, $password );
 	}
 
+	/**
+	 * @param $entryId
+	 *
+	 * @return Kaltura_Client_Type_BaseEntry
+	 */
 	public function getEntry( $entryId ) {
 		$entryId = sanitize_key( $entryId );
 
 		return $this->_client->baseEntry->get( $entryId );
 	}
 
+	/**
+	 * @param $baseEntryId
+	 * @param Kaltura_Client_Type_BaseEntry $baseEntry
+	 *
+	 * @return Kaltura_Client_Type_BaseEntry
+	 */
 	public function updateBaseEntry( $baseEntryId, Kaltura_Client_Type_BaseEntry $baseEntry ) {
 		$baseEntryId = sanitize_key( $baseEntryId );
 
 		return $this->_client->baseEntry->update( $baseEntryId, $baseEntry );
 	}
 
+	/**
+	 * @param $pageSize
+	 * @param $page
+	 * @param $categoryIds
+	 * @param $word
+	 * @param $ownerType
+	 *
+	 * @return Kaltura_Client_Type_BaseEntryListResponse
+	 */
 	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $word, $ownerType ) {
 		$page       = intval( $page );
 		$pageSize   = intval( $pageSize );
@@ -199,6 +226,9 @@ class KalturaModel {
 		return $this->_client->category->listAction( $filter, $this->getMaxPager() );
 	}
 
+	/**
+	 * @return Kaltura_Client_Type_UiConfListResponse
+	 */
 	public function listPlayersUiConfs() {
 		$filter                 = new Kaltura_Client_Type_UiConfFilter();
 		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;

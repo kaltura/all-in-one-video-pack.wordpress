@@ -13,4 +13,5 @@ return array(
 	'kaltura_default_player_type'  => 11958362, // default player if player was not chosen in plugin admin screen
 	'kaltura_show_media_from'	   => 'all_account', // when browsing media - should the media be from the whole account or just the logged in user's?
 	'kaltura_enable_kcw'           => false, // enables the legacy flash uploader instead of html5 uploader
+	'kaltura_button_behavior'      => 'upload', // can be set to 'upload' or 'browse'
 );

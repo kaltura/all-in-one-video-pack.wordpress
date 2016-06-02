@@ -65,10 +65,9 @@
 				</tr>
 
 				<tr valign="top">
-					<td><label>Default player design:</label></td>
+					<td><label for="default_player_type">Default player design:</label></td>
 					<td>
 						<select name="default_player_type" id="default_player_type">
-
 							<?php foreach ( $this->players as $player ): ?>
 								<option id="default_player_type_<?php echo esc_attr( $player->id ); ?>" value="<?php echo esc_attr( $player->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_default_player_type' ), $player->id ); ?>><?php echo esc_html( $player->name ); ?></option>
 							<?php endforeach; ?>
@@ -141,6 +140,17 @@
 						<?php endforeach; ?>
 						</div>
 						<br />
+					</td>
+				</tr>
+
+				<tr valign="top" class="advanced">
+					<td><label>Kaltura Button Behavior:</label></td>
+					<td>
+						<input type="radio" name="button_behavior" id="button_behavior_upload" value="upload" <?php echo checked( KalturaHelpers::getOption( 'kaltura_button_behavior' ) === 'upload' ); ?>/>
+						<label for="button_behavior_upload">Open Upload Popup</label>
+						<br />
+						<input type="radio" name="button_behavior" id="button_behavior_browse" value="browse" <?php echo checked( KalturaHelpers::getOption( 'kaltura_button_behavior' ) === 'browse' ); ?> />
+						<label for="button_behavior_browse">Open Browse Popup</label>
 					</td>
 				</tr>
 
