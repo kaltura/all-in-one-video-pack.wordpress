@@ -143,6 +143,17 @@
 					</td>
 				</tr>
 
+				<tr valign="top" class="advanced">
+					<td><label>Kaltura Button Behavior:</label></td>
+					<td>
+						<input type="radio" name="button_behavior" id="button_behavior_upload" value="upload" <?php echo checked( KalturaHelpers::getOption( 'kaltura_button_behavior' ) === 'upload' ); ?>/>
+						<label for="button_behavior_upload">Open Upload Popup</label>
+						<br />
+						<input type="radio" name="button_behavior" id="button_behavior_browse" value="browse" <?php echo checked( KalturaHelpers::getOption( 'kaltura_button_behavior' ) === 'browse' ); ?> />
+						<label for="button_behavior_browse">Open Browse Popup</label>
+					</td>
+				</tr>
+
 				<tr>
 					<td colspan="2">
 						<br />

@@ -164,20 +164,27 @@
 		}
 
 		$(document.body).on('click', '#kaltura-media-button', function (event) {
+			var defaultScreen = $(this).data('default-screen');
+			var state;
+			if (defaultScreen == 'browse')
+				state = 'iframe:kaltura_browse';
+			else
+				state = 'iframe:kaltura_upload';
+
 			var elem = $(event.currentTarget),
 					editor = elem.data('editor'),
 					options = {
-						state: 'iframe:kaltura_upload'
+						state: state
 					};
 
 			event.preventDefault();
 
 			wp.media.editor.open(editor, options);
-			wp.media.editor.get(editor).setState('iframe:kaltura_upload');
+			wp.media.editor.get(editor).setState(state);
 
 			// after adding a media to a post, the iframe will be set to the send to editor page.
-			// we should re-render the iframe view to reset it to the original upload url.
-			var frame = wp.media.editor.get(editor).state('iframe:kaltura_upload').frame;
+			// we should re-render the iframe view to reset it to the original url.
+			var frame = wp.media.editor.get(editor).state(state).frame;
 			if (frame.views) {
 				var iframe = frame.views.first('.media-frame-content');
 				if (iframe)
