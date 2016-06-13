@@ -31,7 +31,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	}
 
 	public function uploadAction() {
-		wp_enqueue_style( 'media' );
+		wp_enqueue_style( 'deprecated-media' );
 		$kmodel      = KalturaModel::getInstance();
 		$pingSuccess = $kmodel->pingTest();
 		if ( ! $pingSuccess ) {
@@ -62,7 +62,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	}
 
 	public function sendtoeditorAction() {
-		wp_enqueue_style( 'media' );
+		wp_enqueue_style( 'deprecated-media' );
 		wp_enqueue_script( 'kaltura-player-selector' );
 
 		$entryIds = KalturaHelpers::getRequestParam( 'entryIds', array() );
@@ -118,7 +118,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	}
 
 	public function browseAction() {
-		wp_enqueue_style( 'media' );
+		wp_enqueue_style( 'deprecated-media' );
 		wp_enqueue_script( 'kaltura-editable-name' );
 		$page         = absint( KalturaHelpers::getRequestParam( 'paged', 1 ) );
 		$isLibrary    = (bool) KalturaHelpers::getRequestParam( 'isLibrary', false );
