@@ -25,6 +25,7 @@ class KalturaSanitizer {
 					$newValue = sanitize_text_field( $value );
 					break;
 				case 'responsive':
+				case 'hoveringControls':
 					$newValue = $value === 'true';
 					break;
 			}

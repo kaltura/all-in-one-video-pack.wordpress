@@ -137,6 +137,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$width       = KalturaHelpers::getRequestPostParam( 'playerWidth' );
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
+			$hoveringControls = KalturaHelpers::getRequestPostParam( 'hoveringControls' );
 
 			$varMakeResponsive = KalturaHelpers::getRequestPostParam( 'makeResponsive' );
 			$isResponsive = !empty($varMakeResponsive);
@@ -149,6 +150,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $player, $width, $playerRatio );
 			$params['uiConfId']     = $uiConfId;
 			$params['isResponsive'] = $isResponsive ? 'true': 'false';
+			$params['hoveringControls'] = $hoveringControls === 'true' ? 'true' : 'false';
 		}
 		$this->renderView( 'library/send-to-editor.php', $params );
 	}
