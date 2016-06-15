@@ -90,45 +90,45 @@
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
+			<div class="videoTitle">
+				<h2>Title: <?php echo esc_attr( $this->entry->name ); ?><h2>
+			</div>
 		<?php }
 		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
 		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
-					<td valign="top">
+					<td>
 						<table class="options">
 							<tr>
-								<td style="padding-bottom:22px;" colspan="2">
-									<?php if ($this->isLibrary) ?>
-									<span>Title: <?php echo esc_attr( $this->entry->name ); ?></span>
-								</td>
-							</tr>
-							<tr>
-								<td valign="top">
+								<td>
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
 										<select name="uiConfId" id="uiConfId"></select>
-										<?php if ( isset( $selectedPlayerName ) ): ?>
-											<script type="text/javascript">
-												embedPreviewPlayer('<?php echo esc_js($selectedPlayerName); ?>');
-											</script>
-										<?php endif; ?>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="options-aspect-ratio">
+									<strong>Player Dimensions:</strong>
+									<div class="playerRatioDiv">
+										<div class="radioBox">
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" />
+											<label for="playerRatioNormal">Normal (4:3)</label>
+										</div>
+										<div class="radioBox">
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" />
+											<label for="playerRatioWide">Wide (16:9)</label>
+										</div>
 									</div>
 									<div class="checkBox">
 										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
 										<label for="makeResponsive">Make responsive</label>
 									</div>
 								</td>
-								<td valign="top" style="padding-left:25px;">
-									<strong>Player Dimensions:</strong>
-
-									<div class="playerRatioDiv">
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" /><label for="playerRatioWide">Widescreen</label></span>
-									</div>
+								<td class="options-size">
 									<strong>Select player size:</strong>
-
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
 									</div>
@@ -146,7 +146,7 @@
 							</tr>
 						</table>
 					</td>
-					<td valign="top" width="240">
+					<td valign="top" class="kaltura-preview-player-wrapper">
 						<div class="kaltura-loader"></div>
 						<div id="divKalturaPlayer"></div>
 						<script type="text/javascript">
