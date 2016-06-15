@@ -215,17 +215,8 @@
 				entryId    : <?php echo wp_json_encode($this->entry->id); ?>,
 				playersList: '#uiConfId',
 				dimensions : 'input[name=playerRatio]',
-				submit     : 'input[name=sendToEditorButton]',
-				onSelect   : function () {
-					kaltura_fixHeight();
-				}
+				submit     : 'input[name=sendToEditorButton]'
 			});
-
-			function kaltura_fixHeight() {
-				var topWindow = Kaltura.getTopWindow();
-			}
-
-			kaltura_fixHeight();
 		});
 	</script>
 <?php endif;
