@@ -174,7 +174,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$ownerType = in_array( KalturaHelpers::getRequestParam( 'ownertype' ), $allowedOwnerTypes) ? KalturaHelpers::getRequestParam( 'ownertype' ) : null;
 
 		// if only logger-in option is enabled, do no allow viewing all media
-		if($ownerType === 'all-media' &&
+		if(($ownerType === 'all-media' || $ownerType == null) &&
 		   KalturaHelpers::getOption('kaltura_show_media_from') === 'logged_in_user') {
 			$ownerType = 'my-media';
 		}
