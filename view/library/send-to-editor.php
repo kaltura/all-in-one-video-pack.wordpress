@@ -99,9 +99,9 @@
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
-					<td>
+					<td class="options-td">
 						<table class="options">
-							<tr>
+							<tr class="player-selector-tr">
 								<td>
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
@@ -148,7 +148,10 @@
 					</td>
 					<td valign="top" class="kaltura-preview-player-wrapper">
 						<div class="kaltura-loader"></div>
-						<div id="divKalturaPlayer"></div>
+						<div class="kaltura-responsive-player-wrapper">
+							<div class="player-aspect-ratio"></div>
+							<div id="divKalturaPlayer"></div>
+						</div>
 						<script type="text/javascript">
 							function kaltura_updateRatio() {
 								var ratio = jQuery("input[name=playerRatio]:checked").val();
@@ -156,11 +159,13 @@
 									jQuery("#playerWidthLarge").next().text("Large (608x372)");
 									jQuery("#playerWidthMedium").next().text("Medium (400x255)");
 									jQuery("#playerWidthSmall").next().text("Small (304x201)");
+									jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
 								}
 								else {
 									jQuery("#playerWidthLarge").next().text("Large (608x486)");
 									jQuery("#playerWidthMedium").next().text("Medium (400x330)");
 									jQuery("#playerWidthSmall").next().text("Small (304x258)");
+									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
 								}
 							}
 
