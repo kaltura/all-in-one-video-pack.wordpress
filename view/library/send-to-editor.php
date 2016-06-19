@@ -166,14 +166,16 @@
 
 							function kaltura_updateResponsiveState() {
 								var $elements = jQuery();
-								$elements = $elements.add('#playerWidthLarge,#playerWidthMedium,#playerWidthSmall');
+								$elements = $elements.add('#playerWidthLarge,#playerWidthSmall');
 								$elements = $elements.add('#playerWidthCustom,#playerCustomWidth');
 								if (jQuery('#makeResponsive').prop('checked')) {
 									jQuery("#playerWidthMedium").click();
 									$elements.prop('disabled', true);
+									jQuery('#playerWidthMedium').prop('readonly', true);
 								}
 								else {
 									$elements.prop('disabled', false);
+									jQuery('#playerWidthMedium').prop('readonly', false);
 								}
 
 							}
