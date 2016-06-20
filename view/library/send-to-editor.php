@@ -6,6 +6,7 @@
 		var uiConfId = <?php echo wp_json_encode($this->uiConfId); ?>;
 		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
 		var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
+		var hoveringControls = <?php echo wp_json_encode($this->hoveringControls); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -15,6 +16,7 @@
 		htmlArray.push('width="' + playerWidth + '" ');
 		htmlArray.push('height="' + playerHeight + '" ');
 		htmlArray.push('responsive="' + isResponsive + '" ');
+		htmlArray.push('hoveringControls="' + hoveringControls + '" ');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
@@ -171,14 +173,16 @@
 
 							function kaltura_updateResponsiveState() {
 								var $elements = jQuery();
-								$elements = $elements.add('#playerWidthLarge,#playerWidthMedium,#playerWidthSmall');
+								$elements = $elements.add('#playerWidthLarge,#playerWidthSmall');
 								$elements = $elements.add('#playerWidthCustom,#playerCustomWidth');
 								if (jQuery('#makeResponsive').prop('checked')) {
 									jQuery("#playerWidthMedium").click();
 									$elements.prop('disabled', true);
+									jQuery('#playerWidthMedium').prop('readonly', true);
 								}
 								else {
 									$elements.prop('disabled', false);
+									jQuery('#playerWidthMedium').prop('readonly', false);
 								}
 
 							}

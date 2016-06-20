@@ -259,7 +259,7 @@ class KalturaHelpers {
 
 	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive' );
+		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive', 'hoveringcontrols' );
 		foreach ( $arrayKeys as $key ) {
 			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
@@ -293,6 +293,7 @@ class KalturaHelpers {
 			'entryId'       => $params['entryid'],
 			'uiconfid'      => $params['uiconfid'],
 			'responsive'    => $params['responsive'],
+			'hoveringControls' => $params['hoveringcontrols']
 		);
 	}
 
