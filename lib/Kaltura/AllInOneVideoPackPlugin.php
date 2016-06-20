@@ -181,4 +181,13 @@ class Kaltura_AllInOneVideoPackPlugin {
 
 		return $embedCode;
 	}
+
+	public function networkAdminMenuAction() {
+		add_submenu_page( 'settings.php', 'All in One Video', 'All in One Video', 'manage_network_options', 'all-in-one-video-pack-mu-settings', array($this, 'networkSettings' ) );
+		}
+
+	public function networkSettings() {
+		$controller = new Kaltura_NetworkAdminController();
+		$controller->execute();
+    }
 }
