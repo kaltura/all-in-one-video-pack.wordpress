@@ -78,7 +78,7 @@
 			iframe.attr("src", html5Url);
 
 			$('#' + options.previewId).empty().append(iframe);
-			if (typeof(options.onSelect) == "function")
+			if (typeof(options.onSelect) == "function") {
 				options.onSelect();
 			}
 
