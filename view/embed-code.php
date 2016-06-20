@@ -8,8 +8,8 @@ $wid            = $embedOptions['wid'] ? $embedOptions['wid'] : '_' . KalturaHel
 $entryId        = $embedOptions['entryId'];
 $width          = $embedOptions['width'];
 $height         = $embedOptions['height'];
-$isResponsive   = !empty($embedOptions['responsive']);
-$hoveringControls = $embedOptions['hoveringControls'] === 'true';
+$isResponsive   = !empty($embedOptions['responsive']) && $embedOptions['responsive'];
+$hoveringControls = !empty($embedOptions['hoveringControls']) && $embedOptions['hoveringControls'];
 $randId         = md5( $wid . $entryId . rand( 0, time() ) );
 $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
