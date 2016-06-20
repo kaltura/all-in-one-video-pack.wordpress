@@ -303,7 +303,7 @@ class KalturaHelpers {
 			$allowedPlayers = array();
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
-		$allPlayers = $allPlayers->objects;
+		$allPlayers = self::_filterOldPlayers($allPlayers->objects);
 		$players    = array();
 		foreach ( $allPlayers as $player ) {
 			if ( in_array( $player->id, $allowedPlayers ) || ! $allowedPlayers ) {
@@ -312,6 +312,21 @@ class KalturaHelpers {
 		}
 
 		return $players;
+	}
+
+	private static function _filterOldPlayers($players) {
+		$allowedPlayers = array();
+		foreach($players as $player) {
+			if(!empty($player->html5Url)) {
+				$htmlPlayerUrl = $player->html5Url;
+				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
+				if(isset($htmlPlayerUrlParts[3]) && substr($htmlPlayerUrlParts[3], 1, 1) === '2') {
+					$allowedPlayers[] = $player;
+				}
+			}
+		}
+
+		return $allowedPlayers;
 	}
 
 	/**

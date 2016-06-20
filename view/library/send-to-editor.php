@@ -92,45 +92,45 @@
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
+			<div class="videoTitle">
+				<h2>Title: <?php echo esc_attr( $this->entry->name ); ?><h2>
+			</div>
 		<?php }
 		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
 		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<table class="form-table">
 				<tr>
-					<td valign="top">
+					<td class="options-td">
 						<table class="options">
-							<tr>
-								<td style="padding-bottom:22px;" colspan="2">
-									<?php if ($this->isLibrary) ?>
-									<span>Title: <?php echo esc_attr( $this->entry->name ); ?></span>
-								</td>
-							</tr>
-							<tr>
-								<td valign="top">
+							<tr class="player-selector-tr">
+								<td>
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
 										<select name="uiConfId" id="uiConfId"></select>
-										<?php if ( isset( $selectedPlayerName ) ): ?>
-											<script type="text/javascript">
-												embedPreviewPlayer('<?php echo esc_js($selectedPlayerName); ?>');
-											</script>
-										<?php endif; ?>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="options-aspect-ratio">
+									<strong>Player Dimensions:</strong>
+									<div class="playerRatioDiv">
+										<div class="radioBox">
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" />
+											<label for="playerRatioNormal">Normal (4:3)</label>
+										</div>
+										<div class="radioBox">
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" />
+											<label for="playerRatioWide">Wide (16:9)</label>
+										</div>
 									</div>
 									<div class="checkBox">
 										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
 										<label for="makeResponsive">Make responsive</label>
 									</div>
 								</td>
-								<td valign="top" style="padding-left:25px;">
-									<strong>Player Dimensions:</strong>
-
-									<div class="playerRatioDiv">
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" /><label for="playerRatioNormal">Normal</label></span>&nbsp;&nbsp;
-										<span><input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" /><label for="playerRatioWide">Widescreen</label></span>
-									</div>
+								<td class="options-size">
 									<strong>Select player size:</strong>
-
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
 									</div>
@@ -148,9 +148,12 @@
 							</tr>
 						</table>
 					</td>
-					<td valign="top" width="240">
+					<td valign="top" class="kaltura-preview-player-wrapper">
 						<div class="kaltura-loader"></div>
-						<div id="divKalturaPlayer"></div>
+						<div class="kaltura-responsive-player-wrapper">
+							<div class="player-aspect-ratio"></div>
+							<div id="divKalturaPlayer"></div>
+						</div>
 						<script type="text/javascript">
 							function kaltura_updateRatio() {
 								var ratio = jQuery("input[name=playerRatio]:checked").val();
@@ -158,11 +161,13 @@
 									jQuery("#playerWidthLarge").next().text("Large (608x372)");
 									jQuery("#playerWidthMedium").next().text("Medium (400x255)");
 									jQuery("#playerWidthSmall").next().text("Small (304x201)");
+									jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
 								}
 								else {
 									jQuery("#playerWidthLarge").next().text("Large (608x486)");
 									jQuery("#playerWidthMedium").next().text("Medium (400x330)");
 									jQuery("#playerWidthSmall").next().text("Small (304x258)");
+									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
 								}
 							}
 
@@ -219,17 +224,8 @@
 				entryId    : <?php echo wp_json_encode($this->entry->id); ?>,
 				playersList: '#uiConfId',
 				dimensions : 'input[name=playerRatio]',
-				submit     : 'input[name=sendToEditorButton]',
-				onSelect   : function () {
-					kaltura_fixHeight();
-				}
+				submit     : 'input[name=sendToEditorButton]'
 			});
-
-			function kaltura_fixHeight() {
-				var topWindow = Kaltura.getTopWindow();
-			}
-
-			kaltura_fixHeight();
 		});
 	</script>
 <?php endif;

@@ -14,6 +14,7 @@ body.wait, body.wait * {
 }
 
 form.kaltura-form {
+	height: 100%;
 	margin: 0;
 }
 
@@ -209,8 +210,13 @@ ul#kaltura-browse li input.sendButton {
 }
 
 /* edit & send tabs */
+#send-to-editor .videoTitle {
+	padding-left: 30px;
+}
+
 #send-to-editor .form-table {
-	max-width: 1000px;
+	width: 100%;
+	height: 100%;
 }
 
 #send-to-editor {
@@ -235,6 +241,16 @@ ul#kaltura-browse li input.sendButton {
 	padding: 0;
 }
 
+#send-to-editor table.options td.options-aspect-ratio {
+	vertical-align: top;
+	width: 40%;
+}
+
+#send-to-editor table.options td.options-aspect-ratio > strong, #send-to-editor table.options td.options-size > strong {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
 #send-to-editor .backDiv {
 	text-align: right;
 	padding:    5px;
@@ -244,8 +260,26 @@ ul#kaltura-browse li input.sendButton {
 	border: 0;
 }
 
+#send-to-editor td.kaltura-preview-player-wrapper {
+	width: 50%;
+    float: left;
+    height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 #send-to-editor .form-table td table {
 	width: 100%;
+}
+
+#send-to-editor .form-table .options-td {
+    padding-left: 30px;
+    width: 50%;
+    vertical-align: top;
+}
+
+#send-to-editor .player-selector-tr div.selectBox {
+    padding-bottom: 15px;
 }
 
 #send-to-editor .submit {
@@ -255,8 +289,24 @@ ul#kaltura-browse li input.sendButton {
 	border:     0;
 }
 
+#send-to-editor .player-aspect-ratio {
+    margin-top: 75%;
+}
+
+#send-to-editor .kaltura-responsive-player-wrapper {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+}
+
 #send-to-editor #divKalturaPlayer {
-	text-align: center;
+	/*text-align: center;*/
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
 }
 
 #send-to-editor p.note {
@@ -281,16 +331,8 @@ ul#kaltura-browse li input.sendButton {
 	margin-bottom: 15px;
 }
 
-#send-to-editor div.selectBox label {
-	display: block;
-}
-
 #send-to-editor .playerRatioDiv {
 	margin-bottom: 10px;
-}
-
-#send-to-editor .playerRatioDiv div {
-	float: left;
 }
 
 #send-to-editor div.radioBox {
