@@ -17,6 +17,16 @@
 		var _$hoveringControlsInputElement = jQuery('<input type="hidden" name="hoveringControls">');
 		jQuery('form.kaltura-form').append(_$hoveringControlsInputElement);
 
+		var _getPlayer = function(uiConfId) {
+			var result = null;
+			_players.forEach(function(player) {
+				if(player.id == uiConfId) {
+					result = player;
+				}
+			});
+			return result;
+		};
+
 		var _showLoader = function () {
 			jQuery('.kaltura-loader').show();
 		};
@@ -53,6 +63,7 @@
 
 		var _onPlayerChange = function (args) {
 			var uiConfId = _$playersList.val();
+			var player = _getPlayer(uiConfId);
 			var html5Url = options.html5Url;
 			html5Url += ('/uiconf_id/' + uiConfId);
 			if (options.entryId)
