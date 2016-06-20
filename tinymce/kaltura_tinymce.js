@@ -130,6 +130,8 @@
 					img.addClass('kaltura_entryid_' + attribs['entryid']);
 				if (attribs['responsive'])
 					img.addClass('kaltura_responsive_' + attribs['responsive']);
+				if (attribs['hoveringcontrols'])
+					img.addClass('kaltura_hoveringControls_' + attribs['hoveringcontrols']);
 
 				img.attr('name', 'mce_plugin_kaltura_desc');
 				img.attr('width', attribs['width']);
@@ -191,6 +193,11 @@
 									case 'responsive':
 										if (classValue)
 											widgetAttribs.responsive = classValue;
+										break;
+									case 'hoveringControls':
+										if(classValue) {
+											widgetAttribs.hoveringControls = classValue;
+										}
 										break;
 								}
 							}

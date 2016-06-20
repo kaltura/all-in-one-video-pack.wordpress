@@ -16,6 +16,8 @@
 
 		var _players = [];
 		var _$playersList = jQuery(options.playersList);
+		var _$hoveringControlsInputElement = jQuery('<input type="hidden" name="hoveringControls">');
+		jQuery('form.kaltura-form').append(_$hoveringControlsInputElement);
 
 		var _showLoader = function () {
 			jQuery('.kaltura-loader').show();
@@ -76,8 +78,18 @@
 			iframe.attr("src", html5Url);
 
 			$('#' + options.previewId).empty().append(iframe);
-			if (typeof(options.onSelect) == "function")
+			if (typeof(options.onSelect) == "function") {
 				options.onSelect();
+			}
+
+			var playerHasHoveringControls = _checkHoveringControls(player);
+			
+			_$hoveringControlsInputElement.attr('value', playerHasHoveringControls);
+		}
+
+		var _checkHoveringControls = function (player) {
+			parsedPlayerConfig = JSON.parse(player.config);
+			return parsedPlayerConfig.plugins.controlBarContainer.hover === true;
 		}
 
 		var _calculateHeight = function (player, width) {

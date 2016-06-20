@@ -8,7 +8,8 @@ $wid            = $embedOptions['wid'] ? $embedOptions['wid'] : '_' . KalturaHel
 $entryId        = $embedOptions['entryId'];
 $width          = $embedOptions['width'];
 $height         = $embedOptions['height'];
-$isResponsive   = !empty($embedOptions['responsive']);
+$isResponsive   = !empty($embedOptions['responsive']) && $embedOptions['responsive'];
+$hoveringControls = !empty($embedOptions['hoveringControls']) && $embedOptions['hoveringControls'];
 $randId         = md5( $wid . $entryId . rand( 0, time() ) );
 $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
@@ -32,9 +33,15 @@ $playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 ?>
 
 <?php if($isResponsive): ?>
-<div style="width: 100%;display: inline-block;position: relative;"> 
-	<div style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
-	<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:-36px;">
+<div style="padding-bottom: <?php echo $hoveringControls ? '36px' : '0'; ?>;">
+	<div style="width: 100%;display: inline-block;position: relative;">
+		<div style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
+		<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:<?php echo $hoveringControls ? '-36px' : '0';?>;"></div>
+	</div>
+	<div class="kaltura-powered-by">
+		<div>
+			<a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a>
+		</div>
 	</div>
 </div>
 <?php else:?>
