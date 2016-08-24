@@ -124,13 +124,14 @@
 											<label for="playerRatioWide">Wide (16:9)</label>
 										</div>
 									</div>
-									<div class="checkBox">
-										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
-										<label for="makeResponsive">Make responsive</label>
-									</div>
 								</td>
 								<td class="options-size">
 									<strong>Select player size:</strong>
+									<div class="checkBox">
+										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
+										<label for="makeResponsive">Responsive size</label>
+									</div>
+
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
 									</div>
