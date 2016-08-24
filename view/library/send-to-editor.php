@@ -104,7 +104,7 @@
 					<td class="options-td">
 						<table class="options">
 							<tr class="player-selector-tr">
-								<td>
+								<td colspan="2">
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
 										<select name="uiConfId" id="uiConfId"></select>

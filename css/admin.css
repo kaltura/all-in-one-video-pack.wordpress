@@ -282,6 +282,12 @@ ul#kaltura-browse li input.sendButton {
     padding-bottom: 15px;
 }
 
+#send-to-editor .player-selector-tr div.selectBox #uiConfId {
+	margin-left: 10px;
+	width: 250px;
+	height: 25px;
+}
+
 #send-to-editor .submit {
 	margin:     0 10px 10px 10px;
 	padding:    0;
