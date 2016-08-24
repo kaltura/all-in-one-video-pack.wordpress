@@ -236,7 +236,18 @@ class KalturaModel {
 
 		$uiConfs = $this->_client->uiConf->listAction( $filter );
 
-		return $uiConfs;
+
+		// filter out playlist players
+		$players = new stdClass();
+		$players->objects = array();
+
+		foreach( $uiConfs->objects as $uiConf ) {
+			if( strpos($uiConf->tags, 'playlist') === false ) {
+				array_push( $players->objects, $uiConf );
+			}
+		}
+
+		return $players;
 	}
 
 	public function listKCWUiConfs() {
