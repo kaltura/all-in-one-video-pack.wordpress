@@ -354,6 +354,10 @@ ul#kaltura-browse li input.sendButton {
 	padding-left: 7px;
 }
 
+#send-to-editor input#playerCustomWidth {
+	height: 25px;
+}
+
 #send-to-editor select {
 	width:   130px;
 	height:  auto;

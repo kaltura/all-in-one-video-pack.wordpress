@@ -116,11 +116,11 @@
 									<strong>Player Dimensions:</strong>
 									<div class="playerRatioDiv">
 										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" />
-											<label for="playerRatioNormal">Normal (4:3)</label>
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" />
+											<label for="playerRatioNormal">Standard (4:3)</label>
 										</div>
 										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" />
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" checked />
 											<label for="playerRatioWide">Wide (16:9)</label>
 										</div>
 									</div>
@@ -128,7 +128,7 @@
 								<td class="options-size">
 									<strong>Select player size:</strong>
 									<div class="checkBox">
-										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
+										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();" checked>
 										<label for="makeResponsive">Responsive size</label>
 									</div>
 
