@@ -1,5 +1,8 @@
-<?php KalturaHelpers::protectView( $this ); ?>
-<?php $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' ); ?>
+<?php
+KalturaHelpers::protectView( $this );
+$kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
+$kalturaModel = kalturaModel::getInstance();
+?>
 <?php if (!$this->isLibrary): ?>
 	<?php media_upload_header(); ?>
 <?php endif; ?>
@@ -75,8 +78,11 @@
 					<?php
 					$sendToEditorUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'kaction' => 'sendtoeditor', 'entryIds' => array( $mediaEntry->id ) ) );
 					?>
-
-					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="showName" title="<?php echo esc_attr( 'Click to edit' ); ?>">
+					<?php
+					$canUserEditMedia = $kalturaModel->canLoggedInUserEditMedia($mediaEntry);
+					$entryNameClass = $canUserEditMedia ? 'showName' : 'entryTitle';
+					?>
+					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="<?php echo $entryNameClass; ?>" title="<?php if($canUserEditMedia) echo esc_attr( 'Click to edit' ); ?>">
 						<?php echo esc_html( $mediaEntry->name ); ?><br />
 					</div>
 					<div class="thumb">
@@ -94,7 +100,7 @@
 							<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url( $sendToEditorUrl ); ?>';" />
 						<?php endif; ?>
 						<?php $isVideo = ( $mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO ); ?>
-						<?php if ( $this->isLibrary ): ?>
+						<?php if ( $this->isLibrary && $kalturaModel->isMediaOwner($mediaEntry) ): ?>
 							<input type="button" title="Delete video" class="delete" data-id="<?php echo esc_attr( $mediaEntry->id ); ?>" />
 						<?php endif; ?>
 						<br clear="all" />

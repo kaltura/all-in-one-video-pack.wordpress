@@ -139,6 +139,14 @@ ul#kaltura-browse li .showName {
 	margin:      0 5px 0 5px;
 }
 
+ul#kaltura-browse li .entryTitle {
+	line-height: 15px;
+	height:      30px;
+	font-size:   11px;
+	overflow:    hidden;
+	margin:      0 5px 0 5px;
+}
+
 ul#kaltura-browse li .submit {
 	text-align: center;
 	padding:    5px 10px 0;
