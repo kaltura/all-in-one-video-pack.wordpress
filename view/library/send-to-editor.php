@@ -127,13 +127,13 @@
 								</td>
 								<td class="options-size">
 									<strong>Select player size:</strong>
-									<div class="checkBox">
-										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();" checked>
+									<div class="radioBox">
+										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" checked>
 										<label for="makeResponsive">Responsive size</label>
 									</div>
 
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
+										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" /><label for="playerWidthLarge"></label><br />
 									</div>
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="400" /><label for="playerWidthMedium"></label>
@@ -171,22 +171,6 @@
 									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
 								}
 							}
-
-							function kaltura_updateResponsiveState() {
-								var $elements = jQuery();
-								$elements = $elements.add('#playerWidthLarge,#playerWidthSmall');
-								$elements = $elements.add('#playerWidthCustom,#playerCustomWidth');
-								if (jQuery('#makeResponsive').prop('checked')) {
-									jQuery("#playerWidthMedium").click();
-									$elements.prop('disabled', true);
-									jQuery('#playerWidthMedium').prop('readonly', true);
-								}
-								else {
-									$elements.prop('disabled', false);
-									jQuery('#playerWidthMedium').prop('readonly', false);
-								}
-
-							}
 						</script>
 					</td>
 				</tr>
@@ -199,8 +183,6 @@
 	<script type="text/javascript">
 		jQuery(function () {
 			kaltura_updateRatio();
-			kaltura_updateResponsiveState();
-
 			jQuery("#playerCustomWidth").click(function () {
 				jQuery(this).siblings("[type=radio]").attr("checked", "checked");
 			});
