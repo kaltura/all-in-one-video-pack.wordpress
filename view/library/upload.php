@@ -3,6 +3,7 @@
 <script type="text/javascript">
 	jQuery(function () {
 		var params = <?php echo wp_json_encode($this->fileUploadParams); ?>;
+		var rootCategory = <?php echo $this->rootCategory; ?>;
 		var widget = jQuery('#uploadHook')
 				.fileupload(params)
 				.bind('fileuploaddone', onFileUploadDone)
@@ -24,6 +25,7 @@
 						data: {
 							'entry:objectType': 'KalturaBaseEntry',
 							'entry:name': name,
+							'entry:categoriesIds': rootCategory,
 							'type': -1, // KalturaEntryType::AUTOMATIC
 							'ks': params.ks
 						},
