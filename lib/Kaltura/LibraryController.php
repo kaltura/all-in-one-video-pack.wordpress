@@ -187,9 +187,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$pageSize = 18;
 		}
 
-		$kmodel     = KalturaModel::getInstance();
-		$result     = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
-		$totalCount = $result->totalCount;
+		$kmodel          = KalturaModel::getInstance();
+		$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
+		$totalCount      = $result->totalCount;
+		$result->objects = $this->addUserPermissionsToEntry( $result->objects );
 
 		$params['page']               = $page;
 		$params['pageSize']           = $pageSize;
@@ -203,6 +204,16 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['postId']             = KalturaHelpers::getRequestParam( 'post_id' );
 		$params['filterOwnerType']    = $ownerType;
 		$this->renderView( 'library/browse.php', $params );
+	}
+
+	private function addUserPermissionsToEntry( array $entries ) {
+		$kalturaModel = KalturaModel::getInstance();
+		foreach ( $entries as $entry ) {
+			$entry->canUserEditMedia = $kalturaModel->canLoggedInUserEditMedia( $entry );
+			$entry->isUserMediaOwner = $kalturaModel->isMediaOwner( $entry );
+		}
+
+		return $entries;
 	}
 
 	public function getplayersAction() {
