@@ -127,19 +127,13 @@ ul#kaltura-browse li.statusError div.errorMsg {
 	display: block;
 }
 
-ul#kaltura-browse li .showName {
+ul#kaltura-browse li .entryTitle.showName {
 	cursor:      pointer;
-	cursor:      hand;
-	line-height: 15px;
-	height:      30px;
-	font-size:   11px;
 	font-weight: bold;
-	color:       #31302E;
-	overflow:    hidden;
-	margin:      0 5px 0 5px;
 }
 
 ul#kaltura-browse li .entryTitle {
+	color:       #31302E;
 	line-height: 15px;
 	height:      30px;
 	font-size:   11px;

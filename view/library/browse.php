@@ -79,9 +79,9 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 					?>
 					<?php
 					$canUserEditMedia = $mediaEntry->canUserEditMedia;
-					$entryNameClass = $canUserEditMedia ? 'showName' : 'entryTitle';
+					$entryNameClass = $canUserEditMedia ? 'showName' : '';
 					?>
-					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="<?php echo $entryNameClass; ?>" title="<?php if( $canUserEditMedia ) echo esc_attr( 'Click to edit' ); ?>">
+					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="entryTitle <?php echo $entryNameClass; ?>" title="<?php if( $canUserEditMedia ) echo esc_attr( 'Click to edit' ); ?>">
 						<?php echo esc_html( $mediaEntry->name ); ?><br />
 					</div>
 					<div class="thumb">
