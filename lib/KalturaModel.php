@@ -287,23 +287,23 @@ class KalturaModel {
 		return $pager;
 	}
 
-	public function canLoggedInUserEditMedia($entry) {
-		if($this->isMediaOwner($entry)) {
+	public function canLoggedInUserEditMedia( $entry ) {
+		if ( $this->isMediaOwner( $entry ) ) {
 			return true;
 		}
 
-		$loggedInUserId = strtolower(KalturaHelpers::getLoggedUserId());
-		$entryCoPublishers = array_map('strtolower', explode(',', $entry->entitledUsersEdit));
-		if(in_array($loggedInUserId, $entryCoPublishers, true)) {
+		$loggedInUserId    = strtolower( KalturaHelpers::getLoggedUserId() );
+		$entryCoPublishers = array_map( 'strtolower', explode( ',', $entry->entitledUsersEdit ) );
+		if ( in_array( $loggedInUserId, $entryCoPublishers, true ) ) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public function isMediaOwner($entry) {
-		$loggedInUserId = strtolower(KalturaHelpers::getLoggedUserId());
-		return strtolower($entry->userId) === $loggedInUserId;
-	}
+	public function isMediaOwner( $entry ) {
+		$loggedInUserId = strtolower( KalturaHelpers::getLoggedUserId() );
 
+		return strtolower( $entry->userId ) === $loggedInUserId;
+	}
 }
