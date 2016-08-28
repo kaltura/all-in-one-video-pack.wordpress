@@ -294,7 +294,7 @@ class KalturaModel {
 
 		$loggedInUserId = strtolower(KalturaHelpers::getLoggedUserId());
 		$entryCoPublishers = array_map('strtolower', explode(',', $entry->entitledUsersEdit));
-		if(in_array($loggedInUserId, $entryCoPublishers)) {
+		if(in_array($loggedInUserId, $entryCoPublishers, true)) {
 			return true;
 		}
 
