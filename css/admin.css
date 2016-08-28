@@ -282,6 +282,12 @@ ul#kaltura-browse li input.sendButton {
     padding-bottom: 15px;
 }
 
+#send-to-editor .player-selector-tr div.selectBox #uiConfId {
+	margin-left: 10px;
+	width: 250px;
+	height: 25px;
+}
+
 #send-to-editor .submit {
 	margin:     0 10px 10px 10px;
 	padding:    0;
@@ -335,7 +341,7 @@ ul#kaltura-browse li input.sendButton {
 	margin-bottom: 10px;
 }
 
-#send-to-editor div.radioBox {
+#send-to-editor div.radioBox, #send-to-editor div.checkBox {
 	padding: 4px 0 12px 0;
 }
 
@@ -346,6 +352,10 @@ ul#kaltura-browse li input.sendButton {
 
 #send-to-editor div.radioBox label {
 	padding-left: 7px;
+}
+
+#send-to-editor input#playerCustomWidth {
+	height: 25px;
 }
 
 #send-to-editor select {
