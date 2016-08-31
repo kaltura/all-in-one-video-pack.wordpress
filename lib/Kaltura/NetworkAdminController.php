@@ -59,19 +59,23 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 	}
 
 	public function infoAction() {
+		$partnerId = get_site_option( 'kaltura_partner_id' );
+		$adminSecret = get_site_option( 'kaltura_admin_secret' );
+		$secret = get_site_option( 'kaltura_secret' );
+
 		$params                = array();
 		$params['error']       = null;
 		$params['showMessage'] = false;
 		// try to create new session to make sure that the details are ok
 		$kmodel = KalturaModel::getInstance();
 		try {
-			$kmodel->getAdminSessionUsingApi();
+			$kmodel->getAdminSessionUsingApi($partnerId, $adminSecret);
 		} catch ( Exception $ex ) {
 			$params['error'] = $ex->getMessage() . ' - ' . $ex->getCode();
 		}
 
 		try {
-			$kmodel->getClientSideSessionUsingApi();
+			$kmodel->getClientSideSessionUsingApi($partnerId, $secret);
 		} catch ( Exception $ex ) {
 			$params['error'] = $ex->getMessage() . ' - ' . $ex->getCode();
 		}
