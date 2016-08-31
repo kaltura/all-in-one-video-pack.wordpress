@@ -200,8 +200,8 @@ class KalturaHelpers {
 		$name    = is_string( $name ) ? $name : null;
 		$default = is_bool( $default ) ? $default : null;
 
-		$value = get_option( $name, $default );
-		if ( ! is_null( $value ) ) {
+		$value = self::isPluginNetworkActivated() ? get_site_option( $name, $default ) : get_option( $name, $default );
+		if ( ! empty( $value ) ) {
 			return $value;
 		}
 
@@ -215,6 +215,14 @@ class KalturaHelpers {
 		} else {
 			return $default;
 		}
+	}
+
+	private static function isPluginNetworkActivated() {
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+
+		return is_plugin_active_for_network( 'all-in-one-video-pack.wordpress/all-in-one-video-pack.php' );
 	}
 
 	public static function getDefaultSettings() {
