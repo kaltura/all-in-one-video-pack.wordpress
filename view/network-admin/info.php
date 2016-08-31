@@ -25,12 +25,12 @@ $sanitizer = new KalturaSanitizer(); ?>
 			<table id="kaltura-cms-login">
 				<tr class="kalturaFirstRow">
 					<th align="left"><?php echo esc_html( 'Partner ID' ); ?>:</th>
-					<td style="padding-right: 90px;"><strong><?php echo esc_html( $sanitizer->sanitizer( get_site_option( 'kaltura_partner_id' ),'integer' ) ); ?></strong>
+					<td style="padding-right: 90px;"><strong><?php echo esc_html( sanitize_text_field( get_site_option( 'kaltura_partner_id' ) ) ); ?></strong>
 					</td>
 				</tr>
 				<tr>
 					<th align="left"><?php echo esc_html( 'KMC username' ); ?>:</th>
-					<td style="padding-right: 90px;"><strong><?php echo esc_html( $sanitizer->sanitizer( get_site_option( 'kaltura_cms_user' ),'string' ) ); ?></strong>
+					<td style="padding-right: 90px;"><strong><?php echo esc_html( sanitize_text_field( get_site_option( 'kaltura_cms_user' ) ) ); ?></strong>
 					</td>
 				</tr>
 			</table>
