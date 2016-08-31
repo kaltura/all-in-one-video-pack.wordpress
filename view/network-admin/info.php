@@ -34,6 +34,6 @@ $sanitizer = new KalturaSanitizer(); ?>
 					</td>
 				</tr>
 			</table>
-			<a href="settings.php?page=all-in-one-video-pack-mu-settings&amp;partner_login">Change settings</a>
+			<a href="settings.php?page=all-in-one-video-pack-mu-settings&amp;partner_login=1">Change settings</a>
 		</div>
 		<?php endif;
