@@ -155,23 +155,6 @@
 							<div class="player-aspect-ratio"></div>
 							<div id="divKalturaPlayer"></div>
 						</div>
-						<script type="text/javascript">
-							function kaltura_updateRatio() {
-								var ratio = jQuery("input[name=playerRatio]:checked").val();
-								if (ratio == "16:9") {
-									jQuery("#playerWidthLarge").next().text("Large (608x372)");
-									jQuery("#playerWidthMedium").next().text("Medium (400x255)");
-									jQuery("#playerWidthSmall").next().text("Small (304x201)");
-									jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
-								}
-								else {
-									jQuery("#playerWidthLarge").next().text("Large (608x486)");
-									jQuery("#playerWidthMedium").next().text("Medium (400x330)");
-									jQuery("#playerWidthSmall").next().text("Small (304x258)");
-									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
-								}
-							}
-						</script>
 					</td>
 				</tr>
 			</table>
@@ -181,6 +164,21 @@
 		</form>
 	</div>
 	<script type="text/javascript">
+		function kaltura_updateRatio() {
+			var ratio = jQuery("input[name=playerRatio]:checked").val();
+			if (ratio == "16:9") {
+				jQuery("#playerWidthLarge").next().text("Large (608x372)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x255)");
+				jQuery("#playerWidthSmall").next().text("Small (304x201)");
+				jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
+			}
+			else {
+				jQuery("#playerWidthLarge").next().text("Large (608x486)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x330)");
+				jQuery("#playerWidthSmall").next().text("Small (304x258)");
+				jQuery("div.player-aspect-ratio").css("margin-top", "75%")
+			}
+		}
 		jQuery(function () {
 			kaltura_updateRatio();
 			jQuery("#playerCustomWidth").click(function () {
