@@ -84,11 +84,12 @@
 	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
 	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
 	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
+	$isFirstEdit = KalturaHelpers::getRequestParam( 'firstedit' ) == 'true';
 
 	?>
 
-	<div id="send-to-editor" class="kaltura-tab">
-		<?php if ( KalturaHelpers::getRequestParam( 'firstedit' ) != 'true' ) { ?>
+	<div id="send-to-editor" class="kaltura-tab <?php echo $isFirstEdit ? 'first-edit' : ''; ?>">
+		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
