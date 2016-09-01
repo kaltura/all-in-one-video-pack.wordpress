@@ -212,17 +212,24 @@ ul#kaltura-browse li input.sendButton {
 }
 
 /* edit & send tabs */
+#send-to-editor.first-edit {
+    padding-top: 50px;
+}
+
 #send-to-editor .videoTitle {
 	padding-left: 30px;
+}
+
+#send-to-editor .entry-converting, #send-to-editor .entry-error {
+    position: absolute;
+    top: 35%;
+    right: 50%;
+    font-size: 18px;
 }
 
 #send-to-editor .form-table {
 	width: 100%;
 	height: 100%;
-}
-
-#send-to-editor {
-	border: solid 1px #AED3E3;
 }
 
 #send-to-editor .kaltura-loader {
@@ -263,7 +270,8 @@ ul#kaltura-browse li input.sendButton {
 }
 
 #send-to-editor td.kaltura-preview-player-wrapper {
-	width: 50%;
+	position: relative;
+    width: 50%;
     float: left;
     height: 100%;
 	margin: 0;
@@ -275,9 +283,9 @@ ul#kaltura-browse li input.sendButton {
 }
 
 #send-to-editor .form-table .options-td {
+    padding-top: 0;
     padding-left: 30px;
     width: 50%;
-    vertical-align: top;
 }
 
 #send-to-editor .player-selector-tr div.selectBox {
