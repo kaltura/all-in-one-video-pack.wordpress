@@ -100,7 +100,6 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 							<?php if ( ! $this->isLibrary ): ?>
 								<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url( $sendToEditorUrl ); ?>';" />
 							<?php endif; ?>
-							<?php $isVideo = ( $mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO ); ?>
 							<?php if ( $this->isLibrary && $mediaEntry->isUserMediaOwner ): ?>
 								<input type="button" title="Delete video" class="delete" data-id="<?php echo esc_attr( $mediaEntry->id ); ?>" />
 							<?php endif; ?>
