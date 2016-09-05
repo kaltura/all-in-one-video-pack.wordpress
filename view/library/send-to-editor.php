@@ -205,18 +205,18 @@
 				return true;
 			});
 
-			jQuery.kalturaPlayerSelector({
-				url        : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
-				defaultId  : <?php echo wp_json_encode(get_option('kaltura_default_player_type')); ?>,
-				html5Url : <?php echo wp_json_encode(esc_url(KalturaHelpers::getHtml5IframeUrl())); ?>,
-				previewId  : 'divKalturaPlayer',
-				entryId    : <?php echo wp_json_encode($this->entry->id); ?>,
-				playersList: '#uiConfId',
-				dimensions : 'input[name=playerRatio]',
-				submit     : 'input[name=sendToEditorButton]',
-				entryError: '<?php echo $this->entryError; ?>',
-				entryConverting: '<?php echo $this->entryConverting; ?>'
-			});
-		});
+			jQuery.kalturaPlayerSelector( {
+				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
+				defaultId      : <?php echo wp_json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
+				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl() ) ); ?>,
+				previewId      : 'divKalturaPlayer',
+				entryId        : <?php echo wp_json_encode( $this->entry->id ); ?>,
+				playersList    : '#uiConfId',
+				dimensions     : 'input[name=playerRatio]',
+				submit         : 'input[name=sendToEditorButton]',
+				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
+				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>
+			} );
+		} );
 	</script>
 <?php endif;
