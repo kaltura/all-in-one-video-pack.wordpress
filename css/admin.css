@@ -499,6 +499,9 @@ ul#kaltura-browse li.statusError div.errorMsg {
   float: right;
   margin-right: 6%;
 }
+.kaltura-filter-bar {
+  overflow: hidden;
+}
 .kaltura-caret {
   cursor: pointer;
   float: left;
@@ -509,10 +512,8 @@ ul#kaltura-browse li.statusError div.errorMsg {
   top: -4px;
 }
 #filter-media-owner-type-wrap {
+  float: left;
   margin-bottom: 15px;
-}
-#filter-media-owner-type-wrap label {
-  display: block;
 }
 #filter-categories {
   border: 1px solid #d5d2ca;
