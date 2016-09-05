@@ -138,7 +138,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
 			$hoveringControls = KalturaHelpers::getRequestPostParam( 'hoveringControls' );
-			$isResponsive = ! empty( $width ) && $width === '100%';
+			$isResponsive = $width === '100%';
 
 			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
 
