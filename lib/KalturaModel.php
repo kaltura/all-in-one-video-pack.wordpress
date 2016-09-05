@@ -236,7 +236,18 @@ class KalturaModel {
 
 		$uiConfs = $this->_client->uiConf->listAction( $filter );
 
-		return $uiConfs;
+
+		// filter out playlist players
+		$players = new stdClass();
+		$players->objects = array();
+
+		foreach( $uiConfs->objects as $uiConf ) {
+			if( strpos($uiConf->tags, 'playlist') === false ) {
+				array_push( $players->objects, $uiConf );
+			}
+		}
+
+		return $players;
 	}
 
 	public function listKCWUiConfs() {
@@ -274,5 +285,25 @@ class KalturaModel {
 		$pager->pageSize = 500;
 
 		return $pager;
+	}
+
+	public function canLoggedInUserEditMedia( $entry ) {
+		if ( $this->isMediaOwner( $entry ) ) {
+			return true;
+		}
+
+		$loggedInUserId    = strtolower( KalturaHelpers::getLoggedUserId() );
+		$entryCoPublishers = array_map( 'strtolower', explode( ',', $entry->entitledUsersEdit ) );
+		if ( in_array( $loggedInUserId, $entryCoPublishers, true ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function isMediaOwner( $entry ) {
+		$loggedInUserId = strtolower( KalturaHelpers::getLoggedUserId() );
+
+		return strtolower( $entry->userId ) === $loggedInUserId;
 	}
 }

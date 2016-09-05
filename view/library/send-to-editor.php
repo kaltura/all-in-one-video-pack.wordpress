@@ -104,7 +104,7 @@
 					<td class="options-td">
 						<table class="options">
 							<tr class="player-selector-tr">
-								<td>
+								<td colspan="2">
 									<div class="selectBox">
 										<label for="uiConfId">Select player design:</label>
 										<select name="uiConfId" id="uiConfId"></select>
@@ -116,23 +116,24 @@
 									<strong>Player Dimensions:</strong>
 									<div class="playerRatioDiv">
 										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" checked="checked" />
-											<label for="playerRatioNormal">Normal (4:3)</label>
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" />
+											<label for="playerRatioNormal">Standard (4:3)</label>
 										</div>
 										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" />
+											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" checked />
 											<label for="playerRatioWide">Wide (16:9)</label>
 										</div>
-									</div>
-									<div class="checkBox">
-										<input type="checkbox" name="makeResponsive" id="makeResponsive" onchange="kaltura_updateResponsiveState();">
-										<label for="makeResponsive">Make responsive</label>
 									</div>
 								</td>
 								<td class="options-size">
 									<strong>Select player size:</strong>
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" checked="checked" /><label for="playerWidthLarge"></label><br />
+										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" checked>
+										<label for="makeResponsive">Responsive size</label>
+									</div>
+
+									<div class="radioBox">
+										<input type="radio" class="iradio" name="playerWidth" id="playerWidthLarge" value="608" /><label for="playerWidthLarge"></label><br />
 									</div>
 									<div class="radioBox">
 										<input type="radio" class="iradio" name="playerWidth" id="playerWidthMedium" value="400" /><label for="playerWidthMedium"></label>
@@ -170,22 +171,6 @@
 									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
 								}
 							}
-
-							function kaltura_updateResponsiveState() {
-								var $elements = jQuery();
-								$elements = $elements.add('#playerWidthLarge,#playerWidthSmall');
-								$elements = $elements.add('#playerWidthCustom,#playerCustomWidth');
-								if (jQuery('#makeResponsive').prop('checked')) {
-									jQuery("#playerWidthMedium").click();
-									$elements.prop('disabled', true);
-									jQuery('#playerWidthMedium').prop('readonly', true);
-								}
-								else {
-									$elements.prop('disabled', false);
-									jQuery('#playerWidthMedium').prop('readonly', false);
-								}
-
-							}
 						</script>
 					</td>
 				</tr>
@@ -198,8 +183,6 @@
 	<script type="text/javascript">
 		jQuery(function () {
 			kaltura_updateRatio();
-			kaltura_updateResponsiveState();
-
 			jQuery("#playerCustomWidth").click(function () {
 				jQuery(this).siblings("[type=radio]").attr("checked", "checked");
 			});

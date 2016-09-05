@@ -1,5 +1,7 @@
-<?php KalturaHelpers::protectView( $this ); ?>
-<?php $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' ); ?>
+<?php
+KalturaHelpers::protectView( $this );
+$kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
+?>
 <?php if (!$this->isLibrary): ?>
 	<?php media_upload_header(); ?>
 <?php endif; ?>
@@ -42,7 +44,6 @@
 		<?php endif; ?>
 
 		<div class="filter-side">
-			<?php $this->renderView( 'filter-media-owner.php' ); ?>
 			<div id="filter-categories-header">
 				<label for="filter-categories"><b>Categories (<?php echo esc_html( count( $this->filters->objects ) ) ?>)</b></label>
 				<div>
@@ -63,45 +64,52 @@
 		<?php endif; ?>
 		<input type="hidden" name="paged" value="1" />
 
-		<div class="entry-search-filter">
-			<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
-			<input type="submit" value="Go" />
-		</div>
-
-		<ul id="kaltura-browse">
-			<?php foreach ( $this->result->objects as $mediaEntry ): ?>
-				<?php $mediaCategories = KalturaHelpers::getCategoriesString($mediaEntry); ?>
-				<li>
-					<?php
-					$sendToEditorUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'kaction' => 'sendtoeditor', 'entryIds' => array( $mediaEntry->id ) ) );
-					?>
-
-					<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="showName" title="<?php echo esc_attr( 'Click to edit' ); ?>">
-						<?php echo esc_html( $mediaEntry->name ); ?><br />
-					</div>
-					<div class="thumb">
-						<?php $entryUrl = $mediaEntry->thumbnailUrl . "/width/120/height/90/type/2/bgcolor/000"?>
-						<?php if ( $this->isLibrary ): ?>
-							<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php echo esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
-						<?php else: ?>
-							<a href="<?php echo esc_url( $sendToEditorUrl ); ?>">
+		<div class="right-side-container">
+			<div class="kaltura-filter-bar">
+				<?php $this->renderView( 'filter-media-owner.php' ); ?>
+				<div class="entry-search-filter">
+					<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
+					<input type="submit" value="Go" />
+				</div>
+			</div>
+			<ul id="kaltura-browse">
+				<?php foreach ( $this->result->objects as $mediaEntry ): ?>
+					<?php $mediaCategories = KalturaHelpers::getCategoriesString($mediaEntry); ?>
+					<li>
+						<?php
+						$sendToEditorUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'kaction' => 'sendtoeditor', 'entryIds' => array( $mediaEntry->id ) ) );
+						?>
+						<?php
+						$canUserEditMedia = $mediaEntry->canUserEditMedia;
+						$entryNameClass = $canUserEditMedia ? 'showName' : '';
+						?>
+						<div id="entryId_<?php echo esc_attr( $mediaEntry->id ); ?>" class="entryTitle <?php echo $entryNameClass; ?>" title="<?php if( $canUserEditMedia ) echo esc_attr( 'Click to edit' ); ?>">
+							<?php echo esc_html( $mediaEntry->name ); ?><br />
+						</div>
+						<div class="thumb">
+							<?php $entryUrl = $mediaEntry->thumbnailUrl . "/width/120/height/90/type/2/bgcolor/000"?>
+							<?php if ( $this->isLibrary ): ?>
 								<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php echo esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
-							</a>
-						<?php endif; ?>
-					</div>
-					<div class="submit">
-						<?php if ( ! $this->isLibrary ): ?>
-							<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url( $sendToEditorUrl ); ?>';" />
-						<?php endif; ?>
-						<?php $isVideo = ( $mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO ); ?>
-						<?php if ( $this->isLibrary ): ?>
-							<input type="button" title="Delete video" class="delete" data-id="<?php echo esc_attr( $mediaEntry->id ); ?>" />
-						<?php endif; ?>
-						<br clear="all" />
-					</div>
-				</li>
-			<?php endforeach; ?>
-		</ul>
+							<?php else: ?>
+								<a href="<?php echo esc_url( $sendToEditorUrl ); ?>">
+									<img src="<?php echo esc_url( $entryUrl ); ?>" alt="<?php echo esc_attr( $mediaEntry->name ); ?>" title="Categories&#10;<?php echo esc_attr( $mediaCategories ); ?>" width="120" height="90" />
+								</a>
+							<?php endif; ?>
+						</div>
+						<div class="submit">
+							<?php if ( ! $this->isLibrary ): ?>
+								<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url( $sendToEditorUrl ); ?>';" />
+							<?php endif; ?>
+							<?php $isVideo = ( $mediaEntry->type == Kaltura_Client_Enum_EntryType::MEDIA_CLIP && $mediaEntry->mediaType == Kaltura_Client_Enum_MediaType::VIDEO ); ?>
+							<?php if ( $this->isLibrary && $mediaEntry->isUserMediaOwner ): ?>
+								<input type="button" title="Delete video" class="delete" data-id="<?php echo esc_attr( $mediaEntry->id ); ?>" />
+							<?php endif; ?>
+							<br clear="all" />
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 	</form>
 
 	<br class="clear" />
