@@ -314,7 +314,7 @@ ul#kaltura-browse li.statusError div.errorMsg {
   padding: 5px 5px 10px 5px;
 }
 #send-to-editor fieldset legend {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 #send-to-editor div.selectBox {
   margin-bottom: 15px;
