@@ -1,8 +1,7 @@
-html {
-  height: 100%;
-}
+html,
 body {
   height: 100%;
+  overflow: auto;
 }
 body.wait {
   cursor: wait !important;
@@ -95,6 +94,7 @@ ul#kaltura-browse {
   list-style: none;
   padding: 0 0 0 5px;
   width: 72%;
+  overflow: auto;
 }
 ul#kaltura-browse li {
   background: url("../images/entries_bg.png") center 0 no-repeat;
