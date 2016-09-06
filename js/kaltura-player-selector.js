@@ -10,8 +10,9 @@
 			entryId   : '_KMCLOGO',
 			id        : 'kplayer'
 		};
-		var options = $.extend({}, defaultOptions, opts);
 
+		var intervalId = null;
+		var options = $.extend({}, defaultOptions, opts);
 		var _players = [];
 		var _$playersList = jQuery(options.playersList);
 		var _$hoveringControlsInputElement = jQuery('<input type="hidden" name="hoveringControls">');
@@ -64,23 +65,71 @@
 		var _onPlayerChange = function (args) {
 			var uiConfId = _$playersList.val();
 			var player = _getPlayer(uiConfId);
-			var html5Url = options.html5Url;
-			html5Url += ('/uiconf_id/' + uiConfId);
-			if (options.entryId)
-				html5Url += ('/entry_id/' + options.entryId);
 
-			html5Url += '?iframeembed=true';
-			var iframe = jQuery('<iframe>');
-			iframe.attr("width", "100%");
-			iframe.attr("height", "100%");
-			iframe.attr("frameborder", "0");
-			iframe.attr("src", html5Url);
-			
-			$('#' + options.previewId).empty().append(iframe);
+			if ( !( options.entryConverting || options.entryError ) ) {
+				_embedPreviewPlayer();
+			}
+			else {
+				jQuery( '.kaltura-responsive-player-wrapper' ).hide();
+				if ( options.entryConverting ) {
+					jQuery( '.entry-converting' ).show();
+					_checkEntryStatus();
+					intervalId = setInterval( _checkEntryStatus, 10 * 1000 );
+				}
+				else if ( options.entryError ) {
+					jQuery( '.entry-error' ).show();
+				}
+			}
 
 			var playerHasHoveringControls = _checkHoveringControls(player);
 			
 			_$hoveringControlsInputElement.attr('value', playerHasHoveringControls);
+		};
+
+		var _embedPreviewPlayer = function() {
+			var html5Url = _getIframeEmbedUrl();
+			var iframe = _getIframeMarkup( html5Url );
+			jQuery( '#' + options.previewId ).empty().append( iframe );
+		};
+
+		var _getIframeMarkup = function( src ) {
+			return jQuery( '<iframe>' )
+				.attr( 'width', '100%' )
+				.attr( 'height', '100%' )
+				.attr( 'frameborder', '0' )
+				.attr( 'src', src );
+		};
+
+		var _getIframeEmbedUrl = function() {
+			return options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
+		};
+
+		var _checkEntryStatus = function() {
+			jQuery.ajax( {
+				url: ajaxurl + '?action=kaltura_ajax&kaction=getentrystatus',
+				data: {
+					entryId: options.entryId
+				}
+			} )
+				.success( _checkEntryStatusCallback )
+				.fail(function() {
+					clearInterval(intervalId);
+				});
+		};
+
+		var _checkEntryStatusCallback = function( data ) {
+			if ( data == '2' ) {
+				// entry is ready, we can embed
+				clearTimeout( intervalId );
+				jQuery( '.entry-converting' ).hide();
+				jQuery( '.kaltura-responsive-player-wrapper' ).show();
+				_embedPreviewPlayer();
+			}
+			else if ( data == '-1' || data == '-2' ) {
+				// an error occurred, show error message
+				jQuery( '.entry-converting' ).hide();
+				jQuery( '.entry-error' ).show();
+			}
 		};
 
 		var _checkHoveringControls = function (player) {

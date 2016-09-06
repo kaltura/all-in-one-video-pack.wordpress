@@ -11,6 +11,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'library',
 			'browse',
 			'getplayers',
+			'getentrystatus',
 			'saveentryname',
 		);
 	}
@@ -130,6 +131,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$params['flashVars']               = $flashVars;
 			$params['flashVars']['autoPlay']   = 'true';
 			$params['thumbnailPlaceHolderUrl'] = $thumbnail;
+			$params['entryError']              = $entry->status === Kaltura_Client_Enum_EntryStatus::ERROR_CONVERTING || $entry->status === Kaltura_Client_Enum_EntryStatus::ERROR_IMPORTING;
+			$params['entryConverting']         = $entry->status !== Kaltura_Client_Enum_EntryStatus::READY && ! $params['entryError'];
 		} else {
 			$kmodel = KalturaModel::getInstance();
 
@@ -138,16 +141,16 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
 			$hoveringControls = KalturaHelpers::getRequestPostParam( 'hoveringControls' );
-
-			$varMakeResponsive = KalturaHelpers::getRequestPostParam( 'makeResponsive' );
-			$isResponsive = !empty($varMakeResponsive);
+			$isResponsive = $width === '100%';
 
 			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
 
 			$params['entryId']      = $entryId;
 			$params['nextEntryIds'] = $entryIds;
 			$params['playerWidth']  = $width;
-			$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $player, $width, $playerRatio );
+			if ( ! $isResponsive ) {
+				$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $player, $width, $playerRatio );
+			}
 			$params['uiConfId']     = $uiConfId;
 			$params['isResponsive'] = $isResponsive ? 'true': 'false';
 			$params['hoveringControls'] = $hoveringControls === 'true' ? 'true' : 'false';
@@ -233,6 +236,16 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$kmodel->updateBaseEntry( $entryId, $baseEntry );
 		}
 		echo 'ok';
+		die;
+	}
+
+	public function getentrystatusAction() {
+		$entryId = KalturaHelpers::getRequestParam( 'entryId' );
+		try {
+			echo KalturaModel::getInstance()->getEntry( $entryId )->status;
+		} catch ( Exception $ex ) {
+			echo 'error';
+		}
 		die;
 	}
 }

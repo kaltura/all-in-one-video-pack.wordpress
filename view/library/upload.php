@@ -22,13 +22,7 @@
 		function createEntry(name, uploadTokenId) {
 			jQuery.ajax({
 						url: params.apiURL + '?service=baseEntry&action=add&format=9',
-						data: {
-							'entry:objectType': 'KalturaBaseEntry',
-							'entry:name': name,
-							'entry:categoriesIds': rootCategory,
-							'type': -1, // KalturaEntryType::AUTOMATIC
-							'ks': params.ks
-						},
+						data: _createEntryCreatePayload(name, params.ks, rootCategory),
 						type: "GET",
 						dataType: "jsonp"
 					})
@@ -39,6 +33,21 @@
 						attachUploadToken(response.id, uploadTokenId);
 					})
 					.fail(onGenericError);
+		}
+
+		function _createEntryCreatePayload(name, ks, rootCategory) {
+			var data = {
+				'entry:objectType': 'KalturaBaseEntry',
+				'entry:name': name,
+				'type': -1, // KalturaEntryType::AUTOMATIC
+				'ks': ks
+			};
+
+			if(rootCategory != 0) {
+				data.rootCategory = rootCategory;
+			}
+
+			return data;
 		}
 
 		function attachUploadToken(entryId, uploadTokenId) {

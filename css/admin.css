@@ -1,654 +1,541 @@
-html, body {
-	height: 100%;
+html,
+body {
+  height: 100%;
+  overflow: auto;
 }
-
-body.wait, body.wait * {
-	cursor: wait !important;
+body.wait {
+  cursor: wait !important;
 }
-
+body.wait * {
+  cursor: wait !important;
+}
 .kaltura-loader {
-	display:          none;
-	width:            16px;
-	height:           16px;
-	background-image: url(../images/small_loader.gif);
+  background-image: url(../images/small_loader.gif);
+  display: none;
+  height: 16px;
+  width: 16px;
 }
-
 form.kaltura-form {
-	height: 100%;
-	margin: 0;
+  height: 100%;
+  margin: 0;
 }
-
 .kaltura-edit-entry-form {
-	padding: 0 16px;
+  padding: 0 16px;
 }
 .kaltura-edit-entry-form #entry-title {
-	max-width: 400px;
+  max-width: 400px;
 }
-
 .kaltura-edit-entry-form #entry-description {
-	max-width: 400px;
+  max-width: 400px;
 }
-
 .media_page_interactive_video_library .column-posts {
-	width: 5em;
+  width: 5em;
 }
-
 .kaltura-pager {
-	text-align: center;
-	float: right;
-	margin-right: 6%;
+  float: right;
+  margin-right: 6%;
+  text-align: center;
 }
-
-/* general for tabs */
 .kaltura-tab {
-	margin: 15px;
+  margin: 15px;
 }
-
-.kaltura-updated {
-	padding:     0.6em 1.6em;
-	font-weight: bold;
-}
-
-a.kalturaLink {
-	color:           #006699;
-	font-size:       14px;
-	font-weight:     bold;
-	text-decoration: underline;
-}
-
-a.kalturaLink:hover {
-	color: #6699CC;
-}
-
-/* browse tab */
-div.kaltura-wrap {
-	max-width:   1200px;
-	padding-top: 10px;
-}
-
-ul#kaltura-browse {
-	width:      72%;
-	list-style: none;
-	padding:    0 0 0 5px;
-	float:      right;
-}
-
-ul#kaltura-browse li {
-	float:      left;
-	position:   relative;
-	width:      180px;
-	margin:     0 10px 15px 10px;
-	padding:    10px 0 5px 0;
-	text-align: center;
-	background: url("../images/entries_bg.png") center 0 no-repeat;
-}
-
-ul#kaltura-browse li .status {
-	display:          none;
-	position:         absolute;
-	top:              97px;
-	left:             0;
-	height:           25px;
-	width:            100px;
-	margin:           0 40px;
-	line-height:      25px;
-	color:            #333;
-	background-color: #e5f1fb;
-	z-index:          5;
-}
-
-ul#kaltura-browse li .thumb {
-	height: 100px;
-	border: none;
-}
-
-ul#kaltura-browse li .thumb .overlay {
-	display:          none;
-	position:         absolute;
-	top:              40px;
-	left:             0;
-	width:            120px;
-	height:           90px;
-	margin:           0 30px;
-	background-image: url(../images/status_bg.png);
-	z-index:          2;
-}
-
-ul#kaltura-browse li.statusConverting .overlay,
-ul#kaltura-browse li.statusError .overlay {
-	display: block;
-}
-
-ul#kaltura-browse li.statusConverting div.convertingMsg {
-	display: block;
-}
-
-ul#kaltura-browse li.statusError div.errorMsg {
-	display: block;
-}
-
-ul#kaltura-browse li .entryTitle.showName {
-	cursor:      pointer;
-	font-weight: bold;
-}
-
-ul#kaltura-browse li .entryTitle {
-	color:       #31302E;
-	line-height: 15px;
-	height:      30px;
-	font-size:   11px;
-	overflow:    hidden;
-	margin:      0 5px 0 5px;
-}
-
-ul#kaltura-browse li .submit {
-	text-align: center;
-	padding:    5px 10px 0;
-	border:     none;
-}
-
-ul#kaltura-browse li .submit input {
-	width:   23px;
-	height:  22px;
-	margin:  0 5px;
-	border:  none;
-	padding: 0;
-}
-
-ul#kaltura-browse li .submit input.checkbox {
-	width:  10px;
-	height: 10px;
-}
-
-ul#kaltura-browse li .submit input.delete {
-	background: url("../images/delete_icon.gif") 0 0 no-repeat;
-	cursor:     pointer;
-}
-
-ul#kaltura-browse li .submit input.add {
-	background: url("../images/add_icon.gif") 0 0 no-repeat;
-	cursor:     pointer;
-}
-
-ul#kaltura-browse li .submit input.thumb {
-	background: url("../images/capture_icon.gif") 0 0 no-repeat;
-	cursor:     pointer;
-}
-
-ul#kaltura-browse li .submit a {
-	color: #004265;
-}
-
-ul#kaltura-browse li input.sendButton {
-	width: 9em;
-}
-
-/* update thumbnail page */
-#update-thumbnail-page {
-	overflow: hidden;
-	height:   100%;
-}
-
-#update-thumbnail-page .page-wrapper {
-	background-color: #EAF3FA;
-	border:           solid 1px #B0D1E0;
-	margin:           10px;
-}
-
-#update-thumbnail-page .player-wrapper {
-	min-height: 330px;
-	margin-top: 20px;
-}
-
-#update-thumbnail-page .player-wrapper #kplayer {
-	width:  400px;
-	height: 330px;
-	margin: 0 auto;
-}
-
-#update-thumbnail-page p {
-	text-align: center;
-	padding:    0 30px;
-}
-
-/* edit & send tabs */
-#send-to-editor .videoTitle {
-	padding-left: 30px;
-}
-
-#send-to-editor .form-table {
-	width: 100%;
-	height: 100%;
-}
-
-#send-to-editor {
-	border: solid 1px #AED3E3;
-}
-
-#send-to-editor .kaltura-loader {
-	margin: 50px auto;
-}
-
-#send-to-editor .playerName {
-	position:    absolute;
-	margin:      5px 0 0 5px;
-	font-size:   12px;
-	width:       200px;
-	font-weight: normal;
-	color:       #000;
-	overflow:    hidden;
-}
-
-#send-to-editor table.options td {
-	padding: 0;
-}
-
-#send-to-editor table.options td.options-aspect-ratio {
-	vertical-align: top;
-	width: 40%;
-}
-
-#send-to-editor table.options td.options-aspect-ratio > strong, #send-to-editor table.options td.options-size > strong {
-	display: inline-block;
-	margin-bottom: 10px;
-}
-
-#send-to-editor .backDiv {
-	text-align: right;
-	padding:    5px;
-}
-
-#send-to-editor .form-table td {
-	border: 0;
-}
-
-#send-to-editor td.kaltura-preview-player-wrapper {
-	width: 50%;
-    float: left;
-    height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-#send-to-editor .form-table td table {
-	width: 100%;
-}
-
-#send-to-editor .form-table .options-td {
-    padding-left: 30px;
-    width: 50%;
-    vertical-align: top;
-}
-
-#send-to-editor .player-selector-tr div.selectBox {
-    padding-bottom: 15px;
-}
-
-#send-to-editor .player-selector-tr div.selectBox #uiConfId {
-	margin-left: 10px;
-	width: 250px;
-	height: 25px;
-}
-
-#send-to-editor .submit {
-	margin:     0 10px 10px 10px;
-	padding:    0;
-	text-align: right;
-	border:     0;
-}
-
-#send-to-editor .player-aspect-ratio {
-    margin-top: 75%;
-}
-
-#send-to-editor .kaltura-responsive-player-wrapper {
-    width: 100%;
-    display: inline-block;
-    position: relative;
-}
-
-#send-to-editor #divKalturaPlayer {
-	/*text-align: center;*/
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    height: 100%;
-}
-
-#send-to-editor p.note {
-	margin:    5px 0 0 10px;
-	width:     400px;
-	font-size: 10px;
-}
-
-#send-to-editor label {
-	font-weight: bold;
-}
-
-#send-to-editor fieldset {
-	padding: 5px 5px 10px 5px;
-}
-
-#send-to-editor fieldset legend {
-	padding-bottom: 0px;
-}
-
-#send-to-editor div.selectBox {
-	margin-bottom: 15px;
-}
-
-#send-to-editor .playerRatioDiv {
-	margin-bottom: 10px;
-}
-
-#send-to-editor div.radioBox, #send-to-editor div.checkBox {
-	padding: 4px 0 12px 0;
-}
-
-#send-to-editor div.radioBox .iradio {
-	position: relative;
-	top:      3px;
-}
-
-#send-to-editor div.radioBox label {
-	padding-left: 7px;
-}
-
-#send-to-editor input#playerCustomWidth {
-	height: 25px;
-}
-
-#send-to-editor select {
-	width:   130px;
-	height:  auto;
-	padding: 0;
-}
-
-/* cms login box */
-#kaltura-cms-login {
-	background-color: #E1EAEF;
-	border:           solid 1px #B4D5E5;
-	margin:           5px 0 15px 0;
-}
-
-#kaltura-cms-login .kalturaFirstRow td {
-	padding-top: 10px;
-}
-
-#kaltura-cms-login .kalturaFirstRow th {
-	padding-top: 10px;
-}
-
-#kaltura-cms-login th {
-	font-weight:  normal;
-	padding-left: 10px;
-}
-
-#kaltura-cms-login .kalturaLastRow td {
-	padding-right:  10px;
-	padding-bottom: 10px;
-}
-
-.kaltura-wrap #kaltura-cms-login {
-	float:        right;
-	margin-right: 6%;
-}
-
-/* entries page */
-.entries p.info {
-	margin: 0 0 12px;
-	float:  left;
-}
-
-/* registration page */
-.settings_page_kaltura_options .registration .form-table th {
-	width: 250px
-}
-
-.settings_page_kaltura_options .registration input[type="text"] {
-	width: 300px;
-}
-
-.settings_page_kaltura_options .registration select {
-	width: 300px;
-}
-
-.settings_page_kaltura_options .registration textarea {
-	width: 300px;
-}
-
-.settings_page_kaltura_options .registration .error {
-	border:           solid 1px #CC0000;
-	background-color: #FFEBE8;
-}
-
-.settings_page_kaltura_options .registration label.error {
-	border: none;
-}
-
-.settings_page_kaltura_options .registration tr.agree_to_terms label.error {
-	background: transparent;
-	color:      #CC0000;
-	display:    block;
-}
-
-/* settings info page */
-.settings_page_kaltura_options select {
-	width: 420px;
-}
-
-.settings_page_kaltura_options tr.advanced {
-	display: none;
-}
-
-.settings_page_kaltura_options .user_identifier_desc {
-	width:        400px;
-	padding-left: 23px;
-}
-
-.settings_page_kaltura_options tr.user_identifier label {
-	font-weight: bold;
-}
-
-.settings_page_kaltura_options .available-players .players-scroll {
-	max-height: 120px;
-	width: 420px;
-	overflow-y: auto;
-}
-
-.settings_page_kaltura_options .available-players .players-scroll label {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	display: block;
-}
-
-/*--------------------------------
-	Contribution Wizard Modal Window
----------------------------------*/
-* html .modalContributionWizard {
-	top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(0) + 200 + 'px');
-}
-
-/*--------------------------------
-	Sidebar Widget
----------------------------------*/
-
-#all-in-one-video-pack-widget #kaltura-loader {
-	display: none;
-	width:   35px;
-	height:  35px;
-	padding: 20px 0;
-	margin:  auto;
-}
-
-#all-in-one-video-pack-widget #kaltura-sidebar-menu {
-	width:      100%;
-	margin:     0;
-	padding:    10px 0;
-	text-align: center;
-}
-
-#all-in-one-video-pack-widget #kaltura-sidebar-menu a {
-	cursor:      pointer;
-	white-space: nowrap;
-}
-
-#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected {
-	font-weight: bold;
-}
-
-#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected:hover {
-	text-decoration: none;
-	cursor:          default;
-}
-
-#all-in-one-video-pack-widget ul#kaltura-items {
-	margin: 0;
-}
-
-#all-in-one-video-pack-widget ul#kaltura-items li {
-	background:    none;
-	text-align:    center;
-	margin:        0;
-	margin-bottom: 10px;
-}
-
-#all-in-one-video-pack-widget ul#kaltura-items li:before {
-	content: "";
-}
-
-#all-in-one-video-pack-widget ul#kaltura-items li div.thumb {
-	width:            120px;
-	height:           90px;
-	margin:           0 auto;
-	background-color: #000000;
-}
-
-#all-in-one-video-pack-widget ul.kaltura-sidebar-pager {
-	width:   100%;
-	margin:  0 0 30px 0;
-	padding: 0;
-}
-
-#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li {
-	float:      left;
-	width:      50%;
-	text-align: center;
-	margin:     0;
-	padding:    0;
-	background: none;
-}
-
-#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li:before {
-	content: "";
-}
-
-#all-in-one-video-pack-widget ul.kaltura-sidebar-pager a {
-	cursor: pointer;
-}
-
-#kaltura-wrap
-#root_category {
-	width: 450px;
-}
-
-.filter-side {
-	width: 25%;
-	float: left;
-}
-
-.filter-category-label {
-	top:      -6px;
-	position: relative;
-}
-
-.filter-category-input:checked {
-	-webkit-box-shadow: 0 0 12px #CCCC00;
-	-moz-box-shadow:    0 0 12px #CCCC00;
-	box-shadow:         0 0 12px #CCCC00;
-}
-
-.entry-search-filter {
-	float: right;
-	margin-right: 6%;
-}
-
-.kaltura-caret {
-	float:        left;
-	position:     relative;
-	cursor:       pointer;
-	top:          -4px;
-	left:         -2px;
-	font-size:    10px;
-	margin-right: 3px;
-}
-
-#filter-media-owner-type-wrap label {
-	display: block;
-}
-
-#filter-media-owner-type-wrap {
-	margin-bottom: 15px;
-}
-
-#filter-categories {
-	padding:    15px;
-	margin-right: 20px;
-	height:     100%;
-	max-height: 500px;
-	overflow:   auto;
-	border:     1px solid #d5d2ca;
-}
-
-#filter-categories-button {
-	width: 80px;
-	margin: 0 auto;
-	display: block;
-}
-
-/** CSS for iframe when uploading media to post. */
 .kaltura-tab #filter-categories {
-	height: 240px;
-	width:  36%;
+  height: 240px;
+  width: 36%;
 }
-
 .kaltura-tab #kaltura-browse {
-	width: 56%;
+  width: 56%;
 }
-
 .kaltura-tab .filter-category-input {
-	width:  16px;
-	height: 16px;
+  height: 16px;
+  width: 16px;
 }
-
 .kaltura-tab .filter-category-input:checked {
-	width:  16px;
-	height: 16px;
+  height: 16px;
+  width: 16px;
 }
-
 .kaltura-tab #filter-categories-header {
-	width: 45%;
+  width: 45%;
 }
-
 .kaltura-tab #filter-categories-button {
-	right: 9%;
+  right: 9%;
 }
-
 .kaltura-tab .entry-search-filter {
-	width: 34%;
+  width: 34%;
 }
-
 .kaltura-tab .entry-search-filter > input[name="search"] {
-	width: 130px;
+  width: 130px;
 }
-
 .kaltura-tab input {
-	font-size: 12px;
+  font-size: 12px;
 }
-
 .kaltura-tab .filter-category-div-wrapper {
-	margin-bottom: 4px;
+  margin-bottom: 4px;
+}
+.kaltura-updated {
+  font-weight: bold;
+  padding: 0.6em 1.6em;
+}
+a.kalturaLink {
+  color: #006699;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+a.kalturaLink:hover {
+  color: #6699CC;
+}
+div.kaltura-wrap {
+  max-width: 1200px;
+  padding-top: 10px;
+}
+ul#kaltura-browse {
+  float: right;
+  list-style: none;
+  padding: 0 0 0 5px;
+  width: 72%;
+  overflow: auto;
+}
+ul#kaltura-browse li {
+  background: url("../images/entries_bg.png") center 0 no-repeat;
+  float: left;
+  margin: 0 10px 15px 10px;
+  padding: 10px 0 5px 0;
+  position: relative;
+  text-align: center;
+  width: 180px;
+}
+ul#kaltura-browse li .status {
+  background-color: #e5f1fb;
+  color: #333333;
+  display: none;
+  height: 25px;
+  left: 0;
+  line-height: 25px;
+  margin: 0 40px;
+  position: absolute;
+  top: 97px;
+  width: 100px;
+  z-index: 5;
+}
+ul#kaltura-browse li .thumb {
+  border: none;
+  height: 100px;
+}
+ul#kaltura-browse li .thumb .overlay {
+  background-image: url(../images/status_bg.png);
+  display: none;
+  height: 90px;
+  left: 0;
+  margin: 0 30px;
+  position: absolute;
+  top: 40px;
+  width: 120px;
+  z-index: 2;
+}
+ul#kaltura-browse li .entryTitle.showName {
+  cursor: pointer;
+  font-weight: bold;
+}
+ul#kaltura-browse li .entryTitle {
+  color: #31302E;
+  font-size: 11px;
+  height: 30px;
+  line-height: 15px;
+  margin: 0 5px 0 5px;
+  overflow: hidden;
+}
+ul#kaltura-browse li .submit {
+  border: none;
+  padding: 5px 10px 0;
+  text-align: center;
+}
+ul#kaltura-browse li .submit input {
+  border: none;
+  height: 22px;
+  margin: 0 5px;
+  padding: 0;
+  width: 23px;
+}
+ul#kaltura-browse li .submit input.checkbox {
+  height: 10px;
+  width: 10px;
+}
+ul#kaltura-browse li .submit input.delete {
+  background: url("../images/delete_icon.gif") 0 0 no-repeat;
+  cursor: pointer;
+}
+ul#kaltura-browse li .submit input.add {
+  background: url("../images/add_icon.gif") 0 0 no-repeat;
+  cursor: pointer;
+}
+ul#kaltura-browse li .submit input.thumb {
+  background: url("../images/capture_icon.gif") 0 0 no-repeat;
+  cursor: pointer;
+}
+ul#kaltura-browse li .submit a {
+  color: #004265;
+}
+ul#kaltura-browse li input.sendButton {
+  width: 9em;
+}
+ul#kaltura-browse li.statusConverting .overlay {
+  display: block;
+}
+ul#kaltura-browse li.statusConverting div.convertingMsg {
+  display: block;
+}
+ul#kaltura-browse li.statusError .overlay {
+  display: block;
+}
+ul#kaltura-browse li.statusError div.errorMsg {
+  display: block;
+}
+#update-thumbnail-page {
+  height: 100%;
+  overflow: hidden;
+}
+#update-thumbnail-page .page-wrapper {
+  background-color: #EAF3FA;
+  border: solid 1px #B0D1E0;
+  margin: 10px;
+}
+#update-thumbnail-page .player-wrapper {
+  margin-top: 20px;
+  min-height: 330px;
+}
+#update-thumbnail-page .player-wrapper #kplayer {
+  height: 330px;
+  margin: 0 auto;
+  width: 400px;
+}
+#update-thumbnail-page p {
+  padding: 0 30px;
+  text-align: center;
+}
+#send-to-editor {
+  border: solid 1px #AED3E3;
+}
+#send-to-editor .videoTitle {
+  padding-left: 30px;
+}
+#send-to-editor .entry-error,
+#send-to-editor .entry-converting {
+  position: absolute;
+  top: 35%;
+  right: 50%;
+  font-size: 18px;
+}
+#send-to-editor.first-edit {
+  padding-top: 50px;
+}
+#send-to-editor .form-table {
+  height: 100%;
+  width: 100%;
+}
+#send-to-editor .form-table td {
+  border: 0;
+}
+#send-to-editor .form-table td table {
+  width: 100%;
+}
+#send-to-editor .form-table .options-td {
+  padding-top: 0;
+  padding-left: 30px;
+  width: 50%;
+}
+#send-to-editor .kaltura-loader {
+  margin: 50px auto;
+}
+#send-to-editor .playerName {
+  color: #000000;
+  font-size: 12px;
+  font-weight: normal;
+  margin: 5px 0 0 5px;
+  overflow: hidden;
+  position: absolute;
+  width: 200px;
+}
+#send-to-editor table.options td {
+  padding: 0;
+}
+#send-to-editor table.options td.options-aspect-ratio {
+  vertical-align: top;
+  width: 40%;
+}
+#send-to-editor table.options td.options-aspect-ratio > strong {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+#send-to-editor table.options td.options-size > strong {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+#send-to-editor .backDiv {
+  padding: 5px;
+  text-align: right;
+}
+#send-to-editor td.kaltura-preview-player-wrapper {
+  position: relative;
+  width: 50%;
+  float: left;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#send-to-editor .player-selector-tr div.selectBox {
+  padding-bottom: 15px;
+}
+#send-to-editor .player-selector-tr div.selectBox #uiConfId {
+  height: 25px;
+  margin-left: 10px;
+  width: 250px;
+}
+#send-to-editor .submit {
+  border: 0;
+  margin: 0 10px 10px 10px;
+  padding: 0;
+  text-align: right;
+}
+#send-to-editor .player-aspect-ratio {
+  margin-top: 75%;
+}
+#send-to-editor .kaltura-responsive-player-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+#send-to-editor #divKalturaPlayer {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#send-to-editor p.note {
+  font-size: 10px;
+  margin: 5px 0 0 10px;
+  width: 400px;
+}
+#send-to-editor label {
+  font-weight: bold;
+}
+#send-to-editor fieldset {
+  padding: 5px 5px 10px 5px;
+}
+#send-to-editor fieldset legend {
+  padding-bottom: 0;
+}
+#send-to-editor div.selectBox {
+  margin-bottom: 15px;
+}
+#send-to-editor .playerRatioDiv {
+  margin-bottom: 10px;
+}
+#send-to-editor div.radioBox {
+  padding: 4px 0 12px 0;
+}
+#send-to-editor div.radioBox .iradio {
+  position: relative;
+  top: 3px;
+}
+#send-to-editor div.radioBox label {
+  padding-left: 7px;
+}
+#send-to-editor div.checkBox {
+  padding: 4px 0 12px 0;
+}
+#send-to-editor input#playerCustomWidth {
+  height: 25px;
+}
+#send-to-editor select {
+  height: auto;
+  padding: 0;
+  width: 130px;
+}
+#kaltura-cms-login {
+  background-color: #E1EAEF;
+  border: solid 1px #B4D5E5;
+  margin: 5px 0 15px 0;
+}
+#kaltura-cms-login .kalturaFirstRow td {
+  padding-top: 10px;
+}
+#kaltura-cms-login .kalturaFirstRow th {
+  padding-top: 10px;
+}
+#kaltura-cms-login th {
+  font-weight: normal;
+  padding-left: 10px;
+}
+#kaltura-cms-login .kalturaLastRow td {
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+.kaltura-wrap #kaltura-cms-login {
+  float: right;
+  margin-right: 6%;
+}
+.entries p.info {
+  float: left;
+  margin: 0 0 12px;
+}
+.settings_page_kaltura_options .registration .form-table th {
+  width: 250px;
+}
+.settings_page_kaltura_options .registration input[type="text"] {
+  width: 300px;
+}
+.settings_page_kaltura_options .registration select {
+  width: 300px;
+}
+.settings_page_kaltura_options .registration textarea {
+  width: 300px;
+}
+.settings_page_kaltura_options .registration .error {
+  background-color: #FFEBE8;
+  border: solid 1px #CC0000;
+}
+.settings_page_kaltura_options .registration label.error {
+  border: none;
+}
+.settings_page_kaltura_options .registration tr.agree_to_terms label.error {
+  background: transparent;
+  color: #CC0000;
+  display: block;
+}
+.settings_page_kaltura_options select {
+  width: 420px;
+}
+.settings_page_kaltura_options tr.advanced {
+  display: none;
+}
+.settings_page_kaltura_options .user_identifier_desc {
+  padding-left: 23px;
+  width: 400px;
+}
+.settings_page_kaltura_options tr.user_identifier label {
+  font-weight: bold;
+}
+.settings_page_kaltura_options .available-players .players-scroll {
+  max-height: 120px;
+  overflow-y: auto;
+  width: 420px;
+}
+.settings_page_kaltura_options .available-players .players-scroll label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#all-in-one-video-pack-widget #kaltura-loader {
+  display: none;
+  height: 35px;
+  margin: auto;
+  padding: 20px 0;
+  width: 35px;
+}
+#all-in-one-video-pack-widget #kaltura-sidebar-menu {
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+#all-in-one-video-pack-widget #kaltura-sidebar-menu a {
+  cursor: pointer;
+  white-space: nowrap;
+}
+#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected {
+  font-weight: bold;
+}
+#all-in-one-video-pack-widget #kaltura-sidebar-menu a.selected:hover {
+  cursor: default;
+  text-decoration: none;
+}
+#all-in-one-video-pack-widget ul#kaltura-items {
+  margin: 0;
+}
+#all-in-one-video-pack-widget ul#kaltura-items li {
+  background: none;
+  margin-bottom: 10px;
+  margin: 0;
+  text-align: center;
+}
+#all-in-one-video-pack-widget ul#kaltura-items li:before {
+  content: "";
+}
+#all-in-one-video-pack-widget ul#kaltura-items li div.thumb {
+  background-color: #000000;
+  height: 90px;
+  margin: 0 auto;
+  width: 120px;
+}
+#all-in-one-video-pack-widget ul.kaltura-sidebar-pager {
+  margin: 0 0 30px 0;
+  padding: 0;
+  width: 100%;
+}
+#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li {
+  background: none;
+  float: left;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 50%;
+}
+#all-in-one-video-pack-widget ul.kaltura-sidebar-pager li:before {
+  content: "";
+}
+#all-in-one-video-pack-widget ul.kaltura-sidebar-pager a {
+  cursor: pointer;
+}
+#kaltura-wrap #root_category {
+  width: 450px;
+}
+.filter-side {
+  float: left;
+  width: 25%;
+}
+.filter-category-label {
+  position: relative;
+  top: -6px;
+}
+.filter-category-input:checked {
+  -moz-box-shadow: 0 0 12px #CCCC00;
+  -webkit-box-shadow: 0 0 12px #CCCC00;
+  box-shadow: 0 0 12px #CCCC00;
+}
+.entry-search-filter {
+  float: right;
+  margin-right: 6%;
+}
+.kaltura-filter-bar {
+  overflow: hidden;
+}
+.kaltura-caret {
+  cursor: pointer;
+  float: left;
+  font-size: 10px;
+  left: -2px;
+  margin-right: 3px;
+  position: relative;
+  top: -4px;
+}
+#filter-media-owner-type-wrap {
+  float: left;
+  margin-bottom: 15px;
+}
+#filter-categories {
+  border: 1px solid #d5d2ca;
+  height: 100%;
+  margin-right: 20px;
+  max-height: 500px;
+  overflow: auto;
+  padding: 15px;
+}
+#filter-categories-button {
+  display: block;
+  margin: 0 auto;
+  width: 80px;
 }

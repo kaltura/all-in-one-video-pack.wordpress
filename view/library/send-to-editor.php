@@ -84,11 +84,12 @@
 	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
 	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
 	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
+	$isFirstEdit = KalturaHelpers::getRequestParam( 'firstedit' ) == 'true';
 
 	?>
 
-	<div id="send-to-editor" class="kaltura-tab">
-		<?php if ( KalturaHelpers::getRequestParam( 'firstedit' ) != 'true' ) { ?>
+	<div id="send-to-editor" class="kaltura-tab <?php echo $isFirstEdit ? 'first-edit' : ''; ?>">
+		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
@@ -128,7 +129,7 @@
 								<td class="options-size">
 									<strong>Select player size:</strong>
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" checked>
+										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" value="100%" checked>
 										<label for="makeResponsive">Responsive size</label>
 									</div>
 
@@ -149,29 +150,18 @@
 							</tr>
 						</table>
 					</td>
-					<td valign="top" class="kaltura-preview-player-wrapper">
+					<td class="kaltura-preview-player-wrapper">
 						<div class="kaltura-loader"></div>
+						<div class="entry-converting">
+							<span><?php echo __( 'Your media is still being processed, and will appear here once it is ready.' ); ?></span>
+						</div>
+						<div class="entry-error">
+							<span><?php echo __( 'An error occurred while trying to process your media. Please contact the administrator.' ); ?></span>
+						</div>
 						<div class="kaltura-responsive-player-wrapper">
 							<div class="player-aspect-ratio"></div>
 							<div id="divKalturaPlayer"></div>
 						</div>
-						<script type="text/javascript">
-							function kaltura_updateRatio() {
-								var ratio = jQuery("input[name=playerRatio]:checked").val();
-								if (ratio == "16:9") {
-									jQuery("#playerWidthLarge").next().text("Large (608x372)");
-									jQuery("#playerWidthMedium").next().text("Medium (400x255)");
-									jQuery("#playerWidthSmall").next().text("Small (304x201)");
-									jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
-								}
-								else {
-									jQuery("#playerWidthLarge").next().text("Large (608x486)");
-									jQuery("#playerWidthMedium").next().text("Medium (400x330)");
-									jQuery("#playerWidthSmall").next().text("Small (304x258)");
-									jQuery("div.player-aspect-ratio").css("margin-top", "75%")
-								}
-							}
-						</script>
 					</td>
 				</tr>
 			</table>
@@ -181,6 +171,22 @@
 		</form>
 	</div>
 	<script type="text/javascript">
+		function kaltura_updateRatio() {
+			jQuery('.entry-converting, .entry-error').hide();
+			var ratio = jQuery("input[name=playerRatio]:checked").val();
+			if (ratio == "16:9") {
+				jQuery("#playerWidthLarge").next().text("Large (608x372)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x255)");
+				jQuery("#playerWidthSmall").next().text("Small (304x201)");
+				jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
+			}
+			else {
+				jQuery("#playerWidthLarge").next().text("Large (608x486)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x330)");
+				jQuery("#playerWidthSmall").next().text("Small (304x258)");
+				jQuery("div.player-aspect-ratio").css("margin-top", "75%")
+			}
+		}
 		jQuery(function () {
 			kaltura_updateRatio();
 			jQuery("#playerCustomWidth").click(function () {
@@ -199,16 +205,18 @@
 				return true;
 			});
 
-			jQuery.kalturaPlayerSelector({
-				url        : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
-				defaultId  : <?php echo wp_json_encode(get_option('kaltura_default_player_type')); ?>,
-				html5Url : <?php echo wp_json_encode(esc_url(KalturaHelpers::getHtml5IframeUrl())); ?>,
-				previewId  : 'divKalturaPlayer',
-				entryId    : <?php echo wp_json_encode($this->entry->id); ?>,
-				playersList: '#uiConfId',
-				dimensions : 'input[name=playerRatio]',
-				submit     : 'input[name=sendToEditorButton]'
-			});
-		});
+			jQuery.kalturaPlayerSelector( {
+				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
+				defaultId      : <?php echo wp_json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
+				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl() ) ); ?>,
+				previewId      : 'divKalturaPlayer',
+				entryId        : <?php echo wp_json_encode( $this->entry->id ); ?>,
+				playersList    : '#uiConfId',
+				dimensions     : 'input[name=playerRatio]',
+				submit         : 'input[name=sendToEditorButton]',
+				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
+				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>
+			} );
+		} );
 	</script>
 <?php endif;
