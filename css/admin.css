@@ -219,6 +219,16 @@ ul#kaltura-browse li.statusError div.errorMsg {
 #send-to-editor .videoTitle {
   padding-left: 30px;
 }
+#send-to-editor .entry-error,
+#send-to-editor .entry-converting {
+  position: absolute;
+  top: 35%;
+  right: 50%;
+  font-size: 18px;
+}
+#send-to-editor.first-edit {
+  padding-top: 50px;
+}
 #send-to-editor .form-table {
   height: 100%;
   width: 100%;
@@ -230,8 +240,8 @@ ul#kaltura-browse li.statusError div.errorMsg {
   width: 100%;
 }
 #send-to-editor .form-table .options-td {
+  padding-top: 0;
   padding-left: 30px;
-  vertical-align: top;
   width: 50%;
 }
 #send-to-editor .kaltura-loader {
@@ -266,11 +276,12 @@ ul#kaltura-browse li.statusError div.errorMsg {
   text-align: right;
 }
 #send-to-editor td.kaltura-preview-player-wrapper {
+  position: relative;
+  width: 50%;
   float: left;
   height: 100%;
   margin: 0;
   padding: 0;
-  width: 50%;
 }
 #send-to-editor .player-selector-tr div.selectBox {
   padding-bottom: 15px;

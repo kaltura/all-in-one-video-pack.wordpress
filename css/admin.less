@@ -224,6 +224,16 @@ ul#kaltura-browse {
   .videoTitle {
     padding-left: 30px;
   }
+  .entry-error, .entry-converting {
+    position: absolute;
+    top: 35%;
+    right: 50%;
+    font-size: 18px;
+  }
+  &.first-edit {
+    padding-top: 50px;
+  }
+
   .form-table {
     height: 100%;
     width: 100%;
@@ -234,8 +244,8 @@ ul#kaltura-browse {
       }
     }
     .options-td {
+      padding-top: 0;
       padding-left: 30px;
-      vertical-align: top;
       width: 50%;
     }
   }
@@ -273,11 +283,12 @@ ul#kaltura-browse {
     text-align: right;
   }
   td.kaltura-preview-player-wrapper {
+    position: relative;
+    width: 50%;
     float: left;
     height: 100%;
     margin: 0;
     padding: 0;
-    width: 50%;
   }
   .player-selector-tr {
     div.selectBox {
