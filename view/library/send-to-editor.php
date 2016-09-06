@@ -129,7 +129,7 @@
 								<td class="options-size">
 									<strong>Select player size:</strong>
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" checked>
+										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" value="100%" checked>
 										<label for="makeResponsive">Responsive size</label>
 									</div>
 
