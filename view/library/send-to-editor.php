@@ -152,11 +152,13 @@
 					</td>
 					<td class="kaltura-preview-player-wrapper">
 						<div class="kaltura-loader"></div>
-						<div class="entry-converting">
-							<span><?php echo __( 'Your media is still being processed, and will appear here once it is ready.' ); ?></span>
+							<span><?php echo __( 'Your media is being processed, and will appear here once it is ready.' ); ?><br><br>
+								<?php echo __('You can continue and embed the media into the post without previewing.'); ?>
+							</span>
 						</div>
-						<div class="entry-error">
-							<span><?php echo __( 'An error occurred while trying to process your media. Please contact the administrator.' ); ?></span>
+							<span><?php echo __( 'An error occurred while trying to process your media. Please try re-uploading the media.' ); ?><br><br>
+								<?php echo __('If the error persists, please contact your site administrator.'); ?>
+							</span>
 						</div>
 						<div class="kaltura-responsive-player-wrapper">
 							<div class="player-aspect-ratio"></div>

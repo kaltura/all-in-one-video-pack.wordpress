@@ -225,11 +225,26 @@ ul#kaltura-browse {
     padding-left: 30px;
   }
   .entry-error, .entry-converting {
-    position: absolute;
-    top: 35%;
-    right: 50%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
     font-size: 18px;
   }
+
+  .entry-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+  }
+
+  .entry-converting {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6
+
+  }
+
   &.first-edit {
     padding-top: 50px;
   }
