@@ -200,8 +200,8 @@ class KalturaHelpers {
 		$name    = is_string( $name ) ? $name : null;
 		$default = is_bool( $default ) ? $default : null;
 
-		$value = get_option( $name, $default );
-		if ( ! is_null( $value ) ) {
+		$value = self::isPluginNetworkActivated() ? get_site_option( $name, $default ) : get_option( $name, $default );
+		if ( ! empty( $value ) ) {
 			return $value;
 		}
 
@@ -215,6 +215,19 @@ class KalturaHelpers {
 		} else {
 			return $default;
 		}
+	}
+
+	public static function isPluginNetworkActivated() {
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+
+		return is_plugin_active_for_network( self::getKalturaPluginPath() );
+	}
+
+	private static function getKalturaPluginPath() {
+		$pluginsPath = DIRECTORY_SEPARATOR . 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR;
+		return substr( KALTURA_PLUGIN_FILE, strpos( KALTURA_PLUGIN_FILE, $pluginsPath ) + strlen( $pluginsPath ) );
 	}
 
 	public static function getDefaultSettings() {
