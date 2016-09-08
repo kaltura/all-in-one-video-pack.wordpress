@@ -5,7 +5,7 @@ Plugin URI: http://www.kaltura.org/
 Description: This is not just another video embed tool - it includes every functionality you might need for video and rich-media, including playing and uploading.
 Version: 2.6.4
 Author: Kaltura
-Author URI: http://www.kaltura.org/
+Author URI: http://corp.kaltura.org/
 */
 
 define( 'KALTURA_PLUGIN_FILE', __FILE__ );
