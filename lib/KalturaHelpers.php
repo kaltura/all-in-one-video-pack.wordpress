@@ -217,12 +217,17 @@ class KalturaHelpers {
 		}
 	}
 
-	private static function isPluginNetworkActivated() {
+	public static function isPluginNetworkActivated() {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
-		return is_plugin_active_for_network( 'all-in-one-video-pack.wordpress/all-in-one-video-pack.php' );
+		return is_plugin_active_for_network( self::getKalturaPluginPath() );
+	}
+
+	private static function getKalturaPluginPath() {
+		$pluginsPath = DIRECTORY_SEPARATOR . 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR;
+		return substr( KALTURA_PLUGIN_FILE, strpos( KALTURA_PLUGIN_FILE, $pluginsPath ) + strlen( $pluginsPath ) );
 	}
 
 	public static function getDefaultSettings() {
