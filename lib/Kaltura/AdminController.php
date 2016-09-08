@@ -220,9 +220,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$allowedPlayers           = KalturaHelpers::getAllowedPlayers();
 		$categories               = $kmodel->generateRootTree();
 
-		$params['players']                  = $players;
-		$params['categories']               = $categories;
-		$params['allowedPlayers']           = $allowedPlayers;
+		$params['players']         = $players;
+		$params['categories']      = $categories;
+		$params['allowedPlayers']  = $allowedPlayers;
+		$params['isNetworkActive'] = KalturaHelpers::isPluginNetworkActivated();
 		$this->renderView( 'admin/info.php', $params );
 	}
 }

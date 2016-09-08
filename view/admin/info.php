@@ -25,6 +25,15 @@
 				</p>
 			</div>
 		<?php endif; ?>
+		<?php if ( $this->isNetworkActive ): ?>
+			<div class="notice notice-warning">
+				<p>
+					<strong>
+						<?php echo __( 'Note: The All in One Video plugin settings are controlled by the network admin. You may view the settings, but not update them.' ); ?>
+					</strong>
+				</p>
+			</div>
+		<?php endif; ?>
 		<h2>All in One Video Pack Settings</h2>
 
 		<form name="form1" method="post">
@@ -159,6 +168,10 @@
 		</form>
 
 		<script type="text/javascript">
+			<?php if($this->isNetworkActive): ?>
+			jQuery( 'input, select' ).attr( 'disabled', true );
+			jQuery( '.kalturaLastRow' ).hide();
+			<?php endif; ?>
 			jQuery('#advanced-button').click(function () {
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();
