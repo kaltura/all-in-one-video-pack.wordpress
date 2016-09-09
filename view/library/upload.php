@@ -44,7 +44,7 @@
 			};
 
 			if(rootCategory != 0) {
-				data.rootCategory = rootCategory;
+				data['entry:categoriesIds'] = rootCategory;
 			}
 
 			return data;
