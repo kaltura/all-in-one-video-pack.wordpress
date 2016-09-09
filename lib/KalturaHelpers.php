@@ -222,7 +222,7 @@ class KalturaHelpers {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
-		return is_plugin_active_for_network( self::getKalturaPluginPath() );
+		return is_plugin_active_for_network( str_replace(DIRECTORY_SEPARATOR, '/', self::getKalturaPluginPath()) );
 	}
 
 	private static function getKalturaPluginPath() {
