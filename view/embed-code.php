@@ -15,8 +15,6 @@ $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
-$playerRatio = KalturaHelpers::calculatePlayerRatio($width, $height - 30);
-$playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -35,7 +33,7 @@ $playerRatioPercent = ($playerRatio[1] / $playerRatio[0]) * 100;
 <?php if($isResponsive): ?>
 <div style="padding-bottom: <?php echo $hoveringControls ? '36px' : '0'; ?>;">
 	<div style="width: 100%;display: inline-block;position: relative;">
-		<div style="margin-top: <?php echo $playerRatioPercent; ?>%;"></div>
+		<div style="margin-top: <?php echo $height; ?>%;"></div>
 		<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:<?php echo $hoveringControls ? '-36px' : '0';?>;"></div>
 	</div>
 	<div class="kaltura-powered-by">
