@@ -151,7 +151,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			if ( $isResponsive ) {
 				$params['playerHeight'] = $playerRatio === '16:9' ? '56.25%' : '75%';
 			} else {
-				$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $player, $width, $playerRatio );
+				$params['playerHeight'] = KalturaHelpers::calculatePlayerHeight( $width, $playerRatio );
 			}
 			$params['uiConfId']     = $uiConfId;
 			$params['isResponsive'] = $isResponsive ? 'true': 'false';
