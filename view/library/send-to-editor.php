@@ -178,15 +178,15 @@
 		function kaltura_updateRatio() {
 			var ratio = jQuery("input[name=playerRatio]:checked").val();
 			if (ratio == "16:9") {
-				jQuery("#playerWidthLarge").next().text("Large (608x372)");
-				jQuery("#playerWidthMedium").next().text("Medium (400x255)");
-				jQuery("#playerWidthSmall").next().text("Small (304x201)");
+				jQuery("#playerWidthLarge").next().text("Large (608x342)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x225)");
+				jQuery("#playerWidthSmall").next().text("Small (304x171)");
 				jQuery("div.player-aspect-ratio").css("margin-top", "56.25%")
 			}
 			else {
-				jQuery("#playerWidthLarge").next().text("Large (608x486)");
-				jQuery("#playerWidthMedium").next().text("Medium (400x330)");
-				jQuery("#playerWidthSmall").next().text("Small (304x258)");
+				jQuery("#playerWidthLarge").next().text("Large (608x456)");
+				jQuery("#playerWidthMedium").next().text("Medium (400x300)");
+				jQuery("#playerWidthSmall").next().text("Small (304x228)");
 				jQuery("div.player-aspect-ratio").css("margin-top", "75%")
 			}
 		}

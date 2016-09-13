@@ -154,7 +154,7 @@ class KalturaHelpers {
 		return $params;
 	}
 
-	public static function calculatePlayerHeight( $player, $width, $playerRatio = '4:3' ) {
+	public static function calculatePlayerHeight( $width, $playerRatio = '16:9' ) {
 		$width    = intval($width);
 
 		if ( empty( $width ) ) {
@@ -162,38 +162,16 @@ class KalturaHelpers {
 		}
 
 		if ( empty( $playerRatio ) ) {
-			$playerRatio = '4:3';
+			$playerRatio = '16:9';
 		}
 
-		$spacer = self::calculateSpacer($player);
 		if ( $playerRatio == '16:9' ) {
-			$height = ( $width / 16 ) * 9 + $spacer;
+			$height = ( $width / 16 ) * 9;
 		} else {
-			$height = ( $width / 4 ) * 3 + $spacer;
+			$height = ( $width / 4 ) * 3;
 		}
 
 		return (int) $height;
-	}
-
-	public static function calculateSpacer($player) {
-		$aspectRatio = self::calculatePlayerRatio($player->width, $player->height);
-		return $player->height - ( $player->width / $aspectRatio[0] ) * $aspectRatio[1];
-	}
-
-	public static function calculatePlayerRatio($playerWidth, $playerHeight) {
-		$normalRatio = 4 / 3;
-		$wideRatio = 16 / 9;
-
-		$playerRatio = $playerWidth / $playerHeight;
-
-		$distanceFromWide = abs($playerRatio - $wideRatio);
-		$distanceFromNormal = abs($playerRatio - $normalRatio);
-		if($distanceFromNormal < $distanceFromWide) {
-			return array(4, 3);
-		}
-		else {
-			return array(16, 9);
-		}
 	}
 
 	public static function getOption( $name, $default = null ) {
