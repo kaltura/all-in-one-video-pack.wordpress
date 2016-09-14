@@ -31,12 +31,12 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 ?>
 
 <?php if($isResponsive): ?>
-<div style="padding-bottom: <?php echo $hoveringControls ? '36px' : '0'; ?>;">
+<div style="padding-bottom: <?php echo ! $hoveringControls ? '36px' : '0'; ?>;">
 	<div style="width: 100%;display: inline-block;position: relative;">
 		<div style="margin-top: <?php echo $height; ?>%;"></div>
-		<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:<?php echo $hoveringControls ? '-36px' : '0';?>;"></div>
+		<div id="<?php echo esc_attr($playerId); ?>" style="position:absolute;top:0;left: 0;right: 0;bottom:<?php echo ! $hoveringControls ? '-36px' : '0';?>;"></div>
 	</div>
-	<div class="kaltura-powered-by">
+	<div class="kaltura-powered-by" style="position: relative; right:0; top: 30px;">
 		<div>
 			<a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a>
 		</div>
