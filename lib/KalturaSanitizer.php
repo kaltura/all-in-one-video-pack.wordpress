@@ -7,8 +7,10 @@ class KalturaSanitizer {
 		foreach ( $attrs as $key => $value ) {
 			$newValue = null;
 			switch ( $key ) {
-				case 'width':
 				case 'height':
+					$newValue = floatval( $value );
+					break;
+				case 'width':
 				case 'uiconfid':
 					$newValue = intval( $value );
 					break;
