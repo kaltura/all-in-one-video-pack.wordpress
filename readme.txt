@@ -3,7 +3,9 @@ Contributors: Kaltura
 Tags: admin, advertising, audio, camera, collaboration, Encoding, gallery, images, interactive, kaltura, media, media library, photo, picture, player, playlist, plugin, podcast, post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video gallery, video-ads, vlog, webcam, widget, mobile
 Requires at least: 2.5.2
 Tested up to: 4.6.1
-Stable tag: 2.5.1
+Stable tag: 2.7
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Easily add full video capabilities to your blog.
 
@@ -104,8 +106,8 @@ Join the community and help us Open Source Video - http://www.kaltura.org/
 
 
 == Changelog ==
-Version 2.7
--------------
+
+= Version 2.7 =
 * Cosmetic fixes to player embed on latest WordPress versions
 * HTML (not Flash) upload
 * Option for responsive player embed
@@ -117,34 +119,27 @@ Version 2.7
 * Ability for administrators to select which players are available for content editors to choose from
 * Removed video comments
 
-Version 2.6
--------------
+= Version 2.6 =
 * WordPress VIP version inlcuding sanitization, escaping and many other code improvements.
 
-Version 2.5.1
--------------
-* bug fix Jira SUPPS-115
+= Version 2.5.1 =
+* Fixed PHP notice
 
-Version 2.5
--------------
+= Version 2.5 =
 * Full support for WordPress 3.5.2
 * MultiUser Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
 * Mobile playback support – reach anyone on any device (including iOS, Android), web, and set-top boxes.
 
-Version 2.4.4
--------------
+= Version 2.4.4 =
 * Changed registration form. Note that this is only relevant for new users of the plugin.
 
-Version 2.4.3
--------------
+= Version 2.4.3 =
 * Fixed compatibility with WordPress 3.1
 
-Version 2.4.2
--------------
+= Version 2.4.2 =
 * Removed link back to Kaltura for statistics gathering.
 
-Version 2.4
--------------
+= Version 2.4 =
 * MultiUser Support
 * New default players
 * Option to use custom KMC players within WordPress
@@ -152,34 +147,24 @@ Version 2.4
 * Improved playback performance
 * Removed 200MB per upload restriction 
 
-Version 2.3.1
--------------
+= Version 2.3.1 =
 * Fixed PHP4 client throwing warnings when allow_call_time_pass_reference is off
 
-Version 2.3
--------------
+= Version 2.3 =
 * Added widescreen support
 * Changed video players designs
 * Bug fixing and maintenance
 
-Version 2.2
--------------
+= Version 2.2 =
 * Added option to update video thumbnail via the Library/Browse view
 * Updated registration form
 * Several bug fixes
 * Enhanced default video quality to 800kbs
 
-Version 2.1
--------------
+= Version 2.1 =
 * Added sidebar widget displaying thumbnails of recent videos and video comments
 * Fixed compatibility with WordPress 2.7 beta
 * Several bug fixes
 
-Version 2.0
--------------
+= Version 2.0 =
 * Initial release of All in One Video Pack, the newer version of Kaltura’s Interactive Video plugin.
-
-
-== License ==
-License : GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
