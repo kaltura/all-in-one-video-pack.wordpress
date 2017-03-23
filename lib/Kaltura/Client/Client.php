@@ -95,6 +95,7 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 	 */
 	public function __construct(Kaltura_Client_Configuration $config)
 	{
+		$config = apply_filters('kaltura_client_config_filter', $config);
 		parent::__construct($config);
 		
 		$this->baseEntry = new Kaltura_Client_BaseEntryService($this);
