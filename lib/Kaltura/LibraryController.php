@@ -223,7 +223,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 
 	public function getplayersAction() {
 		$players = KalturaHelpers::getAllowedPlayers();
-		echo json_encode( array_values( $players ) );
+		wp_send_json( array_values( $players ) );
 		die;
 	}
 
