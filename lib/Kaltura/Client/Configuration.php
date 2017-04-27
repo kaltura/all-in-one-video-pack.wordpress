@@ -45,7 +45,6 @@ class Kaltura_Client_Configuration
 	public $proxyPort                   = null;
 	public $proxyType                   = 'HTTP';
 	public $proxyUser                   = null;
-	public $proxyTunnel                 = true;
 	public $proxyPassword               = '';
 	public $verifySSL 					= true;
 	public $sslCertificatePath			= null;

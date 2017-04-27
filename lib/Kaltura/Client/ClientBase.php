@@ -348,7 +348,7 @@ class Kaltura_Client_ClientBase
 		}
         
 		if (isset($this->config->proxyHost)) {
-			curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $this->config->proxyTunnel);
+			curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);
 			curl_setopt($ch, CURLOPT_PROXY, $this->config->proxyHost);
 			if (isset($this->config->proxyPort)) {
 				curl_setopt($ch, CURLOPT_PROXYPORT, $this->config->proxyPort);
