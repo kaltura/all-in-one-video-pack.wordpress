@@ -51,6 +51,10 @@ else: ?>
 
 			<table class="form-table">
 				<tr valign="top">
+					<th scope="row"><label for="server_url">Server URL:</label></th>
+					<td><input type="text" id="server_url" name="server_url" value="" size="50" /></td>
+				</tr>
+				<tr valign="top">
 					<th scope="row"><label for="partner_id">Partner ID:</label></th>
 					<td><input type="text" id="partner_id" name="partner_id" value="" size="10" /></td>
 				</tr>

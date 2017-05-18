@@ -1,12 +1,12 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if ( $this->uiConfId ): ?>
 	<script type="text/javascript">
-		var playerWidth = <?php echo wp_json_encode($this->playerWidth); ?>;
-		var playerHeight = <?php echo wp_json_encode($this->playerHeight); ?>;
-		var uiConfId = <?php echo wp_json_encode($this->uiConfId); ?>;
-		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
-		var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
-		var hoveringControls = <?php echo wp_json_encode($this->hoveringControls); ?>;
+		var playerWidth = <?php echo json_encode($this->playerWidth); ?>;
+		var playerHeight = <?php echo json_encode($this->playerHeight); ?>;
+		var uiConfId = <?php echo json_encode($this->uiConfId); ?>;
+		var entryId = <?php echo json_encode($this->entryId); ?>;
+		var isResponsive = <?php echo json_encode($this->isResponsive); ?>;
+		var hoveringControls = <?php echo json_encode($this->hoveringControls); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -45,7 +45,7 @@
 			}
 
 			<?php if (count($this->nextEntryIds) > 0): ?>
-			window.location.href = <?php echo wp_json_encode( esc_js( KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds) ) ) ); ?>;
+			window.location.href = <?php echo json_encode( esc_js( KalturaHelpers::generateTabUrl(array('tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds) ) ) ); ?>;
 			<?php else: ?>
 			setTimeout('topWindow.tb_remove()', 0);
 			<?php endif; ?>
@@ -210,15 +210,15 @@
 
 			jQuery.kalturaPlayerSelector( {
 				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
-				defaultId      : <?php echo wp_json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
-				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl() ) ); ?>,
+				defaultId      : <?php echo json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
+				html5Url       : <?php echo json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl() ) ); ?>,
 				previewId      : 'divKalturaPlayer',
-				entryId        : <?php echo wp_json_encode( $this->entry->id ); ?>,
+				entryId        : <?php echo json_encode( $this->entry->id ); ?>,
 				playersList    : '#uiConfId',
 				dimensions     : 'input[name=playerRatio]',
 				submit         : 'input[name=sendToEditorButton]',
-				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
-				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>
+				entryError     : <?php echo json_encode( $this->entryError ); ?>,
+				entryConverting: <?php echo json_encode( $this->entryConverting ); ?>
 			} );
 		} );
 	</script>

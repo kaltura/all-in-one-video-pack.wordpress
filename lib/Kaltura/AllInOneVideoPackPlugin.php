@@ -40,10 +40,10 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function adminWarning() {
-        $kalturaOptionsPageUrl = admin_url('options-general.php?page=kaltura_options');
+        $kalturaOptionsPageUrl = admin_url('options-general.php?page=kaltura_options&partner_login=true');
 		echo '<div class="updated fade">
 		    <p>
-		        <strong>' . esc_html__( 'To complete the All in One Video Pack installation, ') . '<a href="' . esc_url($kalturaOptionsPageUrl) . '">' . esc_html__('you must get a Partner ID.') . '</a></strong>
+		        <strong>' . esc_html__( 'To complete the All in One Video Pack installation, ') . '<a href="' . esc_url($kalturaOptionsPageUrl) . '">' . esc_html__('you must enter a Partner ID.') . '</a></strong>
 		    </p>
 		</div>';
 	}

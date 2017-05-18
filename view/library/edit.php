@@ -1,7 +1,7 @@
 <?php KalturaHelpers::protectView( $this ); ?>
 <?php if (isset($this->redirectUrl)): ?>
 	<script type="text/javascript">
-		window.location.href = <?php echo wp_json_encode( $this->redirectUrl ); ?>;
+		window.location.href = <?php echo json_encode( $this->redirectUrl ); ?>;
 	</script>
 <?php else: ?>
 	<div class="form-wrap kaltura-form kaltura-edit-entry-form">

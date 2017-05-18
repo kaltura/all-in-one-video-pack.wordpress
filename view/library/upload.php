@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 	jQuery(function () {
-		var params = <?php echo wp_json_encode($this->fileUploadParams); ?>;
+		var params = <?php echo json_encode($this->fileUploadParams); ?>;
 		var rootCategory = <?php echo $this->rootCategory; ?>;
 		var widget = jQuery('#uploadHook')
 				.fileupload(params)

@@ -4,8 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {// to be on the safe side
 }
 
 return array(
-	'server_url'                   => ( is_ssl() ) ? 'https://www.kaltura.com' : 'http://www.kaltura.com',
-	'cdn_url'                      => ( is_ssl() ) ? 'https://cdn.kaltura.com' : 'http://cdn.kaltura.com',
 	'anonymous_user_id'            => 'Anonymous',
 	'kcw_ui_conf_id_admin'         => 15333782,
 	'categoriesRootId'             => 0,

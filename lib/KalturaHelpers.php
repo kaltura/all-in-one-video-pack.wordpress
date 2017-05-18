@@ -11,7 +11,7 @@ class KalturaHelpers {
 	}
 
 	public static function getServerUrl($path = null) {
-		$url =  KalturaHelpers::getOption( 'server_url' );
+		$url =  KalturaHelpers::getOption( 'kaltura_server_url' );
 		$url = rtrim( $url, '/' );
 		if ($path)
 			$url .= $path;
@@ -20,7 +20,7 @@ class KalturaHelpers {
 	}
 
 	public static function getCdnUrl($path = null) {
-		$url = KalturaHelpers::getOption( 'cdn_url' );
+		$url = KalturaHelpers::getOption( 'kaltura_server_url' );
 		$url = rtrim( $url, '/' );
 		if ($path)
 			$url .= $path;

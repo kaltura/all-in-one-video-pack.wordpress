@@ -41,6 +41,11 @@
 			<br />
 			<table id="kaltura-cms-login">
 				<tr class="kalturaFirstRow">
+					<th align="left">Server URL:</th>
+					<td style="padding-right: 90px;">
+						<strong><?php echo esc_url(KalturaHelpers::getOption( 'kaltura_server_url' )); ?></strong></td>
+				</tr>
+				<tr>
 					<th align="left">Partner ID:</th>
 					<td style="padding-right: 90px;">
 						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_partner_id' )); ?></strong></td>
@@ -65,7 +70,7 @@
 					<td><label for="root_category">Root Category:</label></td>
 					<td>
 						<select name="root_category" id="root_category" size="1">
-							<option id="root_category_default" value="0" <?php echo selected( KalturaHelpers::getOption( 'kaltura_root_category' ), 0 ); ?>>Root (default)</option>
+							<option id="root_category_default" value="0" <?php echo selected( KalturaHelpers::getOption( 'kaltura_root_category' ), 0 ); ?>>Undefined (default)</option>
 							<?php foreach ( $this->categories->objects as $category ): ?>
 								<option id="root_category<?php echo esc_attr( $category->id ); ?>" value="<?php echo esc_attr( $category->id ); ?>" <?php echo selected( KalturaHelpers::getOption( 'kaltura_root_category' ), esc_attr( $category->id ) ); ?>><?php echo esc_html( $category->fullName ); ?></option>
 							<?php endforeach; ?>

@@ -25,7 +25,7 @@ $this->renderView( 'contribution-wizard.php' );
 		if (entryIds.length) {
 			<?php $baseUrl = KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true' ) ); ?>
 
-			var baseUrl = <?php echo wp_json_encode( $baseUrl ); ?>;
+			var baseUrl = <?php echo json_encode( $baseUrl ); ?>;
 			url = baseUrl + '&entryIds[]=' + entryIds[0];
 		}
 		else {

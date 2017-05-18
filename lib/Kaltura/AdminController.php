@@ -42,6 +42,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$email     = KalturaHelpers::getRequestPostParam( 'email' );
 			$password  = KalturaHelpers::getRequestPostParam( 'password' );
 			$partnerId = KalturaHelpers::getRequestPostParam( 'partner_id' );
+			$serverUrl = KalturaHelpers::getRequestPostParam( 'server_url' );
+
+            // Pre-Save Server URL
+            update_option( 'kaltura_server_url', sanitize_text_field((string)$serverUrl) );
 
 			$kmodel = KalturaModel::getInstance();
 			try {
@@ -63,6 +67,8 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			update_option( 'kaltura_secret', sanitize_text_field((string)$secret) );
 			update_option( 'kaltura_admin_secret', sanitize_text_field((string)$adminSecret) );
 			update_option( 'kaltura_cms_user', sanitize_text_field((string)$cmsUser) );
+			update_option( 'kaltura_server_url', sanitize_text_field((string)$serverUrl) );
+            
 
 			$params['success'] = true;
 		}
