@@ -1,7 +1,7 @@
 === Kaltura All-in-One Video Plugin for WordPress ===
 Contributors: Kaltura
 Tags: admin, advertising, audio, camera, collaboration, Encoding, gallery, images, interactive, kaltura, media, media library, photo, picture, player, playlist, plugin, podcast, post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video gallery, video-ads, vlog, webcam, widget, mobile
-Requires at least: 2.5.2
+Requires at least: 4.1
 Tested up to: 4.6.1
 Stable tag: 2.7
 License: GPLv2 or later
@@ -168,3 +168,4 @@ Join the community and help us Open Source Video - http://www.kaltura.org/
 
 = Version 2.0 =
 * Initial release of All in One Video Pack, the newer version of Kaltura’s Interactive Video plugin.
+
