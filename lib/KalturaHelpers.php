@@ -6,6 +6,7 @@ class KalturaHelpers {
 	public static function getKalturaConfiguration() {
 		$config = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
 		$config->serviceUrl = KalturaHelpers::getServerUrl();
+		$config = apply_filters('kaltura_client_config_filter', $config);
 
 		return $config;
 	}
