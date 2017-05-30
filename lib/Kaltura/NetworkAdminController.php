@@ -30,10 +30,16 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 			$email     = KalturaHelpers::getRequestPostParam( 'email' );
 			$password  = KalturaHelpers::getRequestPostParam( 'password' );
 			$partnerId = KalturaHelpers::getRequestPostParam( 'partner_id' );
+            $serverUrl = KalturaHelpers::getRequestPostParam( 'server_url' );
+
+            // Pre-Save Server URL
+            update_site_option( 'kaltura_server_url', sanitize_text_field((string)$serverUrl) );
 
 			$config            = KalturaHelpers::getKalturaConfiguration();
 			$config->partnerId = $partnerId;
 			$kmodel            = KalturaModel::getInstance();
+
+
 			try {
 				$partner = $kmodel->getSecrets( $partnerId, $email, $password );
 			} catch ( Exception $ex ) {
@@ -46,11 +52,12 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 				$adminSecret = $partner->adminSecret;
 				$cmsUser     = $partner->adminEmail;
 
-				// save partner details
-				update_site_option( 'kaltura_partner_id', $partnerId );
-				update_site_option( 'kaltura_secret', $secret );
-				update_site_option( 'kaltura_admin_secret', $adminSecret );
-				update_site_option( 'kaltura_cms_user', $cmsUser );
+                // save partner details
+                update_site_option( 'kaltura_partner_id', sanitize_text_field((string)$partnerId) );
+                update_site_option( 'kaltura_secret', sanitize_text_field((string)$secret) );
+                update_site_option( 'kaltura_admin_secret', sanitize_text_field((string)$adminSecret) );
+                update_site_option( 'kaltura_cms_user', sanitize_text_field((string)$cmsUser) );
+                update_site_option( 'kaltura_server_url', sanitize_text_field((string)$serverUrl) );
 
 				$params['success'] = true;
 			}

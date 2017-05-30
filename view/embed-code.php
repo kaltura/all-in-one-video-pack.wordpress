@@ -61,9 +61,9 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 <?php endif; ?>
 <script>
 	kWidget.embed({
-		"targetId": <?php echo wp_json_encode($playerId); ?>,
-		"wid": <?php echo wp_json_encode($wid); ?>,
-		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
-		"entry_id": <?php echo wp_json_encode($entryId); ?>
+		"targetId": <?php echo json_encode($playerId); ?>,
+		"wid": <?php echo json_encode($wid); ?>,
+		"uiconf_id": <?php echo json_encode($embedOptions['uiconfid']); ?>,
+		"entry_id": <?php echo json_encode($entryId); ?>
 	});
 </script>
