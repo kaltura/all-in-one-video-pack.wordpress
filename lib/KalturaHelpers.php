@@ -102,9 +102,6 @@ class KalturaHelpers {
 		$ks                     = sanitize_text_field( $ks );
 		$entryId                = sanitize_key( $entryId );
 		$flashVars              = array();
-		$flashVars['partnerId'] = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$flashVars['subpId']    = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) ) * 100;
-		$flashVars['uid']       = sanitize_user( KalturaHelpers::getLoggedUserId() );
 
 		if ( $ks ) {
 			$flashVars['ks'] = $ks;
@@ -114,6 +111,16 @@ class KalturaHelpers {
 		}
 
 		return $flashVars;
+	}
+	
+	public static function getKSForPlayer($entryId) {
+		$adminSecret = KalturaHelpers::getOption( 'kaltura_admin_secret' );
+		$userId = KalturaHelpers::getLoggedUserId();
+		$sessionType = Kaltura_Client_Enum_SessionType::USER;
+		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$privileges = 'sview:' . $entryId;
+		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
+		return $ks;
 	}
 
 	public static function flashVarsToString( $flashVars = array() ) {
@@ -275,17 +282,20 @@ class KalturaHelpers {
 			default:
 				$align = '';
 		}
-
+		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
+		$params['flashVars']       = KalturaHelpers::getKalturaPlayerFlashVars($ks);
+		
 		return array(
-			'height'        => $params['height'],
-			'width'         => $params['width'],
-			'align'         => $align,
-			'style'         => $params['style'],
-			'wid'           => $params['wid'],
-			'entryId'       => $params['entryid'],
-			'uiconfid'      => $params['uiconfid'],
-			'responsive'    => $params['responsive'],
-			'hoveringControls' => $params['hoveringcontrols']
+			'height'           => $params['height'],
+			'width'            => $params['width'],
+			'align'            => $align,
+			'style'            => $params['style'],
+			'wid'              => $params['wid'],
+			'entryId'          => $params['entryid'],
+			'uiconfid'         => $params['uiconfid'],
+			'responsive'       => $params['responsive'],
+			'hoveringControls' => $params['hoveringcontrols'],
+			'flashVars'        => $params['flashVars']
 		);
 	}
 
@@ -312,8 +322,12 @@ class KalturaHelpers {
 			if(!empty($player->html5Url)) {
 				$htmlPlayerUrl = $player->html5Url;
 				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
-				if(isset($htmlPlayerUrlParts[3]) && substr($htmlPlayerUrlParts[3], 1, 1) === '2') {
-					$allowedPlayers[] = $player;
+				if(isset($htmlPlayerUrlParts[3])) {
+					if ($htmlPlayerUrlParts[3] === '{latest}'){
+						$allowedPlayers[] = $player;
+					} elseif (intval(substr($htmlPlayerUrlParts[3], 1, 1)) >= 2) {
+						$allowedPlayers[] = $player;
+					}
 				}
 			}
 		}

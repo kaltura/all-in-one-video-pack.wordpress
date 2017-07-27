@@ -149,6 +149,7 @@ ul#kaltura-browse li .submit {
   border: none;
   padding: 5px 10px 0;
   text-align: center;
+  min-height: 31px;
 }
 ul#kaltura-browse li .submit input {
   border: none;
@@ -190,6 +191,10 @@ ul#kaltura-browse li.statusError .overlay {
 }
 ul#kaltura-browse li.statusError div.errorMsg {
   display: block;
+}
+ul#kaltura-browse.pull-left {
+  float: left;
+  width: 84%;
 }
 #update-thumbnail-page {
   height: 100%;
@@ -536,6 +541,7 @@ ul#kaltura-browse li.statusError div.errorMsg {
 #filter-media-owner-type-wrap {
   float: left;
   margin-bottom: 15px;
+  padding-left: 15px;
 }
 #filter-categories {
   border: 1px solid #d5d2ca;
