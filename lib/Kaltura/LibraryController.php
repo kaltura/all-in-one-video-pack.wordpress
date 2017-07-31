@@ -177,6 +177,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 				'my-media',
 				'media-publish',
 				'media-edit',
+				'my-playlist'
 		);
 		$ownerType = in_array( KalturaHelpers::getRequestParam( 'ownertype' ), $allowedOwnerTypes) ? KalturaHelpers::getRequestParam( 'ownertype' ) : null;
 

@@ -240,28 +240,53 @@ class KalturaModel {
 
 		return $this->_client->category->listAction( $filter, $this->getMaxPager() );
 	}
+	
+	public function listPlayersByTags($includeTags, $excludeTags) {
+		$filter                 = new Kaltura_Client_Type_UiConfFilter();
+		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;
+		$filter->orderBy        = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+		
+		$uiConfs = $this->_client->uiConf->listAction( $filter );
+		
+		// filter out playlist players
+		$players = new stdClass();
+		$players->objects = array();
+		
+		
+		foreach( $uiConfs->objects as $uiConf ) {
+			$tags = explode(',', $uiConf->tags);
+			$tags = array_map('trim', $tags);
 
+			$includePart = array_intersect($tags, $includeTags);
+			$excludePart = array_intersect($tags, $excludeTags);
+			if (count($includePart) == count($includeTags) && count($excludePart) == 0) {
+				array_push( $players->objects, $uiConf );
+			}
+		}
+		
+		return $players;
+	}
 	/**
 	 * @return Kaltura_Client_Type_UiConfListResponse
 	 */
 	public function listPlayersUiConfs() {
-		$filter                 = new Kaltura_Client_Type_UiConfFilter();
-		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;
-		$filter->orderBy        = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+		$includeTags = ['player'];
+		$excludeTags = ['playlist'];
+		
+		$players = $this->listPlayersByTags($includeTags, $excludeTags);
 
-		$uiConfs = $this->_client->uiConf->listAction( $filter );
-
-
-		// filter out playlist players
-		$players = new stdClass();
-		$players->objects = array();
-
-		foreach( $uiConfs->objects as $uiConf ) {
-			if( strpos($uiConf->tags, 'playlist') === false ) {
-				array_push( $players->objects, $uiConf );
-			}
-		}
-
+		return $players;
+	}
+	
+	/**
+	 * @return Kaltura_Client_Type_UiConfListResponse
+	 */
+	public function listPlaylistPlayersUiConfs() {
+		$includeTags = ['player', 'playlist'];
+		$excludeTags = [];
+		
+		$players = $this->listPlayersByTags($includeTags, $excludeTags);
+		
 		return $players;
 	}
 

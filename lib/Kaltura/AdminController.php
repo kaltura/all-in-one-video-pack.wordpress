@@ -176,6 +176,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$kmodel                = KalturaModel::getInstance();
 		$players               = $kmodel->listPlayersUiConfs();
 		$players               = $players->objects;
+		$playlistEmbedAllowed  = KalturaHelpers::getOption( 'kaltura_allow_embed_playlist', false );
+		$playlistPlayers       = $kmodel->listPlaylistPlayersUiConfs();
+		$playlistPlayers       = $playlistPlayers->objects;
+
 		if ( count( $_POST ) ) {
 			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'info' )) {
 				print 'Sorry, your nonce did not verify.';
@@ -192,6 +196,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$allowedPlayers             = KalturaHelpers::getRequestPostParam( 'allowed_players' );
 			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
 			$enableKcw                  = KalturaHelpers::getRequestPostParam( 'enable_kcw' );
+			$enableEmbedPlaylist        = KalturaHelpers::getRequestPostParam( 'allow_embed_playlist' );
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
@@ -199,6 +204,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
 			update_option( 'kaltura_enable_kcw', (bool)$enableKcw);
+			update_option( 'kaltura_allow_embed_playlist', (bool)$enableEmbedPlaylist);
 
 			// only set allowed players when it was provided and when not all players were selected
 			if ( count( $allowedPlayers ) > 0 && count( $allowedPlayers ) < count( $players ) ) {
@@ -207,6 +213,25 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 				// otherwise, we reset to empty array to allow all players
 				update_option( 'kaltura_allowed_players', array() );
 			}
+			
+			if ($enableEmbedPlaylist = (bool)$enableEmbedPlaylist) {
+				$placeholderArray = array();
+				if ($enableEmbedPlaylist && !$playlistEmbedAllowed) {
+					$allowedPlaylistPlayers   = array_keys(KalturaHelpers::getAllowedPlaylistPlayers());
+					$placeholderArray = array_map('strval', $allowedPlaylistPlayers);
+				}
+				
+				$allowedPostPlaylistPlayers     = KalturaHelpers::getRequestPostParam( 'allowed_playlist_players' );
+				$allowedPlaylistPlayers     = ! empty( $allowedPostPlaylistPlayers ) && is_array($allowedPostPlaylistPlayers) ? $allowedPostPlaylistPlayers : $placeholderArray;
+				// only set allowed players when it was provided and when not all players were selected
+				if ( count( $allowedPlaylistPlayers ) > 0 && count( $allowedPlaylistPlayers ) <= count( $playlistPlayers ) ) {
+					update_option( 'kaltura_allowed_playlist_players', array_values( $allowedPlaylistPlayers ) );
+				} else {
+					// otherwise, we reset to empty array to allow all players
+					update_option( 'kaltura_allowed_playlist_players', array() );
+				}
+			}
+			
 			$params['showMessage'] = true;
 		} else {
 			$kmodel = KalturaModel::getInstance();
@@ -220,12 +245,18 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$allowedPlayers           = KalturaHelpers::getAllowedPlayers();
 		$categories               = $kmodel->generateRootTree();
 		$showEmail                = KalturaHelpers::getOption('kaltura_show_kmc_email');
-
-		$params['players']         = $players;
-		$params['categories']      = $categories;
-		$params['allowedPlayers']  = $allowedPlayers;
-		$params['isNetworkActive'] = KalturaHelpers::isPluginNetworkActivated();
-		$params['showEmail']       = $showEmail;
+		$playlistEmbedAllowed  = KalturaHelpers::getOption( 'kaltura_allow_embed_playlist', false );
+		$params['players']                 = $players;
+		$params['categories']              = $categories;
+		$params['allowedPlayers']          = $allowedPlayers;
+		$params['isNetworkActive']         = KalturaHelpers::isPluginNetworkActivated();
+		$params['showEmail']               = $showEmail;
+		$params['playlistEmbedAllowed']    = $playlistEmbedAllowed;
+		if ($playlistEmbedAllowed) {
+			$allowedPlaylistPlayers   = KalturaHelpers::getAllowedPlaylistPlayers();
+			$params['playlistPlayers']         = $playlistPlayers;
+			$params['allowedPlaylistPlayers']  = $allowedPlaylistPlayers;
+		}
 		$this->renderView( 'admin/info.php', $params );
 	}
 }

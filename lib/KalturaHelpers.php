@@ -110,6 +110,7 @@ class KalturaHelpers {
 			$flashVars['entryId'] = $entryId;
 		}
 
+
 		return $flashVars;
 	}
 	
@@ -305,34 +306,45 @@ class KalturaHelpers {
 			$allowedPlayers = array();
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
-		$allPlayers = self::_filterOldPlayers($allPlayers->objects);
-		$players    = array();
-		foreach ( $allPlayers as $player ) {
-			if ( in_array( $player->id, $allowedPlayers ) || ! $allowedPlayers ) {
-				$players[ $player->id ] = $player;
-			}
-		}
+		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 
 		return $players;
 	}
-
-	private static function _filterOldPlayers($players) {
-		$allowedPlayers = array();
-		foreach($players as $player) {
+	
+	public static function getAllowedPlaylistPlayers() {
+		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_playlist_players' );
+		if (!$allowedPlayers)
+			$allowedPlayers = array();
+		
+		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
+		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
+		
+		return $players;
+	}
+	
+	private static function _filterOldPlayers($allPlayers, $allowedPlayers) {
+		$supportedPlayers = array();
+		foreach($allPlayers as $player) {
 			if(!empty($player->html5Url)) {
 				$htmlPlayerUrl = $player->html5Url;
 				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
 				if(isset($htmlPlayerUrlParts[3])) {
 					if ($htmlPlayerUrlParts[3] === '{latest}'){
-						$allowedPlayers[] = $player;
+						$supportedPlayers[] = $player;
 					} elseif (intval(substr($htmlPlayerUrlParts[3], 1, 1)) >= 2) {
-						$allowedPlayers[] = $player;
+						$supportedPlayers[] = $player;
 					}
 				}
 			}
 		}
+		$players    = array();
+		foreach ( $supportedPlayers as $player ) {
+			if ( in_array( $player->id, $allowedPlayers )  ) {
+				$players[ $player->id ] = $player;
+			}
+		}
 
-		return $allowedPlayers;
+		return $players;
 	}
 
 	/**
