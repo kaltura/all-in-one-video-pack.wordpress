@@ -114,7 +114,7 @@ class KalturaHelpers {
 	}
 	
 	public static function getKSForPlayer($entryId) {
-		$adminSecret = KalturaHelpers::getOption( 'kaltura_admin_secret' );
+		$adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
 		$userId = KalturaHelpers::getLoggedUserId();
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
 		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
@@ -322,10 +322,11 @@ class KalturaHelpers {
 			if(!empty($player->html5Url)) {
 				$htmlPlayerUrl = $player->html5Url;
 				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
-				if(isset($htmlPlayerUrlParts[3])) {
-					if ($htmlPlayerUrlParts[3] === '{latest}'){
+				$playerVersion = $htmlPlayerUrlParts[3];
+				if(isset($playerVersion)) {
+					if ($playerVersion === '{latest}'){
 						$allowedPlayers[] = $player;
-					} elseif (intval(substr($htmlPlayerUrlParts[3], 1, 1)) >= 2) {
+					} elseif (intval(substr($playerVersion, 1, 1)) >= 2) {
 						$allowedPlayers[] = $player;
 					}
 				}

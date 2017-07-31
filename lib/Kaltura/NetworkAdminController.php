@@ -105,13 +105,15 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 				$params['error'] = $ex->getMessage() . ' - ' . $ex->getCode();
 			}
 		}
-
+		
+		$showEmail       = boolval(KalturaHelpers::getOption('kaltura_show_kmc_email'));
 		$allowedPlayers = KalturaHelpers::getAllowedPlayers();
 		$categories     = $kmodel->generateRootTree();
 
 		$params['players']         = $players;
 		$params['categories']      = $categories;
 		$params['allowedPlayers']  = $allowedPlayers;
+		$params['showEmail']          = $showEmail;
 		$params['isNetworkActive'] = ! KalturaHelpers::isPluginNetworkActivated();
 		$this->renderView( 'admin/info.php', $params );
 	}
