@@ -322,8 +322,8 @@ class KalturaHelpers {
 			if(!empty($player->html5Url)) {
 				$htmlPlayerUrl = $player->html5Url;
 				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
-				$playerVersion = $htmlPlayerUrlParts[3];
-				if(isset($playerVersion)) {
+				$playerVersion = isset($htmlPlayerUrlParts[3]) ? $htmlPlayerUrlParts[3] : null;
+				if ($playerVersion) {
 					if ($playerVersion === '{latest}'){
 						$allowedPlayers[] = $player;
 					} elseif (intval(substr($playerVersion, 1, 1)) >= 2) {
