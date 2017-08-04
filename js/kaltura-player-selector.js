@@ -8,7 +8,9 @@
 			html5Url: null,
 			previewId : null,
 			entryId   : '_KMCLOGO',
-			id        : 'kplayer'
+			id        : 'kplayer',
+			isplaylist: false,
+			flashVars : ''
 		};
 
 		var intervalId = null;
@@ -82,7 +84,7 @@
 			}
 
 			var playerHasHoveringControls = _checkHoveringControls(player);
-			
+
 			_$hoveringControlsInputElement.attr('value', playerHasHoveringControls);
 		};
 
@@ -101,7 +103,11 @@
 		};
 
 		var _getIframeEmbedUrl = function() {
-			return options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
+			var url = options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
+			if (options.isplaylist) {
+				url = url + '&' + options.flashVars
+			}
+			return url;
 		};
 
 		var _checkEntryStatus = function() {

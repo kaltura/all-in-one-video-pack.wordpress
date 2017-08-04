@@ -57,7 +57,21 @@
 		});
 
 		$('#filter-media-owner-type').on('change', function () {
-			$('#filter-categories-button').click();
+			var categoryFilter = $('#filter-categories-button');
+			console.log(categoryFilter.length);
+			if (categoryFilter.length > 0) {
+                categoryFilter.click();
+			} else {
+                $('#kaltura-browse-form').submit();
+			}
+
+		});
+
+        $(document.body).on('click', '#select-playlist', function (event) {
+        	var activePlaylist = $('.playlist-view li.active');
+        	var playlistInfoElement = activePlaylist.find('.playlist-info');
+        	var url = playlistInfoElement.data('url');
+        	window.location = url;
 		});
 	});
 
