@@ -102,6 +102,7 @@ class Kaltura_Client_TypeMap
 		'KalturaPlaylist' => 'Kaltura_Client_Type_Playlist',
 		'KalturaPlaylistBaseFilter' => 'Kaltura_Client_Type_PlaylistBaseFilter',
 		'KalturaPlaylistFilter' => 'Kaltura_Client_Type_PlaylistFilter',
+		'KalturaPlaylistListResponse' => 'Kaltura_Client_Type_PlaylistListResponse',
 		'KalturaResource' => 'Kaltura_Client_Type_Resource',
 		'KalturaSearchItem' => 'Kaltura_Client_Type_SearchItem',
 		'KalturaUiConf' => 'Kaltura_Client_Type_UiConf',

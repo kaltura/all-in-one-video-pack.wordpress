@@ -16,6 +16,7 @@ $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
 $flashVars      = $embedOptions['flashVars'];
+$isPlaylist     = $embedOptions['isPlaylist'];
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -60,12 +61,24 @@ $flashVars      = $embedOptions['flashVars'];
 </div>
 
 <?php endif; ?>
+
+<?php if(!$isPlaylist) : ?>
 <script>
 	kWidget.embed({
 		"targetId": <?php echo wp_json_encode($playerId); ?>,
 		"wid": <?php echo wp_json_encode($wid); ?>,
 		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
 		"entry_id": <?php echo wp_json_encode($entryId); ?>,
-		"flashVars": <?php echo wp_json_encode($flashVars); ?>
 	});
 </script>
+
+<?php else: ?>
+	<script>
+        kWidget.embed({
+            "targetId": <?php echo wp_json_encode($playerId); ?>,
+            "wid": <?php echo wp_json_encode($wid); ?>,
+            "uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
+            "flashvars": <?php echo wp_json_encode($flashVars); ?>
+        });
+	</script>
+<?php endif; ?>

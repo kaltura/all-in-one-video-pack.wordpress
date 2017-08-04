@@ -346,4 +346,55 @@ class KalturaModel {
 
 		return strtolower( $entry->userId ) === $loggedInUserId;
 	}
+	
+	/**
+	 * Fetch Playlists for current user
+	 *
+	 * @param $userId
+	 * @param $pageSize
+	 * @param $page
+	 *
+	 * @return Kaltura_Client_MultiRequestSubResult|mixed
+	 */
+	public function getUserPlaylists($userId, $pageSize, $page) {
+		$pager = new Kaltura_Client_Type_FilterPager();
+		$pager->pageSize = $pageSize;
+		$pager->pageIndex = $page;
+		
+		$filter = new Kaltura_Client_Type_PlaylistFilter();
+		$filter->userIdEqual = $userId;
+		$filter->orderBy = Kaltura_Client_Enum_PlaylistOrderBy::CREATED_AT_DESC;
+
+		return  $this->getPlaylistService()->listAction($filter, $pager);
+	}
+	
+	/**
+	 * @param $playlists
+	 *
+	 * @return array
+	 */
+	public function getPlaylistsData($playlists) {
+		$playlistItems = [];
+
+		//@todo fetch dynamically
+		$this->_client->startMultiRequest();
+		$playlistService = $this->getPlaylistService();
+		foreach ($playlists as $playlist) {
+			$playlistService->execute($playlist->id);
+		}
+		
+		$playlistResults = $this->_client->doMultiRequest();
+		foreach ($playlistResults as $key => $playlistItem) {
+			$playlistItems[$playlists[$key]->id] = $playlistResults[$key];
+		}
+		return $playlistItems;
+	}
+	
+	/**
+	 * @return Kaltura_Client_PlaylistService
+	 */
+	private function getPlaylistService()
+	{
+		return new Kaltura_Client_PlaylistService($this->_client);
+	}
 }

@@ -98,9 +98,10 @@ class KalturaHelpers {
 		return $flashVars;
 	}
 
-	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null ) {
+	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false ) {
 		$ks                     = sanitize_text_field( $ks );
 		$entryId                = sanitize_key( $entryId );
+		$isPlaylist             = (bool)$isPlaylist;
 		$flashVars              = array();
 
 		if ( $ks ) {
@@ -109,8 +110,36 @@ class KalturaHelpers {
 		if ( $entryId ) {
 			$flashVars['entryId'] = $entryId;
 		}
+		if($isPlaylist){
+			unset($flashVars['entryId']);
+			$flashVars['playlistAPI']['kpl0Id']       = $entryId;
+			$flashVars['playlistAPI']['plugin']       = true;
+		}
+		
 
 
+		return $flashVars;
+	}
+	
+	public static function getKalturaPlayerFlashVarsForUrl( $ks = null, $entryId = null, $isPlaylist = false ) {
+		$ks                     = sanitize_text_field( $ks );
+		$entryId                = sanitize_key( $entryId );
+		$isPlaylist             = (bool)$isPlaylist;
+		$flashVars              = array();
+		
+		if ( $ks ) {
+			$flashVars['ks'] = $ks;
+		}
+		if ( $entryId ) {
+			$flashVars['entryId'] = $entryId;
+		}
+		if($isPlaylist){
+			unset($flashVars['entryId']);
+			unset($flashVars['ks']);
+			$flashVars['flashvars']['playlistAPI.kpl0Id']       = $entryId;
+			$flashVars['flashvars']['playlistAPI.plugin']       = 'true';
+			$flashVars['flashvars']['ks']                       = $ks;
+		}
 		return $flashVars;
 	}
 	
@@ -126,7 +155,7 @@ class KalturaHelpers {
 
 	public static function flashVarsToString( $flashVars = array() ) {
 		$flashVarsStr = http_build_query($flashVars);
-		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
+		return  $flashVarsStr;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {
@@ -259,7 +288,7 @@ class KalturaHelpers {
 
 	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive', 'hoveringcontrols' );
+		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive', 'hoveringcontrols', 'isplaylist' );
 		foreach ( $arrayKeys as $key ) {
 			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
@@ -283,8 +312,9 @@ class KalturaHelpers {
 			default:
 				$align = '';
 		}
+		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
 		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
-		$params['flashVars']       = KalturaHelpers::getKalturaPlayerFlashVars($ks);
+		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist);
 		
 		return array(
 			'height'           => $params['height'],
@@ -296,7 +326,8 @@ class KalturaHelpers {
 			'uiconfid'         => $params['uiconfid'],
 			'responsive'       => $params['responsive'],
 			'hoveringControls' => $params['hoveringcontrols'],
-			'flashVars'        => $params['flashVars']
+			'flashVars'        => $flashVars,
+			'isPlaylist'       => $isplaylist
 		);
 	}
 

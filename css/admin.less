@@ -197,9 +197,42 @@ ul#kaltura-browse {
       display: block;
     }
   }
-  &.pull-left{
+  &.pull-left {
     float: left;
     width: 84%;
+  }
+  &.playlist-view {
+    width: 25%;
+    li {
+      background: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+      width:100%;
+      .playlists-wrap {
+        background: white;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+        float: left;
+        width:100%;
+        color: #08c;
+        .playlist-title {
+          padding: 8px 0;
+          cursor: pointer;
+          font-size: 14px;
+          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+      }
+      &.active {
+        .playlists-wrap {
+          color: white;
+          background-color: #08c;
+        }
+      }
+    }
   }
 }
 #update-thumbnail-page {
@@ -598,4 +631,16 @@ ul#kaltura-browse {
   display: block;
   margin: 0 auto;
   width: 80px;
+}
+.playlist-items {
+  display: none;
+  float: right;
+}
+#select-playlist {
+  float: right;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid #cecece;
+  padding: 5px 10px;
+  cursor: pointer;
 }
