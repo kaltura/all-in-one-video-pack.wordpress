@@ -86,6 +86,17 @@
 						<br />
 					</td>
 				</tr>
+				<tr valign="top">
+					<td><label for="default_player_dimensions">Player Dimensions:</label></td>
+					<td>
+						<select name="default_player_dimensions" id="default_player_dimensions">
+							<?php foreach ( $this->playerDimensionsList as $title => $playerDimension ): ?>
+								<option id="default_player_dimension_<?php echo esc_attr( $playerDimension ); ?>" value="<?php echo esc_attr( $playerDimension ); ?>" <?php echo selected( KalturaHelpers::getPlayerDimension( '16:9' ), $playerDimension); ?>><?php echo esc_html( $title ); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<br />
+					</td>
+				</tr>
 
 				<tr valign="top">
 					<td><label>Allow users to select existing media:</label></td>

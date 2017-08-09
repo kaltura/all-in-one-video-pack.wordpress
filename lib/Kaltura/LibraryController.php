@@ -13,7 +13,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'getplayers',
 			'getentrystatus',
 			'saveentryname',
-			'getPlaylists'
+			'getplaylistitems',
 		);
 	}
 
@@ -106,7 +106,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$entryIds = KalturaHelpers::getRequestParam( 'entryIds', array() );
 		$isPlaylist = KalturaHelpers::getRequestParam( 'isplaylist', false );
 		$entryId  = null;
-		$privileges = '';
+		$privileges = 'disableentitlement';
 		if ( is_array( $entryIds ) && count( $entryIds ) > 0 ) {
 			$entryId = $entryIds[0];
 		}
@@ -115,7 +115,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			wp_die( 'No entry specified' );
 		}
 		if ($isPlaylist) {
-			$privileges = 'sviewplaylist:' . $entryId;
+			$privileges .= ',sviewplaylist:' . $entryId;
 		}
 
 		$params = array_fill_keys(
@@ -151,7 +151,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$uiConfId    = KalturaHelpers::getRequestPostParam( 'uiConfId' );
 			$playerRatio = KalturaHelpers::getRequestPostParam( 'playerRatio' );
 			$hoveringControls = KalturaHelpers::getRequestPostParam( 'hoveringControls' );
-			$isPlaylist = KalturaHelpers::getRequestPostParam( 'isPlaylist', false );
+			$isPlaylist = KalturaHelpers::getRequestPostParam( 'isplaylist', false );
 			$isResponsive = $width === '100%';
 
 			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
@@ -223,10 +223,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 			$result->objects = $this->addUserPermissionsToEntry( $result->objects );;
 		} else {
+			wp_enqueue_script( 'kaltura-playlist-control' );
 			$pageSize = 5;
 			$currentUser = KalturaHelpers::getLoggedUserId();
 			$result = $kmodel->getUserPlaylists($currentUser, $pageSize, $page);
-			$playlistItems = $kmodel->getPlaylistsData($result->objects);
 			$subViewFile = 'library/playlists-list.php';
 		}
 		
@@ -247,9 +247,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['browseClass']       = $kalturaBrowseClassName;
 		$params['showEmail']          = $showEmail;
 		$params['subViewFile']          = $subViewFile;
-		if ($isPlaylist) {
-			$params['playlistItems'] = $playlistItems;
-		}
+		$params['isPlaylist']          = $isPlaylist;
+		
 		$this->renderView( 'library/browse.php', $params );
 	}
 
@@ -296,6 +295,18 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		} catch ( Exception $ex ) {
 			echo 'error';
 		}
+		die;
+	}
+
+	public function getplaylistitemsAction() {
+		$entryId = KalturaHelpers::getRequestParam( 'entryId' );
+		
+		if ( is_null( $entryId ) ) {
+			wp_die( 'No entry specified' );
+		}
+		$kmodel          = KalturaModel::getInstance();
+		$playlistData    = $kmodel->getPlaylistsData($entryId);
+		wp_send_json( array_values( $playlistData ) );
 		die;
 	}
 }

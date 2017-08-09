@@ -179,6 +179,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$playlistEmbedAllowed  = KalturaHelpers::getOption( 'kaltura_allow_embed_playlist', false );
 		$playlistPlayers       = $kmodel->listPlaylistPlayersUiConfs();
 		$playlistPlayers       = $playlistPlayers->objects;
+		$playerDimensionsList      = [
+			'Standard (4:3)' => '4:3',
+			'Wide (16:9)'    => '16:9',
+		];
 
 		if ( count( $_POST ) ) {
 			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'info' )) {
@@ -197,6 +201,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
 			$enableKcw                  = KalturaHelpers::getRequestPostParam( 'enable_kcw' );
 			$enableEmbedPlaylist        = KalturaHelpers::getRequestPostParam( 'allow_embed_playlist' );
+			$defaultPlayerDimensions    = KalturaHelpers::getRequestPostParam( 'default_player_dimensions', '16:9');
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
@@ -205,6 +210,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
 			update_option( 'kaltura_enable_kcw', (bool)$enableKcw);
 			update_option( 'kaltura_allow_embed_playlist', (bool)$enableEmbedPlaylist);
+			update_option( 'kaltura_default_player_dimensions', sanitize_text_field((string)$defaultPlayerDimensions));
 
 			// only set allowed players when it was provided and when not all players were selected
 			if ( count( $allowedPlayers ) > 0 && count( $allowedPlayers ) < count( $players ) ) {
@@ -252,6 +258,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$params['isNetworkActive']         = KalturaHelpers::isPluginNetworkActivated();
 		$params['showEmail']               = $showEmail;
 		$params['playlistEmbedAllowed']    = $playlistEmbedAllowed;
+		$params['playerDimensionsList']    = $playerDimensionsList;
 		if ($playlistEmbedAllowed) {
 			$allowedPlaylistPlayers   = KalturaHelpers::getAllowedPlaylistPlayers();
 			$params['playlistPlayers']         = $playlistPlayers;

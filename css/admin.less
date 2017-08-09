@@ -203,6 +203,8 @@ ul#kaltura-browse {
   }
   &.playlist-view {
     width: 25%;
+    margin: 0;
+    padding-left: 12px;
     li {
       background: none;
       padding: 0;
@@ -294,12 +296,22 @@ ul#kaltura-browse {
       border: 0;
       table {
         width: 100%;
+        vertical-align: top;
       }
     }
     .options-td {
       padding-top: 0;
       padding-left: 30px;
       width: 50%;
+    }
+    &.playlist-form {
+      td {
+        vertical-align: top;
+        &.options-td {
+          width: 40%;
+        }
+      }
+
     }
   }
   .kaltura-loader {
@@ -633,14 +645,55 @@ ul#kaltura-browse {
   width: 80px;
 }
 .playlist-items {
-  display: none;
-  float: right;
+  display: block;
+  float: left;
+  width: 72%;
+  margin-left: 2%;
+  max-height: 600px;
+  .playlist-item-box {
+    .playlist-item {
+      overflow: auto;
+      background: white;
+      padding: 5px 10px;
+      border-top: 1px solid #ddd;
+      margin-bottom: 10px;
+      .media-box {
+        float: left;
+        width: 20%;
+        .media-thumb{
+          padding: 10px;
+        }
+      }
+      .details-box {
+        float: left;
+        width: 80%;
+        padding-top: 10px;
+        .media-name {
+          color: #08c;
+          font-size: 17.5px;
+        }
+        .media-description {
+          font-size: 85%;
+          word-break: normal;
+        }
+      }
+    }
+    .no-results {
+      color: #08c;
+      font-size: 17.5px;
+      background: white;
+      padding: 10px 25px;
+    }
+  }
+
 }
 #select-playlist {
   float: right;
   border-radius: 6px;
-  background-color: white;
+  background-color: #0088cc;
+  color: white;
   border: 1px solid #cecece;
   padding: 5px 10px;
   cursor: pointer;
+  margin-bottom: 20px;
 }

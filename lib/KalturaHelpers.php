@@ -137,7 +137,7 @@ class KalturaHelpers {
 			unset($flashVars['entryId']);
 			unset($flashVars['ks']);
 			$flashVars['flashvars']['playlistAPI.kpl0Id']       = $entryId;
-			$flashVars['flashvars']['playlistAPI.plugin']       = 'true';
+			$flashVars['flashvars']['playlistAPI.plugin']       = true;
 			$flashVars['flashvars']['ks']                       = $ks;
 		}
 		return $flashVars;
@@ -148,12 +148,19 @@ class KalturaHelpers {
 		$userId = KalturaHelpers::getLoggedUserId();
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
 		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$privileges = 'sview:' . $entryId;
+		$privileges = 'sview:' . $entryId . ',disableentitlement';
 		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 		return $ks;
 	}
 
 	public static function flashVarsToString( $flashVars = array() ) {
+		foreach ($flashVars as $key => $flashVar) {
+			if (is_array($flashVar)) {
+				$flashVars[$key] = array_map('sanitize_text_field', $flashVar);
+			} else {
+				$flashVars[$key] = sanitize_text_field($flashVar);
+			}
+		}
 		$flashVarsStr = http_build_query($flashVars);
 		return  $flashVarsStr;
 	}
@@ -231,6 +238,18 @@ class KalturaHelpers {
 		} else {
 			return $default;
 		}
+	}
+	
+	public static function getPlayerDimension($default = '16:9' ) {
+		$name    = 'kaltura_default_player_dimensions';
+		$option  = self::getOption($name);
+		$availableDimensions = ['16:9', '4:3'];
+		$default = in_array( $default, $availableDimensions ) ? $default : '16:9';
+		if (is_null($option)) {
+			return $default;
+		}
+		return $option;
+		
 	}
 
 	public static function isPluginNetworkActivated() {

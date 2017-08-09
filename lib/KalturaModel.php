@@ -373,19 +373,14 @@ class KalturaModel {
 	 *
 	 * @return array
 	 */
-	public function getPlaylistsData($playlists) {
+	public function getPlaylistsData($playlistId) {
 		$playlistItems = [];
-
-		//@todo fetch dynamically
-		$this->_client->startMultiRequest();
-		$playlistService = $this->getPlaylistService();
-		foreach ($playlists as $playlist) {
-			$playlistService->execute($playlist->id);
-		}
 		
-		$playlistResults = $this->_client->doMultiRequest();
-		foreach ($playlistResults as $key => $playlistItem) {
-			$playlistItems[$playlists[$key]->id] = $playlistResults[$key];
+		$playlistService = $this->getPlaylistService();
+		$playlistResults =$playlistService->execute($playlistId);
+		
+		if (!empty($playlistResults)) {
+			$playlistItems = $playlistResults;
 		}
 		return $playlistItems;
 	}

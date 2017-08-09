@@ -1,7 +1,7 @@
 <?php
 KalturaHelpers::protectView( $this );
 ?>
-<div id="select-playlist">Select playlist</div>
+<div class="clear"></div>
 <ul id="kaltura-browse" class="pull-left playlist-view">
 	<?php foreach ( $this->result->objects as $key => $playlist ): ?>
 		<li class="<?php echo ($key == 0) ? 'active' : '' ?>">
@@ -19,22 +19,20 @@ KalturaHelpers::protectView( $this );
 		</li>
 	<?php endforeach; ?>
 </ul>
-<div class="playlist-items" >
-		<?php foreach ($this->playlistItems as $playlistId => $mediaEntry): ?>
-			<div class="playlist-item" data-playlist="<?php echo esc_attr( $playlistId ); ?>">
-				<div class="media-name">
-					<?php echo esc_attr($mediaEntry->name); ?>
-				</div>
-				<div class="media-description">
-					<?php echo esc_attr($mediaEntry->name); ?>
-				</div>
-			</div>
-		<?php endforeach; ?>
-</div>
-	<div class="submit">
-			<?php if ( ! $this->isLibrary ): ?>
-				<input type="button" title="Insert into post" class="add" onclick="window.location = '<?php echo esc_url( $sendToEditorUrl ); ?>';" />
-			<?php endif; ?>
+<div class="playlist-items"  >
+	<div class="kaltura-loader"></div>
+	<div class="playlist-item-box">
+		<div class="no-results"><?php _e('No results found'); ?></div>
+	
+	</div>
 
-			<br clear="all" />
-			</div>
+</div>
+
+<script type="text/javascript">
+    jQuery(function () {
+        jQuery.kalturaPlaylistControl({
+	        url: ajaxurl + '?action=kaltura_ajax&kaction=getplaylistitems'
+        });
+    } );
+
+</script>

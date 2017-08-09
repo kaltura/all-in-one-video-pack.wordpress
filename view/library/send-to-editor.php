@@ -18,9 +18,7 @@
 		htmlArray.push('height="' + playerHeight + '" ');
 		htmlArray.push('responsive="' + isResponsive + '" ');
 		htmlArray.push('hoveringControls="' + hoveringControls + '" ');
-		<?php if ($this->isPlaylist): ?>
 		htmlArray.push('isplaylist="' + isPlaylist + '" ');
-		<?php endif; ?>
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
@@ -104,8 +102,9 @@
 		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
 		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
-			<input type="hidden" name="isPlaylist"  value="<?php echo (bool) $this->isPlaylist?>" />
-			<table class="form-table">
+			<input type="hidden" name="isplaylist"  value="<?php echo (bool) $this->isPlaylist?>" />
+			<input type="hidden" class="iradio" name="playerRatio" id="playerRatioNormal"  value="<?php echo KalturaHelpers::getPlayerDimension('16:9'); ?>" />
+			<table class="form-table <?php echo ($this->isPlaylist) ? 'playlist-form' : ''; ?>">
 				<tr>
 					<td class="options-td">
 						<table class="options">
@@ -118,19 +117,6 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="options-aspect-ratio">
-									<strong>Player Dimensions:</strong>
-									<div class="playerRatioDiv">
-										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" />
-											<label for="playerRatioNormal">Standard (4:3)</label>
-										</div>
-										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" checked />
-											<label for="playerRatioWide">Wide (16:9)</label>
-										</div>
-									</div>
-								</td>
 								<?php if (!$this->isPlaylist): ?>
 								<td class="options-size">
 									<strong>Select player size:</strong>
@@ -185,7 +171,8 @@
 	</div>
 	<script type="text/javascript">
 		function kaltura_updateRatio() {
-			var ratio = jQuery("input[name=playerRatio]:checked").val();
+			var ratio = jQuery("input[name=playerRatio]").val();
+			console.log(ratio);
 			if (ratio == "16:9") {
 				jQuery("#playerWidthLarge").next().text("Large (608x342)");
 				jQuery("#playerWidthMedium").next().text("Medium (400x225)");
@@ -228,7 +215,7 @@
 				submit         : 'input[name=sendToEditorButton]',
 				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
 				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
-				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
+				isplaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
 				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
 				
 			} );

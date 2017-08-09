@@ -58,7 +58,6 @@
 
 		$('#filter-media-owner-type').on('change', function () {
 			var categoryFilter = $('#filter-categories-button');
-			console.log(categoryFilter.length);
 			if (categoryFilter.length > 0) {
                 categoryFilter.click();
 			} else {
@@ -67,12 +66,6 @@
 
 		});
 
-        $(document.body).on('click', '#select-playlist', function (event) {
-        	var activePlaylist = $('.playlist-view li.active');
-        	var playlistInfoElement = activePlaylist.find('.playlist-info');
-        	var url = playlistInfoElement.data('url');
-        	window.location = url;
-		});
 	});
 
 

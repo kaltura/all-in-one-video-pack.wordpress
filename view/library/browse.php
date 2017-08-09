@@ -69,10 +69,14 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 		<div class="right-side-container">
 			<div class="kaltura-filter-bar">
 				<?php $this->renderView( 'filter-media-owner.php' ); ?>
+				<?php if( isset($this->isPlaylist) && $this->isPlaylist): ?>
+					<div id="select-playlist">Select playlist</div>
+				<?php endif; ?>
 				<div class="entry-search-filter">
 					<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
 					<input type="submit" value="Go" />
 				</div>
+
 			</div>
 			
 			<?php $this->renderView( $this->subViewFile ); ?>
