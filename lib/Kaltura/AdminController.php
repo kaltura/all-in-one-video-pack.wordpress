@@ -219,11 +219,13 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 
 		$allowedPlayers           = KalturaHelpers::getAllowedPlayers();
 		$categories               = $kmodel->generateRootTree();
+		$showEmail                = boolval(KalturaHelpers::getOption('kaltura_show_kmc_email'));
 
 		$params['players']         = $players;
 		$params['categories']      = $categories;
 		$params['allowedPlayers']  = $allowedPlayers;
 		$params['isNetworkActive'] = KalturaHelpers::isPluginNetworkActivated();
+		$params['showEmail']       = $showEmail;
 		$this->renderView( 'admin/info.php', $params );
 	}
 }

@@ -42,7 +42,8 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 				<div class="updated kaltura-updated">Result not found.</div>
 			<?php endif; ?>
 		<?php endif; ?>
-
+		
+		<?php if ( $this->showCategory ): ?>
 		<div class="filter-side">
 			<div id="filter-categories-header">
 				<label for="filter-categories"><b>Categories (<?php echo esc_html( count( $this->filters->objects ) ) ?>)</b></label>
@@ -55,6 +56,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 				<input id="filter-categories-button" type="submit" value="Filter" />
 			</div>
 		</div>
+		<?php endif;?>
 		<?php if ( $kaction == 'browse' ) : ?>
 			<input type="hidden" name="tab" value="kaltura_browse" />
 			<input type="hidden" name="post_id" value="<?php echo esc_attr($this->postId) ?>" />
@@ -72,7 +74,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 					<input type="submit" value="Go" />
 				</div>
 			</div>
-			<ul id="kaltura-browse">
+			<ul id="kaltura-browse" class="<?php echo esc_attr($this->browseClass); ?>">
 				<?php foreach ( $this->result->objects as $mediaEntry ): ?>
 					<?php $mediaCategories = KalturaHelpers::getCategoriesString($mediaEntry); ?>
 					<li>

@@ -14,4 +14,5 @@ return array(
 	'kaltura_show_media_from'	   => 'all_account', // when browsing media - should the media be from the whole account or just the logged in user's?
 	'kaltura_enable_kcw'           => false, // enables the legacy flash uploader instead of html5 uploader
 	'kaltura_user_identifier'      => 'user_login',
+	'kaltura_show_kmc_email'       => true
 );

@@ -15,6 +15,7 @@ $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+$flashVars      = $embedOptions['flashVars'];
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -64,6 +65,7 @@ $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOp
 		"targetId": <?php echo wp_json_encode($playerId); ?>,
 		"wid": <?php echo wp_json_encode($wid); ?>,
 		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
-		"entry_id": <?php echo wp_json_encode($entryId); ?>
+		"entry_id": <?php echo wp_json_encode($entryId); ?>,
+		"flashVars": <?php echo wp_json_encode($flashVars); ?>
 	});
 </script>

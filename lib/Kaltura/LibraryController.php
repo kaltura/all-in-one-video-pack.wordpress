@@ -191,7 +191,15 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		} else {
 			$pageSize = 18;
 		}
-
+		
+		$showCategory = true;
+		$kalturaBrowseClassName = '';
+		if (KalturaHelpers::getOption('kaltura_show_media_from') === 'logged_in_user') {
+			$showCategory = false;
+			$kalturaBrowseClassName = 'pull-left';
+		}
+		
+		$showEmail       = boolval(KalturaHelpers::getOption('kaltura_show_kmc_email'));
 		$kmodel          = KalturaModel::getInstance();
 		$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 		$totalCount      = $result->totalCount;
@@ -208,6 +216,9 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['searchWord']         = $searchString;
 		$params['postId']             = KalturaHelpers::getRequestParam( 'post_id' );
 		$params['filterOwnerType']    = $ownerType;
+		$params['showCategory']       = $showCategory;
+		$params['browseClass']        = $kalturaBrowseClassName;
+		$params['showEmail']          = $showEmail;
 		$this->renderView( 'library/browse.php', $params );
 	}
 
