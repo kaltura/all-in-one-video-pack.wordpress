@@ -103,7 +103,7 @@
 		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
 			<input type="hidden" name="isplaylist"  value="<?php echo (bool) $this->isPlaylist?>" />
-			<input type="hidden" class="iradio" name="playerRatio" id="playerRatioNormal"  value="<?php echo KalturaHelpers::getPlayerDimension('16:9'); ?>" />
+			<input type="hidden" class="iradio" name="playerRatio" id="playerRatioNormal"  value="<?php echo KalturaHelpers::getPlayerDimension(); ?>" />
 			<table class="form-table <?php echo ($this->isPlaylist) ? 'playlist-form' : ''; ?>">
 				<tr>
 					<td class="options-td">
@@ -172,7 +172,6 @@
 	<script type="text/javascript">
 		function kaltura_updateRatio() {
 			var ratio = jQuery("input[name=playerRatio]").val();
-			console.log(ratio);
 			if (ratio == "16:9") {
 				jQuery("#playerWidthLarge").next().text("Large (608x342)");
 				jQuery("#playerWidthMedium").next().text("Medium (400x225)");
@@ -215,7 +214,7 @@
 				submit         : 'input[name=sendToEditorButton]',
 				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
 				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
-				isplaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
+				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
 				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
 				
 			} );

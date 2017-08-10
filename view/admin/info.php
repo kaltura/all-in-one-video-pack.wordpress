@@ -91,7 +91,7 @@
 					<td>
 						<select name="default_player_dimensions" id="default_player_dimensions">
 							<?php foreach ( $this->playerDimensionsList as $title => $playerDimension ): ?>
-								<option id="default_player_dimension_<?php echo esc_attr( $playerDimension ); ?>" value="<?php echo esc_attr( $playerDimension ); ?>" <?php echo selected( KalturaHelpers::getPlayerDimension( '16:9' ), $playerDimension); ?>><?php echo esc_html( $title ); ?></option>
+								<option id="default_player_dimension_<?php echo esc_attr( $playerDimension ); ?>" value="<?php echo esc_attr( $playerDimension ); ?>" <?php echo selected( KalturaHelpers::getPlayerDimension(), $playerDimension); ?>><?php echo esc_html( $title ); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<br />

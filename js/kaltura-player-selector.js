@@ -9,7 +9,7 @@
 			previewId : null,
 			entryId   : '_KMCLOGO',
 			id        : 'kplayer',
-			isplaylist: false,
+			isPlaylist: false,
 			flashVars : ''
 		};
 
@@ -104,7 +104,7 @@
 
 		var _getIframeEmbedUrl = function() {
 			var url = options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
-			if (options.isplaylist) {
+			if (options.isPlaylist) {
 				url = url + '&' + options.flashVars
 			}
 			return url;

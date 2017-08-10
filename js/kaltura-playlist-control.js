@@ -6,13 +6,15 @@
             url       : null,
             currentPlaylistId : null,
             playlistBoxselector: 'playlist-item-box',
-            noResultsText: 'No results found'
+            noResultsText: 'No results found',
+            thumbWidth: 160,
+            thumbHeight: 90
         };
+        // @todo separate as dedicated variables
+        var currentElementObj = null;
+        var currentPlaylistId = null;
+        var currentItemBox = null;
 
-        var currentPlaylist = {
-            element : null,
-            itemsBox: null
-        };
         var options = $.extend({}, defaultOptions, opts);
 
         var _bindClick = function () {
@@ -23,9 +25,11 @@
         var _bindSelectPlaylist = function () {
             $(document.body).on('click', '#select-playlist', function (event) {
                 var activePlaylist = $('.playlist-view li.active');
-                var playlistInfoElement = activePlaylist.find('.playlist-info');
-                var url = playlistInfoElement.data('url');
-                window.location = url;
+                var url = activePlaylist.data('url');
+                var countOfMedia = jQuery('.playlist-item-box').find('.playlist-item').length;
+                if (countOfMedia > 0){
+                    window.location = url;
+                }
             });
         };
 
@@ -41,25 +45,23 @@
                 activePlaylist.addClass('active');
             }
 
-            var playlistId = activePlaylist.find('.playlist-info').val();
+            var playlistId = activePlaylist.data('playlist-id');
             var itemsBox = jQuery(".playlist-item-box");
-            var playlist = {
-                element : activePlaylist,
-                playlistId: playlistId,
-                itemsBox:itemsBox
-            }
-            currentPlaylist = playlist;
+            currentElementObj = activePlaylist;
+            currentPlaylistId = playlistId;
+            currentItemBox = itemsBox;
+
             _fetchPlaylistItems();
-        }
+        };
 
         var _onPlayersLoadedError = function () {
             _hideLoader();
         };
 
         var _fetchPlaylistItems = function () {
-            currentPlaylist.itemsBox.empty();
+            currentItemBox.empty();
             _showLoader();
-            id = currentPlaylist.playlistId;
+            var id = currentPlaylistId;
             var input = {
                 entryId: id
             };
@@ -76,20 +78,24 @@
             if(data.length > 0) {
                 $.each(data, function (key, value) {
                     var item = $('<div>', {class: "playlist-item"});
-                    item.appendTo(currentPlaylist.itemsBox);
+                    item.appendTo(currentItemBox);
                     var mediaBox = $('<div>', {class: "media-box"}).appendTo(item);
                     $('<img />', {
                         class: 'media-thumb',
-                        src: value.thumbnailUrl
+                        src: value.thumbnailUrl + _getThumbResize()
                     }).appendTo(mediaBox);
                     var detailsBox = $('<div>', {class: "details-box"}).appendTo(item);
                     $('<div>', {class: "media-name", text: value.name}).appendTo(detailsBox);
                     $('<div>', {class: "media-description", text: value.description}).appendTo(detailsBox);
                 });
             } else {
-                $('<div>', {class: "no-results", text: options.noResultsText}).appendTo(currentPlaylist.itemsBox);
+                $('<div>', {class: "no-results", text: options.noResultsText}).appendTo(currentItemBox);
             }
             _hideLoader();
+        };
+
+        var _getThumbResize = function() {
+            return '/width/' + options.thumbWidth + '/height/' + options.thumbHeight + '/type/3';
         };
 
         var _showLoader = function () {
@@ -100,7 +106,7 @@
             jQuery('.kaltura-loader').hide();
         };
 
-        this.intialize = function () {
+        this.initialize = function () {
             _bindSelectPlaylist();
             _bindClick();
             _getCurrentPlaylist();
@@ -108,6 +114,6 @@
             return self;
         };
 
-        return this.intialize();
+        return this.initialize();
     }
 })(jQuery);

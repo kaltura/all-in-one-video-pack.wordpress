@@ -601,7 +601,8 @@ ul#kaltura-browse.playlist-view li.active .playlists-wrap {
   float: left;
   width: 72%;
   margin-left: 2%;
-  max-height: 600px;
+  max-height: 650px;
+  overflow: auto;
 }
 .playlist-items .playlist-item-box .playlist-item {
   overflow: auto;
@@ -613,9 +614,12 @@ ul#kaltura-browse.playlist-view li.active .playlists-wrap {
 .playlist-items .playlist-item-box .playlist-item .media-box {
   float: left;
   width: 20%;
+  padding: 10px 0;
 }
 .playlist-items .playlist-item-box .playlist-item .media-box .media-thumb {
-  padding: 10px;
+  height: 90px;
+  width: 160px;
+  display: block;
 }
 .playlist-items .playlist-item-box .playlist-item .details-box {
   float: left;

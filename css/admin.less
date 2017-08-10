@@ -649,7 +649,8 @@ ul#kaltura-browse {
   float: left;
   width: 72%;
   margin-left: 2%;
-  max-height: 600px;
+  max-height: 650px;
+  overflow: auto;
   .playlist-item-box {
     .playlist-item {
       overflow: auto;
@@ -660,8 +661,11 @@ ul#kaltura-browse {
       .media-box {
         float: left;
         width: 20%;
+        padding: 10px 0;
         .media-thumb{
-          padding: 10px;
+          height:90px;
+          width:160px;
+          display: block;
         }
       }
       .details-box {
