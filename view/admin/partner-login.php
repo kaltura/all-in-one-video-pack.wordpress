@@ -67,7 +67,7 @@ else: ?>
 			</table>
 
 			<p class="submit" style="text-align: left;">
-				<input type="submit" name="Submit" value="Complete installation" />
+				<input type="submit" name="Submit" value="<?php _e($this->submitMessage); ?>" />
 			</p>
 		</form>
 	</div>
