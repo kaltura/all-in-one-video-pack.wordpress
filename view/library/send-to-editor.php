@@ -83,8 +83,8 @@
 	</script>
 <?php else: ?>
 	<?php
-	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
-	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
+	$flashVarsStr = KalturaHelpers::flashVarsSanitize( $this->flashVars );
+	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'chromeless'=>true) ) );
 	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
 	$isFirstEdit = KalturaHelpers::getRequestParam( 'firstedit' ) == 'true';
 

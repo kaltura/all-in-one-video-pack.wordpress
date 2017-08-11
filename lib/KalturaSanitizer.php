@@ -70,6 +70,9 @@ class KalturaSanitizer {
 				case 'isplaylist':
 					$newValue = (bool)($value);
 					break;
+				case 'chromeless':
+					$newValue = (bool)($value);
+					break;
 			}
 
 			if ( $newValue !== null ) {

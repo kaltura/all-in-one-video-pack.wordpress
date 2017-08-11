@@ -107,38 +107,13 @@ class KalturaHelpers {
 		if ( $ks ) {
 			$flashVars['ks'] = $ks;
 		}
-		if ( $entryId ) {
-			$flashVars['entryId'] = $entryId;
-		}
 		if($isPlaylist){
-			unset($flashVars['entryId']);
 			$flashVars['playlistAPI']['kpl0Id']       = $entryId;
 			$flashVars['playlistAPI']['plugin']       = true;
-		}
-		
-
-
-		return $flashVars;
-	}
-	
-	public static function getKalturaPlayerFlashVarsForUrl( $ks = null, $entryId = null, $isPlaylist = false ) {
-		$ks                     = sanitize_text_field( $ks );
-		$entryId                = sanitize_key( $entryId );
-		$isPlaylist             = (bool)$isPlaylist;
-		$flashVars              = array();
-		
-		if ( $ks ) {
-			$flashVars['ks'] = $ks;
-		}
-		if ( $entryId ) {
-			$flashVars['entryId'] = $entryId;
-		}
-		if($isPlaylist){
-			unset($flashVars['entryId']);
-			unset($flashVars['ks']);
-			$flashVars['flashvars']['playlistAPI.kpl0Id']       = $entryId;
-			$flashVars['flashvars']['playlistAPI.plugin']       = true;
-			$flashVars['flashvars']['ks']                       = $ks;
+		} else {
+			if ( $entryId ) {
+				$flashVars['entryId'] = $entryId;
+			}
 		}
 		return $flashVars;
 	}
@@ -152,17 +127,27 @@ class KalturaHelpers {
 		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 		return $ks;
 	}
-
+	
 	public static function flashVarsToString( $flashVars = array() ) {
-		foreach ($flashVars as $key => $flashVar) {
-			if (is_array($flashVar)) {
-				$flashVars[$key] = array_map('sanitize_text_field', $flashVar);
-			} else {
-				$flashVars[$key] = sanitize_text_field($flashVar);
+		$flashVarsStr = http_build_query($flashVars);
+		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
+	}
+	
+	public static function flashVarsSanitize( $flashVars = array() ) {
+		foreach ( $flashVars as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = self::flashVarsSanitize($value);
+			}
+			else {
+				if (is_bool($value)) {
+					$value = wp_validate_boolean( $value );
+				} elseif (is_string($value)) {
+					$value = sanitize_text_field( $value );
+				}
 			}
 		}
-		$flashVarsStr = http_build_query($flashVars);
-		return  $flashVarsStr;
+		
+		return  $flashVars;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {

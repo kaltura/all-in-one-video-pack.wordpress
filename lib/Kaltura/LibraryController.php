@@ -129,10 +129,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 
 			$entry                             = $kmodel->getEntry( $entryId );
 			$clientSideSession                 = $kmodel->getClientSideSession();
-			$flashVars                         = KalturaHelpers::getKalturaPlayerFlashVars( $clientSideSession, $entryId);
-			if ($isPlaylist) {
-				$flashVars                     = KalturaHelpers::getKalturaPlayerFlashVarsForUrl( $clientSideSession, $entryId, $isPlaylist);
-			}
+			$flashVars                         = KalturaHelpers::getKalturaPlayerFlashVars( $clientSideSession, $entryId, $isPlaylist);
+
 			$thumbnail                         = KalturaHelpers::getPluginUrl() . '/thumbnails/get_preview_thumbnail.php?thumbnail_url=' . $entry->thumbnailUrl;
 			$params['entry']                   = $entry;
 			$params['entryId']                 = $entryId;
