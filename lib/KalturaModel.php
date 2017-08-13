@@ -282,7 +282,7 @@ class KalturaModel {
 	 * @return Kaltura_Client_Type_UiConfListResponse
 	 */
 	public function listPlaylistPlayersUiConfs() {
-		$includeTags = ['player', 'playlist'];
+		$includeTags = ['playlist'];
 		$excludeTags = [];
 		
 		$players = $this->listPlayersByTags($includeTags, $excludeTags);
