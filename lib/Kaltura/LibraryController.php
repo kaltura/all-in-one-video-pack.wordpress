@@ -152,8 +152,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$isPlaylist = KalturaHelpers::getRequestPostParam( 'isplaylist', false );
 			$isResponsive = $width === '100%';
 
-			$player = $kmodel->getPlayerUiConf( intval($uiConfId) );
-
 			$params['entryId']      = $entryId;
 			$params['nextEntryIds'] = $entryIds;
 			$params['playerWidth']  = $width;

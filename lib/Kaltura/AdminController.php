@@ -179,10 +179,10 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$playlistEmbedAllowed  = KalturaHelpers::getOption( 'kaltura_allow_embed_playlist', false );
 		$playlistPlayers       = $kmodel->listPlaylistPlayersUiConfs();
 		$playlistPlayers       = $playlistPlayers->objects;
-		$playerDimensionsList      = [
+		$playerDimensionsList      = array(
 			'Standard (4:3)' => '4:3',
 			'Wide (16:9)'    => '16:9',
-		];
+		);
 
 		if ( count( $_POST ) ) {
 			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'info' )) {

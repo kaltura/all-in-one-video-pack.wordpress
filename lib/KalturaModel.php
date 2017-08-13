@@ -270,8 +270,8 @@ class KalturaModel {
 	 * @return Kaltura_Client_Type_UiConfListResponse
 	 */
 	public function listPlayersUiConfs() {
-		$includeTags = ['player'];
-		$excludeTags = ['playlist'];
+		$includeTags = array('player');
+		$excludeTags = array('playlist');
 		
 		$players = $this->listPlayersByTags($includeTags, $excludeTags);
 
@@ -282,8 +282,8 @@ class KalturaModel {
 	 * @return Kaltura_Client_Type_UiConfListResponse
 	 */
 	public function listPlaylistPlayersUiConfs() {
-		$includeTags = ['playlist'];
-		$excludeTags = [];
+		$includeTags = array('playlist');
+		$excludeTags = array();
 		
 		$players = $this->listPlayersByTags($includeTags, $excludeTags);
 		
@@ -374,7 +374,7 @@ class KalturaModel {
 	 * @return array
 	 */
 	public function getPlaylistsData($playlistId) {
-		$playlistItems = [];
+		$playlistItems = array();
 		
 		$playlistService = $this->getPlaylistService();
 		$playlistResults =$playlistService->execute($playlistId);

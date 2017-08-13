@@ -228,7 +228,7 @@ class KalturaHelpers {
 	public static function getPlayerDimension() {
 		$name    = 'kaltura_default_player_dimensions';
 		$option  = self::getOption($name);
-		$availableDimensions = ['16:9', '4:3'];
+		$availableDimensions = array('16:9', '4:3');
 		$dimensions = in_array( $option, $availableDimensions ) ? $option : '16:9';
 		
 		return $dimensions;
