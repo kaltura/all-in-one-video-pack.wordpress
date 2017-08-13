@@ -132,6 +132,8 @@
 					img.addClass('kaltura_responsive_' + attribs['responsive']);
 				if (attribs['hoveringcontrols'])
 					img.addClass('kaltura_hoveringControls_' + attribs['hoveringcontrols']);
+				if (attribs['isplaylist'])
+					img.addClass('kaltura_isplaylist_' + attribs['isplaylist']);
 
 				img.attr('name', 'mce_plugin_kaltura_desc');
 				img.attr('width', attribs['width']);
@@ -198,6 +200,10 @@
 										if(classValue) {
 											widgetAttribs.hoveringControls = classValue;
 										}
+										break;
+									case 'isplaylist':
+										if (classValue)
+											widgetAttribs.isplaylist = classValue;
 										break;
 								}
 							}
