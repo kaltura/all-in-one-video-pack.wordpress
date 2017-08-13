@@ -604,6 +604,15 @@ ul#kaltura-browse.playlist-view li.active .playlists-wrap {
   max-height: 650px;
   overflow: auto;
 }
+.playlist-items .playlist-loader {
+  padding: 10px 25px;
+  background: #fff;
+  display: none;
+}
+.playlist-items .playlist-loader .kaltura-loader {
+  margin: auto;
+  display: block;
+}
 .playlist-items .playlist-item-box .playlist-item {
   overflow: auto;
   background: white;

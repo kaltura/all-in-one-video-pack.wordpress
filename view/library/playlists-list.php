@@ -18,7 +18,9 @@ KalturaHelpers::protectView( $this );
 	<?php endforeach; ?>
 </ul>
 <div class="playlist-items"  >
-	<div class="kaltura-loader"></div>
+	<div class="playlist-loader">
+		<div class="kaltura-loader"></div>
+	</div>
 	<div class="playlist-item-box">
 		<div class="no-results"><?php _e('No results found'); ?></div>
 	

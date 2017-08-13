@@ -10,7 +10,6 @@
             thumbWidth: 160,
             thumbHeight: 90
         };
-
         var currentElementObj = null;
         var currentPlaylistId = null;
         var currentItemBox = null;
@@ -99,11 +98,11 @@
         };
 
         var _showLoader = function () {
-            jQuery('.kaltura-loader').show();
+            jQuery('.playlist-loader').show();
         };
 
         var _hideLoader = function () {
-            jQuery('.kaltura-loader').hide();
+            jQuery('.playlist-loader').hide();
         };
 
         this.initialize = function () {
