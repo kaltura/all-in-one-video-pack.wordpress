@@ -109,7 +109,7 @@
 					</td>
 				</tr>
 				<tr valign="top">
-					<td><label>Allow users to adding playlists:</label></td>
+					<td><label>Allow users to embed their playlists:</label></td>
 					<td>
 						<input type="checkbox" name="allow_embed_playlist" id="allow-embed-playlist" <?php echo checked($this->playlistEmbedAllowed); ?> />
 						<br />
