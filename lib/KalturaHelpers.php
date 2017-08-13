@@ -372,7 +372,8 @@ class KalturaHelpers {
 		}
 		$players    = array();
 		foreach ( $supportedPlayers as $player ) {
-			if ( in_array( $player->id, $allowedPlayers )  ) {
+			// when $allowedPlayers is empty, we add all players
+			if ( in_array( $player->id, $allowedPlayers ) || ! count($allowedPlayers) ) {
 				$players[ $player->id ] = $player;
 			}
 		}
