@@ -10,7 +10,7 @@
             thumbWidth: 160,
             thumbHeight: 90
         };
-        // @todo separate as dedicated variables
+
         var currentElementObj = null;
         var currentPlaylistId = null;
         var currentItemBox = null;
