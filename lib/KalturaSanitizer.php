@@ -30,6 +30,9 @@ class KalturaSanitizer {
 				case 'hoveringcontrols':
 					$newValue = $value === 'true';
 					break;
+				case 'isplaylist':
+					$newValue = (bool)$value;
+					break;
 			}
 
 			if ( $newValue !== null ) {
@@ -63,6 +66,12 @@ class KalturaSanitizer {
 					break;
 				case 'entryid':
 					$newValue = sanitize_key($value);
+					break;
+				case 'isplaylist':
+					$newValue = (bool)($value);
+					break;
+				case 'chromeless':
+					$newValue = (bool)($value);
 					break;
 			}
 

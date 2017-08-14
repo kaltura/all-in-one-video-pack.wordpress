@@ -98,18 +98,23 @@ class KalturaHelpers {
 		return $flashVars;
 	}
 
-	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null ) {
+	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false ) {
 		$ks                     = sanitize_text_field( $ks );
 		$entryId                = sanitize_key( $entryId );
+		$isPlaylist             = (bool)$isPlaylist;
 		$flashVars              = array();
 
 		if ( $ks ) {
 			$flashVars['ks'] = $ks;
 		}
-		if ( $entryId ) {
-			$flashVars['entryId'] = $entryId;
+		if($isPlaylist){
+			$flashVars['playlistAPI']['kpl0Id']       = $entryId;
+			$flashVars['playlistAPI']['plugin']       = true;
+		} else {
+			if ( $entryId ) {
+				$flashVars['entryId'] = $entryId;
+			}
 		}
-
 		return $flashVars;
 	}
 	
@@ -118,14 +123,31 @@ class KalturaHelpers {
 		$userId = KalturaHelpers::getLoggedUserId();
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
 		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$privileges = 'sview:' . $entryId;
+		$privileges = 'sview:' . $entryId . ',disableentitlement';
 		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 		return $ks;
 	}
-
+	
 	public static function flashVarsToString( $flashVars = array() ) {
 		$flashVarsStr = http_build_query($flashVars);
 		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
+	}
+	
+	public static function flashVarsSanitize( $flashVars = array() ) {
+		foreach ( $flashVars as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = self::flashVarsSanitize($value);
+			}
+			else {
+				if (is_bool($value)) {
+					$value = wp_validate_boolean( $value );
+				} elseif (is_string($value)) {
+					$value = sanitize_text_field( $value );
+				}
+			}
+		}
+		
+		return  $flashVars;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {
@@ -202,6 +224,16 @@ class KalturaHelpers {
 			return $default;
 		}
 	}
+	
+	public static function getPlayerDimension() {
+		$name    = 'kaltura_default_player_dimensions';
+		$option  = self::getOption($name);
+		$availableDimensions = array('16:9', '4:3');
+		$dimensions = in_array( $option, $availableDimensions ) ? $option : '16:9';
+		
+		return $dimensions;
+		
+	}
 
 	public static function isPluginNetworkActivated() {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -258,7 +290,7 @@ class KalturaHelpers {
 
 	public static function getEmbedOptions( $params ) {
 		// make sure that all keys exists in the array so we won't need to check with isset() for every array access
-		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive', 'hoveringcontrols' );
+		$arrayKeys = array( 'width', 'height', 'uiconfid', 'align', 'wid', 'entryid', 'style', 'responsive', 'hoveringcontrols', 'isplaylist' );
 		foreach ( $arrayKeys as $key ) {
 			if ( ! isset( $params[$key] ) ) {
 				$params[$key] = null;
@@ -282,8 +314,9 @@ class KalturaHelpers {
 			default:
 				$align = '';
 		}
+		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
 		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
-		$params['flashVars']       = KalturaHelpers::getKalturaPlayerFlashVars($ks);
+		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist);
 		
 		return array(
 			'height'           => $params['height'],
@@ -295,7 +328,8 @@ class KalturaHelpers {
 			'uiconfid'         => $params['uiconfid'],
 			'responsive'       => $params['responsive'],
 			'hoveringControls' => $params['hoveringcontrols'],
-			'flashVars'        => $params['flashVars']
+			'flashVars'        => $flashVars,
+			'isPlaylist'       => $isplaylist
 		);
 	}
 
@@ -305,20 +339,25 @@ class KalturaHelpers {
 			$allowedPlayers = array();
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
-		$allPlayers = self::_filterOldPlayers($allPlayers->objects);
-		$players    = array();
-		foreach ( $allPlayers as $player ) {
-			if ( in_array( $player->id, $allowedPlayers ) || ! $allowedPlayers ) {
-				$players[ $player->id ] = $player;
-			}
-		}
+		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 
 		return $players;
 	}
-
-	private static function _filterOldPlayers($players) {
-		$allowedPlayers = array();
-		foreach($players as $player) {
+	
+	public static function getAllowedPlaylistPlayers() {
+		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_playlist_players' );
+		if (!$allowedPlayers)
+			$allowedPlayers = array();
+		
+		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
+		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
+		
+		return $players;
+	}
+	
+	private static function _filterOldPlayers($allPlayers, $allowedPlayers) {
+		$supportedPlayers = array();
+		foreach($allPlayers as $player) {
 			if(!empty($player->html5Url)) {
 				$htmlPlayerUrl = $player->html5Url;
 				$htmlPlayerUrlParts = explode('/', $htmlPlayerUrl);
@@ -332,8 +371,15 @@ class KalturaHelpers {
 				}
 			}
 		}
+		$players    = array();
+		foreach ( $supportedPlayers as $player ) {
+			// when $allowedPlayers is empty, we add all players
+			if ( in_array( $player->id, $allowedPlayers ) || ! count($allowedPlayers) ) {
+				$players[ $player->id ] = $player;
+			}
+		}
 
-		return $allowedPlayers;
+		return $players;
 	}
 
 	/**

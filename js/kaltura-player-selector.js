@@ -8,7 +8,9 @@
 			html5Url: null,
 			previewId : null,
 			entryId   : '_KMCLOGO',
-			id        : 'kplayer'
+			id        : 'kplayer',
+			isPlaylist: false,
+			flashVars : ''
 		};
 
 		var intervalId = null;
@@ -82,7 +84,7 @@
 			}
 
 			var playerHasHoveringControls = _checkHoveringControls(player);
-			
+
 			_$hoveringControlsInputElement.attr('value', playerHasHoveringControls);
 		};
 
@@ -101,7 +103,35 @@
 		};
 
 		var _getIframeEmbedUrl = function() {
-			return options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
+			var url = options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
+			if (options.isPlaylist) {
+				var params = _convertFlashParams(options.flashVars);
+				url = url + '&' + $.param(params)
+			}
+			return url;
+		};
+		var _convertFlashParams = function (params) {
+			var result = {
+				flashvars: {}
+			};
+			$.each(params, function (key, value) {
+				if (typeof value != "object") {
+					result.flashvars[key] = value
+				} else {
+					var concatedKeys = _concatPlaylistKeys(key, value);
+					jQuery.extend(result.flashvars, concatedKeys);
+				}
+			});
+			return result;
+		};
+
+		var _concatPlaylistKeys = function (index, objects) {
+			var result = {};
+			$.each(objects, function (key, value) {
+				var title = index + '.' + key;
+				result[title] = value;
+			});
+			return result;
 		};
 
 		var _checkEntryStatus = function() {

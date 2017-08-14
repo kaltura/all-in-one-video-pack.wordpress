@@ -240,28 +240,53 @@ class KalturaModel {
 
 		return $this->_client->category->listAction( $filter, $this->getMaxPager() );
 	}
+	
+	public function listPlayersByTags($includeTags, $excludeTags) {
+		$filter                 = new Kaltura_Client_Type_UiConfFilter();
+		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;
+		$filter->orderBy        = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+		
+		$uiConfs = $this->_client->uiConf->listAction( $filter );
+		
+		// filter out playlist players
+		$players = new stdClass();
+		$players->objects = array();
+		
+		
+		foreach( $uiConfs->objects as $uiConf ) {
+			$tags = explode(',', $uiConf->tags);
+			$tags = array_map('trim', $tags);
 
+			$includePart = array_intersect($tags, $includeTags);
+			$excludePart = array_intersect($tags, $excludeTags);
+			if (count($includePart) == count($includeTags) && count($excludePart) == 0) {
+				array_push( $players->objects, $uiConf );
+			}
+		}
+		
+		return $players;
+	}
 	/**
 	 * @return Kaltura_Client_Type_UiConfListResponse
 	 */
 	public function listPlayersUiConfs() {
-		$filter                 = new Kaltura_Client_Type_UiConfFilter();
-		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;
-		$filter->orderBy        = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+		$includeTags = array('player');
+		$excludeTags = array('playlist');
+		
+		$players = $this->listPlayersByTags($includeTags, $excludeTags);
 
-		$uiConfs = $this->_client->uiConf->listAction( $filter );
-
-
-		// filter out playlist players
-		$players = new stdClass();
-		$players->objects = array();
-
-		foreach( $uiConfs->objects as $uiConf ) {
-			if( strpos($uiConf->tags, 'playlist') === false ) {
-				array_push( $players->objects, $uiConf );
-			}
-		}
-
+		return $players;
+	}
+	
+	/**
+	 * @return Kaltura_Client_Type_UiConfListResponse
+	 */
+	public function listPlaylistPlayersUiConfs() {
+		$includeTags = array('playlist');
+		$excludeTags = array();
+		
+		$players = $this->listPlayersByTags($includeTags, $excludeTags);
+		
 		return $players;
 	}
 
@@ -320,5 +345,51 @@ class KalturaModel {
 		$loggedInUserId = strtolower( KalturaHelpers::getLoggedUserId() );
 
 		return strtolower( $entry->userId ) === $loggedInUserId;
+	}
+	
+	/**
+	 * Fetch Playlists for current user
+	 *
+	 * @param $userId
+	 * @param $pageSize
+	 * @param $page
+	 *
+	 * @return Kaltura_Client_MultiRequestSubResult|mixed
+	 */
+	public function getUserPlaylists($userId, $pageSize, $page) {
+		$pager = new Kaltura_Client_Type_FilterPager();
+		$pager->pageSize = $pageSize;
+		$pager->pageIndex = $page;
+		
+		$filter = new Kaltura_Client_Type_PlaylistFilter();
+		$filter->userIdEqual = $userId;
+		$filter->orderBy = Kaltura_Client_Enum_PlaylistOrderBy::CREATED_AT_DESC;
+
+		return  $this->getPlaylistService()->listAction($filter, $pager);
+	}
+	
+	/**
+	 * @param $playlists
+	 *
+	 * @return array
+	 */
+	public function getPlaylistsData($playlistId) {
+		$playlistItems = array();
+		
+		$playlistService = $this->getPlaylistService();
+		$playlistResults =$playlistService->execute($playlistId);
+		
+		if (!empty($playlistResults)) {
+			$playlistItems = $playlistResults;
+		}
+		return $playlistItems;
+	}
+	
+	/**
+	 * @return Kaltura_Client_PlaylistService
+	 */
+	private function getPlaylistService()
+	{
+		return new Kaltura_Client_PlaylistService($this->_client);
 	}
 }

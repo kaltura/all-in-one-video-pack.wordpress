@@ -196,6 +196,39 @@ ul#kaltura-browse.pull-left {
   float: left;
   width: 84%;
 }
+ul#kaltura-browse.playlist-view {
+  width: 25%;
+  margin: 0;
+  padding-left: 12px;
+}
+ul#kaltura-browse.playlist-view li {
+  background: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+}
+ul#kaltura-browse.playlist-view li .playlists-wrap {
+  background: white;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  float: left;
+  width: 100%;
+  color: #08c;
+}
+ul#kaltura-browse.playlist-view li .playlists-wrap .playlist-title {
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+ul#kaltura-browse.playlist-view li.active .playlists-wrap {
+  color: white;
+  background-color: #08c;
+}
 #update-thumbnail-page {
   height: 100%;
   overflow: hidden;
@@ -254,11 +287,18 @@ ul#kaltura-browse.pull-left {
 }
 #send-to-editor .form-table td table {
   width: 100%;
+  vertical-align: top;
 }
 #send-to-editor .form-table .options-td {
   padding-top: 0;
   padding-left: 30px;
   width: 50%;
+}
+#send-to-editor .form-table.playlist-form td {
+  vertical-align: top;
+}
+#send-to-editor .form-table.playlist-form td.options-td {
+  width: 40%;
 }
 #send-to-editor .kaltura-loader {
   margin: 50px auto;
@@ -555,4 +595,67 @@ ul#kaltura-browse.pull-left {
   display: block;
   margin: 0 auto;
   width: 80px;
+}
+.playlist-items {
+  display: block;
+  float: left;
+  width: 72%;
+  margin-left: 2%;
+  max-height: 650px;
+  overflow: auto;
+}
+.playlist-items .playlist-loader {
+  padding: 10px 25px;
+  background: #fff;
+  display: none;
+}
+.playlist-items .playlist-loader .kaltura-loader {
+  margin: auto;
+  display: block;
+}
+.playlist-items .playlist-item-box .playlist-item {
+  overflow: auto;
+  background: white;
+  padding: 5px 10px;
+  border-top: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.playlist-items .playlist-item-box .playlist-item .media-box {
+  float: left;
+  width: 20%;
+  padding: 10px 0;
+}
+.playlist-items .playlist-item-box .playlist-item .media-box .media-thumb {
+  height: 90px;
+  width: 160px;
+  display: block;
+}
+.playlist-items .playlist-item-box .playlist-item .details-box {
+  float: left;
+  width: 80%;
+  padding-top: 10px;
+}
+.playlist-items .playlist-item-box .playlist-item .details-box .media-name {
+  color: #08c;
+  font-size: 17.5px;
+}
+.playlist-items .playlist-item-box .playlist-item .details-box .media-description {
+  font-size: 85%;
+  word-break: normal;
+}
+.playlist-items .playlist-item-box .no-results {
+  color: #08c;
+  font-size: 17.5px;
+  background: white;
+  padding: 10px 25px;
+}
+#select-playlist {
+  float: right;
+  border-radius: 6px;
+  background-color: #0088cc;
+  color: white;
+  border: 1px solid #cecece;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }

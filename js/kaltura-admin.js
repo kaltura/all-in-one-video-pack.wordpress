@@ -57,8 +57,15 @@
 		});
 
 		$('#filter-media-owner-type').on('change', function () {
-			$('#filter-categories-button').click();
+			var categoryFilter = $('#filter-categories-button');
+			if (categoryFilter.length > 0) {
+                categoryFilter.click();
+			} else {
+                $('#kaltura-browse-form').submit();
+			}
+
 		});
+
 	});
 
 

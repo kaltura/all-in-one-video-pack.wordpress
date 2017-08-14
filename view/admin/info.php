@@ -86,6 +86,17 @@
 						<br />
 					</td>
 				</tr>
+				<tr valign="top">
+					<td><label for="default_player_dimensions">Player Dimensions:</label></td>
+					<td>
+						<select name="default_player_dimensions" id="default_player_dimensions">
+							<?php foreach ( $this->playerDimensionsList as $title => $playerDimension ): ?>
+								<option id="default_player_dimension_<?php echo esc_attr( $playerDimension ); ?>" value="<?php echo esc_attr( $playerDimension ); ?>" <?php echo selected( KalturaHelpers::getPlayerDimension(), $playerDimension); ?>><?php echo esc_html( $title ); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<br />
+					</td>
+				</tr>
 
 				<tr valign="top">
 					<td><label>Allow users to select existing media:</label></td>
@@ -97,7 +108,13 @@
 						<label for="show_media_from_logged_in_user">Only the user’s own media</label>
 					</td>
 				</tr>
-
+				<tr valign="top">
+					<td><label>Allow users to embed their playlists:</label></td>
+					<td>
+						<input type="checkbox" name="allow_embed_playlist" id="allow-embed-playlist" <?php echo checked($this->playlistEmbedAllowed); ?> />
+						<br />
+					</td>
+				</tr>
 				<tr>
 					<td colspan="2"><a href="javascript:;" id="advanced-button">Advanced settings</a>
 					</td>
@@ -153,6 +170,20 @@
 						<br />
 					</td>
 				</tr>
+
+				<?php if ($this->playlistEmbedAllowed): ?>
+					<tr valign="top" class="advanced available-players">
+						<td><label>Allowed Playlist players:</label></td>
+						<td>
+							<div class="players-scroll">
+								<?php foreach ( $this->playlistPlayers as $playlistPlayer ): ?>
+									<label><input type="checkbox" class="radio" value="<?php echo esc_attr( $playlistPlayer->id ); ?>" <?php echo checked(isset($this->allowedPlaylistPlayers[$playlistPlayer->id])); ?> name="allowed_playlist_players[]" /><?php echo esc_html( $playlistPlayer->name ); ?></label>
+								<?php endforeach; ?>
+							</div>
+							<br />
+						</td>
+					</tr>
+				<?php endif; ?>
 
 				<tr>
 					<td colspan="2">

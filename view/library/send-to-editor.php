@@ -7,6 +7,7 @@
 		var entryId = <?php echo wp_json_encode($this->entryId); ?>;
 		var isResponsive = <?php echo wp_json_encode($this->isResponsive); ?>;
 		var hoveringControls = <?php echo wp_json_encode($this->hoveringControls); ?>;
+		var isPlaylist = <?php echo wp_json_encode($this->isPlaylist); ?>;
 
 		var htmlArray = [];
 		htmlArray.push('[');
@@ -17,6 +18,7 @@
 		htmlArray.push('height="' + playerHeight + '" ');
 		htmlArray.push('responsive="' + isResponsive + '" ');
 		htmlArray.push('hoveringControls="' + hoveringControls + '" ');
+		htmlArray.push('isplaylist="' + isPlaylist + '" ');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
@@ -81,8 +83,8 @@
 	</script>
 <?php else: ?>
 	<?php
-	$flashVarsStr = KalturaHelpers::flashVarsToString( $this->flashVars );
-	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse' ) ) );
+	$flashVarsStr = KalturaHelpers::flashVarsSanitize( $this->flashVars );
+	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'chromeless'=>true) ) );
 	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
 	$isFirstEdit = KalturaHelpers::getRequestParam( 'firstedit' ) == 'true';
 
@@ -100,7 +102,9 @@
 		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
 		?>
 		<form method="post" class="kaltura-form" action="<?php echo esc_url($senToPostUrl); ?>">
-			<table class="form-table">
+			<input type="hidden" name="isplaylist"  value="<?php echo (bool) $this->isPlaylist?>" />
+			<input type="hidden" class="iradio" name="playerRatio" id="playerRatioNormal"  value="<?php echo KalturaHelpers::getPlayerDimension(); ?>" />
+			<table class="form-table <?php echo ($this->isPlaylist) ? 'playlist-form' : ''; ?>">
 				<tr>
 					<td class="options-td">
 						<table class="options">
@@ -113,24 +117,11 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="options-aspect-ratio">
-									<strong>Player Dimensions:</strong>
-									<div class="playerRatioDiv">
-										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioNormal" onclick="kaltura_updateRatio();" value="4:3" />
-											<label for="playerRatioNormal">Standard (4:3)</label>
-										</div>
-										<div class="radioBox">
-											<input type="radio" class="iradio" name="playerRatio" id="playerRatioWide" onclick="kaltura_updateRatio();" value="16:9" checked />
-											<label for="playerRatioWide">Wide (16:9)</label>
-										</div>
-									</div>
-								</td>
+								<?php if (!$this->isPlaylist): ?>
 								<td class="options-size">
 									<strong>Select player size:</strong>
 									<div class="radioBox">
-										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" value="100%" checked>
-										<label for="makeResponsive">Responsive size</label>
+										<input type="radio" class="iradio" name="playerWidth" id="makeResponsive" value="100%" checked><label for="makeResponsive">Responsive size</label>
 									</div>
 
 									<div class="radioBox">
@@ -147,6 +138,9 @@
 										<input type="text" name="playerCustomWidth" id="playerCustomWidth" maxlength="3" size="3" />
 									</div>
 								</td>
+								<?php else: ?>
+									<input type="hidden"  name="playerWidth" id="makeResponsive" value="100%">
+								<?php endif; ?>
 							</tr>
 						</table>
 					</td>
@@ -176,7 +170,7 @@
 	</div>
 	<script type="text/javascript">
 		function kaltura_updateRatio() {
-			var ratio = jQuery("input[name=playerRatio]:checked").val();
+			var ratio = jQuery("input[name=playerRatio]").val();
 			if (ratio == "16:9") {
 				jQuery("#playerWidthLarge").next().text("Large (608x342)");
 				jQuery("#playerWidthMedium").next().text("Medium (400x225)");
@@ -209,16 +203,19 @@
 			});
 
 			jQuery.kalturaPlayerSelector( {
-				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers',
+				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers' + <?php echo ($this->isPlaylist) ? "'&isplaylist=true'" : "''"?>,
 				defaultId      : <?php echo wp_json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
-				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl() ) ); ?>,
+				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl(null, $flashVarsStr) ) ); ?>,
 				previewId      : 'divKalturaPlayer',
 				entryId        : <?php echo wp_json_encode( $this->entry->id ); ?>,
 				playersList    : '#uiConfId',
 				dimensions     : 'input[name=playerRatio]',
 				submit         : 'input[name=sendToEditorButton]',
 				entryError     : <?php echo wp_json_encode( $this->entryError ); ?>,
-				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>
+				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
+				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
+				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
+				
 			} );
 		} );
 	</script>
