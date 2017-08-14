@@ -212,7 +212,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$kalturaBrowseClassName = 'pull-left';
 		}
 		
-		$showEmail       = KalturaHelpers::getOption('kaltura_show_kmc_email');
+		$showEmail       = boolval(KalturaHelpers::getOption('kaltura_show_kmc_email'));
 		$kmodel          = KalturaModel::getInstance();
 		
 		if (!$isPlaylist) {
@@ -240,7 +240,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$params['postId']             = KalturaHelpers::getRequestParam( 'post_id' );
 		$params['filterOwnerType']    = $ownerType;
 		$params['showCategory']       = $showCategory;
-		$params['browseClass']       = $kalturaBrowseClassName;
+		$params['browseClass']        = $kalturaBrowseClassName;
 		$params['showEmail']          = $showEmail;
 		$params['subViewFile']          = $subViewFile;
 		$params['isPlaylist']          = $isPlaylist;
