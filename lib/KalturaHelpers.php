@@ -364,9 +364,9 @@ class KalturaHelpers {
 				$playerVersion = isset($htmlPlayerUrlParts[3]) ? $htmlPlayerUrlParts[3] : null;
 				if ($playerVersion) {
 					if ($playerVersion === '{latest}'){
-						$allowedPlayers[] = $player;
+						$supportedPlayers[] = $player;
 					} elseif (intval(substr($playerVersion, 1, 1)) >= 2) {
-						$allowedPlayers[] = $player;
+						$supportedPlayers[] = $player;
 					}
 				}
 			}
