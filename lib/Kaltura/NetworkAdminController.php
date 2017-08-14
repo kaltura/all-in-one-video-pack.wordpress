@@ -113,7 +113,7 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 		$params['players']         = $players;
 		$params['categories']      = $categories;
 		$params['allowedPlayers']  = $allowedPlayers;
-		$params['showEmail']          = $showEmail;
+		$params['showEmail']       = $showEmail;
 		$params['isNetworkActive'] = ! KalturaHelpers::isPluginNetworkActivated();
 		$this->renderView( 'admin/info.php', $params );
 	}
