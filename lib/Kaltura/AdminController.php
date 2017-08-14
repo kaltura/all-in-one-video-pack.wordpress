@@ -34,6 +34,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		$params            = array();
 		$params['success'] = false;
 		$params['error']   = false;
+		$isSwitch          = (bool)KalturaHelpers::getRequestParam('switch');
 		if ( count( $_POST ) ) {
 			if ( !wp_verify_nonce( isset( $_POST['_kalturanonce'] ) ? $_POST['_kalturanonce'] : null, 'partnerlogin' )) {
 				print 'Sorry, your nonce did not verify.';
@@ -42,6 +43,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$email     = KalturaHelpers::getRequestPostParam( 'email' );
 			$password  = KalturaHelpers::getRequestPostParam( 'password' );
 			$partnerId = KalturaHelpers::getRequestPostParam( 'partner_id' );
+			$email     = sanitize_email($email);
 
 			$kmodel = KalturaModel::getInstance();
 			try {
@@ -56,15 +58,18 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			$partnerId   = $partner->id;
 			$secret      = $partner->secret;
 			$adminSecret = $partner->adminSecret;
-			$cmsUser     = $partner->adminEmail;
 
 			// save partner details
 			update_option( 'kaltura_partner_id', sanitize_text_field((string)$partnerId) );
 			update_option( 'kaltura_secret', sanitize_text_field((string)$secret) );
 			update_option( 'kaltura_admin_secret', sanitize_text_field((string)$adminSecret) );
-			update_option( 'kaltura_cms_user', sanitize_text_field((string)$cmsUser) );
+			update_option( 'kaltura_cms_user', sanitize_text_field((string)$email) );
 
 			$params['success'] = true;
+		}
+		$params['submitMessage'] = 'Complete installation';
+		if ($isSwitch) {
+			$params['submitMessage'] = 'Switch account';
 		}
 		$this->renderView( 'admin/partner-login.php', $params );
 	}

@@ -49,7 +49,9 @@
 				<tr>
 					<th align="left">KMC username:</th>
 					<td style="padding-right: 90px;">
-						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong></td>
+						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong>
+						<span><a href="<?php echo admin_url( 'options-general.php?page=kaltura_options&partner_login=true&switch=true' ) ?>">Change account</a></span>
+					</td>
 				</tr>
 				<?php endif; ?>
 				<tr class="kalturaLastRow">
