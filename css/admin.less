@@ -89,7 +89,7 @@ a.kalturaLink {
 }
 div.kaltura-wrap {
   max-width: 1200px;
-  padding-top: 10px;
+  padding: 10px 15px;
 }
 ul#kaltura-browse {
   float: right;
@@ -204,7 +204,7 @@ ul#kaltura-browse {
   &.playlist-view {
     width: 25%;
     margin: 0;
-    padding-left: 12px;
+    padding: 0;
     li {
       background: none;
       padding: 0;
@@ -629,7 +629,6 @@ ul#kaltura-browse {
 #filter-media-owner-type-wrap {
   float: left;
   margin-bottom: 15px;
-  padding-left: 15px;
 }
 #filter-categories {
   border: 1px solid #d5d2ca;
@@ -664,23 +663,31 @@ ul#kaltura-browse {
     .playlist-item {
       overflow: auto;
       background: white;
-      padding: 5px 10px;
+      padding: 15px;
       border-top: 1px solid #ddd;
       margin-bottom: 10px;
       .media-box {
         float: left;
-        width: 20%;
-        padding: 10px 0;
-        .media-thumb{
-          height:90px;
-          width:160px;
+        width: 24%;
+        position: relative;
+        margin-right: 1%;
+        .media-separator {
+          margin-top: 56.25%;
+        }
+        .media-thumb {
+          position: absolute;
+          top:0;
+          bottom: 0;
+          right: 0;
+          left:0;
           display: block;
+          max-width: 100%;
+          max-height: 100%;
         }
       }
       .details-box {
         float: left;
-        width: 80%;
-        padding-top: 10px;
+        width: 75%;
         .media-name {
           color: #08c;
           font-size: 17.5px;

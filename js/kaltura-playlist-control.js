@@ -7,8 +7,8 @@
             currentPlaylistId : null,
             playlistBoxselector: 'playlist-item-box',
             noResultsText: 'No results found',
-            thumbWidth: 160,
-            thumbHeight: 90
+            thumbWidth: 320,
+            thumbHeight: 180
         };
         var currentElementObj = null;
         var currentPlaylistId = null;
@@ -79,6 +79,7 @@
                     var item = $('<div>', {class: "playlist-item"});
                     item.appendTo(currentItemBox);
                     var mediaBox = $('<div>', {class: "media-box"}).appendTo(item);
+                    var mediaSeparator = $('<div>', {class: "media-separator"}).appendTo(mediaBox);
                     $('<img />', {
                         class: 'media-thumb',
                         src: value.thumbnailUrl + _getThumbResize()
