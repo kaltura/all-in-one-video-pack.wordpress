@@ -108,8 +108,11 @@ class KalturaHelpers {
 			$flashVars['ks'] = $ks;
 		}
 		if($isPlaylist){
-			$flashVars['playlistAPI']['kpl0Id']       = $entryId;
-			$flashVars['playlistAPI']['plugin']       = true;
+			$flashVars['playlistAPI']['kpl0Id']              = $entryId;
+			$flashVars['playlistAPI']['plugin']              = true;
+			$flashVars['playlistAPI']['onPage']              = true;
+			$flashVars['controlBarContainer']['hover']       = true;
+			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $entryId;
 		} else {
 			if ( $entryId ) {
 				$flashVars['entryId'] = $entryId;
