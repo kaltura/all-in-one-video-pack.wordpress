@@ -99,6 +99,4 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 			url          : ajaxurl + '?action=kaltura_ajax&kaction=saveentryname'
 		});
 	});
-
-	//window.top.Kaltura.restoreModalBoxWp26();
 </script>
