@@ -119,7 +119,6 @@
                 var pageSize = playlistBox.data('page-size');
                 var loading = playlistBox.data('loading');
                 if (loading == false) {
-                    playlistBox.data('loading', true);
                     var newPage = ++page;
                     _fetchPlaylists(newPage, pageSize);
                 }

@@ -220,6 +220,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 			$result->objects = $this->addUserPermissionsToEntry( $result->objects );;
 		} else {
+			wp_enqueue_style('kaltura-jquery-nanoscroller');
 			wp_enqueue_script( 'kaltura-jquery-nanoscroller' );
 			wp_enqueue_script( 'kaltura-playlist-control' );
 			$pageSize = 15;

@@ -4,8 +4,8 @@ KalturaHelpers::protectView( $this );
 <div class="clear"></div>
 
 <ul id="kaltura-browse" class="pull-left playlist-view">
-	<div class="kaltura-nano-playlist" data-page="1" data-loading="false" data-page-size="<?php echo $this->pageSize; ?>">
-		<div class="kaltura-nano-playlist-content">
+	<div class="nano kaltura-nano-playlist" data-page="1" data-loading="false" data-page-size="<?php echo $this->pageSize; ?>">
+		<div class="nano-content kaltura-nano-playlist-content">
 	<?php foreach ( $this->result->objects as $key => $playlist ): ?>
 		<li class="<?php echo ($key == 0) ? 'active' : '' ?>"  data-playlist-id="<?php echo esc_attr( $playlist->id ); ?>">
 			<div class="playlists-wrap">
