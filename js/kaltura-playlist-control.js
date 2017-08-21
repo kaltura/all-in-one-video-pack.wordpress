@@ -4,6 +4,8 @@
         // options
         var defaultOptions = {
             url       : null,
+            playlistUrl: null,
+            sendToEditorUrl: null,
             currentPlaylistId : null,
             playlistBoxselector: 'playlist-item-box',
             noResultsText: 'No results found',
@@ -13,7 +15,8 @@
         var currentElementObj = null;
         var currentPlaylistId = null;
         var currentItemBox = null;
-
+        var playlistContainer = jQuery(".kaltura-nano-playlist-content");
+        var playlistBox = jQuery(".kaltura-nano-playlist");
         var options = $.extend({}, defaultOptions, opts);
 
         var _bindClick = function () {
@@ -23,10 +26,9 @@
         };
         var _bindSelectPlaylist = function () {
             $(document.body).on('click', '#select-playlist', function (event) {
-                var activePlaylist = $('.playlist-view li.active');
-                var url = activePlaylist.data('url');
+                var url = getSendUrl();
                 var countOfMedia = jQuery('.playlist-item-box').find('.playlist-item').length;
-                if (countOfMedia > 0){
+                if (countOfMedia > 0) {
                     window.location = url;
                 }
             });
@@ -76,6 +78,7 @@
         var _browsePlaylistItems = function (data) {
             if(data.length > 0) {
                 $.each(data, function (key, value) {
+                    $('#select-playlist').removeClass('disabled');
                     var item = $('<div>', {class: "playlist-item"});
                     item.appendTo(currentItemBox);
                     var mediaBox = $('<div>', {class: "media-box"}).appendTo(item);
@@ -89,6 +92,7 @@
                     $('<div>', {class: "media-description", text: value.description}).appendTo(detailsBox);
                 });
             } else {
+                $('#select-playlist').addClass('disabled');
                 $('<div>', {class: "no-results", text: options.noResultsText}).appendTo(currentItemBox);
             }
             _hideLoader();
@@ -105,8 +109,67 @@
         var _hideLoader = function () {
             jQuery('.playlist-loader').hide();
         };
+        var _playlistInit = function () {
+            playlistBox.nanoScroller({ contentClass: 'kaltura-nano-playlist-content' });
+
+        };
+        var _playlistBindScroll = function () {
+            playlistBox.bind("scrollend", function (e) {
+                var page = playlistBox.data('page');
+                var pageSize = playlistBox.data('page-size');
+                var loading = playlistBox.data('loading');
+                if (loading == false) {
+                    playlistBox.data('loading', true);
+                    var newPage = ++page;
+                    _fetchPlaylists(newPage, pageSize);
+                }
+            });
+        };
+
+        var _fetchPlaylists = function (page, pageSize) {
+            playlistBox.data('loading', true);
+            var input = {
+                page: page,
+                pageSize: pageSize
+            };
+            jQuery.ajax({
+                url: options.playlistUrl,
+                cache: false,
+                success: _browsePlaylists,
+                error: _onPlayersLoadedError,
+                data: input,
+                dataType: 'json'
+            });
+
+        };
+
+        var _browsePlaylists = function (data) {
+            if(data.items.length > 0) {
+                $.each(data.items, function (key, value) {
+                    var item = $('<li>', {'data-playlist-id': value.id});
+                    item.appendTo(playlistContainer);
+                    var playlistWrapper = $('<div>', {class: "playlists-wrap"}).appendTo(item);
+                    $('<div>', {class: "playlist-title", text: value.name, id: 'entryId_' + value.id, 'data-playlist' : value.id}).appendTo(playlistWrapper);
+
+                    playlistBox.data('loading', false);
+                    playlistBox.data('page', data.page);
+                    _playlistInit();
+                });
+            } else {
+                playlistBox.data('loading', true);
+            }
+        };
+
+        var getSendUrl = function () {
+            var playlistIds = {
+                entryIds: [currentPlaylistId]
+            };
+            return options.sendToEditorUrl + '&' + $.param(playlistIds)
+        };
 
         this.initialize = function () {
+            _playlistInit();
+            _playlistBindScroll();
             _bindSelectPlaylist();
             _bindClick();
             _getCurrentPlaylist();

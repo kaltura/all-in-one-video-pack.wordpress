@@ -648,7 +648,7 @@ ul#kaltura-browse {
   float: left;
   width: 72%;
   margin-left: 2%;
-  max-height: 650px;
+  max-height: 550px;
   overflow: auto;
   .playlist-loader {
     padding: 10px 25px;
@@ -716,4 +716,68 @@ ul#kaltura-browse {
   padding: 5px 10px;
   cursor: pointer;
   margin-bottom: 20px;
+  &.disabled {
+    background-color: #cecece;
+    cursor: default;
+  }
+}
+
+/** initial setup **/
+.kaltura-nano-playlist {
+  position : relative;
+  width    : 100%;
+  overflow : hidden;
+  height: 550px;
+  & > .kaltura-nano-playlist-content {
+    position      : absolute;
+    overflow      : scroll;
+    overflow-x    : hidden;
+    top           : 0;
+    right         : 0;
+    bottom        : 0;
+    left          : 0;
+    &:focus {
+      outline: thin dotted;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  & > .nano-pane {
+    position   : absolute;
+    width      : 10px;
+    right      : 0;
+    top        : 0;
+    bottom     : 0;
+    visibility : hidden\9; /* Target only IE7 and IE8 with this hack */
+    opacity    : .01;
+    -webkit-transition    : .2s;
+    -moz-transition       : .2s;
+    -o-transition         : .2s;
+    transition            : .2s;
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    border-radius         : 5px;
+    background: #888;
+    & > .nano-slider {
+      background: #111;
+      background: rgba(0,0,0,.5);
+      position              : relative;
+      margin                : 0 1px;
+      -moz-border-radius    : 3px;
+      -webkit-border-radius : 3px;
+      border-radius         : 3px;
+    }
+
+  }
+}
+
+.has-scrollbar {
+  .kaltura-nano-playlist-content::-webkit-scrollbar {
+    display: block;
+  }
+}
+.kaltura-nano-playlist:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
+  visibility : visible\9; /* Target only IE7 and IE8 with this hack */
+  opacity    : 0.99;
 }
