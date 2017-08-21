@@ -69,8 +69,8 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 		<div class="right-side-container">
 			<div class="kaltura-filter-bar">
 				<?php $this->renderView( 'filter-media-owner.php' ); ?>
-				<?php if( isset($this->isPlaylist) && $this->isPlaylist): ?>
-					<div id="select-playlist">Select playlist</div>
+				<?php if( isset($this->isPlaylist) && $this->isPlaylist && !$this->isLibrary ): ?>
+					<div id="select-playlist" class="disabled">Select playlist</div>
 				<?php endif; ?>
 				<div class="entry-search-filter">
 					<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
@@ -85,7 +85,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 
 	<br class="clear" />
 
-	<?php if ( $pageLinks ): ?>
+	<?php if ( $pageLinks && !$this->isPlaylist): ?>
 		<div class="kaltura-pager <?php echo esc_attr($this->browseClass); ?>"><?php echo wp_kses($pageLinks, $pageLinksAllowedHtml); ?></div>
 	<?php endif; ?>
 </div>

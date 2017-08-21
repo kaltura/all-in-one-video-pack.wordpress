@@ -14,6 +14,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			'getentrystatus',
 			'saveentryname',
 			'getplaylistitems',
+			'getplaylists',
 		);
 	}
 
@@ -219,8 +220,10 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 			$result->objects = $this->addUserPermissionsToEntry( $result->objects );;
 		} else {
+			wp_enqueue_style('kaltura-jquery-nanoscroller');
+			wp_enqueue_script( 'kaltura-jquery-nanoscroller' );
 			wp_enqueue_script( 'kaltura-playlist-control' );
-			$pageSize = 5;
+			$pageSize = 15;
 			$currentUser = KalturaHelpers::getLoggedUserId();
 			$result = $kmodel->getUserPlaylists($currentUser, $pageSize, $page);
 			$subViewFile = 'library/playlists-list.php';
@@ -303,6 +306,24 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$kmodel          = KalturaModel::getInstance();
 		$playlistData    = $kmodel->getPlaylistsData($entryId);
 		wp_send_json( array_values( $playlistData ) );
+		die;
+	}
+	
+	public function getplaylistsAction() {
+		$page = (int)KalturaHelpers::getRequestParam( 'page' );
+		$pageSize = (int)KalturaHelpers::getRequestParam( 'pageSize' );
+		$playlistObjects = array();
+		
+		$currentUser = KalturaHelpers::getLoggedUserId();
+		$kmodel          = KalturaModel::getInstance();
+		$playlistData    = $kmodel->getUserPlaylists($currentUser, $pageSize, $page);
+		$playlistObjects['items'] = array();
+		foreach ($playlistData->objects as $key => $playlist) {
+			$playlistObjects['items'][$key]['name'] = $playlist->name;
+			$playlistObjects['items'][$key]['id'] = $playlist->id;
+		}
+		$playlistObjects['page'] = $page;
+		wp_send_json(  $playlistObjects  );
 		die;
 	}
 }

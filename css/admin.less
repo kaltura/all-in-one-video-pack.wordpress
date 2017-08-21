@@ -235,6 +235,15 @@ ul#kaltura-browse {
         }
       }
     }
+    .kaltura-nano-playlist {
+      height: 550px;
+      & > .nano-pane {
+        background: #888;
+        & > .nano-slider {
+          background: #111;
+        }
+      }
+    }
   }
 }
 #update-thumbnail-page {
@@ -648,7 +657,7 @@ ul#kaltura-browse {
   float: left;
   width: 72%;
   margin-left: 2%;
-  max-height: 650px;
+  max-height: 550px;
   overflow: auto;
   .playlist-loader {
     padding: 10px 25px;
@@ -716,4 +725,8 @@ ul#kaltura-browse {
   padding: 5px 10px;
   cursor: pointer;
   margin-bottom: 20px;
+  &.disabled {
+    background-color: #cecece;
+    cursor: default;
+  }
 }
