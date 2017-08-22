@@ -87,10 +87,19 @@
 	$backUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_browse', 'chromeless'=>true) ) );
 	$backImageUrl = esc_attr( KalturaHelpers::getPluginUrl() ) . "/images/back.gif";
 	$isFirstEdit = KalturaHelpers::getRequestParam( 'firstedit' ) == 'true';
+	$playersNotFoundMessage = 'No players were found in your account. Click %s to create a new player.';
+	if ($this->isPlaylist) {
+		$playersNotFoundMessage = 'No playlist players were found in your account. Click %s to create a new playlist player.';
+	}
+	$link = '<a target="_blank" href="' .  esc_url('http://kmc.kaltura.com/index.php/kmc/kmc4#studio|universal_studio') . '">' . __('here') . '</a>';
 
 	?>
 
 	<div id="send-to-editor" class="kaltura-tab <?php echo $isFirstEdit ? 'first-edit' : ''; ?>">
+			<div class="error players-missing">
+				<?php echo sprintf( __($playersNotFoundMessage), $link ); ?>
+			</div>
+
 		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>

@@ -679,3 +679,6 @@ ul#kaltura-browse.playlist-view .kaltura-nano-playlist > .nano-pane > .nano-slid
   background-color: #cecece;
   cursor: default;
 }
+.players-missing {
+  display: none;
+}

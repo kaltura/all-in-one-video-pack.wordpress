@@ -40,7 +40,7 @@
 
 		var _onPlayersLoadedSuccess = function (data) {
 			_hideLoader();
-			if (data) {
+			if (data.length > 0) {
 				_players = data;
 				_$playersList.empty();
 				jQuery.each(_players, function (index) {
@@ -55,6 +55,12 @@
 				_$playersList.change(_onPlayerChange);
 				_onPlayerChange();
 				_enableSubmit();
+			} else {
+				_$playersList.empty();
+				var option = jQuery('<option>');
+				option.text('Players not found');
+				_$playersList.append(option);
+				$('.players-missing').show();
 			}
 		};
 
