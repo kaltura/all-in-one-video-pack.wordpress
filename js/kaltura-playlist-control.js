@@ -118,7 +118,7 @@
         };
 
         var _removeLoader = function() {
-            jQuery('.playlist-loading').remove();
+            playlistContainer.find('.playlist-loading').remove();
         };
 
         var _playlistInit = function () {
