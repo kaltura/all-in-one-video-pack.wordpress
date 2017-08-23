@@ -234,6 +234,14 @@ ul#kaltura-browse {
           background-color: #08c;
         }
       }
+      &.playlist-loading {
+        background: #fff;
+        display: block;
+        .kaltura-loader {
+          margin: auto;
+          display: block;
+        }
+      }
     }
     .kaltura-nano-playlist {
       height: 550px;
@@ -659,7 +667,7 @@ ul#kaltura-browse {
   margin-left: 2%;
   max-height: 550px;
   overflow: auto;
-  .playlist-loader {
+  .playlist-items-loader {
     padding: 10px 25px;
     background: #fff;
     display: none;

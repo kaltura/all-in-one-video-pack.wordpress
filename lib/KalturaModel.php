@@ -353,10 +353,11 @@ class KalturaModel {
 	 * @param $userId
 	 * @param $pageSize
 	 * @param $page
+	 * @param $searchString
 	 *
 	 * @return Kaltura_Client_MultiRequestSubResult|mixed
 	 */
-	public function getUserPlaylists($userId, $pageSize, $page) {
+	public function getUserPlaylists($userId, $pageSize, $page, $searchString) {
 		$pager = new Kaltura_Client_Type_FilterPager();
 		$pager->pageSize = $pageSize;
 		$pager->pageIndex = $page;
@@ -364,6 +365,7 @@ class KalturaModel {
 		$filter = new Kaltura_Client_Type_PlaylistFilter();
 		$filter->userIdEqual = $userId;
 		$filter->orderBy = Kaltura_Client_Enum_PlaylistOrderBy::CREATED_AT_DESC;
+		$filter->searchTextMatchOr = $searchString;
 
 		return  $this->getPlaylistService()->listAction($filter, $pager);
 	}

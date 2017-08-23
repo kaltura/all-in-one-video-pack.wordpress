@@ -103,12 +103,24 @@
         };
 
         var _showLoader = function () {
-            jQuery('.playlist-loader').show();
+            jQuery('.playlist-items-loader').show();
         };
 
         var _hideLoader = function () {
-            jQuery('.playlist-loader').hide();
+            jQuery('.playlist-items-loader').hide();
         };
+
+        var _addLoader = function() {
+            var item = $('<li>', {class: "playlist-loading"});
+            var loader = $('<div>', {class: "kaltura-loader"});
+            loader.appendTo(item);
+            item.appendTo(playlistContainer);
+        };
+
+        var _removeLoader = function() {
+            jQuery('.playlist-loading').remove();
+        };
+
         var _playlistInit = function () {
             playlistBox.nanoScroller({ contentClass: 'kaltura-nano-playlist-content' });
 
@@ -127,9 +139,12 @@
 
         var _fetchPlaylists = function (page, pageSize) {
             playlistBox.data('loading', true);
+            _addLoader();
+            var searchWord = $('input[name=search]').val();
             var input = {
                 page: page,
-                pageSize: pageSize
+                pageSize: pageSize,
+                search: searchWord
             };
             jQuery.ajax({
                 url: options.playlistUrl,
@@ -157,6 +172,7 @@
             } else {
                 playlistBox.data('loading', true);
             }
+            _removeLoader();
         };
 
         var getSendUrl = function () {

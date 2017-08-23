@@ -225,7 +225,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			wp_enqueue_script( 'kaltura-playlist-control' );
 			$pageSize = 15;
 			$currentUser = KalturaHelpers::getLoggedUserId();
-			$result = $kmodel->getUserPlaylists($currentUser, $pageSize, $page);
+			$result = $kmodel->getUserPlaylists($currentUser, $pageSize, $page, $searchString);
 			$subViewFile = 'library/playlists-list.php';
 		}
 		
@@ -312,11 +312,12 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 	public function getplaylistsAction() {
 		$page = (int)KalturaHelpers::getRequestParam( 'page' );
 		$pageSize = (int)KalturaHelpers::getRequestParam( 'pageSize' );
+		$searchString = sanitize_text_field( KalturaHelpers::getRequestParam( 'search' ) );
 		$playlistObjects = array();
 		
 		$currentUser = KalturaHelpers::getLoggedUserId();
 		$kmodel          = KalturaModel::getInstance();
-		$playlistData    = $kmodel->getUserPlaylists($currentUser, $pageSize, $page);
+		$playlistData    = $kmodel->getUserPlaylists($currentUser, $pageSize, $page, $searchString);
 		$playlistObjects['items'] = array();
 		foreach ($playlistData->objects as $key => $playlist) {
 			$playlistObjects['items'][$key]['name'] = $playlist->name;

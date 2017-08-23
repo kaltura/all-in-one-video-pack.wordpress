@@ -21,7 +21,7 @@ KalturaHelpers::protectView( $this );
 </ul>
 
 <div class="playlist-items"  >
-	<div class="playlist-loader">
+	<div class="playlist-items-loader">
 		<div class="kaltura-loader"></div>
 	</div>
 	<div class="playlist-item-box">

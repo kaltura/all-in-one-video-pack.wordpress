@@ -229,6 +229,14 @@ ul#kaltura-browse.playlist-view li.active .playlists-wrap {
   color: white;
   background-color: #08c;
 }
+ul#kaltura-browse.playlist-view li.playlist-loading {
+  background: #fff;
+  display: block;
+}
+ul#kaltura-browse.playlist-view li.playlist-loading .kaltura-loader {
+  margin: auto;
+  display: block;
+}
 ul#kaltura-browse.playlist-view .kaltura-nano-playlist {
   height: 550px;
 }
@@ -612,12 +620,12 @@ ul#kaltura-browse.playlist-view .kaltura-nano-playlist > .nano-pane > .nano-slid
   max-height: 550px;
   overflow: auto;
 }
-.playlist-items .playlist-loader {
+.playlist-items .playlist-items-loader {
   padding: 10px 25px;
   background: #fff;
   display: none;
 }
-.playlist-items .playlist-loader .kaltura-loader {
+.playlist-items .playlist-items-loader .kaltura-loader {
   margin: auto;
   display: block;
 }
