@@ -232,6 +232,7 @@ ul#kaltura-browse.playlist-view li.active .playlists-wrap {
 ul#kaltura-browse.playlist-view li.playlist-loading {
   background: #fff;
   display: block;
+  padding: 16px 0;
 }
 ul#kaltura-browse.playlist-view li.playlist-loading .kaltura-loader {
   margin: auto;
