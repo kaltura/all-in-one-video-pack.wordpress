@@ -234,6 +234,15 @@ ul#kaltura-browse {
           background-color: #08c;
         }
       }
+      &.playlist-loading {
+        background: #fff;
+        display: block;
+        padding: 16px 0;
+        .kaltura-loader {
+          margin: auto;
+          display: block;
+        }
+      }
     }
     .kaltura-nano-playlist {
       height: 550px;
@@ -655,11 +664,11 @@ ul#kaltura-browse {
 .playlist-items {
   display: block;
   float: left;
-  width: 72%;
+  width: 73%;
   margin-left: 2%;
   max-height: 550px;
   overflow: auto;
-  .playlist-loader {
+  .playlist-items-loader {
     padding: 10px 25px;
     background: #fff;
     display: none;
@@ -732,5 +741,15 @@ ul#kaltura-browse {
 }
 
 .players-missing {
+  display: none;
+}
+
+.playlist-errors-box {
+  color: #D8000C;
+  background-color: #FFBABA;
+  margin: 10px 0;
+  font-size: 1em;
+  vertical-align: middle;
+  padding: 10px;
   display: none;
 }
