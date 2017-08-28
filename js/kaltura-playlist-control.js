@@ -18,6 +18,7 @@
         var playlistContainer = jQuery(".kaltura-nano-playlist-content");
         var playlistBox = jQuery(".kaltura-nano-playlist");
         var options = $.extend({}, defaultOptions, opts);
+        var errorBox = jQuery('.playlist-errors-box');
 
         var _bindClick = function () {
             $('#kaltura-browse').on('click', 'li', function(){
@@ -55,7 +56,8 @@
             _fetchPlaylistItems();
         };
 
-        var _onPlayersLoadedError = function () {
+        var _onPlaylistItemsLoadedError = function () {
+            _showError("An error occurred while loading this playlist. Please try again.");
             _hideLoader();
         };
 
@@ -70,12 +72,13 @@
                 url     : options.url,
                 cache   : false,
                 success : _browsePlaylistItems,
-                error   : _onPlayersLoadedError,
+                error   : _onPlaylistItemsLoadedError,
                 data    : input,
                 dataType: 'json'
             });
         };
         var _browsePlaylistItems = function (data) {
+            _hideError();
             if(data.length > 0) {
                 $.each(data, function (key, value) {
                     $('#select-playlist').removeClass('disabled');
@@ -150,14 +153,26 @@
                 url: options.playlistUrl,
                 cache: false,
                 success: _browsePlaylists,
-                error: _onPlayersLoadedError,
+                error: _onPlaylistLoadedError,
                 data: input,
                 dataType: 'json'
             });
 
         };
 
+        var _onPlaylistLoadedError = function () {
+            _removeLoader();
+            _showError("An error occurred while loading your playlists. Please try again.");
+            playlistBox.data('loading', true);
+            setTimeout( function () {
+                playlistBox.data('loading', false);
+            }, 1000);
+
+
+        };
+
         var _browsePlaylists = function (data) {
+            _hideError();
             if(data.items.length > 0) {
                 $.each(data.items, function (key, value) {
                     var item = $('<li>', {'data-playlist-id': value.id});
@@ -180,6 +195,17 @@
                 entryIds: [currentPlaylistId]
             };
             return options.sendToEditorUrl + '&' + $.param(playlistIds)
+        };
+
+        var _showError = function (message) {
+            errorBox.html(message);
+            errorBox.show();
+        };
+
+        var _hideError = function () {
+            _removeLoader();
+            _hideLoader();
+            errorBox.hide();
         };
 
         this.initialize = function () {

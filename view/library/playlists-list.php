@@ -1,6 +1,7 @@
 <?php
 KalturaHelpers::protectView( $this );
 ?>
+<div class="playlist-errors-box"></div>
 <div class="clear"></div>
 
 <ul id="kaltura-browse" class="pull-left playlist-view">
