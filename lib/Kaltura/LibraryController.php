@@ -220,8 +220,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$result          = $kmodel->listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $searchString, $ownerType );
 			$result->objects = $this->addUserPermissionsToEntry( $result->objects );;
 		} else {
-			wp_enqueue_style('kaltura-jquery-nanoscroller');
-			wp_enqueue_script( 'kaltura-jquery-nanoscroller' );
+			wp_enqueue_style('kaltura-jquery-perfect-scrollbar');
+			wp_enqueue_script( 'kaltura-jquery-perfect-scrollbar' );
 			wp_enqueue_script( 'kaltura-playlist-control' );
 			$pageSize = 15;
 			$currentUser = KalturaHelpers::getLoggedUserId();
@@ -318,12 +318,14 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$currentUser = KalturaHelpers::getLoggedUserId();
 		$kmodel          = KalturaModel::getInstance();
 		$playlistData    = $kmodel->getUserPlaylists($currentUser, $pageSize, $page, $searchString);
+		$totalCount      = $playlistData->totalCount;
 		$playlistObjects['items'] = array();
 		foreach ($playlistData->objects as $key => $playlist) {
 			$playlistObjects['items'][$key]['name'] = $playlist->name;
 			$playlistObjects['items'][$key]['id'] = $playlist->id;
 		}
 		$playlistObjects['page'] = $page;
+		$playlistObjects['totalCount'] = $totalCount;
 		wp_send_json(  $playlistObjects  );
 		die;
 	}

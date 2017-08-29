@@ -5,8 +5,7 @@ KalturaHelpers::protectView( $this );
 <div class="clear"></div>
 
 <ul id="kaltura-browse" class="pull-left playlist-view">
-	<div class="nano kaltura-nano-playlist" data-page="1" data-loading="false" data-page-size="<?php echo $this->pageSize; ?>">
-		<div class="nano-content kaltura-nano-playlist-content">
+	<div class="kaltura-playlist" data-page="1" data-loading="false" data-page-size="<?php echo $this->pageSize; ?>" data-total-count="<?php echo $this->totalCount; ?>">
 	<?php foreach ( $this->result->objects as $key => $playlist ): ?>
 		<li class="<?php echo ($key == 0) ? 'active' : '' ?>"  data-playlist-id="<?php echo esc_attr( $playlist->id ); ?>">
 			<div class="playlists-wrap">
@@ -17,8 +16,8 @@ KalturaHelpers::protectView( $this );
 			
 		</li>
 	<?php endforeach; ?>
-		</div>
 	</div>
+	<li class="playlist-loading"><div class="kaltura-loader"></div></li>
 </ul>
 
 <div class="playlist-items"  >
@@ -26,8 +25,6 @@ KalturaHelpers::protectView( $this );
 		<div class="kaltura-loader"></div>
 	</div>
 	<div class="playlist-item-box">
-		<div class="no-results"><?php _e('No results found'); ?></div>
-	
 	</div>
 
 </div>

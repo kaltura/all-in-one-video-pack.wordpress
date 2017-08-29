@@ -218,34 +218,33 @@ ul#kaltura-browse.playlist-view li .playlists-wrap {
   float: left;
   width: 100%;
   color: #08c;
+  overflow: hidden;
 }
 ul#kaltura-browse.playlist-view li .playlists-wrap .playlist-title {
   padding: 8px 0;
   cursor: pointer;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  word-wrap: break-word;
 }
 ul#kaltura-browse.playlist-view li.active .playlists-wrap {
   color: white;
   background-color: #08c;
 }
 ul#kaltura-browse.playlist-view li.playlist-loading {
+  display: none;
   background: #fff;
-  display: block;
   padding: 16px 0;
 }
 ul#kaltura-browse.playlist-view li.playlist-loading .kaltura-loader {
   margin: auto;
   display: block;
 }
-ul#kaltura-browse.playlist-view .kaltura-nano-playlist {
-  height: 550px;
-}
-ul#kaltura-browse.playlist-view .kaltura-nano-playlist > .nano-pane {
-  background: #888;
-}
-ul#kaltura-browse.playlist-view .kaltura-nano-playlist > .nano-pane > .nano-slider {
-  background: #111;
+ul#kaltura-browse.playlist-view .kaltura-playlist {
+  max-height: 550px;
+  overflow: auto;
+  position: relative;
+  height: 100%;
 }
 #update-thumbnail-page {
   height: 100%;
@@ -629,6 +628,11 @@ ul#kaltura-browse.playlist-view .kaltura-nano-playlist > .nano-pane > .nano-slid
 .playlist-items .playlist-items-loader .kaltura-loader {
   margin: auto;
   display: block;
+}
+.playlist-items .playlist-item-box {
+  height: 100%;
+  position: relative;
+  max-height: 550px;
 }
 .playlist-items .playlist-item-box .playlist-item {
   overflow: auto;

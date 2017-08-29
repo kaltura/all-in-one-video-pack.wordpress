@@ -3,10 +3,10 @@
         var self = this;
         // options
         var defaultOptions = {
-            url       : null,
+            url: null,
             playlistUrl: null,
             sendToEditorUrl: null,
-            currentPlaylistId : null,
+            currentPlaylistId: null,
             playlistBoxselector: 'playlist-item-box',
             noResultsText: 'No results found',
             thumbWidth: 320,
@@ -15,20 +15,20 @@
         var currentElementObj = null;
         var currentPlaylistId = null;
         var currentItemBox = null;
-        var playlistContainer = jQuery(".kaltura-nano-playlist-content");
-        var playlistBox = jQuery(".kaltura-nano-playlist");
+        var playlistBox = jQuery(".kaltura-playlist");
+        var playlistItemBox = jQuery('.playlist-item-box');
         var options = $.extend({}, defaultOptions, opts);
         var errorBox = jQuery('.playlist-errors-box');
 
         var _bindClick = function () {
-            $('#kaltura-browse').on('click', 'li', function(){
+            $('#kaltura-browse').on('click', 'li', function () {
                 _getCurrentPlaylist(this);
             })
         };
         var _bindSelectPlaylist = function () {
-            $(document.body).on('click', '#select-playlist', function (event) {
+            $(document.body).on('click', '#select-playlist', function () {
                 var url = getSendUrl();
-                var countOfMedia = jQuery('.playlist-item-box').find('.playlist-item').length;
+                var countOfMedia = playlistItemBox.find('.playlist-item').length;
                 if (countOfMedia > 0) {
                     window.location = url;
                 }
@@ -36,10 +36,10 @@
         };
 
         var _getCurrentPlaylist = function (element) {
-            var currentElement = typeof element !== 'undefined' ?  element : null;
+            var currentElement = typeof element !== 'undefined' ? element : null;
             var playlistItems = jQuery('#kaltura-browse');
             var activePlaylist = null;
-            if (currentElement === null){
+            if (currentElement === null) {
                 activePlaylist = playlistItems.find('li.active');
             } else {
                 playlistItems.find('li.active').removeClass('active');
@@ -52,8 +52,9 @@
             currentElementObj = activePlaylist;
             currentPlaylistId = playlistId;
             currentItemBox = itemsBox;
-
-            _fetchPlaylistItems();
+            if (playlistId !== undefined) {
+                _fetchPlaylistItems();
+            }
         };
 
         var _onPlaylistItemsLoadedError = function () {
@@ -79,7 +80,7 @@
         };
         var _browsePlaylistItems = function (data) {
             _hideError();
-            if(data.length > 0) {
+            if (data.length > 0) {
                 $.each(data, function (key, value) {
                     $('#select-playlist').removeClass('disabled');
                     var item = $('<div>', {class: "playlist-item"});
@@ -94,6 +95,7 @@
                     $('<div>', {class: "media-name", text: value.name}).appendTo(detailsBox);
                     $('<div>', {class: "media-description", text: value.description}).appendTo(detailsBox);
                 });
+                _updateScrollableBox(playlistItemBox);
             } else {
                 $('#select-playlist').addClass('disabled');
                 $('<div>', {class: "no-results", text: options.noResultsText}).appendTo(currentItemBox);
@@ -101,7 +103,7 @@
             _hideLoader();
         };
 
-        var _getThumbResize = function() {
+         var _getThumbResize = function () {
             return '/width/' + options.thumbWidth + '/height/' + options.thumbHeight + '/type/3';
         };
 
@@ -113,29 +115,29 @@
             jQuery('.playlist-items-loader').hide();
         };
 
-        var _addLoader = function() {
-            var item = $('<li>', {class: "playlist-loading"});
-            var loader = $('<div>', {class: "kaltura-loader"});
-            loader.appendTo(item);
-            item.appendTo(playlistContainer);
+        var _addLoader = function () {
+            jQuery('.playlist-loading').show();
         };
 
-        var _removeLoader = function() {
-            playlistContainer.find('.playlist-loading').remove();
+        var _removeLoader = function () {
+            jQuery('.playlist-loading').hide();
         };
 
         var _playlistInit = function () {
-            playlistBox.nanoScroller({ contentClass: 'kaltura-nano-playlist-content' });
-
+            playlistBox.perfectScrollbar();
         };
         var _playlistBindScroll = function () {
-            playlistBox.bind("scrollend", function (e) {
+            playlistBox.on('ps-y-reach-end', function () {
                 var page = playlistBox.data('page');
                 var pageSize = playlistBox.data('page-size');
+                var totalCount = playlistBox.data('total-count');
                 var loading = playlistBox.data('loading');
-                if (loading == false) {
-                    var newPage = ++page;
-                    _fetchPlaylists(newPage, pageSize);
+                if (loading === false) {
+                    if (totalCount > page * pageSize) {
+                        var newPage = ++page;
+                        _fetchPlaylists(newPage, pageSize);
+                    }
+
                 }
             });
         };
@@ -164,7 +166,7 @@
             _removeLoader();
             _showError("An error occurred while loading your playlists. Please try again.");
             playlistBox.data('loading', true);
-            setTimeout( function () {
+            setTimeout(function () {
                 playlistBox.data('loading', false);
             }, 1000);
 
@@ -173,21 +175,32 @@
 
         var _browsePlaylists = function (data) {
             _hideError();
-            if(data.items.length > 0) {
+            if (data.items.length > 0) {
                 $.each(data.items, function (key, value) {
                     var item = $('<li>', {'data-playlist-id': value.id});
-                    item.appendTo(playlistContainer);
+                    item.appendTo(playlistBox);
                     var playlistWrapper = $('<div>', {class: "playlists-wrap"}).appendTo(item);
-                    $('<div>', {class: "playlist-title", text: value.name, id: 'entryId_' + value.id, 'data-playlist' : value.id}).appendTo(playlistWrapper);
+                    $('<div>', {
+                        class: "playlist-title",
+                        text: value.name,
+                        id: 'entryId_' + value.id,
+                        'data-playlist': value.id
+                    }).appendTo(playlistWrapper);
 
                     playlistBox.data('loading', false);
                     playlistBox.data('page', data.page);
-                    _playlistInit();
+                    playlistBox.data('total-count', data.totalCount);
                 });
+                _updateScrollableBox(playlistBox);
             } else {
                 playlistBox.data('loading', true);
             }
             _removeLoader();
+        };
+
+        var _updateScrollableBox = function (selector) {
+            selector.perfectScrollbar('destroy');
+            selector.perfectScrollbar();
         };
 
         var getSendUrl = function () {
