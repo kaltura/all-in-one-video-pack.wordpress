@@ -221,11 +221,13 @@ ul#kaltura-browse {
         float: left;
         width:100%;
         color: #08c;
+        overflow: hidden;
         .playlist-title {
           padding: 8px 0;
           cursor: pointer;
           font-size: 14px;
           font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+          word-wrap: break-word;
         }
       }
       &.active {
@@ -235,8 +237,8 @@ ul#kaltura-browse {
         }
       }
       &.playlist-loading {
+        display: none;
         background: #fff;
-        display: block;
         padding: 16px 0;
         .kaltura-loader {
           margin: auto;
@@ -244,14 +246,11 @@ ul#kaltura-browse {
         }
       }
     }
-    .kaltura-nano-playlist {
-      height: 550px;
-      & > .nano-pane {
-        background: #888;
-        & > .nano-slider {
-          background: #111;
-        }
-      }
+    .kaltura-playlist {
+      max-height: 550px;
+      overflow: auto;
+      position: relative;
+      height: 100%;
     }
   }
 }
@@ -678,6 +677,9 @@ ul#kaltura-browse {
     }
   }
   .playlist-item-box {
+    height: 100%;
+    position: relative;
+    max-height: 550px;
     .playlist-item {
       overflow: auto;
       background: white;
