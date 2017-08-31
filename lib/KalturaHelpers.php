@@ -111,7 +111,7 @@ class KalturaHelpers {
 			$flashVars['playlistAPI']['kpl0Id']              = $entryId;
 			$flashVars['playlistAPI']['plugin']              = true;
 			$flashVars['playlistAPI']['onPage']              = true;
-			$flashVars['playlistAPI']['autoInsert']          = true;
+			$flashVars['playlistAPI']['paging']              = true;
 
 			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $entryId;
 		} else {
