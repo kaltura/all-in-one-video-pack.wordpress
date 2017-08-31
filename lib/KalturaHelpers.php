@@ -111,13 +111,15 @@ class KalturaHelpers {
 			$flashVars['playlistAPI']['kpl0Id']              = $entryId;
 			$flashVars['playlistAPI']['plugin']              = true;
 			$flashVars['playlistAPI']['onPage']              = true;
-			$flashVars['controlBarContainer']['hover']       = true;
+			$flashVars['playlistAPI']['paging']              = true;
+
 			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $entryId;
 		} else {
 			if ( $entryId ) {
 				$flashVars['entryId'] = $entryId;
 			}
 		}
+		$flashVars['controlBarContainer']['hover']       = true;
 		return $flashVars;
 	}
 	
@@ -151,6 +153,15 @@ class KalturaHelpers {
 		}
 		
 		return  $flashVars;
+	}
+	
+	public static function sendToEditorFlashVars($flashVars = array()) {
+		$flashVars = self::flashVarsSanitize($flashVars);
+		if (isset($flashVars['playlistAPI']['onPage'])) {
+			$flashVars['playlistAPI']['onPage'] = false;
+		}
+		
+		return $flashVars;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {

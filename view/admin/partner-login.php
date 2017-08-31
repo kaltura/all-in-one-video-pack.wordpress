@@ -12,7 +12,7 @@
 		<br />
 
 		<div class="wrap">
-			<a href="#" onclick="history.go(-1);">Back</a>
+			<a href="javascript:history.go(-1);" onclick="history.go(-1);">Back</a>
 		</div>
 	</div>
 <?php elseif ( $this->success === true ): ?>

@@ -270,9 +270,9 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
 }
 #send-to-editor {
   border: solid 1px #AED3E3;
-}
-#send-to-editor .videoTitle {
-  padding-left: 30px;
+  max-width: 1200px;
+  overflow: auto;
+  padding: 0 30px;
 }
 #send-to-editor .entry-error,
 #send-to-editor .entry-converting {
@@ -426,6 +426,75 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
   height: auto;
   padding: 0;
   width: 130px;
+}
+#send-to-editor .options {
+  width: 40%;
+  float: left;
+}
+#send-to-editor .options div.selectBox {
+  padding-bottom: 15px;
+}
+#send-to-editor .options div.selectBox #uiConfId {
+  height: 25px;
+  margin-left: 10px;
+  width: 250px;
+}
+@media (min-width: 641px) and (max-width: 763px) {
+  #send-to-editor .options {
+    width: 100%;
+  }
+  #send-to-editor .options div.selectBox {
+    float: left;
+  }
+  #send-to-editor .options div.selectBox #uiConfId {
+    width: 180px;
+  }
+  #send-to-editor .options .options-size {
+    float: left;
+    margin-left: 15px;
+  }
+}
+#send-to-editor .player-container {
+  width: 60%;
+  float: left;
+}
+#send-to-editor .player-container .player-aspect-ratio {
+  margin-top: 56.25%;
+}
+@media (max-width: 763px) {
+  #send-to-editor .player-container {
+    width: 100%;
+  }
+}
+#send-to-editor.kaltura-playlist-player .options {
+  float: none;
+}
+#send-to-editor.kaltura-playlist-player .player-container {
+  width: 800px;
+  float: none;
+  margin: 0 auto;
+}
+@media (max-width: 892px) {
+  #send-to-editor.kaltura-playlist-player .player-container {
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  #send-to-editor.kaltura-playlist-player .player-container {
+    display: none;
+  }
+}
+#send-to-editor.kaltura-playlist-player .kaltura-form {
+  height: auto;
+  max-height: 100%;
+}
+#send-to-editor.kaltura-playlist-player .player-aspect-ratio {
+  margin-top: 270px;
+}
+@media (max-width: 892px) {
+  #send-to-editor.kaltura-playlist-player .player-aspect-ratio {
+    margin-top: 29.15%;
+  }
 }
 #kaltura-cms-login {
   background-color: #E1EAEF;
