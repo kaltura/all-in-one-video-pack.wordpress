@@ -106,7 +106,7 @@
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
 			</div>
 			<div class="videoTitle">
-				<h2>Title: <?php echo esc_attr( $this->entry->name ); ?><h2>
+				<h2>Title: <?php echo esc_attr( $this->entry->name ); ?></h2>
 			</div>
 		<?php }
 		$senToPostUrl = esc_attr( KalturaHelpers::generateTabUrl( array( 'tab' => 'kaltura_upload', 'kaction' => 'sendtoeditor', 'firstedit' => 'true', 'entryIds' => $this->nextEntryIds ) ) );
@@ -160,8 +160,7 @@
 					<div class="player-aspect-ratio"></div>
 					<div id="divKalturaPlayer"></div>
 				</div>
-			</div>
-			<div class="clear"></div>
+			</div><div class="clear"></div>
 			<p class="submit">
 				<input type="submit" value="<?php echo esc_attr__( 'Insert into Post' ); ?>" name="sendToEditorButton" class="button-secondary" />
 			</p>

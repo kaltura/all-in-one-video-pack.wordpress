@@ -280,7 +280,12 @@ ul#kaltura-browse {
   border: solid 1px #AED3E3;
   max-width:1200px;
   overflow: auto;
-  padding: 0 30px;
+  padding: 30px;
+  .videoTitle {
+    h2 {
+      margin-top: 0;
+    }
+  }
   .entry-error, .entry-converting {
     padding: 15px;
     margin-bottom: 20px;
@@ -361,8 +366,8 @@ ul#kaltura-browse {
     }
   }
   .backDiv {
-    padding: 5px;
     text-align: right;
+    float: right;
   }
   td.kaltura-preview-player-wrapper {
     position: relative;
@@ -384,7 +389,7 @@ ul#kaltura-browse {
   }
   .submit {
     border: 0;
-    margin: 0 10px 10px 10px;
+    margin: 20px 0 0 10px;
     padding: 0;
     text-align: right;
   }
