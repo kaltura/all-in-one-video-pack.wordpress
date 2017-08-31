@@ -107,16 +107,12 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 		$entryIds = KalturaHelpers::getRequestParam( 'entryIds', array() );
 		$isPlaylist = KalturaHelpers::getRequestParam( 'isplaylist', false );
 		$entryId  = null;
-		$privileges = 'disableentitlement';
 		if ( is_array( $entryIds ) && count( $entryIds ) > 0 ) {
 			$entryId = $entryIds[0];
 		}
 
 		if ( is_null( $entryId ) ) {
 			wp_die( 'No entry specified' );
-		}
-		if ($isPlaylist) {
-			$privileges .= ',sviewplaylist:' . $entryId;
 		}
 
 		$params = array_fill_keys(
@@ -129,8 +125,8 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$kmodel = KalturaModel::getInstance();
 
 			$entry                             = $kmodel->getEntry( $entryId );
-			$clientSideSession                 = $kmodel->getClientSideSession();
-			$flashVars                         = KalturaHelpers::getKalturaPlayerFlashVars( $clientSideSession, $entryId, $isPlaylist);
+			$ks                                = KalturaHelpers::getKSForPlayer( $entry );
+			$flashVars                         = KalturaHelpers::getKalturaPlayerFlashVars( $ks, $entryId, $isPlaylist);
 
 			$thumbnail                         = KalturaHelpers::getPluginUrl() . '/thumbnails/get_preview_thumbnail.php?thumbnail_url=' . $entry->thumbnailUrl;
 			$params['entry']                   = $entry;
