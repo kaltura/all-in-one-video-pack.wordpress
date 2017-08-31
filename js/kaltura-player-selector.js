@@ -9,7 +9,6 @@
 			previewId : null,
 			entryId   : '_KMCLOGO',
 			id        : 'kplayer',
-			isPlaylist: false,
 			flashVars : ''
 		};
 
@@ -110,10 +109,9 @@
 
 		var _getIframeEmbedUrl = function() {
 			var url = options.html5Url + '/uiconf_id/' + _$playersList.val() + '/entry_id/' + options.entryId + '?iframeembed=true';
-			if (options.isPlaylist) {
-				var params = _convertFlashParams(options.flashVars);
-				url = url + '&' + $.param(params)
-			}
+			var params = _convertFlashParams(options.flashVars);
+			url = url + '&' + $.param(params);
+
 			return url;
 		};
 		var _convertFlashParams = function (params) {

@@ -137,7 +137,6 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$params['entryId']                 = $entryId;
 			$params['nextEntryIds']            = $entryIds;
 			$params['flashVars']               = $flashVars;
-			$params['flashVars']['autoPlay']   = 'true';
 			$params['thumbnailPlaceHolderUrl'] = $thumbnail;
 			$params['entryError']              = $entry->status === Kaltura_Client_Enum_EntryStatus::ERROR_CONVERTING || $entry->status === Kaltura_Client_Enum_EntryStatus::ERROR_IMPORTING;
 			$params['entryConverting']         = $entry->status !== Kaltura_Client_Enum_EntryStatus::READY && ! $params['entryError'];

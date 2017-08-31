@@ -278,9 +278,9 @@ ul#kaltura-browse {
 }
 #send-to-editor {
   border: solid 1px #AED3E3;
-  .videoTitle {
-    padding-left: 30px;
-  }
+  max-width:1200px;
+  overflow: auto;
+  padding: 0 30px;
   .entry-error, .entry-converting {
     padding: 15px;
     margin-bottom: 20px;
@@ -444,6 +444,69 @@ ul#kaltura-browse {
     height: auto;
     padding: 0;
     width: 130px;
+  }
+  .options {
+    width: 40%;
+    float: left;
+    div.selectBox {
+      padding-bottom: 15px;
+      #uiConfId {
+        height: 25px;
+        margin-left: 10px;
+        width: 250px;
+      }
+    }
+
+    @media  (min-width: 641px) and (max-width: 763px) {
+      width: 100%;
+      div.selectBox {
+        float: left;
+        #uiConfId {
+          width: 180px;
+        }
+    }
+    .options-size {
+        float: left;
+        margin-left: 15px;
+      }
+    }
+  }
+  .player-container {
+    width: 60%;
+    float: left;
+    .player-aspect-ratio{
+      margin-top: 56.25%;
+    }
+    @media  (max-width: 763px) {
+      width: 100%;
+    }
+  }
+
+  &.kaltura-playlist-player {
+    .options {
+      float: none;
+    }
+    .player-container {
+      width: 800px;
+      float: none;
+      margin: 0 auto;
+      @media  (max-width: 892px) {
+        width: 100%;
+      }
+      @media (max-width: 600px) {
+        display: none;
+      }
+    }
+    .kaltura-form{
+      height: auto;
+      max-height: 100%;
+    }
+    .player-aspect-ratio{
+      margin-top: 270px;
+      @media  (max-width: 892px) {
+        margin-top: 29.15%;
+      }
+    }
   }
 }
 #kaltura-cms-login {
