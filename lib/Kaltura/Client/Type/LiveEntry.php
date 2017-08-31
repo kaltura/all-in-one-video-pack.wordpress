@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,7 +45,8 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 		if(is_null($xml))
 			return;
 		
-		$this->offlineMessage = (string)$xml->offlineMessage;
+		if(count($xml->offlineMessage))
+			$this->offlineMessage = (string)$xml->offlineMessage;
 		if(count($xml->recordStatus))
 			$this->recordStatus = (int)$xml->recordStatus;
 		if(count($xml->dvrStatus))
@@ -54,29 +55,39 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 			$this->dvrWindow = (int)$xml->dvrWindow;
 		if(count($xml->lastElapsedRecordingTime))
 			$this->lastElapsedRecordingTime = (int)$xml->lastElapsedRecordingTime;
-		if(empty($xml->liveStreamConfigurations))
-			$this->liveStreamConfigurations = array();
-		else
-			$this->liveStreamConfigurations = Kaltura_Client_ParseUtils::unmarshalArray($xml->liveStreamConfigurations, "KalturaLiveStreamConfiguration");
-		$this->recordedEntryId = (string)$xml->recordedEntryId;
+		if(count($xml->liveStreamConfigurations))
+		{
+			if(empty($xml->liveStreamConfigurations))
+				$this->liveStreamConfigurations = array();
+			else
+				$this->liveStreamConfigurations = Kaltura_Client_ParseUtils::unmarshalArray($xml->liveStreamConfigurations, "KalturaLiveStreamConfiguration");
+		}
+		if(count($xml->recordedEntryId))
+			$this->recordedEntryId = (string)$xml->recordedEntryId;
 		if(count($xml->pushPublishEnabled))
 			$this->pushPublishEnabled = (int)$xml->pushPublishEnabled;
-		if(empty($xml->publishConfigurations))
-			$this->publishConfigurations = array();
-		else
-			$this->publishConfigurations = Kaltura_Client_ParseUtils::unmarshalArray($xml->publishConfigurations, "KalturaLiveStreamPushPublishConfiguration");
+		if(count($xml->publishConfigurations))
+		{
+			if(empty($xml->publishConfigurations))
+				$this->publishConfigurations = array();
+			else
+				$this->publishConfigurations = Kaltura_Client_ParseUtils::unmarshalArray($xml->publishConfigurations, "KalturaLiveStreamPushPublishConfiguration");
+		}
 		if(count($xml->firstBroadcast))
 			$this->firstBroadcast = (int)$xml->firstBroadcast;
 		if(count($xml->lastBroadcast))
 			$this->lastBroadcast = (int)$xml->lastBroadcast;
 		if(count($xml->currentBroadcastStartTime))
 			$this->currentBroadcastStartTime = (float)$xml->currentBroadcastStartTime;
-		if(!empty($xml->recordingOptions))
+		if(count($xml->recordingOptions) && !empty($xml->recordingOptions))
 			$this->recordingOptions = Kaltura_Client_ParseUtils::unmarshalObject($xml->recordingOptions, "KalturaLiveEntryRecordingOptions");
+		if(count($xml->liveStatus))
+			$this->liveStatus = (int)$xml->liveStatus;
+		if(count($xml->segmentDuration))
+			$this->segmentDuration = (int)$xml->segmentDuration;
 	}
 	/**
 	 * The message to be presented when the stream is offline
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -84,34 +95,27 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * Recording Status Enabled/Disabled
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_RecordStatus
-	 * @insertonly
 	 */
 	public $recordStatus = null;
 
 	/**
 	 * DVR Status Enabled/Disabled
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_DVRStatus
-	 * @insertonly
 	 */
 	public $dvrStatus = null;
 
 	/**
 	 * Window of time which the DVR allows for backwards scrubbing (in minutes)
-	 * 	 
 	 *
 	 * @var int
-	 * @insertonly
 	 */
 	public $dvrWindow = null;
 
 	/**
 	 * Elapsed recording time (in msec) up to the point where the live stream was last stopped (unpublished).
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -119,7 +123,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * Array of key value protocol->live stream url objects
-	 * 	 
 	 *
 	 * @var array of KalturaLiveStreamConfiguration
 	 */
@@ -127,7 +130,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * Recorded entry id
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -135,7 +137,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * Flag denoting whether entry should be published by the media server
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_LivePublishStatus
 	 */
@@ -143,7 +144,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * Array of publish configurations
-	 * 	 
 	 *
 	 * @var array of KalturaLiveStreamPushPublishConfiguration
 	 */
@@ -151,7 +151,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * The first time in which the entry was broadcast
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -160,7 +159,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * The Last time in which the entry was broadcast
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -169,7 +167,6 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 
 	/**
 	 * The time (unix timestamp in milliseconds) in which the entry broadcast started or 0 when the entry is off the air
-	 * 	 
 	 *
 	 * @var float
 	 */
@@ -179,9 +176,23 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 	 * 
 	 *
 	 * @var Kaltura_Client_Type_LiveEntryRecordingOptions
-	 * @insertonly
 	 */
 	public $recordingOptions;
+
+	/**
+	 * the status of the entry of type EntryServerNodeStatus
+	 *
+	 * @var Kaltura_Client_Enum_EntryServerNodeStatus
+	 * @readonly
+	 */
+	public $liveStatus = null;
+
+	/**
+	 * The chunk duration value in milliseconds
+	 *
+	 * @var int
+	 */
+	public $segmentDuration = null;
 
 
 }

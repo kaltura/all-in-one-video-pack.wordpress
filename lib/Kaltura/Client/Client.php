@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -34,48 +34,44 @@
 class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 {
 	/**
-	 * @var string
-	 */
-	protected $apiVersion = '3.1.6';
-
-	/**
 	 * Base Entry Service
-	 *  
 	 * @var Kaltura_Client_BaseEntryService
 	 */
 	public $baseEntry = null;
 
 	/**
 	 * Add & Manage Categories
-	 *  
 	 * @var Kaltura_Client_CategoryService
 	 */
 	public $category = null;
 
 	/**
 	 * Media service lets you upload and manage media files (images / videos & audio)
-	 *  
 	 * @var Kaltura_Client_MediaService
 	 */
 	public $media = null;
 
 	/**
 	 * partner service allows you to change/manage your partner personal details and settings as well
-	 *  
 	 * @var Kaltura_Client_PartnerService
 	 */
 	public $partner = null;
 
 	/**
+	 * Playlist service lets you create,manage and play your playlists
+	 *  Playlists could be static (containing a fixed list of entries) or dynamic (baseed on a filter)
+	 * @var Kaltura_Client_PlaylistService
+	 */
+	public $playlist = null;
+
+	/**
 	 * Session service
-	 *  
 	 * @var Kaltura_Client_SessionService
 	 */
 	public $session = null;
 
 	/**
 	 * System service is used for internal system helpers & to retrieve system level information
-	 *  
 	 * @var Kaltura_Client_SystemService
 	 */
 	public $system = null;
@@ -83,7 +79,6 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 	/**
 	 * UiConf service lets you create and manage your UIConfs for the various flash components
 	 *  This service is used by the KMC-ApplicationStudio
-	 *  
 	 * @var Kaltura_Client_UiConfService
 	 */
 	public $uiConf = null;
@@ -97,13 +92,167 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 	{
 		parent::__construct($config);
 		
+		$this->setClientTag('php5:17-08-31');
+		$this->setApiVersion('3.3.0');
+		
 		$this->baseEntry = new Kaltura_Client_BaseEntryService($this);
 		$this->category = new Kaltura_Client_CategoryService($this);
 		$this->media = new Kaltura_Client_MediaService($this);
 		$this->partner = new Kaltura_Client_PartnerService($this);
+		$this->playlist = new Kaltura_Client_PlaylistService($this);
 		$this->session = new Kaltura_Client_SessionService($this);
 		$this->system = new Kaltura_Client_SystemService($this);
 		$this->uiConf = new Kaltura_Client_UiConfService($this);
 	}
 	
+	/**
+	 * @param string $clientTag
+	 */
+	public function setClientTag($clientTag)
+	{
+		$this->clientConfiguration['clientTag'] = $clientTag;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getClientTag()
+	{
+		if(isset($this->clientConfiguration['clientTag']))
+		{
+			return $this->clientConfiguration['clientTag'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param string $apiVersion
+	 */
+	public function setApiVersion($apiVersion)
+	{
+		$this->clientConfiguration['apiVersion'] = $apiVersion;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getApiVersion()
+	{
+		if(isset($this->clientConfiguration['apiVersion']))
+		{
+			return $this->clientConfiguration['apiVersion'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Impersonated partner id
+	 * 
+	 * @param int $partnerId
+	 */
+	public function setPartnerId($partnerId)
+	{
+		$this->requestConfiguration['partnerId'] = $partnerId;
+	}
+	
+	/**
+	 * Impersonated partner id
+	 * 
+	 * @return int
+	 */
+	public function getPartnerId()
+	{
+		if(isset($this->requestConfiguration['partnerId']))
+		{
+			return $this->requestConfiguration['partnerId'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Kaltura API session
+	 * 
+	 * @param string $ks
+	 */
+	public function setKs($ks)
+	{
+		$this->requestConfiguration['ks'] = $ks;
+	}
+	
+	/**
+	 * Kaltura API session
+	 * 
+	 * @return string
+	 */
+	public function getKs()
+	{
+		if(isset($this->requestConfiguration['ks']))
+		{
+			return $this->requestConfiguration['ks'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Kaltura API session
+	 * 
+	 * @param string $sessionId
+	 */
+	public function setSessionId($sessionId)
+	{
+		$this->requestConfiguration['ks'] = $sessionId;
+	}
+	
+	/**
+	 * Kaltura API session
+	 * 
+	 * @return string
+	 */
+	public function getSessionId()
+	{
+		if(isset($this->requestConfiguration['ks']))
+		{
+			return $this->requestConfiguration['ks'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Response profile - this attribute will be automatically unset after every API call.
+	 * 
+	 * @param Kaltura_Client_Type_BaseResponseProfile $responseProfile
+	 */
+	public function setResponseProfile(Kaltura_Client_Type_BaseResponseProfile $responseProfile)
+	{
+		$this->requestConfiguration['responseProfile'] = $responseProfile;
+	}
+	
+	/**
+	 * Response profile - this attribute will be automatically unset after every API call.
+	 * 
+	 * @return Kaltura_Client_Type_BaseResponseProfile
+	 */
+	public function getResponseProfile()
+	{
+		if(isset($this->requestConfiguration['responseProfile']))
+		{
+			return $this->requestConfiguration['responseProfile'];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Clear all volatile configuration parameters
+	 */
+	protected function resetRequest()
+	{
+		parent::resetRequest();
+		unset($this->requestConfiguration['responseProfile']);
+	}
 }

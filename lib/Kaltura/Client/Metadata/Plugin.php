@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -43,11 +43,17 @@ class Kaltura_Client_Metadata_Plugin extends Kaltura_Client_Plugin
 	 */
 	public $metadataProfile = null;
 
+	/**
+	 * @var Kaltura_Client_Metadata_MetadataBatchService
+	 */
+	public $metadataBatch = null;
+
 	protected function __construct(Kaltura_Client_Client $client)
 	{
 		parent::__construct($client);
 		$this->metadata = new Kaltura_Client_Metadata_MetadataService($client);
 		$this->metadataProfile = new Kaltura_Client_Metadata_MetadataProfileService($client);
+		$this->metadataBatch = new Kaltura_Client_Metadata_MetadataBatchService($client);
 	}
 
 	/**
@@ -66,6 +72,7 @@ class Kaltura_Client_Metadata_Plugin extends Kaltura_Client_Plugin
 		$services = array(
 			'metadata' => $this->metadata,
 			'metadataProfile' => $this->metadataProfile,
+			'metadataBatch' => $this->metadataBatch,
 		);
 		return $services;
 	}

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -47,21 +47,36 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 		
 		if(count($xml->mediaType))
 			$this->mediaType = (int)$xml->mediaType;
-		$this->conversionQuality = (string)$xml->conversionQuality;
-		$this->sourceType = (string)$xml->sourceType;
+		if(count($xml->conversionQuality))
+			$this->conversionQuality = (string)$xml->conversionQuality;
+		if(count($xml->sourceType))
+			$this->sourceType = (string)$xml->sourceType;
 		if(count($xml->searchProviderType))
 			$this->searchProviderType = (int)$xml->searchProviderType;
-		$this->searchProviderId = (string)$xml->searchProviderId;
-		$this->creditUserName = (string)$xml->creditUserName;
-		$this->creditUrl = (string)$xml->creditUrl;
+		if(count($xml->searchProviderId))
+			$this->searchProviderId = (string)$xml->searchProviderId;
+		if(count($xml->creditUserName))
+			$this->creditUserName = (string)$xml->creditUserName;
+		if(count($xml->creditUrl))
+			$this->creditUrl = (string)$xml->creditUrl;
 		if(count($xml->mediaDate))
 			$this->mediaDate = (int)$xml->mediaDate;
-		$this->dataUrl = (string)$xml->dataUrl;
-		$this->flavorParamsIds = (string)$xml->flavorParamsIds;
+		if(count($xml->dataUrl))
+			$this->dataUrl = (string)$xml->dataUrl;
+		if(count($xml->flavorParamsIds))
+			$this->flavorParamsIds = (string)$xml->flavorParamsIds;
+		if(count($xml->isTrimDisabled))
+			$this->isTrimDisabled = (int)$xml->isTrimDisabled;
+		if(count($xml->streams))
+		{
+			if(empty($xml->streams))
+				$this->streams = array();
+			else
+				$this->streams = Kaltura_Client_ParseUtils::unmarshalArray($xml->streams, "KalturaStreamContainer");
+		}
 	}
 	/**
 	 * The media type of the entry
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_MediaType
 	 * @insertonly
@@ -69,8 +84,7 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 	public $mediaType = null;
 
 	/**
-	 * Override the default conversion quality  
-	 * 	 
+	 * Override the default conversion quality
 	 *
 	 * @var string
 	 * @insertonly
@@ -78,8 +92,7 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 	public $conversionQuality = null;
 
 	/**
-	 * The source type of the entry 
-	 * 	 
+	 * The source type of the entry
 	 *
 	 * @var Kaltura_Client_Enum_SourceType
 	 * @insertonly
@@ -88,7 +101,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The search provider type used to import this entry
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_SearchProviderType
 	 * @insertonly
@@ -97,7 +109,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The ID of the media in the importing site
-	 * 	 
 	 *
 	 * @var string
 	 * @insertonly
@@ -106,7 +117,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The user name used for credits
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -114,7 +124,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The URL for credits
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -122,7 +131,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The media date extracted from EXIF data (For images) as Unix timestamp (In seconds)
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -131,7 +139,6 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * The URL used for playback. This is not the download URL.
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -140,12 +147,26 @@ class Kaltura_Client_Type_MediaEntry extends Kaltura_Client_Type_PlayableEntry
 
 	/**
 	 * Comma separated flavor params ids that exists for this media entry
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
 	 */
 	public $flavorParamsIds = null;
+
+	/**
+	 * True if trim action is disabled for this entry
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 * @readonly
+	 */
+	public $isTrimDisabled = null;
+
+	/**
+	 * Array of streams that exists on the entry
+	 *
+	 * @var array of KalturaStreamContainer
+	 */
+	public $streams;
 
 
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,11 +31,13 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EntryStatus
+class Kaltura_Client_Enum_EntryStatus extends Kaltura_Client_EnumBase
 {
 	const ERROR_IMPORTING = "-2";
 	const ERROR_CONVERTING = "-1";
+	const SCAN_FAILURE = "virusScan.ScanFailure";
 	const IMPORT = "0";
+	const INFECTED = "virusScan.Infected";
 	const PRECONVERT = "1";
 	const READY = "2";
 	const DELETED = "3";

@@ -31,7 +31,7 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_PlaylistListResponse extends Kaltura_Client_ObjectBase
+class Kaltura_Client_Type_PlaylistListResponse extends Kaltura_Client_Type_ListResponse
 {
 	public function getKalturaObjectType()
 	{
@@ -52,17 +52,15 @@ class Kaltura_Client_Type_PlaylistListResponse extends Kaltura_Client_ObjectBase
 			else
 				$this->objects = Kaltura_Client_ParseUtils::unmarshalArray($xml->objects, "KalturaPlaylist");
 		}
-		if(count($xml->totalCount))
-			$this->totalCount = (int)$xml->totalCount;
 	}
 	/**
-	 *
+	 * 
 	 *
 	 * @var array of KalturaPlaylist
 	 * @readonly
 	 */
 	public $objects;
-	
-	
+
+
 }
 

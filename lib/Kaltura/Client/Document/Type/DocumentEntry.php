@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -47,11 +47,11 @@ class Kaltura_Client_Document_Type_DocumentEntry extends Kaltura_Client_Type_Bas
 		
 		if(count($xml->documentType))
 			$this->documentType = (int)$xml->documentType;
-		$this->assetParamsIds = (string)$xml->assetParamsIds;
+		if(count($xml->assetParamsIds))
+			$this->assetParamsIds = (string)$xml->assetParamsIds;
 	}
 	/**
 	 * The type of the document
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Document_Enum_DocumentType
 	 * @insertonly
@@ -60,7 +60,6 @@ class Kaltura_Client_Document_Type_DocumentEntry extends Kaltura_Client_Type_Bas
 
 	/**
 	 * Comma separated asset params ids that exists for this media entry
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly

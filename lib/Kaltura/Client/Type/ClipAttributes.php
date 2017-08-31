@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -52,7 +52,6 @@ class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAt
 	}
 	/**
 	 * Offset in milliseconds
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -60,7 +59,6 @@ class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAt
 
 	/**
 	 * Duration in milliseconds
-	 * 	 
 	 *
 	 * @var int
 	 */

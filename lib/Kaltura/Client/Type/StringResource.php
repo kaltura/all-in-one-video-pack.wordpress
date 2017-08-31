@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_ObjectBase
+class Kaltura_Client_Type_StringResource extends Kaltura_Client_Type_ContentResource
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaMetadataProfileField';
+		return 'KalturaStringResource';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,43 +45,15 @@ class Kaltura_Client_Metadata_Type_MetadataProfileField extends Kaltura_Client_O
 		if(is_null($xml))
 			return;
 		
-		if(count($xml->id))
-			$this->id = (int)$xml->id;
-		$this->xPath = (string)$xml->xPath;
-		$this->key = (string)$xml->key;
-		$this->label = (string)$xml->label;
+		if(count($xml->content))
+			$this->content = (string)$xml->content;
 	}
 	/**
-	 * 
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	public $id = null;
-
-	/**
-	 * 
+	 * Textual content
 	 *
 	 * @var string
-	 * @readonly
 	 */
-	public $xPath = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	public $key = null;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 * @readonly
-	 */
-	public $label = null;
+	public $content = null;
 
 
 }

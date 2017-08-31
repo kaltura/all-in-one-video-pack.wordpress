@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,10 +45,14 @@ class Kaltura_Client_Type_LiveStreamPushPublishRTMPConfiguration extends Kaltura
 		if(is_null($xml))
 			return;
 		
-		$this->userId = (string)$xml->userId;
-		$this->password = (string)$xml->password;
-		$this->streamName = (string)$xml->streamName;
-		$this->applicationName = (string)$xml->applicationName;
+		if(count($xml->userId))
+			$this->userId = (string)$xml->userId;
+		if(count($xml->password))
+			$this->password = (string)$xml->password;
+		if(count($xml->streamName))
+			$this->streamName = (string)$xml->streamName;
+		if(count($xml->applicationName))
+			$this->applicationName = (string)$xml->applicationName;
 	}
 	/**
 	 * 

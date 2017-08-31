@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,10 +45,14 @@ abstract class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntryBaseFilter ex
 		if(is_null($xml))
 			return;
 		
-		$this->externalSourceTypeEqual = (string)$xml->externalSourceTypeEqual;
-		$this->externalSourceTypeIn = (string)$xml->externalSourceTypeIn;
-		$this->assetParamsIdsMatchOr = (string)$xml->assetParamsIdsMatchOr;
-		$this->assetParamsIdsMatchAnd = (string)$xml->assetParamsIdsMatchAnd;
+		if(count($xml->externalSourceTypeEqual))
+			$this->externalSourceTypeEqual = (string)$xml->externalSourceTypeEqual;
+		if(count($xml->externalSourceTypeIn))
+			$this->externalSourceTypeIn = (string)$xml->externalSourceTypeIn;
+		if(count($xml->assetParamsIdsMatchOr))
+			$this->assetParamsIdsMatchOr = (string)$xml->assetParamsIdsMatchOr;
+		if(count($xml->assetParamsIdsMatchAnd))
+			$this->assetParamsIdsMatchAnd = (string)$xml->assetParamsIdsMatchAnd;
 	}
 	/**
 	 * 

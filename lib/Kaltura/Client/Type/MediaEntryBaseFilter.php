@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -47,17 +47,24 @@ abstract class Kaltura_Client_Type_MediaEntryBaseFilter extends Kaltura_Client_T
 		
 		if(count($xml->mediaTypeEqual))
 			$this->mediaTypeEqual = (int)$xml->mediaTypeEqual;
-		$this->mediaTypeIn = (string)$xml->mediaTypeIn;
-		$this->sourceTypeEqual = (string)$xml->sourceTypeEqual;
-		$this->sourceTypeNotEqual = (string)$xml->sourceTypeNotEqual;
-		$this->sourceTypeIn = (string)$xml->sourceTypeIn;
-		$this->sourceTypeNotIn = (string)$xml->sourceTypeNotIn;
+		if(count($xml->mediaTypeIn))
+			$this->mediaTypeIn = (string)$xml->mediaTypeIn;
+		if(count($xml->sourceTypeEqual))
+			$this->sourceTypeEqual = (string)$xml->sourceTypeEqual;
+		if(count($xml->sourceTypeNotEqual))
+			$this->sourceTypeNotEqual = (string)$xml->sourceTypeNotEqual;
+		if(count($xml->sourceTypeIn))
+			$this->sourceTypeIn = (string)$xml->sourceTypeIn;
+		if(count($xml->sourceTypeNotIn))
+			$this->sourceTypeNotIn = (string)$xml->sourceTypeNotIn;
 		if(count($xml->mediaDateGreaterThanOrEqual))
 			$this->mediaDateGreaterThanOrEqual = (int)$xml->mediaDateGreaterThanOrEqual;
 		if(count($xml->mediaDateLessThanOrEqual))
 			$this->mediaDateLessThanOrEqual = (int)$xml->mediaDateLessThanOrEqual;
-		$this->flavorParamsIdsMatchOr = (string)$xml->flavorParamsIdsMatchOr;
-		$this->flavorParamsIdsMatchAnd = (string)$xml->flavorParamsIdsMatchAnd;
+		if(count($xml->flavorParamsIdsMatchOr))
+			$this->flavorParamsIdsMatchOr = (string)$xml->flavorParamsIdsMatchOr;
+		if(count($xml->flavorParamsIdsMatchAnd))
+			$this->flavorParamsIdsMatchAnd = (string)$xml->flavorParamsIdsMatchAnd;
 	}
 	/**
 	 * 

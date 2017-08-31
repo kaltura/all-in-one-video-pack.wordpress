@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -39,6 +39,9 @@ class Kaltura_Client_Metadata_MetadataService extends Kaltura_Client_ServiceBase
 		parent::__construct($client);
 	}
 
+	/**
+	 * @return Kaltura_Client_Metadata_Type_Metadata
+	 */
 	function add($metadataProfileId, $objectType, $objectId, $xmlData)
 	{
 		$kparams = array();
@@ -51,29 +54,15 @@ class Kaltura_Client_Metadata_MetadataService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadata");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_Metadata");
 		return $resultObject;
 	}
 
-	function update($id, $xmlData = null, $version = null)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "id", $id);
-		$this->client->addParam($kparams, "xmlData", $xmlData);
-		$this->client->addParam($kparams, "version", $version);
-		$this->client->queueServiceActionCall("metadata_metadata", "update", "KalturaMetadata", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadata");
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_Metadata");
-		return $resultObject;
-	}
-
+	/**
+	 * @return Kaltura_Client_Metadata_Type_MetadataListResponse
+	 */
 	function listAction(Kaltura_Client_Metadata_Type_MetadataFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
 	{
 		$kparams = array();
@@ -86,9 +75,29 @@ class Kaltura_Client_Metadata_MetadataService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataListResponse");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataListResponse");
+		return $resultObject;
+	}
+
+	/**
+	 * @return Kaltura_Client_Metadata_Type_Metadata
+	 */
+	function update($id, $xmlData = null, $version = null)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "id", $id);
+		$this->client->addParam($kparams, "xmlData", $xmlData);
+		$this->client->addParam($kparams, "version", $version);
+		$this->client->queueServiceActionCall("metadata_metadata", "update", "KalturaMetadata", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		$this->client->checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadata");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_Metadata");
 		return $resultObject;
 	}
 }

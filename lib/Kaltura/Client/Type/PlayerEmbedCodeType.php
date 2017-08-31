@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,11 +45,19 @@ class Kaltura_Client_Type_PlayerEmbedCodeType extends Kaltura_Client_ObjectBase
 		if(is_null($xml))
 			return;
 		
-		$this->id = (string)$xml->id;
-		$this->label = (string)$xml->label;
-		if(!empty($xml->entryOnly))
-			$this->entryOnly = true;
-		$this->minVersion = (string)$xml->minVersion;
+		if(count($xml->id))
+			$this->id = (string)$xml->id;
+		if(count($xml->label))
+			$this->label = (string)$xml->label;
+		if(count($xml->entryOnly))
+		{
+			if(!empty($xml->entryOnly))
+				$this->entryOnly = true;
+			else
+				$this->entryOnly = false;
+		}
+		if(count($xml->minVersion))
+			$this->minVersion = (string)$xml->minVersion;
 	}
 	/**
 	 * 

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -57,7 +57,8 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 			$this->durationLessThanOrEqual = (int)$xml->durationLessThanOrEqual;
 		if(count($xml->durationGreaterThanOrEqual))
 			$this->durationGreaterThanOrEqual = (int)$xml->durationGreaterThanOrEqual;
-		$this->durationTypeMatchOr = (string)$xml->durationTypeMatchOr;
+		if(count($xml->durationTypeMatchOr))
+			$this->durationTypeMatchOr = (string)$xml->durationTypeMatchOr;
 	}
 	/**
 	 * 

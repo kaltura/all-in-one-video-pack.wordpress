@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,8 +45,10 @@ class Kaltura_Client_Type_KeyValue extends Kaltura_Client_ObjectBase
 		if(is_null($xml))
 			return;
 		
-		$this->key = (string)$xml->key;
-		$this->value = (string)$xml->value;
+		if(count($xml->key))
+			$this->key = (string)$xml->key;
+		if(count($xml->value))
+			$this->value = (string)$xml->value;
 	}
 	/**
 	 * 

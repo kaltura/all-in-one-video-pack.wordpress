@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,37 +31,30 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_ExternalMedia_Plugin extends Kaltura_Client_Plugin
+class Kaltura_Client_Type_MixEntryMatchAttributeCondition extends Kaltura_Client_Type_SearchMatchAttributeCondition
 {
-	protected function __construct(Kaltura_Client_Client $client)
+	public function getKalturaObjectType()
 	{
-		parent::__construct($client);
+		return 'KalturaMixEntryMatchAttributeCondition';
 	}
-
+	
+	public function __construct(SimpleXMLElement $xml = null)
+	{
+		parent::__construct($xml);
+		
+		if(is_null($xml))
+			return;
+		
+		if(count($xml->attribute))
+			$this->attribute = (string)$xml->attribute;
+	}
 	/**
-	 * @return Kaltura_Client_ExternalMedia_Plugin
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_MixEntryMatchAttribute
 	 */
-	public static function get(Kaltura_Client_Client $client)
-	{
-		return new Kaltura_Client_ExternalMedia_Plugin($client);
-	}
+	public $attribute = null;
 
-	/**
-	 * @return array<Kaltura_Client_ServiceBase>
-	 */
-	public function getServices()
-	{
-		$services = array(
-		);
-		return $services;
-	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return 'externalMedia';
-	}
 }
 

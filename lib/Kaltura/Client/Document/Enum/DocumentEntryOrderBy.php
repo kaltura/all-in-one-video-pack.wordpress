@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Document_Enum_DocumentEntryOrderBy
+class Kaltura_Client_Document_Enum_DocumentEntryOrderBy extends Kaltura_Client_EnumBase
 {
 	const CREATED_AT_ASC = "+createdAt";
 	const END_DATE_ASC = "+endDate";

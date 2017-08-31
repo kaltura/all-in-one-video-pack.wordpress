@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Type_Filter
+abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Type_RelatedFilter
 {
 	public function getKalturaObjectType()
 	{
@@ -47,18 +47,28 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 		
 		if(count($xml->idEqual))
 			$this->idEqual = (int)$xml->idEqual;
-		$this->idIn = (string)$xml->idIn;
+		if(count($xml->idIn))
+			$this->idIn = (string)$xml->idIn;
+		if(count($xml->idNotIn))
+			$this->idNotIn = (string)$xml->idNotIn;
 		if(count($xml->parentIdEqual))
 			$this->parentIdEqual = (int)$xml->parentIdEqual;
-		$this->parentIdIn = (string)$xml->parentIdIn;
+		if(count($xml->parentIdIn))
+			$this->parentIdIn = (string)$xml->parentIdIn;
 		if(count($xml->depthEqual))
 			$this->depthEqual = (int)$xml->depthEqual;
-		$this->fullNameEqual = (string)$xml->fullNameEqual;
-		$this->fullNameStartsWith = (string)$xml->fullNameStartsWith;
-		$this->fullNameIn = (string)$xml->fullNameIn;
-		$this->fullIdsEqual = (string)$xml->fullIdsEqual;
-		$this->fullIdsStartsWith = (string)$xml->fullIdsStartsWith;
-		$this->fullIdsMatchOr = (string)$xml->fullIdsMatchOr;
+		if(count($xml->fullNameEqual))
+			$this->fullNameEqual = (string)$xml->fullNameEqual;
+		if(count($xml->fullNameStartsWith))
+			$this->fullNameStartsWith = (string)$xml->fullNameStartsWith;
+		if(count($xml->fullNameIn))
+			$this->fullNameIn = (string)$xml->fullNameIn;
+		if(count($xml->fullIdsEqual))
+			$this->fullIdsEqual = (string)$xml->fullIdsEqual;
+		if(count($xml->fullIdsStartsWith))
+			$this->fullIdsStartsWith = (string)$xml->fullIdsStartsWith;
+		if(count($xml->fullIdsMatchOr))
+			$this->fullIdsMatchOr = (string)$xml->fullIdsMatchOr;
 		if(count($xml->createdAtGreaterThanOrEqual))
 			$this->createdAtGreaterThanOrEqual = (int)$xml->createdAtGreaterThanOrEqual;
 		if(count($xml->createdAtLessThanOrEqual))
@@ -67,18 +77,24 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 			$this->updatedAtGreaterThanOrEqual = (int)$xml->updatedAtGreaterThanOrEqual;
 		if(count($xml->updatedAtLessThanOrEqual))
 			$this->updatedAtLessThanOrEqual = (int)$xml->updatedAtLessThanOrEqual;
-		$this->tagsLike = (string)$xml->tagsLike;
-		$this->tagsMultiLikeOr = (string)$xml->tagsMultiLikeOr;
-		$this->tagsMultiLikeAnd = (string)$xml->tagsMultiLikeAnd;
+		if(count($xml->tagsLike))
+			$this->tagsLike = (string)$xml->tagsLike;
+		if(count($xml->tagsMultiLikeOr))
+			$this->tagsMultiLikeOr = (string)$xml->tagsMultiLikeOr;
+		if(count($xml->tagsMultiLikeAnd))
+			$this->tagsMultiLikeAnd = (string)$xml->tagsMultiLikeAnd;
 		if(count($xml->appearInListEqual))
 			$this->appearInListEqual = (int)$xml->appearInListEqual;
 		if(count($xml->privacyEqual))
 			$this->privacyEqual = (int)$xml->privacyEqual;
-		$this->privacyIn = (string)$xml->privacyIn;
+		if(count($xml->privacyIn))
+			$this->privacyIn = (string)$xml->privacyIn;
 		if(count($xml->inheritanceTypeEqual))
 			$this->inheritanceTypeEqual = (int)$xml->inheritanceTypeEqual;
-		$this->inheritanceTypeIn = (string)$xml->inheritanceTypeIn;
-		$this->referenceIdEqual = (string)$xml->referenceIdEqual;
+		if(count($xml->inheritanceTypeIn))
+			$this->inheritanceTypeIn = (string)$xml->inheritanceTypeIn;
+		if(count($xml->referenceIdEqual))
+			$this->referenceIdEqual = (string)$xml->referenceIdEqual;
 		if(count($xml->referenceIdEmpty))
 			$this->referenceIdEmpty = (int)$xml->referenceIdEmpty;
 		if(count($xml->contributionPolicyEqual))
@@ -91,17 +107,24 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 			$this->pendingMembersCountGreaterThanOrEqual = (int)$xml->pendingMembersCountGreaterThanOrEqual;
 		if(count($xml->pendingMembersCountLessThanOrEqual))
 			$this->pendingMembersCountLessThanOrEqual = (int)$xml->pendingMembersCountLessThanOrEqual;
-		$this->privacyContextEqual = (string)$xml->privacyContextEqual;
+		if(count($xml->privacyContextEqual))
+			$this->privacyContextEqual = (string)$xml->privacyContextEqual;
 		if(count($xml->statusEqual))
 			$this->statusEqual = (int)$xml->statusEqual;
-		$this->statusIn = (string)$xml->statusIn;
+		if(count($xml->statusIn))
+			$this->statusIn = (string)$xml->statusIn;
 		if(count($xml->inheritedParentIdEqual))
 			$this->inheritedParentIdEqual = (int)$xml->inheritedParentIdEqual;
-		$this->inheritedParentIdIn = (string)$xml->inheritedParentIdIn;
+		if(count($xml->inheritedParentIdIn))
+			$this->inheritedParentIdIn = (string)$xml->inheritedParentIdIn;
 		if(count($xml->partnerSortValueGreaterThanOrEqual))
 			$this->partnerSortValueGreaterThanOrEqual = (int)$xml->partnerSortValueGreaterThanOrEqual;
 		if(count($xml->partnerSortValueLessThanOrEqual))
 			$this->partnerSortValueLessThanOrEqual = (int)$xml->partnerSortValueLessThanOrEqual;
+		if(count($xml->aggregationCategoriesMultiLikeOr))
+			$this->aggregationCategoriesMultiLikeOr = (string)$xml->aggregationCategoriesMultiLikeOr;
+		if(count($xml->aggregationCategoriesMultiLikeAnd))
+			$this->aggregationCategoriesMultiLikeAnd = (string)$xml->aggregationCategoriesMultiLikeAnd;
 	}
 	/**
 	 * 
@@ -116,6 +139,13 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 	 * @var string
 	 */
 	public $idIn = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $idNotIn = null;
 
 	/**
 	 * 
@@ -361,6 +391,20 @@ abstract class Kaltura_Client_Type_CategoryBaseFilter extends Kaltura_Client_Typ
 	 * @var int
 	 */
 	public $partnerSortValueLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $aggregationCategoriesMultiLikeOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $aggregationCategoriesMultiLikeAnd = null;
 
 
 }

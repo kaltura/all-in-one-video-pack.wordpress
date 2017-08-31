@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,11 +31,11 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Metadata_Type_MetadataProfileFieldListResponse extends Kaltura_Client_ObjectBase
+class Kaltura_Client_Type_RequestConfiguration extends Kaltura_Client_ObjectBase
 {
 	public function getKalturaObjectType()
 	{
-		return 'KalturaMetadataProfileFieldListResponse';
+		return 'KalturaRequestConfiguration';
 	}
 	
 	public function __construct(SimpleXMLElement $xml = null)
@@ -45,28 +45,33 @@ class Kaltura_Client_Metadata_Type_MetadataProfileFieldListResponse extends Kalt
 		if(is_null($xml))
 			return;
 		
-		if(empty($xml->objects))
-			$this->objects = array();
-		else
-			$this->objects = Kaltura_Client_ParseUtils::unmarshalArray($xml->objects, "KalturaMetadataProfileField");
-		if(count($xml->totalCount))
-			$this->totalCount = (int)$xml->totalCount;
+		if(count($xml->partnerId))
+			$this->partnerId = (int)$xml->partnerId;
+		if(count($xml->ks))
+			$this->ks = (string)$xml->ks;
+		if(count($xml->responseProfile) && !empty($xml->responseProfile))
+			$this->responseProfile = Kaltura_Client_ParseUtils::unmarshalObject($xml->responseProfile, "KalturaBaseResponseProfile");
 	}
 	/**
-	 * 
-	 *
-	 * @var array of KalturaMetadataProfileField
-	 * @readonly
-	 */
-	public $objects;
-
-	/**
-	 * 
+	 * Impersonated partner id
 	 *
 	 * @var int
-	 * @readonly
 	 */
-	public $totalCount = null;
+	public $partnerId = null;
+
+	/**
+	 * Kaltura API session
+	 *
+	 * @var string
+	 */
+	public $ks = null;
+
+	/**
+	 * Response profile - this attribute will be automatically unset after every API call.
+	 *
+	 * @var Kaltura_Client_Type_BaseResponseProfile
+	 */
+	public $responseProfile;
 
 
 }
