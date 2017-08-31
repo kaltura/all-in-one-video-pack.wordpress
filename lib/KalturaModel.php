@@ -48,7 +48,7 @@ class KalturaModel {
 			return;
 		}
 
-		$ks = sanitize_text_field( $this->getAdminSession( 'edit:*' ) );
+		$ks = sanitize_text_field( $this->getAdminSession( 'edit:*,disableentitlement' ) );
 		$this->_client->setKs( $ks );
 		$this->_session = $ks;
 	}
