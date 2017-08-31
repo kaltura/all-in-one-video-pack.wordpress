@@ -39,7 +39,10 @@ $isPlaylist     = $embedOptions['isPlaylist'];
 			<div id="<?php echo esc_attr($playerId); ?>" class="kaltura-player-iframe-container"></div>
 		</div>
 		<div class="clear"></div>
-		<div id="playListHolder_<?php echo $entryId; ?>" class="kaltura-playlist-container"></div>
+		<div class="kaltura-playlist-container" >
+			<div style="margin-top: <?php echo $height; ?>%;"></div>
+			<div id="playListHolder_<?php echo $entryId; ?>" class="kaltura-playlist-holder"></div>
+		</div>
 		<div class="kaltura-powered-by" style="position: relative; right:0; top: 30px;">
 			<div>
 				<a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a>
