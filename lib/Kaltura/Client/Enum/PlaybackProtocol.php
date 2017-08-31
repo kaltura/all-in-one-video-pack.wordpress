@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,9 +31,10 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_PlaybackProtocol
+class Kaltura_Client_Enum_PlaybackProtocol extends Kaltura_Client_EnumBase
 {
 	const APPLE_HTTP = "applehttp";
+	const APPLE_HTTP_TO_MC = "applehttp_to_mc";
 	const AUTO = "auto";
 	const AKAMAI_HD = "hdnetwork";
 	const AKAMAI_HDS = "hdnetworkmanifest";
@@ -45,5 +46,6 @@ class Kaltura_Client_Enum_PlaybackProtocol
 	const RTMP = "rtmp";
 	const RTSP = "rtsp";
 	const SILVER_LIGHT = "sl";
+	const URL = "url";
 }
 

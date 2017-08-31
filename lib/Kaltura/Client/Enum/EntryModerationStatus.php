@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,11 +31,12 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Enum_EntryModerationStatus
+class Kaltura_Client_Enum_EntryModerationStatus extends Kaltura_Client_EnumBase
 {
 	const PENDING_MODERATION = 1;
 	const APPROVED = 2;
 	const REJECTED = 3;
+	const DELETED = 4;
 	const FLAGGED_FOR_REVIEW = 5;
 	const AUTO_APPROVED = 6;
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,13 +45,13 @@ class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
 		if(is_null($xml))
 			return;
 		
-		$this->playlistId = (string)$xml->playlistId;
+		if(count($xml->playlistId))
+			$this->playlistId = (string)$xml->playlistId;
 		if(count($xml->repeat))
 			$this->repeat = (int)$xml->repeat;
 	}
 	/**
 	 * Playlist id to be played
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -59,7 +59,6 @@ class Kaltura_Client_Type_LiveChannel extends Kaltura_Client_Type_LiveEntry
 
 	/**
 	 * Indicates that the segments should be repeated for ever
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_NullableBoolean
 	 */

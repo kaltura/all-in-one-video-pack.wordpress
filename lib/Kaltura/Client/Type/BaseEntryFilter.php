@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,12 +45,16 @@ class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryB
 		if(is_null($xml))
 			return;
 		
-		$this->freeText = (string)$xml->freeText;
+		if(count($xml->freeText))
+			$this->freeText = (string)$xml->freeText;
 		if(count($xml->isRoot))
 			$this->isRoot = (int)$xml->isRoot;
-		$this->categoriesFullNameIn = (string)$xml->categoriesFullNameIn;
-		$this->categoryAncestorIdIn = (string)$xml->categoryAncestorIdIn;
-		$this->redirectFromEntryId = (string)$xml->redirectFromEntryId;
+		if(count($xml->categoriesFullNameIn))
+			$this->categoriesFullNameIn = (string)$xml->categoriesFullNameIn;
+		if(count($xml->categoryAncestorIdIn))
+			$this->categoryAncestorIdIn = (string)$xml->categoryAncestorIdIn;
+		if(count($xml->redirectFromEntryId))
+			$this->redirectFromEntryId = (string)$xml->redirectFromEntryId;
 	}
 	/**
 	 * 
@@ -74,8 +78,7 @@ class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryB
 	public $categoriesFullNameIn = null;
 
 	/**
-	 * All entries within this categoy or in child categories  
-	 * 	 
+	 * All entries within this categoy or in child categories
 	 *
 	 * @var string
 	 */
@@ -83,7 +86,6 @@ class Kaltura_Client_Type_BaseEntryFilter extends Kaltura_Client_Type_BaseEntryB
 
 	/**
 	 * The id of the original entry
-	 * 	 
 	 *
 	 * @var string
 	 */

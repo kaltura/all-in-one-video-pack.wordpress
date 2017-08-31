@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -39,6 +39,9 @@ class Kaltura_Client_SessionService extends Kaltura_Client_ServiceBase
 		parent::__construct($client);
 	}
 
+	/**
+	 * @return string
+	 */
 	function start($secret, $userId = "", $type = 0, $partnerId = null, $expiry = 86400, $privileges = null)
 	{
 		$kparams = array();
@@ -53,7 +56,7 @@ class Kaltura_Client_SessionService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = (string)Kaltura_Client_ParseUtils::unmarshalSimpleType($resultXmlObject->result);
 		return $resultObject;
 	}

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -59,11 +59,11 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 			$this->duration = (int)$xml->duration;
 		if(count($xml->msDuration))
 			$this->msDuration = (int)$xml->msDuration;
-		$this->durationType = (string)$xml->durationType;
+		if(count($xml->durationType))
+			$this->durationType = (string)$xml->durationType;
 	}
 	/**
 	 * Number of plays
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -72,7 +72,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Number of views
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -81,7 +80,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The last time the entry was played
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -90,7 +88,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The width in pixels
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -99,7 +96,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The height in pixels
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -108,7 +104,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The duration in seconds
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -117,7 +112,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The duration in miliseconds
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -125,7 +119,6 @@ class Kaltura_Client_Type_PlayableEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The duration type (short for 0-4 mins, medium for 4-20 mins, long for 20+ mins)
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_DurationType
 	 * @readonly

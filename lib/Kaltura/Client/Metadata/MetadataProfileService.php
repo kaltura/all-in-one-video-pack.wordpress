@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -39,6 +39,9 @@ class Kaltura_Client_Metadata_MetadataProfileService extends Kaltura_Client_Serv
 		parent::__construct($client);
 	}
 
+	/**
+	 * @return Kaltura_Client_Metadata_Type_MetadataProfileListResponse
+	 */
 	function listAction(Kaltura_Client_Metadata_Type_MetadataProfileFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
 	{
 		$kparams = array();
@@ -51,24 +54,9 @@ class Kaltura_Client_Metadata_MetadataProfileService extends Kaltura_Client_Serv
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataProfileListResponse");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataProfileListResponse");
-		return $resultObject;
-	}
-
-	function listFields($metadataProfileId)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "metadataProfileId", $metadataProfileId);
-		$this->client->queueServiceActionCall("metadata_metadataprofile", "listFields", "KalturaMetadataProfileFieldListResponse", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaMetadataProfileFieldListResponse");
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Metadata_Type_MetadataProfileFieldListResponse");
 		return $resultObject;
 	}
 }

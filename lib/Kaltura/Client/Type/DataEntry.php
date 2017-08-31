@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,13 +45,18 @@ class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry
 		if(is_null($xml))
 			return;
 		
-		$this->dataContent = (string)$xml->dataContent;
-		if(!empty($xml->retrieveDataContentByGet))
-			$this->retrieveDataContentByGet = true;
+		if(count($xml->dataContent))
+			$this->dataContent = (string)$xml->dataContent;
+		if(count($xml->retrieveDataContentByGet))
+		{
+			if(!empty($xml->retrieveDataContentByGet))
+				$this->retrieveDataContentByGet = true;
+			else
+				$this->retrieveDataContentByGet = false;
+		}
 	}
 	/**
 	 * The data of the entry
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -59,7 +64,6 @@ class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * indicator whether to return the object for get action with the dataContent field.
-	 * 	 
 	 *
 	 * @var bool
 	 * @insertonly

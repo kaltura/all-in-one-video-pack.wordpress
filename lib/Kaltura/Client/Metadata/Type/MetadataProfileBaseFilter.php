@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -49,13 +49,18 @@ abstract class Kaltura_Client_Metadata_Type_MetadataProfileBaseFilter extends Ka
 			$this->idEqual = (int)$xml->idEqual;
 		if(count($xml->partnerIdEqual))
 			$this->partnerIdEqual = (int)$xml->partnerIdEqual;
-		$this->metadataObjectTypeEqual = (string)$xml->metadataObjectTypeEqual;
-		$this->metadataObjectTypeIn = (string)$xml->metadataObjectTypeIn;
+		if(count($xml->metadataObjectTypeEqual))
+			$this->metadataObjectTypeEqual = (string)$xml->metadataObjectTypeEqual;
+		if(count($xml->metadataObjectTypeIn))
+			$this->metadataObjectTypeIn = (string)$xml->metadataObjectTypeIn;
 		if(count($xml->versionEqual))
 			$this->versionEqual = (int)$xml->versionEqual;
-		$this->nameEqual = (string)$xml->nameEqual;
-		$this->systemNameEqual = (string)$xml->systemNameEqual;
-		$this->systemNameIn = (string)$xml->systemNameIn;
+		if(count($xml->nameEqual))
+			$this->nameEqual = (string)$xml->nameEqual;
+		if(count($xml->systemNameEqual))
+			$this->systemNameEqual = (string)$xml->systemNameEqual;
+		if(count($xml->systemNameIn))
+			$this->systemNameIn = (string)$xml->systemNameIn;
 		if(count($xml->createdAtGreaterThanOrEqual))
 			$this->createdAtGreaterThanOrEqual = (int)$xml->createdAtGreaterThanOrEqual;
 		if(count($xml->createdAtLessThanOrEqual))
@@ -66,13 +71,16 @@ abstract class Kaltura_Client_Metadata_Type_MetadataProfileBaseFilter extends Ka
 			$this->updatedAtLessThanOrEqual = (int)$xml->updatedAtLessThanOrEqual;
 		if(count($xml->statusEqual))
 			$this->statusEqual = (int)$xml->statusEqual;
-		$this->statusIn = (string)$xml->statusIn;
+		if(count($xml->statusIn))
+			$this->statusIn = (string)$xml->statusIn;
 		if(count($xml->createModeEqual))
 			$this->createModeEqual = (int)$xml->createModeEqual;
 		if(count($xml->createModeNotEqual))
 			$this->createModeNotEqual = (int)$xml->createModeNotEqual;
-		$this->createModeIn = (string)$xml->createModeIn;
-		$this->createModeNotIn = (string)$xml->createModeNotIn;
+		if(count($xml->createModeIn))
+			$this->createModeIn = (string)$xml->createModeIn;
+		if(count($xml->createModeNotIn))
+			$this->createModeNotIn = (string)$xml->createModeNotIn;
 	}
 	/**
 	 * 

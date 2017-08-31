@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,12 +45,13 @@ class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntry extends Kaltura_Clien
 		if(is_null($xml))
 			return;
 		
-		$this->externalSourceType = (string)$xml->externalSourceType;
-		$this->assetParamsIds = (string)$xml->assetParamsIds;
+		if(count($xml->externalSourceType))
+			$this->externalSourceType = (string)$xml->externalSourceType;
+		if(count($xml->assetParamsIds))
+			$this->assetParamsIds = (string)$xml->assetParamsIds;
 	}
 	/**
 	 * The source type of the external media
-	 * 	 
 	 *
 	 * @var Kaltura_Client_ExternalMedia_Enum_ExternalMediaSourceType
 	 * @insertonly
@@ -59,7 +60,6 @@ class Kaltura_Client_ExternalMedia_Type_ExternalMediaEntry extends Kaltura_Clien
 
 	/**
 	 * Comma separated asset params ids that exists for this external media entry
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly

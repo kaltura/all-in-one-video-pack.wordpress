@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,11 +45,15 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 		if(is_null($xml))
 			return;
 		
-		$this->playlistContent = (string)$xml->playlistContent;
-		if(empty($xml->filters))
-			$this->filters = array();
-		else
-			$this->filters = Kaltura_Client_ParseUtils::unmarshalArray($xml->filters, "KalturaMediaEntryFilterForPlaylist");
+		if(count($xml->playlistContent))
+			$this->playlistContent = (string)$xml->playlistContent;
+		if(count($xml->filters))
+		{
+			if(empty($xml->filters))
+				$this->filters = array();
+			else
+				$this->filters = Kaltura_Client_ParseUtils::unmarshalArray($xml->filters, "KalturaMediaEntryFilterForPlaylist");
+		}
 		if(count($xml->totalResults))
 			$this->totalResults = (int)$xml->totalResults;
 		if(count($xml->playlistType))
@@ -60,14 +64,14 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 			$this->views = (int)$xml->views;
 		if(count($xml->duration))
 			$this->duration = (int)$xml->duration;
-		$this->executeUrl = (string)$xml->executeUrl;
+		if(count($xml->executeUrl))
+			$this->executeUrl = (string)$xml->executeUrl;
 	}
 	/**
 	 * Content of the playlist - 
 	 * 	 XML if the playlistType is dynamic 
 	 * 	 text if the playlistType is static 
-	 * 	 url if the playlistType is mRss 
-	 * 	 
+	 * 	 url if the playlistType is mRss
 	 *
 	 * @var string
 	 */
@@ -82,7 +86,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Maximum count of results to be returned in playlist execution
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -90,7 +93,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Type of playlist
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_PlaylistType
 	 */
@@ -98,7 +100,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Number of plays
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -107,7 +108,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * Number of views
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -116,7 +116,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The duration in seconds
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -125,7 +124,6 @@ class Kaltura_Client_Type_Playlist extends Kaltura_Client_Type_BaseEntry
 
 	/**
 	 * The url for this playlist
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly

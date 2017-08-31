@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,9 +45,12 @@ class Kaltura_Client_Type_LiveStreamPushPublishConfiguration extends Kaltura_Cli
 		if(is_null($xml))
 			return;
 		
-		$this->publishUrl = (string)$xml->publishUrl;
-		$this->backupPublishUrl = (string)$xml->backupPublishUrl;
-		$this->port = (string)$xml->port;
+		if(count($xml->publishUrl))
+			$this->publishUrl = (string)$xml->publishUrl;
+		if(count($xml->backupPublishUrl))
+			$this->backupPublishUrl = (string)$xml->backupPublishUrl;
+		if(count($xml->port))
+			$this->port = (string)$xml->port;
 	}
 	/**
 	 * 

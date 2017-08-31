@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -39,6 +39,9 @@ class Kaltura_Client_UiConfService extends Kaltura_Client_ServiceBase
 		parent::__construct($client);
 	}
 
+	/**
+	 * @return Kaltura_Client_Type_UiConf
+	 */
 	function get($id)
 	{
 		$kparams = array();
@@ -48,12 +51,15 @@ class Kaltura_Client_UiConfService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaUiConf");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConf");
 		return $resultObject;
 	}
 
+	/**
+	 * @return Kaltura_Client_Type_UiConfListResponse
+	 */
 	function listAction(Kaltura_Client_Type_UiConfFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
 	{
 		$kparams = array();
@@ -66,7 +72,7 @@ class Kaltura_Client_UiConfService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaUiConfListResponse");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_UiConfListResponse");
 		return $resultObject;

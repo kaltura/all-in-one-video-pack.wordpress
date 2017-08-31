@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@
  * @package Kaltura
  * @subpackage Client
  */
-abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_Client_Type_Filter
+abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_Client_Type_RelatedFilter
 {
 	public function getKalturaObjectType()
 	{
@@ -49,15 +49,20 @@ abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_C
 			$this->partnerIdEqual = (int)$xml->partnerIdEqual;
 		if(count($xml->metadataProfileIdEqual))
 			$this->metadataProfileIdEqual = (int)$xml->metadataProfileIdEqual;
+		if(count($xml->metadataProfileIdIn))
+			$this->metadataProfileIdIn = (string)$xml->metadataProfileIdIn;
 		if(count($xml->metadataProfileVersionEqual))
 			$this->metadataProfileVersionEqual = (int)$xml->metadataProfileVersionEqual;
 		if(count($xml->metadataProfileVersionGreaterThanOrEqual))
 			$this->metadataProfileVersionGreaterThanOrEqual = (int)$xml->metadataProfileVersionGreaterThanOrEqual;
 		if(count($xml->metadataProfileVersionLessThanOrEqual))
 			$this->metadataProfileVersionLessThanOrEqual = (int)$xml->metadataProfileVersionLessThanOrEqual;
-		$this->metadataObjectTypeEqual = (string)$xml->metadataObjectTypeEqual;
-		$this->objectIdEqual = (string)$xml->objectIdEqual;
-		$this->objectIdIn = (string)$xml->objectIdIn;
+		if(count($xml->metadataObjectTypeEqual))
+			$this->metadataObjectTypeEqual = (string)$xml->metadataObjectTypeEqual;
+		if(count($xml->objectIdEqual))
+			$this->objectIdEqual = (string)$xml->objectIdEqual;
+		if(count($xml->objectIdIn))
+			$this->objectIdIn = (string)$xml->objectIdIn;
 		if(count($xml->versionEqual))
 			$this->versionEqual = (int)$xml->versionEqual;
 		if(count($xml->versionGreaterThanOrEqual))
@@ -74,7 +79,8 @@ abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_C
 			$this->updatedAtLessThanOrEqual = (int)$xml->updatedAtLessThanOrEqual;
 		if(count($xml->statusEqual))
 			$this->statusEqual = (int)$xml->statusEqual;
-		$this->statusIn = (string)$xml->statusIn;
+		if(count($xml->statusIn))
+			$this->statusIn = (string)$xml->statusIn;
 	}
 	/**
 	 * 
@@ -89,6 +95,13 @@ abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_C
 	 * @var int
 	 */
 	public $metadataProfileIdEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $metadataProfileIdIn = null;
 
 	/**
 	 * 
@@ -112,7 +125,7 @@ abstract class Kaltura_Client_Metadata_Type_MetadataBaseFilter extends Kaltura_C
 	public $metadataProfileVersionLessThanOrEqual = null;
 
 	/**
-	 * 
+	 * When null, default is KalturaMetadataObjectType::ENTRY
 	 *
 	 * @var Kaltura_Client_Metadata_Enum_MetadataObjectType
 	 */

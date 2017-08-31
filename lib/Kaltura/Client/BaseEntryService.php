@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -39,6 +39,24 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 		parent::__construct($client);
 	}
 
+	/**
+	 * @return 
+	 */
+	function delete($entryId)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->queueServiceActionCall("baseentry", "delete", null, $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		$this->client->checkIfError($resultXmlObject->result);
+	}
+
+	/**
+	 * @return Kaltura_Client_Type_BaseEntry
+	 */
 	function get($entryId, $version = -1)
 	{
 		$kparams = array();
@@ -49,40 +67,15 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaBaseEntry");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_BaseEntry");
 		return $resultObject;
 	}
 
-	function update($entryId, Kaltura_Client_Type_BaseEntry $baseEntry)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "entryId", $entryId);
-		$this->client->addParam($kparams, "baseEntry", $baseEntry->toParams());
-		$this->client->queueServiceActionCall("baseentry", "update", "KalturaBaseEntry", $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaBaseEntry");
-		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_BaseEntry");
-		return $resultObject;
-	}
-
-	function delete($entryId)
-	{
-		$kparams = array();
-		$this->client->addParam($kparams, "entryId", $entryId);
-		$this->client->queueServiceActionCall("baseentry", "delete", null, $kparams);
-		if ($this->client->isMultiRequest())
-			return $this->client->getMultiRequestResult();
-		$resultXml = $this->client->doQueue();
-		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
-	}
-
+	/**
+	 * @return Kaltura_Client_Type_BaseEntryListResponse
+	 */
 	function listAction(Kaltura_Client_Type_BaseEntryFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
 	{
 		$kparams = array();
@@ -95,9 +88,28 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 			return $this->client->getMultiRequestResult();
 		$resultXml = $this->client->doQueue();
 		$resultXmlObject = new \SimpleXMLElement($resultXml);
-		Kaltura_Client_ParseUtils::checkIfError($resultXmlObject->result);
+		$this->client->checkIfError($resultXmlObject->result);
 		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaBaseEntryListResponse");
 		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_BaseEntryListResponse");
+		return $resultObject;
+	}
+
+	/**
+	 * @return Kaltura_Client_Type_BaseEntry
+	 */
+	function update($entryId, Kaltura_Client_Type_BaseEntry $baseEntry)
+	{
+		$kparams = array();
+		$this->client->addParam($kparams, "entryId", $entryId);
+		$this->client->addParam($kparams, "baseEntry", $baseEntry->toParams());
+		$this->client->queueServiceActionCall("baseentry", "update", "KalturaBaseEntry", $kparams);
+		if ($this->client->isMultiRequest())
+			return $this->client->getMultiRequestResult();
+		$resultXml = $this->client->doQueue();
+		$resultXmlObject = new \SimpleXMLElement($resultXml);
+		$this->client->checkIfError($resultXmlObject->result);
+		$resultObject = Kaltura_Client_ParseUtils::unmarshalObject($resultXmlObject->result, "KalturaBaseEntry");
+		$this->client->validateObjectType($resultObject, "Kaltura_Client_Type_BaseEntry");
 		return $resultObject;
 	}
 }

@@ -9,7 +9,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2015  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -45,23 +45,34 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 		if(is_null($xml))
 			return;
 		
-		$this->id = (string)$xml->id;
-		$this->name = (string)$xml->name;
-		$this->description = (string)$xml->description;
+		if(count($xml->id))
+			$this->id = (string)$xml->id;
+		if(count($xml->name))
+			$this->name = (string)$xml->name;
+		if(count($xml->description))
+			$this->description = (string)$xml->description;
 		if(count($xml->partnerId))
 			$this->partnerId = (int)$xml->partnerId;
-		$this->userId = (string)$xml->userId;
-		$this->creatorId = (string)$xml->creatorId;
-		$this->tags = (string)$xml->tags;
-		$this->adminTags = (string)$xml->adminTags;
-		$this->categories = (string)$xml->categories;
-		$this->categoriesIds = (string)$xml->categoriesIds;
-		$this->status = (string)$xml->status;
+		if(count($xml->userId))
+			$this->userId = (string)$xml->userId;
+		if(count($xml->creatorId))
+			$this->creatorId = (string)$xml->creatorId;
+		if(count($xml->tags))
+			$this->tags = (string)$xml->tags;
+		if(count($xml->adminTags))
+			$this->adminTags = (string)$xml->adminTags;
+		if(count($xml->categories))
+			$this->categories = (string)$xml->categories;
+		if(count($xml->categoriesIds))
+			$this->categoriesIds = (string)$xml->categoriesIds;
+		if(count($xml->status))
+			$this->status = (string)$xml->status;
 		if(count($xml->moderationStatus))
 			$this->moderationStatus = (int)$xml->moderationStatus;
 		if(count($xml->moderationCount))
 			$this->moderationCount = (int)$xml->moderationCount;
-		$this->type = (string)$xml->type;
+		if(count($xml->type))
+			$this->type = (string)$xml->type;
 		if(count($xml->createdAt))
 			$this->createdAt = (int)$xml->createdAt;
 		if(count($xml->updatedAt))
@@ -74,41 +85,62 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 			$this->votes = (int)$xml->votes;
 		if(count($xml->groupId))
 			$this->groupId = (int)$xml->groupId;
-		$this->partnerData = (string)$xml->partnerData;
-		$this->downloadUrl = (string)$xml->downloadUrl;
-		$this->searchText = (string)$xml->searchText;
+		if(count($xml->partnerData))
+			$this->partnerData = (string)$xml->partnerData;
+		if(count($xml->downloadUrl))
+			$this->downloadUrl = (string)$xml->downloadUrl;
+		if(count($xml->searchText))
+			$this->searchText = (string)$xml->searchText;
 		if(count($xml->licenseType))
 			$this->licenseType = (int)$xml->licenseType;
 		if(count($xml->version))
 			$this->version = (int)$xml->version;
-		$this->thumbnailUrl = (string)$xml->thumbnailUrl;
+		if(count($xml->thumbnailUrl))
+			$this->thumbnailUrl = (string)$xml->thumbnailUrl;
 		if(count($xml->accessControlId))
 			$this->accessControlId = (int)$xml->accessControlId;
 		if(count($xml->startDate))
 			$this->startDate = (int)$xml->startDate;
 		if(count($xml->endDate))
 			$this->endDate = (int)$xml->endDate;
-		$this->referenceId = (string)$xml->referenceId;
-		$this->replacingEntryId = (string)$xml->replacingEntryId;
-		$this->replacedEntryId = (string)$xml->replacedEntryId;
-		$this->replacementStatus = (string)$xml->replacementStatus;
+		if(count($xml->referenceId))
+			$this->referenceId = (string)$xml->referenceId;
+		if(count($xml->replacingEntryId))
+			$this->replacingEntryId = (string)$xml->replacingEntryId;
+		if(count($xml->replacedEntryId))
+			$this->replacedEntryId = (string)$xml->replacedEntryId;
+		if(count($xml->replacementStatus))
+			$this->replacementStatus = (string)$xml->replacementStatus;
 		if(count($xml->partnerSortValue))
 			$this->partnerSortValue = (int)$xml->partnerSortValue;
 		if(count($xml->conversionProfileId))
 			$this->conversionProfileId = (int)$xml->conversionProfileId;
-		$this->redirectEntryId = (string)$xml->redirectEntryId;
-		$this->rootEntryId = (string)$xml->rootEntryId;
-		$this->parentEntryId = (string)$xml->parentEntryId;
-		if(empty($xml->operationAttributes))
-			$this->operationAttributes = array();
-		else
-			$this->operationAttributes = Kaltura_Client_ParseUtils::unmarshalArray($xml->operationAttributes, "KalturaOperationAttributes");
-		$this->entitledUsersEdit = (string)$xml->entitledUsersEdit;
-		$this->entitledUsersPublish = (string)$xml->entitledUsersPublish;
+		if(count($xml->redirectEntryId))
+			$this->redirectEntryId = (string)$xml->redirectEntryId;
+		if(count($xml->rootEntryId))
+			$this->rootEntryId = (string)$xml->rootEntryId;
+		if(count($xml->parentEntryId))
+			$this->parentEntryId = (string)$xml->parentEntryId;
+		if(count($xml->operationAttributes))
+		{
+			if(empty($xml->operationAttributes))
+				$this->operationAttributes = array();
+			else
+				$this->operationAttributes = Kaltura_Client_ParseUtils::unmarshalArray($xml->operationAttributes, "KalturaOperationAttributes");
+		}
+		if(count($xml->entitledUsersEdit))
+			$this->entitledUsersEdit = (string)$xml->entitledUsersEdit;
+		if(count($xml->entitledUsersPublish))
+			$this->entitledUsersPublish = (string)$xml->entitledUsersPublish;
+		if(count($xml->capabilities))
+			$this->capabilities = (string)$xml->capabilities;
+		if(count($xml->templateEntryId))
+			$this->templateEntryId = (string)$xml->templateEntryId;
+		if(count($xml->displayInSearch))
+			$this->displayInSearch = (int)$xml->displayInSearch;
 	}
 	/**
 	 * Auto generated 10 characters alphanumeric string
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -117,7 +149,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry name (Min 1 chars)
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -125,7 +156,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry description
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -140,16 +170,14 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $partnerId = null;
 
 	/**
-	 * The ID of the user who is the owner of this entry 
-	 * 	 
+	 * The ID of the user who is the owner of this entry
 	 *
 	 * @var string
 	 */
 	public $userId = null;
 
 	/**
-	 * The ID of the user who created this entry 
-	 * 	 
+	 * The ID of the user who created this entry
 	 *
 	 * @var string
 	 * @insertonly
@@ -158,7 +186,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry tags
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -166,23 +193,20 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry admin tags can be updated only by administrators
-	 * 	 
 	 *
 	 * @var string
 	 */
 	public $adminTags = null;
 
 	/**
-	 * Categories with no entitlement that this entry belongs to.
-	 * 	 
+	 * Comma separated list of full names of categories to which this entry belongs. Only categories that don't have entitlement (privacy context) are listed, to retrieve the full list of categories, use the categoryEntry.list action.
 	 *
 	 * @var string
 	 */
 	public $categories = null;
 
 	/**
-	 * Categories Ids of categories with no entitlement that this entry belongs to
-	 * 	 
+	 * Comma separated list of ids of categories to which this entry belongs. Only categories that don't have entitlement (privacy context) are listed, to retrieve the full list of categories, use the categoryEntry.list action.
 	 *
 	 * @var string
 	 */
@@ -198,7 +222,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry moderation status
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_EntryModerationStatus
 	 * @readonly
@@ -207,7 +230,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Number of moderation requests waiting for this entry
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -216,7 +238,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The type of the entry, this is auto filled by the derived entry object
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_EntryType
 	 */
@@ -224,7 +245,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry creation date as Unix timestamp (In seconds)
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -233,7 +253,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry update date as Unix timestamp (In seconds)
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -242,7 +261,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The calculated average rank. rank = totalRank / votes
-	 * 	 
 	 *
 	 * @var float
 	 * @readonly
@@ -251,7 +269,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * The sum of all rank values submitted to the baseEntry.anonymousRank action
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -260,7 +277,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * A count of all requests made to the baseEntry.anonymousRank action
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -275,8 +291,7 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $groupId = null;
 
 	/**
-	 * Can be used to store various partner related data as a string 
-	 * 	 
+	 * Can be used to store various partner related data as a string
 	 *
 	 * @var string
 	 */
@@ -284,7 +299,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Download URL for the entry
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -293,7 +307,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Indexed search text for full text search
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -302,7 +315,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * License type used for this entry
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_LicenseType
 	 */
@@ -310,7 +322,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Version of the entry data
-	 * 	 
 	 *
 	 * @var int
 	 * @readonly
@@ -319,16 +330,14 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Thumbnail URL
-	 * 	 
 	 *
 	 * @var string
-	 * @insertonly
+	 * @readonly
 	 */
 	public $thumbnailUrl = null;
 
 	/**
-	 * The Access Control ID assigned to this entry (null when not set, send -1 to remove)  
-	 * 	 
+	 * The Access Control ID assigned to this entry (null when not set, send -1 to remove)
 	 *
 	 * @var int
 	 */
@@ -336,7 +345,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry scheduling start date (null when not set, send -1 to remove)
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -344,7 +352,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry scheduling end date (null when not set, send -1 to remove)
-	 * 	 
 	 *
 	 * @var int
 	 */
@@ -352,7 +359,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Entry external reference id
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -360,7 +366,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * ID of temporary entry that will replace this entry when it's approved and ready for replacement
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -369,7 +374,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * ID of the entry that will be replaced when the replacement approved and this entry is ready
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -378,7 +382,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Status of the replacement readiness and approval
-	 * 	 
 	 *
 	 * @var Kaltura_Client_Enum_EntryReplacementStatus
 	 * @readonly
@@ -387,23 +390,20 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * Can be used to store various partner related data as a numeric value
-	 * 	 
 	 *
 	 * @var int
 	 */
 	public $partnerSortValue = null;
 
 	/**
-	 * Override the default ingestion profile  
-	 * 	 
+	 * Override the default ingestion profile
 	 *
 	 * @var int
 	 */
 	public $conversionProfileId = null;
 
 	/**
-	 * IF not empty, points to an entry ID the should replace this current entry's id. 
-	 * 	 
+	 * IF not empty, points to an entry ID the should replace this current entry's id.
 	 *
 	 * @var string
 	 */
@@ -411,7 +411,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * ID of source root entry, used for clipped, skipped and cropped entries that created from another entry
-	 * 	 
 	 *
 	 * @var string
 	 * @readonly
@@ -420,15 +419,13 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * ID of source root entry, used for defining entires association
-	 *  	 
 	 *
 	 * @var string
 	 */
 	public $parentEntryId = null;
 
 	/**
-	 * clipping, skipping and cropping attributes that used to create this entry  
-	 * 	 
+	 * clipping, skipping and cropping attributes that used to create this entry
 	 *
 	 * @var array of KalturaOperationAttributes
 	 */
@@ -436,7 +433,6 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * list of user ids that are entitled to edit the entry (no server enforcement) The difference between entitledUsersEdit and entitledUsersPublish is applicative only
-	 * 	 
 	 *
 	 * @var string
 	 */
@@ -444,11 +440,33 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 
 	/**
 	 * list of user ids that are entitled to publish the entry (no server enforcement) The difference between entitledUsersEdit and entitledUsersPublish is applicative only
-	 * 	 
 	 *
 	 * @var string
 	 */
 	public $entitledUsersPublish = null;
+
+	/**
+	 * Comma seperated string of the capabilities of the entry. Any capability needed can be added to this list.
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $capabilities = null;
+
+	/**
+	 * Template entry id
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $templateEntryId = null;
+
+	/**
+	 * should we display this entry in search
+	 *
+	 * @var Kaltura_Client_Enum_EntryDisplayInSearchType
+	 */
+	public $displayInSearch = null;
 
 
 }
