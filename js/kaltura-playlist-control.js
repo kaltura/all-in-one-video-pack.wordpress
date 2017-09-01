@@ -19,9 +19,14 @@
         var playlistItemBox = jQuery('.playlist-item-box');
         var options = $.extend({}, defaultOptions, opts);
         var errorBox = jQuery('.playlist-errors-box');
+        var currentXHR = null;
 
         var _bindClick = function () {
             $('#kaltura-browse').on('click', 'li', function () {
+                if (currentXHR) {
+                    currentXHR.abort();
+                }
+                currentItemBox.empty();
                 _getCurrentPlaylist(this);
             })
         };
@@ -58,18 +63,20 @@
         };
 
         var _onPlaylistItemsLoadedError = function () {
-            _showError("An error occurred while loading this playlist. Please try again.");
             _hideLoader();
+            if(currentXHR.status === 0) {
+                return;
+            }
+            _showError("An error occurred while loading this playlist. Please try again.");
         };
 
         var _fetchPlaylistItems = function () {
-            currentItemBox.empty();
             _showLoader();
             var id = currentPlaylistId;
             var input = {
                 entryId: id
             };
-            jQuery.ajax({
+            currentXHR = jQuery.ajax({
                 url     : options.url,
                 cache   : false,
                 success : _browsePlaylistItems,
@@ -93,7 +100,9 @@
                     }).appendTo(mediaBox);
                     var detailsBox = $('<div>', {class: "details-box"}).appendTo(item);
                     $('<div>', {class: "media-name", text: value.name}).appendTo(detailsBox);
-                    $('<div>', {class: "media-description", text: value.description}).appendTo(detailsBox);
+                    if (value.description !== null){
+                        $('<div>', {class: "media-description", text: value.description}).appendTo(detailsBox);
+                    }
                 });
                 _updateScrollableBox(playlistItemBox);
             } else {

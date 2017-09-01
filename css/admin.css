@@ -3,6 +3,12 @@ body {
   height: 100%;
   overflow: auto;
 }
+* {
+  box-sizing: border-box;
+}
+.wrap {
+  margin: 0;
+}
 body.wait {
   cursor: wait !important;
 }
@@ -88,6 +94,18 @@ a.kalturaLink:hover {
 div.kaltura-wrap {
   max-width: 1200px;
   padding: 10px 15px;
+  height: 100%;
+  max-height: 100%;
+}
+div.kaltura-wrap #kaltura-browse-form {
+  height: 100%;
+}
+div.kaltura-wrap .right-side-container {
+  height: 100%;
+}
+div.kaltura-wrap .right-side-container .select-playlist-page {
+  height: calc(100% - 70px);
+  max-height: 550px;
 }
 ul#kaltura-browse {
   float: right;
@@ -200,6 +218,7 @@ ul#kaltura-browse.playlist-view {
   width: 25%;
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 ul#kaltura-browse.playlist-view li {
   background: none;
@@ -241,10 +260,8 @@ ul#kaltura-browse.playlist-view li.playlist-loading .kaltura-loader {
   display: block;
 }
 ul#kaltura-browse.playlist-view .kaltura-playlist {
-  max-height: 550px;
   overflow: auto;
   position: relative;
-  height: 100%;
 }
 #update-thumbnail-page {
   height: 100%;
@@ -689,7 +706,7 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
   float: left;
   width: 73%;
   margin-left: 2%;
-  max-height: 550px;
+  height: 100%;
   overflow: auto;
 }
 .playlist-items .playlist-items-loader {
@@ -704,25 +721,24 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
 .playlist-items .playlist-item-box {
   height: 100%;
   position: relative;
-  max-height: 550px;
 }
-.playlist-items .playlist-item-box .playlist-item {
+.playlist-items .playlist-item-box div.playlist-item {
   overflow: auto;
   background: white;
-  padding: 15px;
+  padding: 16px;
   border-top: 1px solid #ddd;
   margin-bottom: 10px;
 }
-.playlist-items .playlist-item-box .playlist-item .media-box {
+.playlist-items .playlist-item-box div.playlist-item .media-box {
   float: left;
-  width: 24%;
+  width: 21%;
   position: relative;
   margin-right: 1%;
 }
-.playlist-items .playlist-item-box .playlist-item .media-box .media-separator {
+.playlist-items .playlist-item-box div.playlist-item .media-box .media-separator {
   margin-top: 56.25%;
 }
-.playlist-items .playlist-item-box .playlist-item .media-box .media-thumb {
+.playlist-items .playlist-item-box div.playlist-item .media-box .media-thumb {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -732,17 +748,20 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
   max-width: 100%;
   max-height: 100%;
 }
-.playlist-items .playlist-item-box .playlist-item .details-box {
+.playlist-items .playlist-item-box div.playlist-item .details-box {
   float: left;
-  width: 75%;
+  width: 78%;
 }
-.playlist-items .playlist-item-box .playlist-item .details-box .media-name {
+.playlist-items .playlist-item-box div.playlist-item .details-box .media-name {
   color: #08c;
   font-size: 17.5px;
 }
-.playlist-items .playlist-item-box .playlist-item .details-box .media-description {
+.playlist-items .playlist-item-box div.playlist-item .details-box .media-description {
   font-size: 85%;
   word-break: normal;
+}
+.playlist-items .playlist-item-box div.playlist-item:last-child {
+  margin-bottom: 0;
 }
 .playlist-items .playlist-item-box .no-results {
   color: #08c;
