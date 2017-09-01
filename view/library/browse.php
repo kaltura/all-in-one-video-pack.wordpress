@@ -9,7 +9,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 	<?php if ( $this->isLibrary ): ?>
 		<h2>All in One Video</h2>
 		<?php $this->renderView( 'library/library-menu.php' ); ?>
-		<br clear="all" />
+		<div class="clear"> </div>
 	<?php endif; ?>
     <?php
         $selectedAction = $kaction == 'browse' ? 'media-upload.php' : 'upload.php';
@@ -73,7 +73,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 					<div id="select-playlist" class="disabled">Select playlist</div>
 				<?php endif; ?>
 				<div class="entry-search-filter">
-					<input name="search" placeholder="Search Entries" value="<?php echo esc_attr( $this->searchWord ) ?>" />
+					<input name="search" placeholder="Search <?php echo (!$this->isPlaylist) ? 'Entries' : 'Playlists'; ?>" value="<?php echo esc_attr( $this->searchWord ) ?>" />
 					<input type="submit" value="Go" />
 				</div>
 
@@ -83,7 +83,7 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 		</div>
 	</form>
 
-	<br class="clear" />
+	<div class="clear"> </div>
 
 	<?php if ( $pageLinks && !$this->isPlaylist): ?>
 		<div class="kaltura-pager <?php echo esc_attr($this->browseClass); ?>"><?php echo wp_kses($pageLinks, $pageLinksAllowedHtml); ?></div>
