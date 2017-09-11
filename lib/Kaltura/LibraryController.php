@@ -125,7 +125,7 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			$kmodel = KalturaModel::getInstance();
 
 			$entry                             = $kmodel->getEntry( $entryId );
-			$ks                                = KalturaHelpers::getKSForPlayer( $entry );
+			$ks                                = KalturaHelpers::getKSForPlayer( $entryId );
 			$flashVars                         = KalturaHelpers::getKalturaPlayerFlashVars( $ks, $entryId, $isPlaylist);
 
 			$thumbnail                         = KalturaHelpers::getPluginUrl() . '/thumbnails/get_preview_thumbnail.php?thumbnail_url=' . $entry->thumbnailUrl;
