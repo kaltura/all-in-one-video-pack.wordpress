@@ -15,6 +15,18 @@ body.wait {
 body.wait * {
   cursor: wait !important;
 }
+body.media_page_kaltura_library #wpwrap {
+  height: 100%;
+}
+body.media_page_kaltura_library #wpwrap #wpcontent {
+  height: 100%;
+}
+body.media_page_kaltura_library #wpwrap #wpcontent #wpbody {
+  height: 100%;
+}
+body.media_page_kaltura_library #wpwrap #wpcontent #wpbody #wpbody-content {
+  height: 100%;
+}
 .kaltura-loader {
   background-image: url(../images/small_loader.gif);
   display: none;
@@ -260,7 +272,7 @@ ul#kaltura-browse.playlist-view li.playlist-loading .kaltura-loader {
   display: block;
 }
 ul#kaltura-browse.playlist-view .kaltura-playlist {
-  overflow: auto;
+  height: 100%;
   position: relative;
 }
 #update-thumbnail-page {
@@ -543,49 +555,62 @@ ul#kaltura-browse.playlist-view .kaltura-playlist {
   float: left;
   margin: 0 0 12px;
 }
-.settings_page_kaltura_options .registration .form-table th {
+.settings_page_kaltura_options .registration .form-table th,
+.settings_page_all-in-one-video-pack-mu-settings .registration .form-table th {
   width: 250px;
 }
-.settings_page_kaltura_options .registration input[type="text"] {
+.settings_page_kaltura_options .registration input[type="text"],
+.settings_page_all-in-one-video-pack-mu-settings .registration input[type="text"] {
   width: 300px;
 }
-.settings_page_kaltura_options .registration select {
+.settings_page_kaltura_options .registration select,
+.settings_page_all-in-one-video-pack-mu-settings .registration select {
   width: 300px;
 }
-.settings_page_kaltura_options .registration textarea {
+.settings_page_kaltura_options .registration textarea,
+.settings_page_all-in-one-video-pack-mu-settings .registration textarea {
   width: 300px;
 }
-.settings_page_kaltura_options .registration .error {
+.settings_page_kaltura_options .registration .error,
+.settings_page_all-in-one-video-pack-mu-settings .registration .error {
   background-color: #FFEBE8;
   border: solid 1px #CC0000;
 }
-.settings_page_kaltura_options .registration label.error {
+.settings_page_kaltura_options .registration label.error,
+.settings_page_all-in-one-video-pack-mu-settings .registration label.error {
   border: none;
 }
-.settings_page_kaltura_options .registration tr.agree_to_terms label.error {
+.settings_page_kaltura_options .registration tr.agree_to_terms label.error,
+.settings_page_all-in-one-video-pack-mu-settings .registration tr.agree_to_terms label.error {
   background: transparent;
   color: #CC0000;
   display: block;
 }
-.settings_page_kaltura_options select {
+.settings_page_kaltura_options select,
+.settings_page_all-in-one-video-pack-mu-settings select {
   width: 420px;
 }
-.settings_page_kaltura_options tr.advanced {
+.settings_page_kaltura_options tr.advanced,
+.settings_page_all-in-one-video-pack-mu-settings tr.advanced {
   display: none;
 }
-.settings_page_kaltura_options .user_identifier_desc {
+.settings_page_kaltura_options .user_identifier_desc,
+.settings_page_all-in-one-video-pack-mu-settings .user_identifier_desc {
   padding-left: 23px;
   width: 400px;
 }
-.settings_page_kaltura_options tr.user_identifier label {
+.settings_page_kaltura_options tr.user_identifier label,
+.settings_page_all-in-one-video-pack-mu-settings tr.user_identifier label {
   font-weight: bold;
 }
-.settings_page_kaltura_options .available-players .players-scroll {
+.settings_page_kaltura_options .available-players .players-scroll,
+.settings_page_all-in-one-video-pack-mu-settings .available-players .players-scroll {
   max-height: 120px;
   overflow-y: auto;
   width: 420px;
 }
-.settings_page_kaltura_options .available-players .players-scroll label {
+.settings_page_kaltura_options .available-players .players-scroll label,
+.settings_page_all-in-one-video-pack-mu-settings .available-players .players-scroll label {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;

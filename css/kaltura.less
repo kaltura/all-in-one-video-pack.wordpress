@@ -21,6 +21,9 @@
 
 .kaltura-player-box {
   background-color: #2d2d2d;
+  &*{
+    box-sizing: border-box;
+  }
   .kaltura-player-container {
     width: 100%;
     float:left;
@@ -37,6 +40,7 @@
     width: 100%;
     display: inline-block;
     position: relative;
+    box-sizing: border-box;
     .kaltura-playlist-holder {
       position: absolute;
       top: 0;
