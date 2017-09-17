@@ -43,10 +43,12 @@ $isPlaylist     = $embedOptions['isPlaylist'];
 			<div style="margin-top: <?php echo $height; ?>%;"></div>
 			<div id="playListHolder_<?php echo $entryId; ?>" class="kaltura-playlist-holder"></div>
 		</div>
-		<div class="kaltura-powered-by" style="position: relative; right:0; top: 30px;">
-			<div>
-				<a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a>
-			</div>
+		<div class="clear"></div>
+		
+	</div>
+	<div class="kaltura-powered-by" style="position: relative; right:0; top: 10px;">
+		<div>
+			<a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a>
 		</div>
 	</div>
 <?php elseif($isResponsive): ?>

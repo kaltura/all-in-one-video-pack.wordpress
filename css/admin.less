@@ -14,6 +14,20 @@ body.wait {
     cursor: wait !important;
   }
 }
+body.media_page_kaltura_library{
+  #wpwrap {
+    height: 100%;
+    #wpcontent{
+      height: 100%;
+      #wpbody {
+        height: 100%;
+        #wpbody-content {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
 .kaltura-loader {
   background-image: url(../images/small_loader.gif);
   display: none;
@@ -265,7 +279,8 @@ ul#kaltura-browse {
       }
     }
     .kaltura-playlist {
-      overflow: auto;
+      //overflow: auto;
+      height: 100%;
       position: relative;
     }
   }
@@ -565,7 +580,7 @@ ul#kaltura-browse {
     margin: 0 0 12px;
   }
 }
-.settings_page_kaltura_options {
+.settings_page_kaltura_options, .settings_page_all-in-one-video-pack-mu-settings {
   .registration {
     .form-table {
       th {
