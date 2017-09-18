@@ -1,4 +1,7 @@
 <?php KalturaHelpers::protectView( $this ); ?>
+<?php
+$defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
+?>
 <?php if ( $this->uiConfId ): ?>
 	<script type="text/javascript">
 		var playerWidth = <?php echo wp_json_encode($this->playerWidth); ?>;
@@ -100,7 +103,7 @@
 		<div class="error players-missing">
 			<?php echo sprintf( __($playersNotFoundMessage), $link ); ?>
 		</div>
-		
+
 		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
@@ -201,7 +204,7 @@
 
 			jQuery.kalturaPlayerSelector( {
 				url            : ajaxurl + '?action=kaltura_ajax&kaction=getplayers' + <?php echo ($this->isPlaylist) ? "'&isplaylist=true'" : "''"?>,
-				defaultId      : <?php echo wp_json_encode( get_option( 'kaltura_default_player_type' ) ); ?>,
+				defaultId      : <?php echo wp_json_encode( $defaultPlayerId ); ?>,
 				html5Url       : <?php echo wp_json_encode( esc_url( KalturaHelpers::getHtml5IframeUrl(null, $flashVarsStr) ) ); ?>,
 				previewId      : 'divKalturaPlayer',
 				entryId        : <?php echo wp_json_encode( $this->entry->id ); ?>,
@@ -212,7 +215,7 @@
 				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
 				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
 				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
-				
+
 			} );
 		} );
 	</script>
