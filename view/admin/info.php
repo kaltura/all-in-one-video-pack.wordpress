@@ -1,4 +1,10 @@
 <?php KalturaHelpers::protectView( $this ); ?>
+<?php
+$switchAccountLink = admin_url( 'options-general.php?page=kaltura_options&partner_login=true&switch=true' );
+if (is_network_admin()) {
+	$switchAccountLink = admin_url( 'network/settings.php?page=all-in-one-video-pack-mu-settings&partner_login=true' );
+}
+?>
 <?php if ( $this->error ): ?>
 	<div class="wrap">
 		<h2>All in One Video Pack Settings</h2>
@@ -50,7 +56,11 @@
 					<th align="left">KMC username:</th>
 					<td style="padding-right: 90px;">
 						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong>
-						<span><a href="<?php echo admin_url( 'options-general.php?page=kaltura_options&partner_login=true&switch=true' ) ?>">Change account</a></span>
+						<span>
+						<?php if ( !$this->isNetworkActive ): ?>
+							<a href="<?php echo $switchAccountLink; ?>">Change account</a>
+						<?php endif; ?>
+						</span>
 					</td>
 				</tr>
 				<?php endif; ?>
