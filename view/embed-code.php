@@ -44,7 +44,7 @@ $isPlaylist     = $embedOptions['isPlaylist'];
 			<div id="playListHolder_<?php echo $randId; ?>" class="kaltura-playlist-holder"></div>
 		</div>
 		<div class="clear"></div>
-
+		
 	</div>
 	<div class="kaltura-powered-by" style="position: relative; right:0; top: 10px;">
 		<div>

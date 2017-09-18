@@ -103,7 +103,7 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 		<div class="error players-missing">
 			<?php echo sprintf( __($playersNotFoundMessage), $link ); ?>
 		</div>
-
+		
 		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
@@ -215,7 +215,7 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
 				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
 				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
-
+				
 			} );
 		} );
 	</script>
