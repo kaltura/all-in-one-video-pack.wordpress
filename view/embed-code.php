@@ -10,7 +10,7 @@ $width          = $embedOptions['width'];
 $height         = $embedOptions['height'];
 $isResponsive   = !empty($embedOptions['responsive']) && $embedOptions['responsive'];
 $hoveringControls = !empty($embedOptions['hoveringControls']) && $embedOptions['hoveringControls'];
-$randId         = md5( $wid . $entryId . rand( 0, time() ) );
+$randId         = $embedOptions['randId'];
 $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
@@ -41,10 +41,10 @@ $isPlaylist     = $embedOptions['isPlaylist'];
 		<div class="clear"></div>
 		<div class="kaltura-playlist-container" >
 			<div style="margin-top: <?php echo $height; ?>%;"></div>
-			<div id="playListHolder_<?php echo $entryId; ?>" class="kaltura-playlist-holder"></div>
+			<div id="playListHolder_<?php echo $randId; ?>" class="kaltura-playlist-holder"></div>
 		</div>
 		<div class="clear"></div>
-		
+
 	</div>
 	<div class="kaltura-powered-by" style="position: relative; right:0; top: 10px;">
 		<div>

@@ -98,7 +98,7 @@ class KalturaHelpers {
 		return $flashVars;
 	}
 
-	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false ) {
+	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false, $randId = null ) {
 		$ks                     = sanitize_text_field( $ks );
 		$entryId                = sanitize_key( $entryId );
 		$isPlaylist             = (bool)$isPlaylist;
@@ -112,8 +112,8 @@ class KalturaHelpers {
 			$flashVars['playlistAPI']['plugin']              = true;
 			$flashVars['playlistAPI']['onPage']              = true;
 			$flashVars['playlistAPI']['paging']              = true;
-
-			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $entryId;
+			$randId = !$randId ? $entryId : $randId;
+			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $randId;
 		} else {
 			if ( $entryId ) {
 				$flashVars['entryId'] = $entryId;
@@ -330,7 +330,8 @@ class KalturaHelpers {
 		}
 		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
 		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
-		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist);
+		$randId         = md5( $params['wid'] . $params['entryid'] . rand( 0, time() ) );
+		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist, $randId);
 		
 		return array(
 			'height'           => $params['height'],
@@ -343,7 +344,8 @@ class KalturaHelpers {
 			'responsive'       => $params['responsive'],
 			'hoveringControls' => $params['hoveringcontrols'],
 			'flashVars'        => $flashVars,
-			'isPlaylist'       => $isplaylist
+			'isPlaylist'       => $isplaylist,
+			'randId'           => $randId
 		);
 	}
 
