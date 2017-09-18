@@ -57,8 +57,8 @@ if (is_network_admin()) {
 					<td style="padding-right: 90px;">
 						<strong><?php echo esc_html(KalturaHelpers::getOption( 'kaltura_cms_user' )); ?></strong>
 						<span>
-							<?php if ( !$this->isNetworkActive ): ?>
-						<a href="<?php echo $switchAccountLink; ?>">Change account</a>
+						<?php if ( !$this->isNetworkActive ): ?>
+							<a href="<?php echo $switchAccountLink; ?>">Change account</a>
 						<?php endif; ?>
 						</span>
 					</td>
