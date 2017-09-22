@@ -114,6 +114,7 @@ class KalturaHelpers {
 			$flashVars['playlistAPI']['paging']              = true;
 			$randId = !$randId ? $entryId : $randId;
 			$flashVars['playlistAPI']['clipListTargetId']    = 'playListHolder_' . $randId;
+			$flashVars['playlistAPI']['cssFileName']         =  plugin_dir_url(KALTURA_PLUGIN_FILE) . 'css/playlist-stub.css' ;
 		} else {
 			if ( $entryId ) {
 				$flashVars['entryId'] = $entryId;

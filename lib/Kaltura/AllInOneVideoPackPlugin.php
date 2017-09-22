@@ -76,7 +76,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		wp_register_script( 'kaltura-editable-name', KalturaHelpers::jsUrl( 'js/kaltura-editable-name.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 		wp_register_script( 'kaltura-jquery-validate', KalturaHelpers::jsUrl( 'js/jquery.validate.min.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 		wp_register_script( 'kaltura-playlist-control', KalturaHelpers::jsUrl( 'js/kaltura-playlist-control.js' ), array(), KALTURA_PLUGIN_VERSION, true );
-		
+		wp_register_style( 'kaltura-playlist-stub', KalturaHelpers::cssUrl( 'css/playlist-stub.css' ), array(), KALTURA_PLUGIN_VERSION );
 		//nanoscroller
 		wp_register_script( 'kaltura-jquery-perfect-scrollbar', KalturaHelpers::jsUrl( 'js/perfect-scrollbar.jquery.min.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 		wp_register_style( 'kaltura-jquery-perfect-scrollbar', KalturaHelpers::cssUrl( 'css/perfect-scrollbar.min.css' ), array(), KALTURA_PLUGIN_VERSION );

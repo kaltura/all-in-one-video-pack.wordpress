@@ -11,7 +11,7 @@
 		</div>
 		<br />
 		<div class="wrap">
-			<a href="#" onclick="history.go(-1);"><?php echo esc_html( 'Back' ); ?></a>
+			<a href="javascript:history.go(-1);" onclick="history.go(-1);"><?php echo esc_html( 'Back' ); ?></a>
 		</div>
 	</div>
 <?php elseif ( $this->success ): ?>
