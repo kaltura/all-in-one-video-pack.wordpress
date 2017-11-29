@@ -242,12 +242,12 @@ EOF;
 		$playerId 		= 'kaltura_player_' . $randId;
 
 		$link = '';
-		$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a>, ';
-		$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Hosting">Video Hosting</a>, ';
-		$link .= '<a href="http://corp.kaltura.com/Products/Features/Video-Streaming">Video Streaming</a>, ';
-		$link .= '<a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>';
+		$link .= '<a href="https://corp.kaltura.com/Products/Features/Video-Management">Video Management</a>, ';
+		$link .= '<a href="https://corp.kaltura.com/Products/Features/Video-Hosting">Video Hosting</a>, ';
+		$link .= '<a href="https://corp.kaltura.com/Products/Features/Video-Streaming">Video Streaming</a>, ';
+		$link .= '<a href="https://corp.kaltura.com/products/video-platform-features">Video Platform</a>';
 		$html ='<script src="'.KalturaHelpers::getServerUrl().'/p/'.KalturaHelpers::getOption("kaltura_partner_id").'/sp/'.KalturaHelpers::getOption("kaltura_partner_id").'00/embedIframeJs/uiconf_id/'.$embedOptions['uiconfid'].'/partner_id/'.KalturaHelpers::getOption("kaltura_partner_id").'"></script>';
-		$poweredByBox ='<div class="kaltura-powered-by" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="http://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="http://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
+		$poweredByBox ='<div class="kaltura-powered-by" style="width: ' . $embedOptions["width"] . 'px; "><div><a href="https://corp.kaltura.com/Products/Features/Video-Player" target="_blank">Video Player</a> by <a href="https://corp.kaltura.com/" target="_blank">Kaltura</a></div></div>';
 
 		if ($isComment)
 		{
