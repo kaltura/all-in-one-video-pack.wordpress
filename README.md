@@ -1,11 +1,18 @@
 # Kaltura All-in-One Video Plugin for WordPress
 ## Easily add full video capabilities to your blog
+
 Maintainer: Kaltura
+
 Tags: admin, advertising, audio, camera, collaboration, Encoding, gallery, images, interactive, kaltura, media, media library, photo, picture, player, playlist, plugin, podcast, post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video gallery, video-ads, vlog, webcam, widget, mobile
+
 Requires at least: WP of version 4.1
+
 Tested up to: 4.6.1
+
 Stable tag: 2.7
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
@@ -77,7 +84,7 @@ In general, if facing issues, please first [run WP in debug mode](https://codex.
 
 *I installed the plugin, but installation failed after pressing Complete Installation, showing me a text in a red rectangle?*
 
-Cause: Either the curl extension or certain curl functions are disabled on your server or your hosting blocks API calls to the Kaltura servers.
+Cause: Either the cURL extension or certain cURL functions are disabled on your server or your hosting blocks API calls to the Kaltura servers.
 
 Solution 1: Enable curl and its functions on the server (or have the hosting company enable it for you).
 
