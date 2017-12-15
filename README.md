@@ -5,11 +5,9 @@ Maintainer: Kaltura
 
 Tags: admin, advertising, audio, camera, collaboration, Encoding, gallery, images, interactive, kaltura, media, media library, photo, picture, player, playlist, plugin, podcast, post, posts, record, rich-media, richmedia cms, transcoding, video, video advertising, video blog, video gallery, video-ads, vlog, webcam, widget, mobile
 
-Requires at least: WP of version 4.1
+Minimum WP version: 4.1; Tested up to: 4.6.1
 
-Tested up to: 4.6.1
-
-Stable tag: 2.7
+Stable plugin version: 2.7
 
 License: GPLv2 or later
 
