@@ -84,13 +84,6 @@ The Kaltura WP plugin is written for PHP5 with the use of classes and static mem
 Upgrade to PHP5 or later. If upgrading doesn't solve this issue or you already have PHP5 on your server, post the error information on the [forum](https://forum.kaltura.org) and we'll help you.
 
 
-## Screenshots 
-
-1. Blog main page with video posts
-2. Add Video Screen
-3. Entries Library
-4. The plugin settings page
-
 ## Join the Kaltura Community and Contribute to Open Source Video!
 
 Creative potential, innovation, and competition all correlate directly with the balance of freedoms and constraints we face in sharing, manipulating, finding, and watching video. For instance, to create remixes or mash-ups, video artists need access to the original materials in order to reformulate their new work. In an ideal world, everyday users will be able to easily copy and paste portions of video, as they already can with text. Of course the benefits of a more open system will go far beyond remixing, cutting, and pasting - when open video standards and formats are widely embraced, it will be possible to index, search, and access the medium much as we do text. This will be the real revolution for video. 
