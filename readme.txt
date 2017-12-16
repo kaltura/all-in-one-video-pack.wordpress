@@ -32,7 +32,7 @@ You can also connect your Kaltura Video plugin to Kaltura’s Community Edition-
 * Customize and brand your video players: both looks and functionality.
 * Support for Advertising & Monetization
 * Social Sharing - easily share across social networks, blogs, and sites 
-* Support for Wordpress multisite deployments
+* Support for Wordpress multi-site deployments
 * Enterprise grade video technology: end-to-end security, reliability, scalability and flexibility.
 
 **What’s New in Version 2.7**
@@ -52,6 +52,12 @@ You can also connect your Kaltura Video plugin to Kaltura’s Community Edition-
 See release notes [here](http://knowledge.kaltura.com/node/905).
 
 Showcase your blog, see examples and pictures of the plugin and get support in our [forum](https://forum.kaltura.org/).
+
+== Prerequisites ==
+This plugin requires the following PHP extensions:
+* XML
+* Mcrypt
+* cURL
 
 == Installation ==
 
@@ -84,7 +90,7 @@ It might be caused due to an old version of PHP.
 
 The Kaltura wp plugin is written for PHP4 and PHP5 with the use of classes and static members, these are not supported on earlier versions of PHP.
 
-Upgrade to PHP5 / later. If upgrading doesn’t solve this issue or you already have PHP5 on your server, post the error information on the forum and we’ll help you. (http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums).
+Upgrade to PHP5 / later. If upgrading doesn't solve this issue or you already have PHP5 on your server, post the error information on the forum and we’ll help you. (http://www.kaltura.org/forums/applications-and-cms-extensions/wordpress-kaltura-plugin-all-one-video-pack-forums).
 
 Support for PHP4 was added on version 1.0
 
@@ -120,14 +126,14 @@ Join the community and help us Open Source Video - http://www.kaltura.org/
 * Removed video comments
 
 = Version 2.6 =
-* WordPress VIP version inlcuding sanitization, escaping and many other code improvements.
+* WordPress VIP version including sanitization, escaping and many other code improvements.
 
 = Version 2.5.1 =
 * Fixed PHP notice
 
 = Version 2.5 =
 * Full support for WordPress 3.5.2
-* MultiUser Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
+* Multi-user Support - install the plugin once, use video in multiple WordPress site instances (separate instances with centralized management and administration of all content)
 * Mobile playback support – reach anyone on any device (including iOS, Android), web, and set-top boxes.
 
 = Version 2.4.4 =
@@ -140,7 +146,7 @@ Join the community and help us Open Source Video - http://www.kaltura.org/
 * Removed link back to Kaltura for statistics gathering.
 
 = Version 2.4 =
-* MultiUser Support
+* Multi-user Support
 * New default players
 * Option to use custom KMC players within WordPress
 * Option to automatically generate video posts using categories from within the user’s KMC
