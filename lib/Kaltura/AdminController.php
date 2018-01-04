@@ -15,6 +15,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 		}
 
 		wp_enqueue_script( 'kaltura-admin' );
+		wp_enqueue_style( 'kaltura-admin' );
 		wp_enqueue_script( 'kaltura-jquery-validate' );
 		$kalturaPartnerId  = KalturaHelpers::getOption( 'kaltura_partner_id' );
 		$partnerLogin      = KalturaHelpers::getRequestParam( 'partner_login' );
