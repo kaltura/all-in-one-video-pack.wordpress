@@ -29,6 +29,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_action( 'admin_menu', array($this, 'adminMenuAction' ) );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueueScripts' ) );
 		add_action( 'admin_enqueue_scripts', array($this, 'adminEnqueueScripts' ) );
+		add_action( 'edit_form_top', array( $this, 'editorEnqueueScripts' ) );
 
 		// media upload actions
 		add_action( 'media_upload_kaltura_upload', array($this, 'mediaUploadAction' ) );
@@ -106,14 +107,12 @@ class Kaltura_AllInOneVideoPackPlugin {
 		wp_register_style( 'kaltura-jquery.fileupload-ui', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui.css' ), array( ), KALTURA_PLUGIN_VERSION );
 		wp_register_style( 'kaltura-jquery.fileupload-ui-kaltura', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui-kaltura.css' ), array( 'kaltura-jquery.fileupload-ui', 'kaltura-bootstrap' ), KALTURA_PLUGIN_VERSION );
 		wp_register_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
-		
-		// If admin page is post.
-		$screen = get_current_screen();
-		if ( 'post' === $screen->base ) {
-			// Enqueue the necessary scripts for tinymce to work properly.
-			wp_enqueue_script( 'kaltura' );
-			wp_enqueue_script( 'kaltura-admin' );
-		}
+	}
+
+	function editorEnqueueScripts() {
+		// Enqueue the necessary scripts for kaltura_tinymce.js to work properly.
+		wp_enqueue_script( 'kaltura' );
+		wp_enqueue_script( 'kaltura-admin' );
 	}
 
 	function executeLibraryController() {
