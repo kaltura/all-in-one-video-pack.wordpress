@@ -14,6 +14,7 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 		}
 
 		wp_enqueue_script( 'kaltura-admin' );
+		wp_enqueue_style( 'kaltura-admin' );
 		$kalturaPartnerId = get_site_option( 'kaltura_partner_id' );
 		$partnerLogin     = KalturaHelpers::getRequestParam( 'partner_login', false );
 		if ( ! $kalturaPartnerId || $partnerLogin ) {

@@ -29,6 +29,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 		add_action( 'admin_menu', array($this, 'adminMenuAction' ) );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueueScripts' ) );
 		add_action( 'admin_enqueue_scripts', array($this, 'adminEnqueueScripts' ) );
+		add_action( 'edit_form_top', array( $this, 'editorEnqueueScripts' ) );
 
 		// media upload actions
 		add_action( 'media_upload_kaltura_upload', array($this, 'mediaUploadAction' ) );
@@ -70,6 +71,7 @@ class Kaltura_AllInOneVideoPackPlugin {
 	}
 
 	public function adminEnqueueScripts() {
+		wp_register_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array('jquery'), KALTURA_PLUGIN_VERSION, false );
 		wp_register_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KALTURA_PLUGIN_VERSION, false );
 		wp_register_script( 'kaltura-player-selector', KalturaHelpers::jsUrl( 'js/kaltura-player-selector.js' ), array(), KALTURA_PLUGIN_VERSION, true );
 		wp_register_script( 'kaltura-entry-status-checker', KalturaHelpers::jsUrl( 'js/kaltura-entry-status-checker.js' ), array(), KALTURA_PLUGIN_VERSION, true );
@@ -104,12 +106,13 @@ class Kaltura_AllInOneVideoPackPlugin {
 		), KALTURA_PLUGIN_VERSION, true );
 		wp_register_style( 'kaltura-jquery.fileupload-ui', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui.css' ), array( ), KALTURA_PLUGIN_VERSION );
 		wp_register_style( 'kaltura-jquery.fileupload-ui-kaltura', KalturaHelpers::cssUrl( 'chunked-file-upload-jquery/css/jquery.fileupload-ui-kaltura.css' ), array( 'kaltura-jquery.fileupload-ui', 'kaltura-bootstrap' ), KALTURA_PLUGIN_VERSION );
+		wp_register_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
+	}
 
-		wp_enqueue_script( 'kaltura', KalturaHelpers::jsUrl( 'js/kaltura.js' ), array(), KALTURA_PLUGIN_VERSION, false );
-		wp_enqueue_script( 'kaltura-admin', KalturaHelpers::jsUrl( 'js/kaltura-admin.js' ), array(), KALTURA_PLUGIN_VERSION, false );
-
-		wp_enqueue_style( 'kaltura-admin', KalturaHelpers::cssUrl( 'css/admin.css' ), array(), KALTURA_PLUGIN_VERSION );
-		wp_enqueue_style( 'kaltura' );
+	function editorEnqueueScripts() {
+		// Enqueue the necessary scripts for kaltura_tinymce.js to work properly.
+		wp_enqueue_script( 'kaltura' );
+		wp_enqueue_script( 'kaltura-admin' );
 	}
 
 	function executeLibraryController() {
