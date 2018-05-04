@@ -1,6 +1,7 @@
 <?php
 KalturaHelpers::protectView( $this );
 $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
+$resultNotFoundMessage = "Result not found.";
 ?>
 <?php if (!$this->isLibrary): ?>
 	<?php media_upload_header(); ?>
@@ -37,9 +38,9 @@ $kaction = KalturaHelpers::getRequestParam( 'kaction', 'browse' );
 
 		<?php if ( ! count( $this->result->objects ) ): ?>
 			<?php if ( $kaction == 'library' ) : ?>
-				<p class="info">Result not found.</p>
+				<p class="info"><?php echo __($resultNotFoundMessage); ?></p>
 			<?php else: ?>
-				<div class="updated kaltura-updated">Result not found.</div>
+				<div class="updated kaltura-updated"><?php echo __($resultNotFoundMessage); ?></div>
 			<?php endif; ?>
 		<?php endif; ?>
 		
