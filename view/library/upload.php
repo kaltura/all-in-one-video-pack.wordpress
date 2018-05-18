@@ -133,7 +133,7 @@
 				</div>
 
 				<div id="successmsg" class="alert alert-success hidden text-center"></div>
-				<p class="uploadMediaDetails">All common video, audio and image formats in all resolutions are accepted by Kaltura. <a href="https://knowledge.kaltura.com/node/79" target="_blank">Learn more</a>.</p>
+				<p class="uploadMediaDetails"><?php echo __('All common video, audio and image formats in all resolutions are accepted by Kaltura.'); ?> <a href="https://knowledge.kaltura.com/node/79" target="_blank">Learn more</a>.</p>
 			</div>
 		</div>
 	</div>

@@ -152,7 +152,7 @@ $the_user_ks_to_use = 'M2I4NmFkMmIxZmEyODBlZmI5ODVmNjViNjdjNGQzNjk3M2VlODQwN3w0N
 		            <span class="large">
 		                <strong>Upload Completed!</strong> Next, call the <a href="https://developer.kaltura.com/api-docs/#/media.add" target="_blank">media.add</a> and <a href="https://developer.kaltura.com/api-docs/#/media.addContent" target="_blank">media.addContent</a> API actions to create your Kaltura Media Entry and associate it with this newly uploaded file. Once media.addContent is called, the transcoding process will begin and your media entry will be prepared for playback and sharing.</span>
 		        </div>
-		        <p class="uploadMediaDetails">All common video, audio and image formats in all resolutions are accepted by Kaltura. <a href="https://knowledge.kaltura.com/node/79" target="_blank">Learn more</a>.</p>
+		        <p class="uploadMediaDetails"><?php echo __('All common video, audio and image formats in all resolutions are accepted by Kaltura.'); ?> <a href="https://knowledge.kaltura.com/node/79" target="_blank">Learn more</a>.</p>
 	        </div>
 	        <div id="entry_details" class="entry_details hidden">
 			</div>
