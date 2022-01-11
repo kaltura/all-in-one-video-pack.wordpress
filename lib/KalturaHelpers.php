@@ -206,9 +206,9 @@ class KalturaHelpers {
 
 		if ( isset( $settings[$name] ) ) {
 			return $settings[$name];
-		} else {
-			return $default;
 		}
+
+		return $default;
 	}
 
 	public static function getPlayerDimension() {
@@ -251,7 +251,7 @@ class KalturaHelpers {
 			return (bool)$enabledByFilter;
 		}
 
-		return isset($features[$name]) ? (bool)$features[$name] : false;
+		return isset( $features[ $name ] ) && $features[ $name ];
 	}
 
 	public static function getFeatures() {
