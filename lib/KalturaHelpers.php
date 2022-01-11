@@ -1,6 +1,8 @@
 <?php
 
 class KalturaHelpers {
+	const MAX_CATERGORIES = 14;
+
 	private static $_settings = null;
 
 	public static function getKalturaConfiguration() {
@@ -398,7 +400,7 @@ class KalturaHelpers {
 	 *
 	 * @return string
 	 */
-	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry, $maxCategories = 14 ) {
+	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry) {
 		$rootCategory = self::getOption( 'kaltura_root_category' );
 
 		if ( ! $baseEntry->categories ) {
@@ -406,7 +408,7 @@ class KalturaHelpers {
 		}
 
 		$mediaCategories = explode( ',', $baseEntry->categories );
-		$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
+		$mediaCategories = array_slice( $mediaCategories, 0, self::MAX_CATERGORIES );
 		foreach ( $mediaCategories as $key => $mediaCategory ) {
 			$fullEntryCategoryWithoutRoot = '';
 			if ( $rootCategory ) {
