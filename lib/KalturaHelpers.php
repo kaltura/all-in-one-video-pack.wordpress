@@ -26,7 +26,7 @@ class KalturaHelpers {
 			return sanitize_user( self::getOption( 'anonymous_user_id' ) );
 		}
 
-		if ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
+		if ( get_option( 'kaltura_user_identifier', 'user_login' ) === 'user_id' ) {
 			return sanitize_user( $user_ID );
 		}
 
