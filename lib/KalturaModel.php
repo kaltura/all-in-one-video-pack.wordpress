@@ -243,41 +243,31 @@ class KalturaModel {
 
 			$includePart = array_intersect($tags, $includeTags);
 			$excludePart = array_intersect($tags, $excludeTags);
-			if (count($includePart) == count($includeTags) && count($excludePart) == 0) {
-				array_push( $players->objects, $uiConf );
+			if ( count($excludePart) === 0 && count($includePart) === count($includeTags) ) {
+				$players->objects[] = $uiConf;
 			}
 		}
 		
 		return $players;
 	}
 	/**
-	 * @return Kaltura_Client_Type_UiConfListResponse
+	 * @return stdClass
 	 */
 	public function listPlayersUiConfs() {
 		$includeTags = array('player');
 		$excludeTags = array('playlist');
-		
-		$players = $this->listPlayersByTags($includeTags, $excludeTags);
 
-		return $players;
+		return $this->listPlayersByTags($includeTags, $excludeTags);
 	}
 	
 	/**
-	 * @return Kaltura_Client_Type_UiConfListResponse
+	 * @return stdClass
 	 */
 	public function listPlaylistPlayersUiConfs() {
 		$includeTags = array('playlist');
 		$excludeTags = array();
-		
-		$players = $this->listPlayersByTags($includeTags, $excludeTags);
-		
-		return $players;
-	}
 
-	public function getPlayerUiConf( $uiConfId ) {
-		$uiConfId = intval( $uiConfId );
-
-		return $this->_client->uiConf->get( $uiConfId );
+		return $this->listPlayersByTags($includeTags, $excludeTags);
 	}
 
 	protected function getMaxPager() {
@@ -315,7 +305,7 @@ class KalturaModel {
 	 * @param $page
 	 * @param $searchString
 	 *
-	 * @return Kaltura_Client_MultiRequestSubResult|mixed
+	 * @return Kaltura_Client_Type_PlaylistListResponse
 	 */
 	public function getUserPlaylists($userId, $pageSize, $page, $searchString) {
 		$pager = new Kaltura_Client_Type_FilterPager();
