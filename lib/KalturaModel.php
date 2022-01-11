@@ -198,7 +198,6 @@ class KalturaModel {
 	public function registerPartner( $partner ) {
 		$config = $this->_client->getConfig();
 		$this->_client->setKs( null );
-		$config->partnerId   = null;
 		$oldTimeout          = $config->curlTimeout;
 		$config->curlTimeout = 40;
 		$result              = $this->_client->partner->register( $partner );
