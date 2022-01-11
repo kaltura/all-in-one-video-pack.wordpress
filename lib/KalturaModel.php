@@ -9,22 +9,22 @@ class KalturaModel {
 	/**
 	 * @var string
 	 */
-	protected $_session = null;
+	protected $_session;
 
 	/**
 	 * @var Kaltura_Client_Client
 	 */
-	protected $_client = null;
+	protected $_client;
 
 	/**
 	 * @var string
 	 */
-	protected $_userId = null;
+	protected $_userId;
 
 	/**
 	 * @var string
 	 */
-	protected $_partnerId = null;
+	protected $_partnerId;
 
 
 	private function __construct() {

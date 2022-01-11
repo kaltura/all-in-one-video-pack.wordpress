@@ -3,7 +3,7 @@
 class KalturaHelpers {
 	const MAX_CATERGORIES = 14;
 
-	private static $_settings = null;
+	private static $_settings;
 
 	public static function getKalturaConfiguration() {
 		$config = new Kaltura_Client_Configuration();
