@@ -54,7 +54,7 @@ class KalturaModel {
 	}
 
 	public function getAdminSession( $privileges = '' ) {
-		$privileges =  KalturaSanitizer::privileges( $privileges );
+		$privileges = KalturaSanitizer::privileges( $privileges );
 
 		return sanitize_text_field( $this->createKS( $this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::ADMIN, $privileges ) );
 	}
@@ -135,25 +135,24 @@ class KalturaModel {
 	 * @return Kaltura_Client_Type_BaseEntryListResponse
 	 */
 	public function listEntriesByCategoriesAndWord( $pageSize, $page, $categoryIds, $word, $ownerType ) {
-		$page       = intval( $page );
-		$pageSize   = intval( $pageSize );
-		$word       = sanitize_text_field( $word );
-		$categoryIds =  array_map('absint', $categoryIds);
-		$rootCategory    = absint( KalturaHelpers::getOption( 'kaltura_root_category' ) );
+		$page         = intval( $page );
+		$pageSize     = intval( $pageSize );
+		$word         = sanitize_text_field( $word );
+		$categoryIds  = array_map( 'absint', $categoryIds );
+		$rootCategory = absint( KalturaHelpers::getOption( 'kaltura_root_category' ) );
 
 		$filter          = new Kaltura_Client_Type_BaseEntryFilter();
 		$filter->orderBy = '-createdAt';
 
 		$types = array(
-				Kaltura_Client_Enum_EntryType::MEDIA_CLIP
+			Kaltura_Client_Enum_EntryType::MEDIA_CLIP
 		);
 		if ( KalturaHelpers::isFeatureEnabled( 'youtube_entries' ) ) {
 			$types[] = Kaltura_Client_Enum_EntryType::EXTERNAL_MEDIA;
 		}
 		$filter->typeIn = implode( ',', $types );
 
-		switch($ownerType)
-		{
+		switch ( $ownerType ) {
 			case 'all-media':
 				// default filter
 				break;
@@ -168,11 +167,12 @@ class KalturaModel {
 				break;
 		}
 
-		if ( $rootCategory )
+		if ( $rootCategory ) {
 			$categoryIds[] = $rootCategory;
+		}
 
 		$filter->categoriesIdsMatchOr = join( ', ', $categoryIds );
-		$filter->searchTextMatchOr = $word;
+		$filter->searchTextMatchOr    = $word;
 
 		$pager            = new Kaltura_Client_Type_FilterPager();
 		$pager->pageSize  = $pageSize;
@@ -224,50 +224,51 @@ class KalturaModel {
 
 		return $this->_client->category->listAction( $filter, $this->getMaxPager() );
 	}
-	
-	public function listPlayersByTags($includeTags, $excludeTags) {
-		$filter                 = new Kaltura_Client_Type_UiConfFilter();
-		$filter->objTypeEqual   = Kaltura_Client_Enum_UiConfObjType::PLAYER;
-		$filter->orderBy        = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
-		
-		$uiConfs = $this->_client->uiConf->listAction( $filter );
-		
-		// filter out playlist players
-		$players = new stdClass();
-		$players->objects = array();
-		
-		
-		foreach( $uiConfs->objects as $uiConf ) {
-			$tags = explode(',', $uiConf->tags);
-			$tags = array_map('trim', $tags);
 
-			$includePart = array_intersect($tags, $includeTags);
-			$excludePart = array_intersect($tags, $excludeTags);
-			if ( count($excludePart) === 0 && count($includePart) === count($includeTags) ) {
+	public function listPlayersByTags( $includeTags, $excludeTags ) {
+		$filter               = new Kaltura_Client_Type_UiConfFilter();
+		$filter->objTypeEqual = Kaltura_Client_Enum_UiConfObjType::PLAYER;
+		$filter->orderBy      = Kaltura_Client_Enum_UiConfOrderBy::CREATED_AT_DESC;
+
+		$uiConfs = $this->_client->uiConf->listAction( $filter );
+
+		// filter out playlist players
+		$players          = new stdClass();
+		$players->objects = array();
+
+
+		foreach ( $uiConfs->objects as $uiConf ) {
+			$tags = explode( ',', $uiConf->tags );
+			$tags = array_map( 'trim', $tags );
+
+			$includePart = array_intersect( $tags, $includeTags );
+			$excludePart = array_intersect( $tags, $excludeTags );
+			if ( count( $excludePart ) === 0 && count( $includePart ) === count( $includeTags ) ) {
 				$players->objects[] = $uiConf;
 			}
 		}
-		
+
 		return $players;
 	}
+
 	/**
 	 * @return stdClass
 	 */
 	public function listPlayersUiConfs() {
-		$includeTags = array('player');
-		$excludeTags = array('playlist');
+		$includeTags = array( 'player' );
+		$excludeTags = array( 'playlist' );
 
-		return $this->listPlayersByTags($includeTags, $excludeTags);
+		return $this->listPlayersByTags( $includeTags, $excludeTags );
 	}
-	
+
 	/**
 	 * @return stdClass
 	 */
 	public function listPlaylistPlayersUiConfs() {
-		$includeTags = array('playlist');
+		$includeTags = array( 'playlist' );
 		$excludeTags = array();
 
-		return $this->listPlayersByTags($includeTags, $excludeTags);
+		return $this->listPlayersByTags( $includeTags, $excludeTags );
 	}
 
 	protected function getMaxPager() {
@@ -296,7 +297,7 @@ class KalturaModel {
 
 		return strtolower( $entry->userId ) === $loggedInUserId;
 	}
-	
+
 	/**
 	 * Fetch Playlists for current user
 	 *
@@ -307,41 +308,41 @@ class KalturaModel {
 	 *
 	 * @return Kaltura_Client_Type_PlaylistListResponse
 	 */
-	public function getUserPlaylists($userId, $pageSize, $page, $searchString) {
-		$pager = new Kaltura_Client_Type_FilterPager();
-		$pager->pageSize = $pageSize;
+	public function getUserPlaylists( $userId, $pageSize, $page, $searchString ) {
+		$pager            = new Kaltura_Client_Type_FilterPager();
+		$pager->pageSize  = $pageSize;
 		$pager->pageIndex = $page;
-		
-		$filter = new Kaltura_Client_Type_PlaylistFilter();
-		$filter->userIdEqual = $userId;
-		$filter->orderBy = Kaltura_Client_Enum_PlaylistOrderBy::CREATED_AT_DESC;
+
+		$filter                    = new Kaltura_Client_Type_PlaylistFilter();
+		$filter->userIdEqual       = $userId;
+		$filter->orderBy           = Kaltura_Client_Enum_PlaylistOrderBy::CREATED_AT_DESC;
 		$filter->searchTextMatchOr = $searchString;
 
-		return  $this->getPlaylistService()->listAction($filter, $pager);
+		return $this->getPlaylistService()->listAction( $filter, $pager );
 	}
-	
+
 	/**
 	 * @param $playlists
 	 *
 	 * @return array
 	 */
-	public function getPlaylistsData($playlistId) {
+	public function getPlaylistsData( $playlistId ) {
 		$playlistItems = array();
-		
+
 		$playlistService = $this->getPlaylistService();
-		$playlistResults =$playlistService->execute($playlistId);
-		
-		if (!empty($playlistResults)) {
+		$playlistResults = $playlistService->execute( $playlistId );
+
+		if ( ! empty( $playlistResults ) ) {
 			$playlistItems = $playlistResults;
 		}
+
 		return $playlistItems;
 	}
-	
+
 	/**
 	 * @return Kaltura_Client_PlaylistService
 	 */
-	private function getPlaylistService()
-	{
-		return new Kaltura_Client_PlaylistService($this->_client);
+	private function getPlaylistService() {
+		return new Kaltura_Client_PlaylistService( $this->_client );
 	}
 }
