@@ -394,33 +394,36 @@ class KalturaHelpers {
 	 * Create string of media categories that assigned to the entry.
 	 *
 	 * @param Kaltura_Client_Type_BaseEntry $baseEntry
-	 * @return array
+	 * @param int $maxCategories
+	 *
+	 * @return string
 	 */
 	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry, $maxCategories = 14 ) {
 		$rootCategory = self::getOption( 'kaltura_root_category' );
-		if ( $baseEntry->categories ) {
-			$mediaCategories = explode( ',', $baseEntry->categories );
-			$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
-			foreach ( $mediaCategories as $key => $mediaCategory ) {
-				$fullEntryCategoryWithoutRoot = '';
-				if ( $rootCategory ) {
-					$pos = strpos( $mediaCategory, '>' );
-					if ( $pos !== false ) {
-						$fullEntryCategoryWithoutRoot = substr( $mediaCategory, $pos + 1 );
-					}
-				} else {
-					$fullEntryCategoryWithoutRoot = $mediaCategory;
-				}
 
-				$fullEntryCategoryWithoutRoot = str_replace( '>', ' > ', $fullEntryCategoryWithoutRoot );
-				$fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; ' . $fullEntryCategoryWithoutRoot;
-				$mediaCategories[$key] = $fullEntryCategoryWithoutRoot;
-			}
-			$mediaCategories = join( '&#10;', $mediaCategories );
-		} else {
-			$mediaCategories = 'No Category';
+		if ( ! $baseEntry->categories ) {
+			return 'No Category';
 		}
-		return $mediaCategories;
+
+		$mediaCategories = explode( ',', $baseEntry->categories );
+		$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
+		foreach ( $mediaCategories as $key => $mediaCategory ) {
+			$fullEntryCategoryWithoutRoot = '';
+			if ( $rootCategory ) {
+				$pos = strpos( $mediaCategory, '>' );
+				if ( $pos !== false ) {
+					$fullEntryCategoryWithoutRoot = substr( $mediaCategory, $pos + 1 );
+				}
+			} else {
+				$fullEntryCategoryWithoutRoot = $mediaCategory;
+			}
+
+			$fullEntryCategoryWithoutRoot = str_replace( '>', ' > ', $fullEntryCategoryWithoutRoot );
+			$fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; ' . $fullEntryCategoryWithoutRoot;
+			$mediaCategories[ $key ]      = $fullEntryCategoryWithoutRoot;
+		}
+
+		return implode( '&#10;', $mediaCategories );
 	}
 
 	public static function getCountries() {
