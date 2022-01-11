@@ -220,14 +220,14 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 				// otherwise, we reset to empty array to allow all players
 				update_option( 'kaltura_allowed_players', array() );
 			}
-			
+
 			if ($enableEmbedPlaylist = (bool)$enableEmbedPlaylist) {
 				$placeholderArray = array();
 				if ($enableEmbedPlaylist && !$playlistEmbedAllowed) {
 					$allowedPlaylistPlayers   = array_keys(KalturaHelpers::getAllowedPlaylistPlayers());
 					$placeholderArray = array_map('strval', $allowedPlaylistPlayers);
 				}
-				
+
 				$allowedPostPlaylistPlayers     = KalturaHelpers::getRequestPostParam( 'allowed_playlist_players' );
 				$allowedPlaylistPlayers     = ! empty( $allowedPostPlaylistPlayers ) && is_array($allowedPostPlaylistPlayers) ? $allowedPostPlaylistPlayers : $placeholderArray;
 				// only set allowed players when it was provided and when not all players were selected
@@ -238,7 +238,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 					update_option( 'kaltura_allowed_playlist_players', array() );
 				}
 			}
-			
+
 			$params['showMessage'] = true;
 		} else {
 			$kmodel = KalturaModel::getInstance();
