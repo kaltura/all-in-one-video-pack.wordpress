@@ -66,21 +66,6 @@ class KalturaModel {
 		return sanitize_text_field( $this->createKS( $this->_partnerId, $this->_userId, Kaltura_Client_Enum_SessionType::USER, $privileges, $expiry ) );
 	}
 
-	public function getAdminSessionUsingApi($partnerId, $adminSecret, $privileges = "", $expiry = 86400)
-	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$this->_client->setKs(null);
-		$this->_client->getConfig()->partnerId = null;
-		return $this->_client->session->start($adminSecret, $userId, Kaltura_Client_Enum_SessionType::ADMIN, $partnerId, $expiry, $privileges);
-	}
-	public function getClientSideSessionUsingApi($partnerId, $secret, $privileges = "", $expiry = 86400)
-	{
-		$userId    = KalturaHelpers::getLoggedUserId();
-		$this->_client->setKs(null);
-		$this->_client->getConfig()->partnerId = null;
-		return $this->_client->session->start($secret, $userId, Kaltura_Client_Enum_SessionType::USER, $partnerId, $expiry, $privileges);
-	}
-
 	public function createKS( $partnerId, $userId, $sessionType = Kaltura_Client_Enum_SessionType::USER, $privileges = '', $expiry = 86400 ) {
 		$partnerId  = intval( $partnerId );
 		$userId     = sanitize_user( $userId );
