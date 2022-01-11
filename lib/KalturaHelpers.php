@@ -297,10 +297,10 @@ class KalturaHelpers {
 			default:
 				$align = '';
 		}
-		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
+		$isPlaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
 		$ks                        = self::getKSForPlayer($params['entryid']);
 		$randId         = md5( $params['wid'] . $params['entryid'] . rand( 0, time() ) );
-		$flashVars       = self::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist, $randId);
+		$flashVars       = self::getKalturaPlayerFlashVars($ks, $params['entryid'], $isPlaylist, $randId);
 
 		return array(
 			'height'           => $params['height'],
@@ -313,7 +313,7 @@ class KalturaHelpers {
 			'responsive'       => $params['responsive'],
 			'hoveringControls' => $params['hoveringcontrols'],
 			'flashVars'        => $flashVars,
-			'isPlaylist'       => $isplaylist,
+			'isPlaylist'       => $isPlaylist,
 			'randId'           => $randId
 		);
 	}
