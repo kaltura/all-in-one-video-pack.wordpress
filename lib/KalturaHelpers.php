@@ -5,14 +5,14 @@ class KalturaHelpers {
 
 	public static function getKalturaConfiguration() {
 		$config = new Kaltura_Client_Configuration();
-		$config->serviceUrl = KalturaHelpers::getServerUrl();
+		$config->serviceUrl = self::getServerUrl();
 		$config = apply_filters('kaltura_client_config_filter', $config);
 
 		return $config;
 	}
 
 	public static function getServerUrl($path = null) {
-		$url =  KalturaHelpers::getOption( 'server_url' );
+		$url =  self::getOption( 'server_url' );
 		$url = rtrim( $url, '/' );
 		if ($path)
 			$url .= $path;
@@ -21,7 +21,7 @@ class KalturaHelpers {
 	}
 
 	public static function getCdnUrl($path = null) {
-		$url = KalturaHelpers::getOption( 'cdn_url' );
+		$url = self::getOption( 'cdn_url' );
 		$url = rtrim( $url, '/' );
 		if ($path)
 			$url .= $path;
@@ -32,7 +32,7 @@ class KalturaHelpers {
 	public static function getLoggedUserId() {
 		global $user_ID, $user_login;
 		if ( ! $user_ID && ! $user_login ) {
-			return sanitize_user( KalturaHelpers::getOption( 'anonymous_user_id' ) );
+			return sanitize_user( self::getOption( 'anonymous_user_id' ) );
 		} elseif ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
 			return sanitize_user( $user_ID );
 		} else {
@@ -87,10 +87,10 @@ class KalturaHelpers {
 
 	public static function getContributionWizardFlashVars( $ks ) {
 		$flashVars                  = array();
-		$flashVars['userId']        = sanitize_user( KalturaHelpers::getLoggedUserId() );
+		$flashVars['userId']        = sanitize_user( self::getLoggedUserId() );
 		$flashVars['sessionId']     = sanitize_text_field( $ks );
-		$flashVars['partnerId']     = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$flashVars['subPartnerId']  = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) ) * 100;
+		$flashVars['partnerId']     = intval( self::getOption( 'kaltura_partner_id' ) );
+		$flashVars['subPartnerId']  = intval( self::getOption( 'kaltura_partner_id' ) ) * 100;
 		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
 		$flashVars['close']         = 'kaltura_onContributionWizardClose';
 		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
@@ -123,22 +123,22 @@ class KalturaHelpers {
 		$flashVars['controlBarContainer']['hover']       = true;
 		return $flashVars;
 	}
-	
+
 	public static function getKSForPlayer($entryId) {
-		$adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
-		$userId = KalturaHelpers::getLoggedUserId();
+		$adminSecret = sanitize_text_field( self::getOption( 'kaltura_admin_secret' ));
+		$userId = self::getLoggedUserId();
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
-		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$partnerId = intval( self::getOption( 'kaltura_partner_id' ) );
 		$privileges = 'sview:' . $entryId . ',disableentitlement';
 		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 		return $ks;
 	}
-	
+
 	public static function flashVarsToString( $flashVars = array() ) {
 		$flashVarsStr = http_build_query($flashVars);
 		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
 	}
-	
+
 	public static function flashVarsSanitize( $flashVars = array() ) {
 		foreach ( $flashVars as $key => &$value ) {
 			if ( is_array( $value ) ) {
@@ -152,29 +152,29 @@ class KalturaHelpers {
 				}
 			}
 		}
-		
+
 		return  $flashVars;
 	}
-	
+
 	public static function sendToEditorFlashVars($flashVars = array()) {
 		$flashVars = self::flashVarsSanitize($flashVars);
 		if (isset($flashVars['playlistAPI']['onPage'])) {
 			$flashVars['playlistAPI']['onPage'] = false;
 		}
-		
+
 		return $flashVars;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {
-		$scriptSrc = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
+		$scriptSrc = self::getServerUrl() . '/p/' . self::getOption( 'kaltura_partner_id' ) . '/sp/' . self::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
 		if ($uiConfId)
 			$scriptSrc .= '/uiconf_id/' . (int)$uiConfId;
-		$scriptSrc .= '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		$scriptSrc .= '/partner_id/' . self::getOption( 'kaltura_partner_id' );
 		return esc_url_raw($scriptSrc);
 	}
 
 	public static function getContributionWizardUrl( $uiConfId ) {
-		return esc_url_raw ( KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
+		return esc_url_raw ( self::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
 	}
 
 	public static function getFileUploadParams( $ks ) {
@@ -183,9 +183,9 @@ class KalturaHelpers {
 				'dynamicChunkSizeInitialChunkSize' => 1000000,
 				'dynamicChunkSizeThreshold'        => 50000000,
 				'dynamixChunkSizeMaxTime'          => 30,
-				'host'                             => KalturaHelpers::getServerUrl(),
-				'apiURL'                           => KalturaHelpers::getServerUrl( '/api_v3/' ),
-				'url'                              => KalturaHelpers::getServerUrl( '/api_v3/?service=uploadToken&action=upload&format=1' ),
+				'host'                             => self::getServerUrl(),
+				'apiURL'                           => self::getServerUrl( '/api_v3/' ),
+				'url'                              => self::getServerUrl( '/api_v3/?service=uploadToken&action=upload&format=1' ),
 				'ks'                               => $ks,
 				'fileTypes'                        => '*.mts;*.MTS;*.qt;*.mov;*.mpg;*.avi;*.mp3;*.m4a;*.wav;*.mp4;*.wma;*.vob;*.flv;*.f4v;*.asf;*.qt;*.mov;*.mpeg;*.avi;*.wmv;*.m4v;*.3gp;*.jpg;*.jpeg;*.bmp;*.png;*.gif;*.tif;*.tiff;*.mkv;*.QT;*.MOV;*.MPG;*.AVI;*.MP3;*.M4A;*.WAV;*.MP4;*.WMA;*.VOB;*.FLV;*.F4V;*.ASF;*.QT;*.MOV;*.MPEG;*.AVI;*.WMV;*.M4V;*.3GP;*.JPG;*.JPEG;*.BMP;*.PNG;*.GIF;*.TIF;*.TIFF;*.MKV;*.AIFF;*.arf;*.ARF;*.webm;*.WEBM;*.rm;*.RM;*.ra;*.RA;*.RV;*.rv;*.aiff',
 				'context'                          => '',
@@ -330,10 +330,10 @@ class KalturaHelpers {
 				$align = '';
 		}
 		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
-		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
+		$ks                        = self::getKSForPlayer($params['entryid']);
 		$randId         = md5( $params['wid'] . $params['entryid'] . rand( 0, time() ) );
-		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist, $randId);
-		
+		$flashVars       = self::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist, $randId);
+
 		return array(
 			'height'           => $params['height'],
 			'width'            => $params['width'],
@@ -351,7 +351,7 @@ class KalturaHelpers {
 	}
 
 	public static function getAllowedPlayers() {
-		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_players' );
+		$allowedPlayers = self::getOption( 'kaltura_allowed_players' );
 		if (!$allowedPlayers)
 			$allowedPlayers = array();
 
@@ -360,18 +360,18 @@ class KalturaHelpers {
 
 		return $players;
 	}
-	
+
 	public static function getAllowedPlaylistPlayers() {
-		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_playlist_players' );
+		$allowedPlayers = self::getOption( 'kaltura_allowed_playlist_players' );
 		if (!$allowedPlayers)
 			$allowedPlayers = array();
-		
+
 		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
 		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
-		
+
 		return $players;
 	}
-	
+
 	private static function _filterOldPlayers($allPlayers, $allowedPlayers) {
 		$supportedPlayers = array();
 		foreach($allPlayers as $player) {
@@ -406,7 +406,7 @@ class KalturaHelpers {
 	 * @return array
 	 */
 	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry, $maxCategories = 14 ) {
-		$rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
+		$rootCategory = self::getOption( 'kaltura_root_category' );
 		if ( $baseEntry->categories ) {
 			$mediaCategories = explode( ',', $baseEntry->categories );
 			$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
