@@ -24,11 +24,13 @@ class KalturaHelpers {
 		global $user_ID, $user_login;
 		if ( ! $user_ID && ! $user_login ) {
 			return sanitize_user( self::getOption( 'anonymous_user_id' ) );
-		} elseif ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
-			return sanitize_user( $user_ID );
-		} else {
-			return sanitize_user( $user_login );
 		}
+
+		if ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
+			return sanitize_user( $user_ID );
+		}
+
+		return sanitize_user( $user_login );
 	}
 
 	public static function getPluginUrl() {
