@@ -73,19 +73,6 @@ class KalturaHelpers {
 		}
 	}
 
-	public static function getContributionWizardFlashVars( $ks ) {
-		$flashVars                  = array();
-		$flashVars['userId']        = sanitize_user( self::getLoggedUserId() );
-		$flashVars['sessionId']     = sanitize_text_field( $ks );
-		$flashVars['partnerId']     = intval( self::getOption( 'kaltura_partner_id' ) );
-		$flashVars['subPartnerId']  = intval( self::getOption( 'kaltura_partner_id' ) ) * 100;
-		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
-		$flashVars['close']         = 'kaltura_onContributionWizardClose';
-		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
-
-		return $flashVars;
-	}
-
 	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false, $randId = null ) {
 		$ks                     = sanitize_text_field( $ks );
 		$entryId                = sanitize_key( $entryId );
@@ -160,10 +147,6 @@ class KalturaHelpers {
 		}
 		$scriptSrc .= '/partner_id/' . self::getOption( 'kaltura_partner_id' );
 		return esc_url_raw($scriptSrc);
-	}
-
-	public static function getContributionWizardUrl( $uiConfId ) {
-		return esc_url_raw ( self::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
 	}
 
 	public static function getFileUploadParams( $ks ) {

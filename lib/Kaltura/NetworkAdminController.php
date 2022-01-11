@@ -80,24 +80,19 @@ class Kaltura_NetworkAdminController extends Kaltura_BaseController {
 			}
 
 			$defaultPlayerType          = KalturaHelpers::getRequestPostParam( 'default_player_type' );
-			$defaultKCWType             = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
-			$defaultKCWType             = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
 			$showMediaFrom              = KalturaHelpers::getRequestPostParam( 'show_media_from' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 			$allowedPlayers             = KalturaHelpers::getRequestPostParam( 'allowed_players' );
 			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
-			$enableKcw                  = KalturaHelpers::getRequestPostParam( 'enable_kcw' );
 			$enableEmbedPlaylist        = KalturaHelpers::getRequestPostParam( 'allow_embed_playlist' );
 			$defaultPlayerDimensions    = KalturaHelpers::getRequestPostParam( 'default_player_dimensions', '16:9');
 
 			update_site_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_site_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
-			update_site_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_site_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_site_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
-			update_site_option( 'kaltura_enable_kcw', (bool)$enableKcw);
             update_site_option( 'kaltura_allow_embed_playlist', (bool)$enableEmbedPlaylist);
             update_site_option( 'kaltura_default_player_dimensions', sanitize_text_field((string)$defaultPlayerDimensions));
 

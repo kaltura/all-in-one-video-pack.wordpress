@@ -154,23 +154,6 @@ if (is_network_admin()) {
 					</td>
 				</tr>
 
-				<tr valign="top" class="advanced">
-					<td><label for="enable_kcw">Enable legacy flash uploader:</label></td>
-					<td>
-						<input type="checkbox" name="enable_kcw" id="enable_kcw" <?php echo checked( KalturaHelpers::getOption( 'kaltura_enable_kcw', false ) ); ?>" />
-						<br />
-					</td>
-				</tr>
-
-				<tr valign="top" class="advanced">
-					<td><label for="default_kcw_type">UICONF for Kaltura Contribution Wizard:</label></td>
-					<td>
-						<input name="default_kcw_type" id="default_kcw_type" value="<?php echo esc_attr( KalturaHelpers::getOption( 'kaltura_default_kcw_type', KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' ) ) ); ?>" />
-						<br />
-					</td>
-				</tr>
-
-
 				<tr valign="top" class="advanced available-players">
 					<td><label>Allowed players:</label></td>
 					<td>
@@ -221,17 +204,6 @@ if (is_network_admin()) {
 				jQuery(this).hide();
 				jQuery('tr.advanced').show();
 			});
-
-			function setKcwState() {
-				if (jQuery('#enable_kcw').prop('checked'))
-					jQuery('#default_kcw_type').prop('disabled', false);
-				else
-					jQuery('#default_kcw_type').prop('disabled', true);
-			}
-
-			jQuery('#enable_kcw').change(setKcwState);
-			setKcwState();
-
-		</script>
+        </script>
 	</div>
 <?php endif;

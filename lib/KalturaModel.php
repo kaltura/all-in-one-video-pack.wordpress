@@ -290,30 +290,6 @@ class KalturaModel {
 		return $players;
 	}
 
-	public function listKCWUiConfs() {
-		$filter               = new Kaltura_Client_Type_UiConfFilter();
-		$filter->objTypeEqual = Kaltura_Client_Enum_UiConfObjType::CONTRIBUTION_WIZARD;
-		$pager                = new Kaltura_Client_Type_FilterPager;
-		$pager->pageSize      = 1000;
-
-		try {
-			$uiConfs = $this->_client->uiConf->listAction( $filter, $pager );
-		} catch ( Kaltura_Client_Exception $ex ) {
-			$uiConfs          = new stdClass();
-			$uiConfs->objects = array();
-		}
-
-		foreach ( $uiConfs->objects as $key => $kcw ) {
-
-			if ( strpos( $kcw->swfUrl, 'ContributionWizard.swf' ) === false ) {
-				unset( $uiConfs->objects[$key] );
-				$uiConfs->totalCount --;
-			}
-		}
-
-		return $uiConfs;
-	}
-
 	public function getPlayerUiConf( $uiConfId ) {
 		$uiConfId = intval( $uiConfId );
 
