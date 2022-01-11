@@ -13,8 +13,9 @@ class KalturaHelpers {
 	public static function getServerUrl($path = null) {
 		$url =  self::getOption( 'server_url' );
 		$url = rtrim( $url, '/' );
-		if ($path)
+		if ($path) {
 			$url .= $path;
+		}
 
 		return esc_url_raw( $url );
 	}
@@ -22,8 +23,9 @@ class KalturaHelpers {
 	public static function getCdnUrl($path = null) {
 		$url = self::getOption( 'cdn_url' );
 		$url = rtrim( $url, '/' );
-		if ($path)
+		if ($path) {
 			$url .= $path;
+		}
 
 		return esc_url_raw( $url );
 	}
@@ -166,8 +168,9 @@ class KalturaHelpers {
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {
 		$scriptSrc = self::getServerUrl() . '/p/' . self::getOption( 'kaltura_partner_id' ) . '/sp/' . self::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
-		if ($uiConfId)
-			$scriptSrc .= '/uiconf_id/' . (int)$uiConfId;
+		if ($uiConfId) {
+			$scriptSrc .= '/uiconf_id/' . (int) $uiConfId;
+		}
 		$scriptSrc .= '/partner_id/' . self::getOption( 'kaltura_partner_id' );
 		return esc_url_raw($scriptSrc);
 	}
@@ -351,8 +354,9 @@ class KalturaHelpers {
 
 	public static function getAllowedPlayers() {
 		$allowedPlayers = self::getOption( 'kaltura_allowed_players' );
-		if (!$allowedPlayers)
+		if (!$allowedPlayers) {
 			$allowedPlayers = array();
+		}
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
 		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
@@ -362,8 +366,9 @@ class KalturaHelpers {
 
 	public static function getAllowedPlaylistPlayers() {
 		$allowedPlayers = self::getOption( 'kaltura_allowed_playlist_players' );
-		if (!$allowedPlayers)
+		if (!$allowedPlayers) {
 			$allowedPlayers = array();
+		}
 
 		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
 		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
