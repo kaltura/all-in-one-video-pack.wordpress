@@ -60,12 +60,11 @@ class KalturaHelpers {
 			if ( is_array( $_GET[ $param ] ) ) {
 				return array_map( 'wp_check_invalid_utf8', $_GET[ $param ]);
 			}
-			else {
-				return wp_check_invalid_utf8( $_GET[ $param ] );
-			}
-		} else {
-			return $default;
+
+			return wp_check_invalid_utf8( $_GET[ $param ] );
 		}
+
+		return $default;
 	}
 
 	public static function protectView( Kaltura_ViewRenderer $view ) {
