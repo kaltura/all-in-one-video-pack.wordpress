@@ -371,7 +371,6 @@ class KalturaHelpers {
 	 * Create string of media categories that assigned to the entry.
 	 *
 	 * @param Kaltura_Client_Type_BaseEntry $baseEntry
-	 * @param int $maxCategories
 	 *
 	 * @return string
 	 */
