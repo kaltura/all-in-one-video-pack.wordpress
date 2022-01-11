@@ -44,9 +44,7 @@ class KalturaHelpers {
 
 		$query = remove_query_arg( array_keys( $_GET ), esc_url_raw( self::getRequestUrl() ) );
 
-		$query = add_query_arg( $params, $query );
-
-		return $query;
+		return add_query_arg( $params, $query );
 	}
 
 	public static function getRequestUrl() {
@@ -120,8 +118,8 @@ class KalturaHelpers {
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
 		$partnerId = intval( self::getOption( 'kaltura_partner_id' ) );
 		$privileges = 'sview:' . $entryId . ',disableentitlement';
-		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
-		return $ks;
+
+		return Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 	}
 
 	public static function flashVarsToString( $flashVars = array() ) {
@@ -169,7 +167,7 @@ class KalturaHelpers {
 	}
 
 	public static function getFileUploadParams( $ks ) {
-		$params = array(
+		return array(
 				'maxChunkSize'                     => 3000000,
 				'dynamicChunkSizeInitialChunkSize' => 1000000,
 				'dynamicChunkSizeThreshold'        => 50000000,
@@ -187,7 +185,6 @@ class KalturaHelpers {
 						'minFileSize'     => 'File is too small'
 				)
 		);
-		return $params;
 	}
 
 	public static function calculatePlayerHeight( $width, $playerRatio = '16:9' ) {
@@ -235,9 +232,8 @@ class KalturaHelpers {
 		$name    = 'kaltura_default_player_dimensions';
 		$option  = self::getOption($name);
 		$availableDimensions = array('16:9', '4:3');
-		$dimensions = in_array( $option, $availableDimensions ) ? $option : '16:9';
 
-		return $dimensions;
+		return in_array( $option, $availableDimensions ) ? $option : '16:9';
 
 	}
 
@@ -255,8 +251,7 @@ class KalturaHelpers {
 	}
 
 	public static function getDefaultSettings() {
-		$defaultSettings = require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'settings.php' );
-		return $defaultSettings;
+		return require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'settings.php' );
 	}
 
 	public static function isFeatureEnabled($name) {
@@ -277,8 +272,7 @@ class KalturaHelpers {
 	}
 
 	public static function getFeatures() {
-		$defaultSettings = require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'features.php' );
-		return $defaultSettings;
+		return require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'features.php' );
 	}
 
 	public static function pluginUrl( $uri = '' ) {
@@ -348,9 +342,8 @@ class KalturaHelpers {
 		}
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
-		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 
-		return $players;
+		return self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 	}
 
 	public static function getAllowedPlaylistPlayers() {
@@ -360,9 +353,8 @@ class KalturaHelpers {
 		}
 
 		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
-		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 
-		return $players;
+		return self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 	}
 
 	private static function _filterOldPlayers($allPlayers, $allowedPlayers) {
