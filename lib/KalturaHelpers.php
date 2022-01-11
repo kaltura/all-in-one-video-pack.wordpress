@@ -231,15 +231,15 @@ class KalturaHelpers {
 			return $default;
 		}
 	}
-	
+
 	public static function getPlayerDimension() {
 		$name    = 'kaltura_default_player_dimensions';
 		$option  = self::getOption($name);
 		$availableDimensions = array('16:9', '4:3');
 		$dimensions = in_array( $option, $availableDimensions ) ? $option : '16:9';
-		
+
 		return $dimensions;
-		
+
 	}
 
 	public static function isPluginNetworkActivated() {
