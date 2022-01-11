@@ -4,7 +4,7 @@ class KalturaHelpers {
 	private static $_settings = null;
 
 	public static function getKalturaConfiguration() {
-		$config = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$config = new Kaltura_Client_Configuration();
 		$config->serviceUrl = KalturaHelpers::getServerUrl();
 		$config = apply_filters('kaltura_client_config_filter', $config);
 
