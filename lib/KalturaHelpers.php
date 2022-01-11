@@ -52,11 +52,7 @@ class KalturaHelpers {
 	}
 
 	public static function getRequestPostParam( $param, $default = null ) {
-		if ( isset( $_POST[ $param ] ) ) {
-			return $_POST[ $param ];
-		} else {
-			return $default;
-		}
+		return $_POST[ $param ] ?? $default;
 	}
 
 	public static function getRequestParam( $param, $default = null ) {
