@@ -20,16 +20,6 @@ class KalturaHelpers {
 		return esc_url_raw( $url );
 	}
 
-	public static function getCdnUrl($path = null) {
-		$url = self::getOption( 'cdn_url' );
-		$url = rtrim( $url, '/' );
-		if ($path) {
-			$url .= $path;
-		}
-
-		return esc_url_raw( $url );
-	}
-
 	public static function getLoggedUserId() {
 		global $user_ID, $user_login;
 		if ( ! $user_ID && ! $user_login ) {
