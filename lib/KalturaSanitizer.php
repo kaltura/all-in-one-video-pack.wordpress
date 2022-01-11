@@ -67,8 +67,9 @@ class KalturaSanitizer {
 				case 'entryid':
 					$newValue = sanitize_key( $value );
 					break;
+				case 'isplaylist':
 				case 'chromeless':
-					$newValue = (bool)($value);
+					$newValue = (bool) ( $value );
 					break;
 			}
 
