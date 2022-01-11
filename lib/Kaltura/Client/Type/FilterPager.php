@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -31,7 +31,7 @@
  * @package Kaltura
  * @subpackage Client
  */
-class Kaltura_Client_Type_FilterPager extends Kaltura_Client_ObjectBase
+class Kaltura_Client_Type_FilterPager extends Kaltura_Client_Type_Pager
 {
 	public function getKalturaObjectType()
 	{
@@ -45,25 +45,7 @@ class Kaltura_Client_Type_FilterPager extends Kaltura_Client_ObjectBase
 		if(is_null($xml))
 			return;
 		
-		if(count($xml->pageSize))
-			$this->pageSize = (int)$xml->pageSize;
-		if(count($xml->pageIndex))
-			$this->pageIndex = (int)$xml->pageIndex;
 	}
-	/**
-	 * The number of objects to retrieve. (Default is 30, maximum page size is 500).
-	 *
-	 * @var int
-	 */
-	public $pageSize = null;
-
-	/**
-	 * The page number for which {pageSize} of objects should be retrieved (Default is 1).
-	 *
-	 * @var int
-	 */
-	public $pageIndex = null;
-
 
 }
 

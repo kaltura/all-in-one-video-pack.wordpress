@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -49,7 +49,7 @@ class Kaltura_Client_Type_DataEntry extends Kaltura_Client_Type_BaseEntry
 			$this->dataContent = (string)$xml->dataContent;
 		if(count($xml->retrieveDataContentByGet))
 		{
-			if(!empty($xml->retrieveDataContentByGet))
+			if(!empty($xml->retrieveDataContentByGet) && ((int) $xml->retrieveDataContentByGet === 1 || strtolower((string)$xml->retrieveDataContentByGet) === 'true'))
 				$this->retrieveDataContentByGet = true;
 			else
 				$this->retrieveDataContentByGet = false;

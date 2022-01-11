@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -49,6 +49,8 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 			$this->lastPlayedAtGreaterThanOrEqual = (int)$xml->lastPlayedAtGreaterThanOrEqual;
 		if(count($xml->lastPlayedAtLessThanOrEqual))
 			$this->lastPlayedAtLessThanOrEqual = (int)$xml->lastPlayedAtLessThanOrEqual;
+		if(count($xml->lastPlayedAtLessThanOrEqualOrNull))
+			$this->lastPlayedAtLessThanOrEqualOrNull = (int)$xml->lastPlayedAtLessThanOrEqualOrNull;
 		if(count($xml->durationLessThan))
 			$this->durationLessThan = (int)$xml->durationLessThan;
 		if(count($xml->durationGreaterThan))
@@ -73,6 +75,13 @@ abstract class Kaltura_Client_Type_PlayableEntryBaseFilter extends Kaltura_Clien
 	 * @var int
 	 */
 	public $lastPlayedAtLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $lastPlayedAtLessThanOrEqualOrNull = null;
 
 	/**
 	 * 

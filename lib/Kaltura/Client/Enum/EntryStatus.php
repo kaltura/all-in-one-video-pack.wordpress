@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -35,9 +35,9 @@ class Kaltura_Client_Enum_EntryStatus extends Kaltura_Client_EnumBase
 {
 	const ERROR_IMPORTING = "-2";
 	const ERROR_CONVERTING = "-1";
-	const SCAN_FAILURE = "virusScan.ScanFailure";
 	const IMPORT = "0";
 	const INFECTED = "virusScan.Infected";
+	const SCAN_FAILURE = "virusScan.ScanFailure";
 	const PRECONVERT = "1";
 	const READY = "2";
 	const DELETED = "3";

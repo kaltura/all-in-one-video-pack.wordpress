@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -46,7 +46,7 @@ class Kaltura_Client_Type_ResponseProfile extends Kaltura_Client_Type_DetachedRe
 			return;
 		
 		if(count($xml->id))
-			$this->id = (int)$xml->id;
+			$this->id = (string)$xml->id;
 		if(count($xml->systemName))
 			$this->systemName = (string)$xml->systemName;
 		if(count($xml->partnerId))
@@ -63,7 +63,7 @@ class Kaltura_Client_Type_ResponseProfile extends Kaltura_Client_Type_DetachedRe
 	/**
 	 * Auto generated numeric identifier
 	 *
-	 * @var int
+	 * @var bigint
 	 * @readonly
 	 */
 	public $id = null;

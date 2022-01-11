@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -59,7 +59,7 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 
 	/**
 	 * Playlist service lets you create,manage and play your playlists
-	 *  Playlists could be static (containing a fixed list of entries) or dynamic (baseed on a filter)
+	 *  Playlists could be static (containing a fixed list of entries) or dynamic (based on a filter)
 	 * @var Kaltura_Client_PlaylistService
 	 */
 	public $playlist = null;
@@ -92,8 +92,8 @@ class Kaltura_Client_Client extends Kaltura_Client_ClientBase
 	{
 		parent::__construct($config);
 		
-		$this->setClientTag('php5:17-08-31');
-		$this->setApiVersion('3.3.0');
+		$this->setClientTag('php5:22-01-10');
+		$this->setApiVersion('17.18.0');
 		
 		$this->baseEntry = new Kaltura_Client_BaseEntryService($this);
 		$this->category = new Kaltura_Client_CategoryService($this);

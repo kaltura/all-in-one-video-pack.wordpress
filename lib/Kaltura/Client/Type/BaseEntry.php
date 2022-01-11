@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -132,12 +132,25 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 			$this->entitledUsersEdit = (string)$xml->entitledUsersEdit;
 		if(count($xml->entitledUsersPublish))
 			$this->entitledUsersPublish = (string)$xml->entitledUsersPublish;
+		if(count($xml->entitledUsersView))
+			$this->entitledUsersView = (string)$xml->entitledUsersView;
 		if(count($xml->capabilities))
 			$this->capabilities = (string)$xml->capabilities;
 		if(count($xml->templateEntryId))
 			$this->templateEntryId = (string)$xml->templateEntryId;
 		if(count($xml->displayInSearch))
 			$this->displayInSearch = (int)$xml->displayInSearch;
+		if(count($xml->application))
+			$this->application = (string)$xml->application;
+		if(count($xml->applicationVersion))
+			$this->applicationVersion = (string)$xml->applicationVersion;
+		if(count($xml->blockAutoTranscript))
+		{
+			if(!empty($xml->blockAutoTranscript) && ((int) $xml->blockAutoTranscript === 1 || strtolower((string)$xml->blockAutoTranscript) === 'true'))
+				$this->blockAutoTranscript = true;
+			else
+				$this->blockAutoTranscript = false;
+		}
 	}
 	/**
 	 * Auto generated 10 characters alphanumeric string
@@ -432,18 +445,25 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	public $operationAttributes;
 
 	/**
-	 * list of user ids that are entitled to edit the entry (no server enforcement) The difference between entitledUsersEdit and entitledUsersPublish is applicative only
+	 * list of user ids that are entitled to edit the entry (no server enforcement) The difference between entitledUsersEdit, entitledUsersPublish and entitledUsersView is applicative only
 	 *
 	 * @var string
 	 */
 	public $entitledUsersEdit = null;
 
 	/**
-	 * list of user ids that are entitled to publish the entry (no server enforcement) The difference between entitledUsersEdit and entitledUsersPublish is applicative only
+	 * list of user ids that are entitled to publish the entry (no server enforcement) The difference between entitledUsersEdit, entitledUsersPublish and entitledUsersView is applicative only
 	 *
 	 * @var string
 	 */
 	public $entitledUsersPublish = null;
+
+	/**
+	 * list of user ids that are entitled to view the entry (no server enforcement) The difference between entitledUsersEdit, entitledUsersPublish and entitledUsersView is applicative only
+	 *
+	 * @var string
+	 */
+	public $entitledUsersView = null;
 
 	/**
 	 * Comma seperated string of the capabilities of the entry. Any capability needed can be added to this list.
@@ -467,6 +487,29 @@ class Kaltura_Client_Type_BaseEntry extends Kaltura_Client_ObjectBase
 	 * @var Kaltura_Client_Enum_EntryDisplayInSearchType
 	 */
 	public $displayInSearch = null;
+
+	/**
+	 * Entry application
+	 *
+	 * @var Kaltura_Client_Enum_EntryApplication
+	 * @insertonly
+	 */
+	public $application = null;
+
+	/**
+	 * Entry application version
+	 *
+	 * @var string
+	 * @insertonly
+	 */
+	public $applicationVersion = null;
+
+	/**
+	 * Block auto transcript on Entry
+	 *
+	 * @var bool
+	 */
+	public $blockAutoTranscript = null;
 
 
 }
