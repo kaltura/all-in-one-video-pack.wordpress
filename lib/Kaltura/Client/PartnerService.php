@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -41,13 +41,15 @@ class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return Kaltura_Client_Type_Partner
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
-	function getSecrets($partnerId, $adminEmail, $cmsPassword)
+	function getSecrets($partnerId, $adminEmail, $cmsPassword, $otp = null)
 	{
 		$kparams = array();
 		$this->client->addParam($kparams, "partnerId", $partnerId);
 		$this->client->addParam($kparams, "adminEmail", $adminEmail);
 		$this->client->addParam($kparams, "cmsPassword", $cmsPassword);
+		$this->client->addParam($kparams, "otp", $otp);
 		$this->client->queueServiceActionCall("partner", "getSecrets", "KalturaPartner", $kparams);
 		if ($this->client->isMultiRequest())
 			return $this->client->getMultiRequestResult();
@@ -61,6 +63,7 @@ class Kaltura_Client_PartnerService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return Kaltura_Client_Type_Partner
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
 	function register(Kaltura_Client_Type_Partner $partner, $cmsPassword = "", $templatePartnerId = null, $silent = false)
 	{

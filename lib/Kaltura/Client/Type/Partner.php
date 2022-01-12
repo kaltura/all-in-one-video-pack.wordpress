@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -79,7 +79,7 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->describeYourself = (string)$xml->describeYourself;
 		if(count($xml->adultContent))
 		{
-			if(!empty($xml->adultContent))
+			if(!empty($xml->adultContent) && ((int) $xml->adultContent === 1 || strtolower((string)$xml->adultContent) === 'true'))
 				$this->adultContent = true;
 			else
 				$this->adultContent = false;
@@ -96,6 +96,8 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->mergeEntryLists = (int)$xml->mergeEntryLists;
 		if(count($xml->notificationsConfig))
 			$this->notificationsConfig = (string)$xml->notificationsConfig;
+		if(count($xml->allowedFromEmailWhiteList))
+			$this->allowedFromEmailWhiteList = (string)$xml->allowedFromEmailWhiteList;
 		if(count($xml->maxUploadSize))
 			$this->maxUploadSize = (int)$xml->maxUploadSize;
 		if(count($xml->partnerPackage))
@@ -133,7 +135,7 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->partnerGroupType = (int)$xml->partnerGroupType;
 		if(count($xml->defaultEntitlementEnforcement))
 		{
-			if(!empty($xml->defaultEntitlementEnforcement))
+			if(!empty($xml->defaultEntitlementEnforcement) && ((int) $xml->defaultEntitlementEnforcement === 1 || strtolower((string)$xml->defaultEntitlementEnforcement) === 'true'))
 				$this->defaultEntitlementEnforcement = true;
 			else
 				$this->defaultEntitlementEnforcement = false;
@@ -160,10 +162,17 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->templatePartnerId = (int)$xml->templatePartnerId;
 		if(count($xml->ignoreSeoLinks))
 		{
-			if(!empty($xml->ignoreSeoLinks))
+			if(!empty($xml->ignoreSeoLinks) && ((int) $xml->ignoreSeoLinks === 1 || strtolower((string)$xml->ignoreSeoLinks) === 'true'))
 				$this->ignoreSeoLinks = true;
 			else
 				$this->ignoreSeoLinks = false;
+		}
+		if(count($xml->blockDirectLogin))
+		{
+			if(!empty($xml->blockDirectLogin) && ((int) $xml->blockDirectLogin === 1 || strtolower((string)$xml->blockDirectLogin) === 'true'))
+				$this->blockDirectLogin = true;
+			else
+				$this->blockDirectLogin = false;
 		}
 		if(count($xml->host))
 			$this->host = (string)$xml->host;
@@ -171,7 +180,7 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->cdnHost = (string)$xml->cdnHost;
 		if(count($xml->isFirstLogin))
 		{
-			if(!empty($xml->isFirstLogin))
+			if(!empty($xml->isFirstLogin) && ((int) $xml->isFirstLogin === 1 || strtolower((string)$xml->isFirstLogin) === 'true'))
 				$this->isFirstLogin = true;
 			else
 				$this->isFirstLogin = false;
@@ -186,10 +195,72 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 			$this->referenceId = (string)$xml->referenceId;
 		if(count($xml->timeAlignedRenditions))
 		{
-			if(!empty($xml->timeAlignedRenditions))
+			if(!empty($xml->timeAlignedRenditions) && ((int) $xml->timeAlignedRenditions === 1 || strtolower((string)$xml->timeAlignedRenditions) === 'true'))
 				$this->timeAlignedRenditions = true;
 			else
 				$this->timeAlignedRenditions = false;
+		}
+		if(count($xml->publisherEnvironmentType))
+			$this->publisherEnvironmentType = (int)$xml->publisherEnvironmentType;
+		if(count($xml->ovpEnvironmentUrl))
+			$this->ovpEnvironmentUrl = (string)$xml->ovpEnvironmentUrl;
+		if(count($xml->ottEnvironmentUrl))
+			$this->ottEnvironmentUrl = (string)$xml->ottEnvironmentUrl;
+		if(count($xml->eSearchLanguages))
+		{
+			if(empty($xml->eSearchLanguages))
+				$this->eSearchLanguages = array();
+			else
+				$this->eSearchLanguages = Kaltura_Client_ParseUtils::unmarshalArray($xml->eSearchLanguages, "KalturaESearchLanguageItem");
+		}
+		if(count($xml->authenticationType))
+			$this->authenticationType = (int)$xml->authenticationType;
+		if(count($xml->extendedFreeTrailExpiryReason))
+			$this->extendedFreeTrailExpiryReason = (string)$xml->extendedFreeTrailExpiryReason;
+		if(count($xml->extendedFreeTrailExpiryDate))
+			$this->extendedFreeTrailExpiryDate = (int)$xml->extendedFreeTrailExpiryDate;
+		if(count($xml->extendedFreeTrail))
+			$this->extendedFreeTrail = (int)$xml->extendedFreeTrail;
+		if(count($xml->extendedFreeTrailEndsWarning))
+		{
+			if(!empty($xml->extendedFreeTrailEndsWarning) && ((int) $xml->extendedFreeTrailEndsWarning === 1 || strtolower((string)$xml->extendedFreeTrailEndsWarning) === 'true'))
+				$this->extendedFreeTrailEndsWarning = true;
+			else
+				$this->extendedFreeTrailEndsWarning = false;
+		}
+		if(count($xml->eightyPercentWarning))
+			$this->eightyPercentWarning = (int)$xml->eightyPercentWarning;
+		if(count($xml->usageLimitWarning))
+			$this->usageLimitWarning = (int)$xml->usageLimitWarning;
+		if(count($xml->lastFreeTrialNotificationDay))
+			$this->lastFreeTrialNotificationDay = (int)$xml->lastFreeTrialNotificationDay;
+		if(count($xml->monitorUsage))
+			$this->monitorUsage = (int)$xml->monitorUsage;
+		if(count($xml->passwordStructureValidations))
+		{
+			if(empty($xml->passwordStructureValidations))
+				$this->passwordStructureValidations = array();
+			else
+				$this->passwordStructureValidations = Kaltura_Client_ParseUtils::unmarshalArray($xml->passwordStructureValidations, "KalturaRegexItem");
+		}
+		if(count($xml->passwordStructureValidationsDescription))
+			$this->passwordStructureValidationsDescription = (string)$xml->passwordStructureValidationsDescription;
+		if(count($xml->passReplaceFreq))
+			$this->passReplaceFreq = (int)$xml->passReplaceFreq;
+		if(count($xml->maxLoginAttempts))
+			$this->maxLoginAttempts = (int)$xml->maxLoginAttempts;
+		if(count($xml->loginBlockPeriod))
+			$this->loginBlockPeriod = (int)$xml->loginBlockPeriod;
+		if(count($xml->numPrevPassToKeep))
+			$this->numPrevPassToKeep = (int)$xml->numPrevPassToKeep;
+		if(count($xml->twoFactorAuthenticationMode))
+			$this->twoFactorAuthenticationMode = (int)$xml->twoFactorAuthenticationMode;
+		if(count($xml->isSelfServe))
+		{
+			if(!empty($xml->isSelfServe) && ((int) $xml->isSelfServe === 1 || strtolower((string)$xml->isSelfServe) === 'true'))
+				$this->isSelfServe = true;
+			else
+				$this->isSelfServe = false;
 		}
 	}
 	/**
@@ -359,6 +430,13 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	/**
 	 * 
 	 *
+	 * @var string
+	 */
+	public $allowedFromEmailWhiteList = null;
+
+	/**
+	 * 
+	 *
 	 * @var int
 	 */
 	public $maxUploadSize = null;
@@ -448,7 +526,6 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	 * 
 	 *
 	 * @var array of KalturaKeyValue
-	 * @insertonly
 	 */
 	public $additionalParams;
 
@@ -527,6 +604,14 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	/**
 	 * 
 	 *
+	 * @var bool
+	 * @readonly
+	 */
+	public $blockDirectLogin = null;
+
+	/**
+	 * 
+	 *
 	 * @var string
 	 * @readonly
 	 */
@@ -585,6 +670,166 @@ class Kaltura_Client_Type_Partner extends Kaltura_Client_ObjectBase
 	 * @readonly
 	 */
 	public $timeAlignedRenditions = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $publisherEnvironmentType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $ovpEnvironmentUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $ottEnvironmentUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var array of KalturaESearchLanguageItem
+	 */
+	public $eSearchLanguages;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_PartnerAuthenticationType
+	 * @readonly
+	 */
+	public $authenticationType = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $extendedFreeTrailExpiryReason = null;
+
+	/**
+	 * Unix timestamp (In seconds)
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $extendedFreeTrailExpiryDate = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $extendedFreeTrail = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 * @readonly
+	 */
+	public $extendedFreeTrailEndsWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $eightyPercentWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $usageLimitWarning = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $lastFreeTrialNotificationDay = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $monitorUsage = null;
+
+	/**
+	 * 
+	 *
+	 * @var array of KalturaRegexItem
+	 */
+	public $passwordStructureValidations;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $passwordStructureValidationsDescription = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $passReplaceFreq = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $maxLoginAttempts = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $loginBlockPeriod = null;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	public $numPrevPassToKeep = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_TwoFactorAuthenticationMode
+	 * @readonly
+	 */
+	public $twoFactorAuthenticationMode = null;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	public $isSelfServe = null;
 
 
 }

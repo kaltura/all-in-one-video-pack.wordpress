@@ -1,30 +1,23 @@
 <?php
 
 class KalturaHelpers {
-	private static $_settings = null;
+	const MAX_CATERGORIES = 14;
+
+	private static $_settings;
 
 	public static function getKalturaConfiguration() {
-		$config = new Kaltura_Client_Configuration( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$config->serviceUrl = KalturaHelpers::getServerUrl();
-		$config = apply_filters('kaltura_client_config_filter', $config);
+		$config = new Kaltura_Client_Configuration();
+		$config->serviceUrl = self::getServerUrl();
 
-		return $config;
+		return apply_filters('kaltura_client_config_filter', $config);
 	}
 
 	public static function getServerUrl($path = null) {
-		$url =  KalturaHelpers::getOption( 'server_url' );
+		$url =  self::getOption( 'server_url' );
 		$url = rtrim( $url, '/' );
-		if ($path)
+		if ($path) {
 			$url .= $path;
-
-		return esc_url_raw( $url );
-	}
-
-	public static function getCdnUrl($path = null) {
-		$url = KalturaHelpers::getOption( 'cdn_url' );
-		$url = rtrim( $url, '/' );
-		if ($path)
-			$url .= $path;
+		}
 
 		return esc_url_raw( $url );
 	}
@@ -32,12 +25,14 @@ class KalturaHelpers {
 	public static function getLoggedUserId() {
 		global $user_ID, $user_login;
 		if ( ! $user_ID && ! $user_login ) {
-			return sanitize_user( KalturaHelpers::getOption( 'anonymous_user_id' ) );
-		} elseif ( get_option( 'kaltura_user_identifier', 'user_login' ) == 'user_id' ) {
-			return sanitize_user( $user_ID );
-		} else {
-			return sanitize_user( $user_login );
+			return sanitize_user( self::getOption( 'anonymous_user_id' ) );
 		}
+
+		if ( get_option( 'kaltura_user_identifier', 'user_login' ) === 'user_id' ) {
+			return sanitize_user( $user_ID );
+		}
+
+		return sanitize_user( $user_login );
 	}
 
 	public static function getPluginUrl() {
@@ -49,9 +44,7 @@ class KalturaHelpers {
 
 		$query = remove_query_arg( array_keys( $_GET ), esc_url_raw( self::getRequestUrl() ) );
 
-		$query = add_query_arg( $params, $query );
-
-		return $query;
+		return add_query_arg( $params, $query );
 	}
 
 	public static function getRequestUrl() {
@@ -59,11 +52,7 @@ class KalturaHelpers {
 	}
 
 	public static function getRequestPostParam( $param, $default = null ) {
-		if ( isset( $_POST[ $param ] ) ) {
-			return $_POST[ $param ];
-		} else {
-			return $default;
-		}
+		return $_POST[ $param ] ?? $default;
 	}
 
 	public static function getRequestParam( $param, $default = null ) {
@@ -71,31 +60,17 @@ class KalturaHelpers {
 			if ( is_array( $_GET[ $param ] ) ) {
 				return array_map( 'wp_check_invalid_utf8', $_GET[ $param ]);
 			}
-			else {
-				return wp_check_invalid_utf8( $_GET[ $param ] );
-			}
-		} else {
-			return $default;
+
+			return wp_check_invalid_utf8( $_GET[ $param ] );
 		}
+
+		return $default;
 	}
 
 	public static function protectView( Kaltura_ViewRenderer $view ) {
 		if ( ! isset( $view->allowViewRendering ) || $view->allowViewRendering !== true ) {
 			wp_die( 'Access denied' );
 		}
-	}
-
-	public static function getContributionWizardFlashVars( $ks ) {
-		$flashVars                  = array();
-		$flashVars['userId']        = sanitize_user( KalturaHelpers::getLoggedUserId() );
-		$flashVars['sessionId']     = sanitize_text_field( $ks );
-		$flashVars['partnerId']     = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-		$flashVars['subPartnerId']  = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) ) * 100;
-		$flashVars['afterAddentry'] = 'kaltura_onContributionWizardAfterAddEntry';
-		$flashVars['close']         = 'kaltura_onContributionWizardClose';
-		$flashVars['termsOfUse']    = 'http://corp.kaltura.com/static/tandc';
-
-		return $flashVars;
 	}
 
 	public static function getKalturaPlayerFlashVars( $ks = null, $entryId = null, $isPlaylist = false, $randId = null ) {
@@ -123,22 +98,22 @@ class KalturaHelpers {
 		$flashVars['controlBarContainer']['hover']       = true;
 		return $flashVars;
 	}
-	
+
 	public static function getKSForPlayer($entryId) {
-		$adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
-		$userId = KalturaHelpers::getLoggedUserId();
+		$adminSecret = sanitize_text_field( self::getOption( 'kaltura_admin_secret' ));
+		$userId = self::getLoggedUserId();
 		$sessionType = Kaltura_Client_Enum_SessionType::USER;
-		$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+		$partnerId = intval( self::getOption( 'kaltura_partner_id' ) );
 		$privileges = 'sview:' . $entryId . ',disableentitlement';
-		$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
-		return $ks;
+
+		return Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $sessionType, $partnerId, 86400 , $privileges);
 	}
-	
+
 	public static function flashVarsToString( $flashVars = array() ) {
 		$flashVarsStr = http_build_query($flashVars);
 		return sanitize_text_field(substr( $flashVarsStr, 0, strlen( $flashVarsStr ) - 1 ));
 	}
-	
+
 	public static function flashVarsSanitize( $flashVars = array() ) {
 		foreach ( $flashVars as $key => &$value ) {
 			if ( is_array( $value ) ) {
@@ -152,40 +127,37 @@ class KalturaHelpers {
 				}
 			}
 		}
-		
+
 		return  $flashVars;
 	}
-	
+
 	public static function sendToEditorFlashVars($flashVars = array()) {
 		$flashVars = self::flashVarsSanitize($flashVars);
 		if (isset($flashVars['playlistAPI']['onPage'])) {
 			$flashVars['playlistAPI']['onPage'] = false;
 		}
-		
+
 		return $flashVars;
 	}
 
 	public static function getHtml5IframeUrl( $uiConfId = null ) {
-		$scriptSrc = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
-		if ($uiConfId)
-			$scriptSrc .= '/uiconf_id/' . (int)$uiConfId;
-		$scriptSrc .= '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
+		$scriptSrc = self::getServerUrl() . '/p/' . self::getOption( 'kaltura_partner_id' ) . '/sp/' . self::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs';
+		if ($uiConfId) {
+			$scriptSrc .= '/uiconf_id/' . (int) $uiConfId;
+		}
+		$scriptSrc .= '/partner_id/' . self::getOption( 'kaltura_partner_id' );
 		return esc_url_raw($scriptSrc);
 	}
 
-	public static function getContributionWizardUrl( $uiConfId ) {
-		return esc_url_raw ( KalturaHelpers::getServerUrl() . '/kcw/ui_conf_id/' . intval($uiConfId) );
-	}
-
 	public static function getFileUploadParams( $ks ) {
-		$params = array(
+		return array(
 				'maxChunkSize'                     => 3000000,
 				'dynamicChunkSizeInitialChunkSize' => 1000000,
 				'dynamicChunkSizeThreshold'        => 50000000,
 				'dynamixChunkSizeMaxTime'          => 30,
-				'host'                             => KalturaHelpers::getServerUrl(),
-				'apiURL'                           => KalturaHelpers::getServerUrl( '/api_v3/' ),
-				'url'                              => KalturaHelpers::getServerUrl( '/api_v3/?service=uploadToken&action=upload&format=1' ),
+				'host'                             => self::getServerUrl(),
+				'apiURL'                           => self::getServerUrl( '/api_v3/' ),
+				'url'                              => self::getServerUrl( '/api_v3/?service=uploadToken&action=upload&format=1' ),
 				'ks'                               => $ks,
 				'fileTypes'                        => '*.mts;*.MTS;*.qt;*.mov;*.mpg;*.avi;*.mp3;*.m4a;*.wav;*.mp4;*.wma;*.vob;*.flv;*.f4v;*.asf;*.qt;*.mov;*.mpeg;*.avi;*.wmv;*.m4v;*.3gp;*.jpg;*.jpeg;*.bmp;*.png;*.gif;*.tif;*.tiff;*.mkv;*.QT;*.MOV;*.MPG;*.AVI;*.MP3;*.M4A;*.WAV;*.MP4;*.WMA;*.VOB;*.FLV;*.F4V;*.ASF;*.QT;*.MOV;*.MPEG;*.AVI;*.WMV;*.M4V;*.3GP;*.JPG;*.JPEG;*.BMP;*.PNG;*.GIF;*.TIF;*.TIFF;*.MKV;*.AIFF;*.arf;*.ARF;*.webm;*.WEBM;*.rm;*.RM;*.ra;*.RA;*.RV;*.rv;*.aiff',
 				'context'                          => '',
@@ -196,7 +168,6 @@ class KalturaHelpers {
 						'minFileSize'     => 'File is too small'
 				)
 		);
-		return $params;
 	}
 
 	public static function calculatePlayerHeight( $width, $playerRatio = '16:9' ) {
@@ -235,19 +206,18 @@ class KalturaHelpers {
 
 		if ( isset( $settings[$name] ) ) {
 			return $settings[$name];
-		} else {
-			return $default;
 		}
+
+		return $default;
 	}
-	
+
 	public static function getPlayerDimension() {
 		$name    = 'kaltura_default_player_dimensions';
 		$option  = self::getOption($name);
 		$availableDimensions = array('16:9', '4:3');
-		$dimensions = in_array( $option, $availableDimensions ) ? $option : '16:9';
-		
-		return $dimensions;
-		
+
+		return in_array( $option, $availableDimensions ) ? $option : '16:9';
+
 	}
 
 	public static function isPluginNetworkActivated() {
@@ -264,8 +234,7 @@ class KalturaHelpers {
 	}
 
 	public static function getDefaultSettings() {
-		$defaultSettings = require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'settings.php' );
-		return $defaultSettings;
+		return require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'settings.php' );
 	}
 
 	public static function isFeatureEnabled($name) {
@@ -282,12 +251,11 @@ class KalturaHelpers {
 			return (bool)$enabledByFilter;
 		}
 
-		return isset($features[$name]) ? (bool)$features[$name] : false;
+		return isset( $features[ $name ] ) && $features[ $name ];
 	}
 
 	public static function getFeatures() {
-		$defaultSettings = require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'features.php' );
-		return $defaultSettings;
+		return require( plugin_dir_path(KALTURA_PLUGIN_FILE) . 'features.php' );
 	}
 
 	public static function pluginUrl( $uri = '' ) {
@@ -329,11 +297,11 @@ class KalturaHelpers {
 			default:
 				$align = '';
 		}
-		$isplaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
-		$ks                        = KalturaHelpers::getKSForPlayer($params['entryid']);
+		$isPlaylist = !empty($params['isplaylist']) ? (bool)$params['isplaylist'] : false;
+		$ks                        = self::getKSForPlayer($params['entryid']);
 		$randId         = md5( $params['wid'] . $params['entryid'] . rand( 0, time() ) );
-		$flashVars       = KalturaHelpers::getKalturaPlayerFlashVars($ks, $params['entryid'], $isplaylist, $randId);
-		
+		$flashVars       = self::getKalturaPlayerFlashVars($ks, $params['entryid'], $isPlaylist, $randId);
+
 		return array(
 			'height'           => $params['height'],
 			'width'            => $params['width'],
@@ -345,33 +313,33 @@ class KalturaHelpers {
 			'responsive'       => $params['responsive'],
 			'hoveringControls' => $params['hoveringcontrols'],
 			'flashVars'        => $flashVars,
-			'isPlaylist'       => $isplaylist,
+			'isPlaylist'       => $isPlaylist,
 			'randId'           => $randId
 		);
 	}
 
 	public static function getAllowedPlayers() {
-		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_players' );
-		if (!$allowedPlayers)
+		$allowedPlayers = self::getOption( 'kaltura_allowed_players' );
+		if (!$allowedPlayers) {
 			$allowedPlayers = array();
+		}
 
 		$allPlayers = KalturaModel::getInstance()->listPlayersUiConfs();
-		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 
-		return $players;
+		return self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 	}
-	
+
 	public static function getAllowedPlaylistPlayers() {
-		$allowedPlayers = KalturaHelpers::getOption( 'kaltura_allowed_playlist_players' );
-		if (!$allowedPlayers)
+		$allowedPlayers = self::getOption( 'kaltura_allowed_playlist_players' );
+		if (!$allowedPlayers) {
 			$allowedPlayers = array();
-		
+		}
+
 		$allPlayers = KalturaModel::getInstance()->listPlaylistPlayersUiConfs();
-		$players = self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
-		
-		return $players;
+
+		return self::_filterOldPlayers($allPlayers->objects, $allowedPlayers);
 	}
-	
+
 	private static function _filterOldPlayers($allPlayers, $allowedPlayers) {
 		$supportedPlayers = array();
 		foreach($allPlayers as $player) {
@@ -403,33 +371,35 @@ class KalturaHelpers {
 	 * Create string of media categories that assigned to the entry.
 	 *
 	 * @param Kaltura_Client_Type_BaseEntry $baseEntry
-	 * @return array
+	 *
+	 * @return string
 	 */
-	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry, $maxCategories = 14 ) {
-		$rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
-		if ( $baseEntry->categories ) {
-			$mediaCategories = explode( ',', $baseEntry->categories );
-			$mediaCategories = array_slice( $mediaCategories, 0, $maxCategories );
-			foreach ( $mediaCategories as $key => $mediaCategory ) {
-				$fullEntryCategoryWithoutRoot = '';
-				if ( $rootCategory ) {
-					$pos = strpos( $mediaCategory, '>' );
-					if ( $pos !== false ) {
-						$fullEntryCategoryWithoutRoot = substr( $mediaCategory, $pos + 1 );
-					}
-				} else {
-					$fullEntryCategoryWithoutRoot = $mediaCategory;
-				}
+	public static function getCategoriesString( Kaltura_Client_Type_BaseEntry $baseEntry) {
+		$rootCategory = self::getOption( 'kaltura_root_category' );
 
-				$fullEntryCategoryWithoutRoot = str_replace( '>', ' > ', $fullEntryCategoryWithoutRoot );
-				$fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; ' . $fullEntryCategoryWithoutRoot;
-				$mediaCategories[$key] = $fullEntryCategoryWithoutRoot;
-			}
-			$mediaCategories = join( '&#10;', $mediaCategories );
-		} else {
-			$mediaCategories = 'No Category';
+		if ( ! $baseEntry->categories ) {
+			return 'No Category';
 		}
-		return $mediaCategories;
+
+		$mediaCategories = explode( ',', $baseEntry->categories );
+		$mediaCategories = array_slice( $mediaCategories, 0, self::MAX_CATERGORIES );
+		foreach ( $mediaCategories as $key => $mediaCategory ) {
+			$fullEntryCategoryWithoutRoot = '';
+			if ( $rootCategory ) {
+				$pos = strpos( $mediaCategory, '>' );
+				if ( $pos !== false ) {
+					$fullEntryCategoryWithoutRoot = substr( $mediaCategory, $pos + 1 );
+				}
+			} else {
+				$fullEntryCategoryWithoutRoot = $mediaCategory;
+			}
+
+			$fullEntryCategoryWithoutRoot = str_replace( '>', ' > ', $fullEntryCategoryWithoutRoot );
+			$fullEntryCategoryWithoutRoot = '&#32;&#32;&#8211; ' . $fullEntryCategoryWithoutRoot;
+			$mediaCategories[ $key ]      = $fullEntryCategoryWithoutRoot;
+		}
+
+		return implode( '&#10;', $mediaCategories );
 	}
 
 	public static function getCountries() {

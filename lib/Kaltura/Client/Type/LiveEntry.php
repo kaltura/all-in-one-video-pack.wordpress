@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -85,6 +85,16 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 			$this->liveStatus = (int)$xml->liveStatus;
 		if(count($xml->segmentDuration))
 			$this->segmentDuration = (int)$xml->segmentDuration;
+		if(count($xml->explicitLive))
+			$this->explicitLive = (int)$xml->explicitLive;
+		if(count($xml->viewMode))
+			$this->viewMode = (int)$xml->viewMode;
+		if(count($xml->recordingStatus))
+			$this->recordingStatus = (int)$xml->recordingStatus;
+		if(count($xml->lastBroadcastEndTime))
+			$this->lastBroadcastEndTime = (int)$xml->lastBroadcastEndTime;
+		if(count($xml->broadcastTime))
+			$this->broadcastTime = (int)$xml->broadcastTime;
 	}
 	/**
 	 * The message to be presented when the stream is offline
@@ -193,6 +203,42 @@ abstract class Kaltura_Client_Type_LiveEntry extends Kaltura_Client_Type_MediaEn
 	 * @var int
 	 */
 	public $segmentDuration = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_NullableBoolean
+	 */
+	public $explicitLive = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_ViewMode
+	 */
+	public $viewMode = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Enum_RecordingStatus
+	 */
+	public $recordingStatus = null;
+
+	/**
+	 * The time the last broadcast finished.
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public $lastBroadcastEndTime = null;
+
+	/**
+	 * The time when the entry was first live with view_all
+	 *
+	 * @var int
+	 */
+	public $broadcastTime = null;
 
 
 }

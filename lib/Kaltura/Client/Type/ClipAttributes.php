@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -49,6 +49,15 @@ class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAt
 			$this->offset = (int)$xml->offset;
 		if(count($xml->duration))
 			$this->duration = (int)$xml->duration;
+		if(count($xml->globalOffsetInDestination))
+			$this->globalOffsetInDestination = (int)$xml->globalOffsetInDestination;
+		if(count($xml->effectArray))
+		{
+			if(empty($xml->effectArray))
+				$this->effectArray = array();
+			else
+				$this->effectArray = Kaltura_Client_ParseUtils::unmarshalArray($xml->effectArray, "KalturaEffect");
+		}
 	}
 	/**
 	 * Offset in milliseconds
@@ -63,6 +72,20 @@ class Kaltura_Client_Type_ClipAttributes extends Kaltura_Client_Type_OperationAt
 	 * @var int
 	 */
 	public $duration = null;
+
+	/**
+	 * global Offset In Destination in milliseconds
+	 *
+	 * @var int
+	 */
+	public $globalOffsetInDestination = null;
+
+	/**
+	 * global Offset In Destination in milliseconds
+	 *
+	 * @var array of KalturaEffect
+	 */
+	public $effectArray;
 
 
 }

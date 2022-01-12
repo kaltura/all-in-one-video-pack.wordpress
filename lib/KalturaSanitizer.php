@@ -31,7 +31,7 @@ class KalturaSanitizer {
 					$newValue = $value === 'true';
 					break;
 				case 'isplaylist':
-					$newValue = (bool)$value;
+					$newValue = (bool) $value;
 					break;
 			}
 
@@ -62,16 +62,14 @@ class KalturaSanitizer {
 					$newValue = $value === 'true' ? $value : null;
 					break;
 				case 'entryIds':
-					$newValue = array_map('sanitize_key', $value);
+					$newValue = array_map( 'sanitize_key', $value );
 					break;
 				case 'entryid':
-					$newValue = sanitize_key($value);
+					$newValue = sanitize_key( $value );
 					break;
 				case 'isplaylist':
-					$newValue = (bool)($value);
-					break;
 				case 'chromeless':
-					$newValue = (bool)($value);
+					$newValue = (bool) ( $value );
 					break;
 			}
 
@@ -83,17 +81,25 @@ class KalturaSanitizer {
 		return $newParams;
 	}
 
+	/**
+	 * @param $value
+	 *
+	 * @return string
+	 */
 	public static function privileges( $value ) {
 		$value = strtolower( $value );
-		$value = preg_replace( '/[^a-z0-9_\-\*:,\/]/', '', $value );
 
-		return $value;
+		return preg_replace( '/[^a-z0-9_\-\*:,\/]/', '', $value );
 	}
 
+	/**
+	 * @param $value
+	 *
+	 * @return string
+	 */
 	public static function kaction( $value ) {
 		$value = strtolower( $value );
-		$value = preg_replace( '/[^a-z_]/', '', $value );
 
-		return $value;
+		return preg_replace( '/[^a-z_]/', '', $value );
 	}
 }

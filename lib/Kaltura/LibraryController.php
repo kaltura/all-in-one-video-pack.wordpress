@@ -46,22 +46,15 @@ class Kaltura_LibraryController extends Kaltura_BaseController {
 			return;
 		}
 
-		$kcwUiConfId  = KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) ? KalturaHelpers::getOption( 'kaltura_default_kcw_type' ) : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 		$rootCategory = KalturaHelpers::getOption( 'kaltura_root_category' );
 		$rootCategory = ! empty( $rootCategory ) ? $rootCategory : 0;
 
 		$ks                                      = $kmodel->getClientSideSession();
-		$params['flashVars']                     = KalturaHelpers::getContributionWizardFlashVars( $ks );
 		$params['flashVars']['showCloseButton']  = 'false';
 		$params['flashVars']['categoriesRootId'] = $rootCategory;
-		$params['swfUrl']                        = KalturaHelpers::getContributionWizardUrl( $kcwUiConfId );
 		$params['rootCategory']                  = $rootCategory;
 		$params['fileUploadParams']              = KalturaHelpers::getFileUploadParams( $ks );
-		if ( KalturaHelpers::getOption('kaltura_enable_kcw') ) {
-			$this->renderView( 'library/contribution-wizard-admin.php', $params );
-		} else {
-			$this->renderView( 'library/upload.php', $params );
-		}
+		$this->renderView( 'library/upload.php', $params );
 	}
 
 	public function editAction() {

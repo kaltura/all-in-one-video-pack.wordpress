@@ -25,12 +25,15 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
-
 		var html = htmlArray.join('');
 
-		// lets make it safe
+		function getTopWindow() {
+			return (window.opener) ? window.opener : (window.parent) ? window.parent : window.top;
+		}
+
+		// let's make it safe
 		try {
-			var topWindow = Kaltura.getTopWindow();
+			var topWindow = getTopWindow();
 
 			if (topWindow.tinyMCE && topWindow.tinyMCE.get('content') && !topWindow.tinyMCE.get('content').isHidden()) {
 				var ed = topWindow.tinyMCE.activeEditor;
@@ -103,7 +106,7 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 		<div class="error players-missing">
 			<?php echo sprintf( __($playersNotFoundMessage), $link ); ?>
 		</div>
-		
+
 		<?php if ( ! $isFirstEdit ) { ?>
 			<div class="backDiv">
 				<a href="<?php echo esc_url($backUrl); ?>"><img src="<?php echo esc_url($backImageUrl); ?>" alt="Back" /></a>
@@ -215,7 +218,7 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 				entryConverting: <?php echo wp_json_encode( $this->entryConverting ); ?>,
 				isPlaylist     : <?php echo wp_json_encode( $this->isPlaylist); ?>,
 				flashVars      : <?php echo wp_json_encode($flashVarsStr); ?>
-				
+
 			} );
 		} );
 	</script>

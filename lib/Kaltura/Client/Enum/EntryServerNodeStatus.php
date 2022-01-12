@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -33,10 +33,16 @@
  */
 class Kaltura_Client_Enum_EntryServerNodeStatus extends Kaltura_Client_EnumBase
 {
+	const ERROR = -1;
 	const STOPPED = 0;
 	const PLAYABLE = 1;
 	const BROADCASTING = 2;
 	const AUTHENTICATED = 3;
 	const MARKED_FOR_DELETION = 4;
+	const TASK_PENDING = 5;
+	const TASK_QUEUED = 6;
+	const TASK_PROCESSING = 7;
+	const TASK_UPLOADING = 8;
+	const TASK_FINISHED = 9;
 }
 

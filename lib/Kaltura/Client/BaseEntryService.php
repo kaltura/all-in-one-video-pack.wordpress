@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -41,6 +41,7 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return 
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
 	function delete($entryId)
 	{
@@ -56,6 +57,7 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return Kaltura_Client_Type_BaseEntry
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
 	function get($entryId, $version = -1)
 	{
@@ -75,6 +77,7 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return Kaltura_Client_Type_BaseEntryListResponse
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
 	function listAction(Kaltura_Client_Type_BaseEntryFilter $filter = null, Kaltura_Client_Type_FilterPager $pager = null)
 	{
@@ -96,6 +99,7 @@ class Kaltura_Client_BaseEntryService extends Kaltura_Client_ServiceBase
 
 	/**
 	 * @return Kaltura_Client_Type_BaseEntry
+	 * @throws Kaltura_Client_Exception|Kaltura_Client_ClientException
 	 */
 	function update($entryId, Kaltura_Client_Type_BaseEntry $baseEntry)
 	{

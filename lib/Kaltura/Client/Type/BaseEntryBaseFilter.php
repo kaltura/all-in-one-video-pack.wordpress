@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -125,6 +125,10 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 			$this->updatedAtGreaterThanOrEqual = (int)$xml->updatedAtGreaterThanOrEqual;
 		if(count($xml->updatedAtLessThanOrEqual))
 			$this->updatedAtLessThanOrEqual = (int)$xml->updatedAtLessThanOrEqual;
+		if(count($xml->rankLessThanOrEqual))
+			$this->rankLessThanOrEqual = (float)$xml->rankLessThanOrEqual;
+		if(count($xml->rankGreaterThanOrEqual))
+			$this->rankGreaterThanOrEqual = (float)$xml->rankGreaterThanOrEqual;
 		if(count($xml->totalRankLessThanOrEqual))
 			$this->totalRankLessThanOrEqual = (int)$xml->totalRankLessThanOrEqual;
 		if(count($xml->totalRankGreaterThanOrEqual))
@@ -189,6 +193,10 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 			$this->entitledUsersPublishMatchAnd = (string)$xml->entitledUsersPublishMatchAnd;
 		if(count($xml->entitledUsersPublishMatchOr))
 			$this->entitledUsersPublishMatchOr = (string)$xml->entitledUsersPublishMatchOr;
+		if(count($xml->entitledUsersViewMatchAnd))
+			$this->entitledUsersViewMatchAnd = (string)$xml->entitledUsersViewMatchAnd;
+		if(count($xml->entitledUsersViewMatchOr))
+			$this->entitledUsersViewMatchOr = (string)$xml->entitledUsersViewMatchOr;
 		if(count($xml->tagsNameMultiLikeOr))
 			$this->tagsNameMultiLikeOr = (string)$xml->tagsNameMultiLikeOr;
 		if(count($xml->tagsAdminTagsMultiLikeOr))
@@ -486,6 +494,20 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 	/**
 	 * 
 	 *
+	 * @var float
+	 */
+	public $rankLessThanOrEqual = null;
+
+	/**
+	 * 
+	 *
+	 * @var float
+	 */
+	public $rankGreaterThanOrEqual = null;
+
+	/**
+	 * 
+	 *
 	 * @var int
 	 */
 	public $totalRankLessThanOrEqual = null;
@@ -706,6 +728,20 @@ abstract class Kaltura_Client_Type_BaseEntryBaseFilter extends Kaltura_Client_Ty
 	 * @var string
 	 */
 	public $entitledUsersPublishMatchOr = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $entitledUsersViewMatchAnd = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $entitledUsersViewMatchOr = null;
 
 	/**
 	 * 

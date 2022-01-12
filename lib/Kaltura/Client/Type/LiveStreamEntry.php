@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -60,6 +60,10 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry
 			$this->primaryBroadcastingUrl = (string)$xml->primaryBroadcastingUrl;
 		if(count($xml->secondaryBroadcastingUrl))
 			$this->secondaryBroadcastingUrl = (string)$xml->secondaryBroadcastingUrl;
+		if(count($xml->primarySecuredBroadcastingUrl))
+			$this->primarySecuredBroadcastingUrl = (string)$xml->primarySecuredBroadcastingUrl;
+		if(count($xml->secondarySecuredBroadcastingUrl))
+			$this->secondarySecuredBroadcastingUrl = (string)$xml->secondarySecuredBroadcastingUrl;
 		if(count($xml->primaryRtspBroadcastingUrl))
 			$this->primaryRtspBroadcastingUrl = (string)$xml->primaryRtspBroadcastingUrl;
 		if(count($xml->secondaryRtspBroadcastingUrl))
@@ -82,6 +86,10 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry
 			$this->streamUsername = (string)$xml->streamUsername;
 		if(count($xml->primaryServerNodeId))
 			$this->primaryServerNodeId = (int)$xml->primaryServerNodeId;
+		if(count($xml->sipToken))
+			$this->sipToken = (string)$xml->sipToken;
+		if(count($xml->sipSourceType))
+			$this->sipSourceType = (int)$xml->sipSourceType;
 	}
 	/**
 	 * The stream id as provided by the provider
@@ -119,6 +127,20 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry
 	 * @var string
 	 */
 	public $secondaryBroadcastingUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $primarySecuredBroadcastingUrl = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	public $secondarySecuredBroadcastingUrl = null;
 
 	/**
 	 * 
@@ -198,6 +220,22 @@ class Kaltura_Client_Type_LiveStreamEntry extends Kaltura_Client_Type_LiveEntry
 	 * @readonly
 	 */
 	public $primaryServerNodeId = null;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 * @readonly
+	 */
+	public $sipToken = null;
+
+	/**
+	 * 
+	 *
+	 * @var Kaltura_Client_Sip_Enum_SipSourceType
+	 * @readonly
+	 */
+	public $sipSourceType = null;
 
 
 }

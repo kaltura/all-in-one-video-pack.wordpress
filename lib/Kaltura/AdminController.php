@@ -197,24 +197,19 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 			}
 
 			$defaultPlayerType          = KalturaHelpers::getRequestPostParam( 'default_player_type' );
-			$defaultKCWType             = KalturaHelpers::getRequestPostParam( 'default_kcw_type' );
-			$defaultKCWType             = ! empty( $defaultKCWType ) ? $defaultKCWType : KalturaHelpers::getOption( 'kcw_ui_conf_id_admin' );
 			$userIdentifier             = KalturaHelpers::getRequestPostParam( 'kaltura_user_identifier' );
 			$showMediaFrom              = KalturaHelpers::getRequestPostParam( 'show_media_from' );
 			$rootCategory               = KalturaHelpers::getRequestPostParam( 'root_category' );
 			$rootCategory               = ! empty( $rootCategory ) ? $rootCategory : 0;
 			$allowedPlayers             = KalturaHelpers::getRequestPostParam( 'allowed_players' );
 			$allowedPlayers             = ! empty( $allowedPlayers ) && is_array($allowedPlayers) ? $allowedPlayers : array();
-			$enableKcw                  = KalturaHelpers::getRequestPostParam( 'enable_kcw' );
 			$enableEmbedPlaylist        = KalturaHelpers::getRequestPostParam( 'allow_embed_playlist' );
 			$defaultPlayerDimensions    = KalturaHelpers::getRequestPostParam( 'default_player_dimensions', '16:9');
 
 			update_option( 'kaltura_default_player_type', sanitize_text_field((string)$defaultPlayerType));
 			update_option( 'kaltura_show_media_from', sanitize_text_field((string)$showMediaFrom));
-			update_option( 'kaltura_default_kcw_type', sanitize_text_field((string)$defaultKCWType) );
 			update_option( 'kaltura_user_identifier', sanitize_text_field((string)$userIdentifier) );
 			update_option( 'kaltura_root_category', sanitize_text_field((string)$rootCategory) );
-			update_option( 'kaltura_enable_kcw', (bool)$enableKcw);
 			update_option( 'kaltura_allow_embed_playlist', (bool)$enableEmbedPlaylist);
 			update_option( 'kaltura_default_player_dimensions', sanitize_text_field((string)$defaultPlayerDimensions));
 
@@ -225,14 +220,14 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 				// otherwise, we reset to empty array to allow all players
 				update_option( 'kaltura_allowed_players', array() );
 			}
-			
+
 			if ($enableEmbedPlaylist = (bool)$enableEmbedPlaylist) {
 				$placeholderArray = array();
 				if ($enableEmbedPlaylist && !$playlistEmbedAllowed) {
 					$allowedPlaylistPlayers   = array_keys(KalturaHelpers::getAllowedPlaylistPlayers());
 					$placeholderArray = array_map('strval', $allowedPlaylistPlayers);
 				}
-				
+
 				$allowedPostPlaylistPlayers     = KalturaHelpers::getRequestPostParam( 'allowed_playlist_players' );
 				$allowedPlaylistPlayers     = ! empty( $allowedPostPlaylistPlayers ) && is_array($allowedPostPlaylistPlayers) ? $allowedPostPlaylistPlayers : $placeholderArray;
 				// only set allowed players when it was provided and when not all players were selected
@@ -243,7 +238,7 @@ class Kaltura_AdminController extends Kaltura_BaseController {
 					update_option( 'kaltura_allowed_playlist_players', array() );
 				}
 			}
-			
+
 			$params['showMessage'] = true;
 		} else {
 			$kmodel = KalturaModel::getInstance();

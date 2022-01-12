@@ -6,10 +6,10 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2017  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -60,7 +60,7 @@ class Kaltura_Client_Type_PlayerDeliveryType extends Kaltura_Client_ObjectBase
 			$this->minVersion = (string)$xml->minVersion;
 		if(count($xml->enabledByDefault))
 		{
-			if(!empty($xml->enabledByDefault))
+			if(!empty($xml->enabledByDefault) && ((int) $xml->enabledByDefault === 1 || strtolower((string)$xml->enabledByDefault) === 'true'))
 				$this->enabledByDefault = true;
 			else
 				$this->enabledByDefault = false;
