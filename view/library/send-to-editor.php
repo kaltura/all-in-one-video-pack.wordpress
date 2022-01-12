@@ -25,12 +25,15 @@ $defaultPlayerId =  KalturaHelpers::getOption('kaltura_default_player_type');
 		htmlArray.push('/]');
 		htmlArray.push('\n');
 
-
 		var html = htmlArray.join('');
 
-		// lets make it safe
+		function getTopWindow() {
+			return (window.opener) ? window.opener : (window.parent) ? window.parent : window.top;
+		}
+
+		// let's make it safe
 		try {
-			var topWindow = Kaltura.getTopWindow();
+			var topWindow = getTopWindow();
 
 			if (topWindow.tinyMCE && topWindow.tinyMCE.get('content') && !topWindow.tinyMCE.get('content').isHidden()) {
 				var ed = topWindow.tinyMCE.activeEditor;
