@@ -69,7 +69,7 @@ if (is_network_admin()) {
 						<a href="https://www.kaltura.com/index.php/kmcng/login" target="_blank">Login</a> to the Kaltura Management Console (KMC) for advanced
 						<br />media management<br />
 						Learn more about the
-						<a href="http://corp.kaltura.com/Products/Video-Applications/WordPress-Video-Plugin" target="_blank">new plugin features</a>
+						<a href="https://corp.kaltura.com/Products/Video-Applications/WordPress-Video-Plugin" target="_blank">new plugin features</a>
 					</td>
 				</tr>
 			</table>

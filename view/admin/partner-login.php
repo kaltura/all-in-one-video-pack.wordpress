@@ -61,7 +61,7 @@ else: ?>
 				<tr valign="top">
 					<th scope="row"><label for="password">Password:</label></th>
 					<td><input type="password" id="password" name="password" value="" size="20" />
-						<a href="<?php echo esc_url( KalturaHelpers::getServerUrl() ); ?>/index.php/kmc">forgot password?</a>
+						<a href="<?php echo esc_url( KalturaHelpers::getServerUrl() ); ?>/index.php/kmcng" target="_blank">Forgot Password?</a>
 					</td>
 				</tr>
 			</table>
