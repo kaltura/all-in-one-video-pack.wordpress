@@ -15,14 +15,7 @@ $divId          = 'kaltura_wrapper_' . $randId;
 $thumbnailDivId = 'kaltura_thumbnail_' . $randId;
 $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
-
-$adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
-$userId = '';   // anonymous user
-$clientType = Kaltura_Client_Enum_SessionType::ADMIN;
-$partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
-$privileges  = 'sview:1_c1uw0vjb,setrole:PLAYBACK_BASE_ROLE';
-$ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $clientType, $partnerId, 86400, $privileges);
-
+$ks = KalturaHelpers::createPlayerKs();
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
