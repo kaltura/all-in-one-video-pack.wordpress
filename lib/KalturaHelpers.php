@@ -19,6 +19,17 @@ class KalturaHelpers {
 		return esc_url_raw( $url );
 	}
 
+  public static function createPlayerKs() {
+    $adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
+    $userId = '';   // anonymous user
+    $clientType = Kaltura_Client_Enum_SessionType::ADMIN;
+    $partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+    $privileges  = 'sview:1_c1uw0vjb,setrole:PLAYBACK_BASE_ROLE';
+    $ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $clientType, $partnerId, 86400, $privileges);
+
+    return $ks;
+  }
+
 	public static function getCdnUrl($path = null) {
 		$url = KalturaHelpers::getOption( 'cdn_url' );
 		$url = rtrim( $url, '/' );
