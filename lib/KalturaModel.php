@@ -27,7 +27,7 @@ class KalturaModel {
 	protected $_partnerId = null;
 
 
-	private function KalturaModel() {
+	private function __construct() {
 		$config           = KalturaHelpers::getKalturaConfiguration();
 		$this->_client    = new KalturaWordpressClientBase( $config );
 		$this->_userId    = sanitize_user( KalturaHelpers::getLoggedUserId() );
