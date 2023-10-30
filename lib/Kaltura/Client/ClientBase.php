@@ -888,8 +888,8 @@ class Kaltura_Client_ClientBase
 		return str_replace(array('+', '/'), array('-', '_'), base64_encode($decodedKs));
 	}
 
-	protected static function aesEncrypt($key, $message)
-	{
+  protected static function aesEncrypt($key, $message)
+  {
     $iv = str_repeat("\0", 16);    // no need for an IV since we add a random string to the message anyway
     $key = substr(sha1($key, true), 0, 16);
     if (function_exists('openssl_encrypt')) {
@@ -900,23 +900,12 @@ class Kaltura_Client_ClientBase
         $padLength = $blockSize - strlen($message) % $blockSize;
         $message .= str_repeat("\0", $padLength);
       }
-      return openssl_encrypt(
-        $message,
-        'AES-128-CBC',
-        $key,
-        OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING,
-        $iv
-      );
-    } else {
-      return mcrypt_encrypt(
-        MCRYPT_RIJNDAEL_128,
-        $key,
-        $message,
-        MCRYPT_MODE_CBC,
-        $iv
-      );
+
+      return openssl_encrypt($message,'AES-128-CBC', $key,OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
     }
-	}
+
+    return mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $message,MCRYPT_MODE_CBC, $iv);
+  }
 
 	private function hash ( $salt , $str )
 	{

@@ -89,7 +89,7 @@ $ks = KalturaHelpers::generateKSForPlayer($entryId);
 		"targetId": <?php echo wp_json_encode($playerId); ?>,
 		"wid": <?php echo wp_json_encode($wid); ?>,
 		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
-		"entry_id": <?php echo wp_json_encode($entryId); ?>,
+    "entry_id": <?php echo wp_json_encode($entryId); ?>,
     "flashvars": {
       "ks": <?php echo wp_json_encode($ks); ?>,
     }
