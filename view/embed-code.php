@@ -85,15 +85,15 @@ $ks = KalturaHelpers::generateKSForPlayer($entryId);
 
 <?php if(!$isPlaylist) : ?>
 <script>
-	kWidget.embed({
-		"targetId": <?php echo wp_json_encode($playerId); ?>,
-		"wid": <?php echo wp_json_encode($wid); ?>,
-		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
+  kWidget.embed({
+    "targetId": <?php echo wp_json_encode($playerId); ?>,
+    "wid": <?php echo wp_json_encode($wid); ?>,
+    "uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
     "entry_id": <?php echo wp_json_encode($entryId); ?>,
     "flashvars": {
       "ks": <?php echo wp_json_encode($ks); ?>,
     }
-	});
+  });
 </script>
 
 <?php else: ?>
