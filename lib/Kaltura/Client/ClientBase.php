@@ -901,10 +901,10 @@ class Kaltura_Client_ClientBase
         $message .= str_repeat("\0", $padLength);
       }
 
-      return openssl_encrypt($message,'AES-128-CBC', $key,OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+      return openssl_encrypt($message, 'AES-128-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
     }
 
-    return mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $message,MCRYPT_MODE_CBC, $iv);
+    return mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $message, MCRYPT_MODE_CBC, $iv);
   }
 
 	private function hash ( $salt , $str )
