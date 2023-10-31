@@ -17,6 +17,8 @@ $playerId       = 'kaltura_player_' . $randId;
 $scriptSrc      = KalturaHelpers::getServerUrl() . '/p/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '/sp/' . KalturaHelpers::getOption( 'kaltura_partner_id' ) . '00/embedIframeJs/uiconf_id/' . (int)$embedOptions['uiconfid'] . '/partner_id/' . KalturaHelpers::getOption( 'kaltura_partner_id' );
 $flashVars      = $embedOptions['flashVars'];
 $isPlaylist     = $embedOptions['isPlaylist'];
+
+$ks = KalturaHelpers::generateKSForPlayer($entryId);
 ?>
 
 <script src="<?php echo esc_url($scriptSrc); ?>"></script>
@@ -83,12 +85,15 @@ $isPlaylist     = $embedOptions['isPlaylist'];
 
 <?php if(!$isPlaylist) : ?>
 <script>
-	kWidget.embed({
-		"targetId": <?php echo wp_json_encode($playerId); ?>,
-		"wid": <?php echo wp_json_encode($wid); ?>,
-		"uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
-		"entry_id": <?php echo wp_json_encode($entryId); ?>,
-	});
+  kWidget.embed({
+    "targetId": <?php echo wp_json_encode($playerId); ?>,
+    "wid": <?php echo wp_json_encode($wid); ?>,
+    "uiconf_id": <?php echo wp_json_encode($embedOptions['uiconfid']); ?>,
+    "entry_id": <?php echo wp_json_encode($entryId); ?>,
+    "flashvars": {
+      "ks": <?php echo wp_json_encode($ks); ?>,
+    }
+  });
 </script>
 
 <?php else: ?>

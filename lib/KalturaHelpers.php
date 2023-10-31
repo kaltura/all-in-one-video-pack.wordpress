@@ -239,6 +239,17 @@ class KalturaHelpers {
 			return $default;
 		}
 	}
+
+  public static function generateKSForPlayer($entryId) {
+    $adminSecret = sanitize_text_field(KalturaHelpers::getOption( 'kaltura_admin_secret' ));
+    $userId = '';   // anonymous user
+    $clientType = Kaltura_Client_Enum_SessionType::ADMIN;
+    $partnerId = intval( KalturaHelpers::getOption( 'kaltura_partner_id' ) );
+    $privileges  = 'sview:'. $entryId . ',setrole:PLAYBACK_BASE_ROLE';
+    $ks = Kaltura_Client_ClientBase::generateSessionV2($adminSecret, $userId, $clientType, $partnerId, 86400, $privileges);
+
+    return $ks;
+  }
 	
 	public static function getPlayerDimension() {
 		$name    = 'kaltura_default_player_dimensions';
