@@ -660,7 +660,7 @@ class KalturaHelpers {
 			'TW' => 'Taiwan (台灣)',
 			'TJ' => 'Tajikistan (Тоҷикистон)',
 			'TZ' => 'Tanzania',
-			'TH' => 'Thailand (ราชอาณาจักรไทย)',
+			'TH' => 'Thailand (ประเทศไทย)',
 			'TL' => 'Timor-Leste',
 			'TG' => 'Togo',
 			'TK' => 'Tokelau',
